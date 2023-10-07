@@ -8,7 +8,8 @@ import {
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme, Button, Avatar, Modal, Badge, Table } from 'antd';
 import { useNavigate } from "react-router-dom";
-import Notification from '../../components copy/notification/Notification';
+import Notification from '../../components/notification/Notification';
+import UserTable from '../../components/admin-table/AdminTable';
 
 
 const { Header, Content, Sider } = Layout;
@@ -142,7 +143,7 @@ const Admin = () => {
               background: colorBgContainer,
             }}
           >
-            <Table/>
+            <UserTable/>
           </Content>
         </Layout>
       </Layout>
