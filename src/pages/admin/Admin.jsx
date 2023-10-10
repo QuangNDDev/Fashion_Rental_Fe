@@ -19,9 +19,10 @@ import {
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import Notification from "../../components/notification/Notification";
-import UserTable from "../../components/admin-table/AdminTable";
+import CustomerTable from "../../components/admin-table/CustomerTable";
 
 const { Header, Content, Sider } = Layout;
+const { SubMenu } = Menu;
 
 const items1 = ["1", "2", "3"].map((key) => ({
   key,
@@ -48,7 +49,7 @@ const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
 
 const Admin = () => {
   const navigate = useNavigate();
-
+  const [selectedMenuKey, setSelectedMenuKey] = useState("1");
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -69,6 +70,60 @@ const Admin = () => {
 
   const hideNotificationModal = () => {
     setNotificationModalVisible(false);
+  };
+  const handleMenuClick = ({ key }) => {
+    setSelectedMenuKey(key);
+  };
+  const renderContent = () => {
+    switch (selectedMenuKey) {
+      case "1":
+        return (
+          <div>
+            <Breadcrumb
+            style={{
+              padding: "0 16px",
+            }}
+          >
+            <Breadcrumb.Item>Quản lí</Breadcrumb.Item>
+            <Breadcrumb.Item>Khách hàng</Breadcrumb.Item>
+          </Breadcrumb>
+            <CustomerTable />
+            
+          </div>
+        );
+        case "2":
+        return (
+          <div>
+            <Breadcrumb
+            style={{
+              padding: "0 16px",
+            }}
+          >
+            <Breadcrumb.Item>Quản lí</Breadcrumb.Item>
+            <Breadcrumb.Item>Người sở hữu sản phẩm</Breadcrumb.Item>
+          </Breadcrumb>
+            
+            
+          </div>
+        );
+        case "3":
+        return (
+          <div>
+            <Breadcrumb
+            style={{
+              padding: "0 16px",
+            }}
+          >
+            <Breadcrumb.Item>Quản lí</Breadcrumb.Item>
+            <Breadcrumb.Item>Nhân viên</Breadcrumb.Item>
+          </Breadcrumb>
+            
+            
+          </div>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -121,43 +176,33 @@ const Admin = () => {
             onClick={handleLogout}
             style={{ marginLeft: 16, color: "white" }}
           >
-            Logout
+           Đăng xuất
           </Button>
         </div>
       </Header>
 
       <Layout>
-        <Sider
-          width={200}
-          style={{
-            background: colorBgContainer,
-          }}
-        >
+        <Sider width={200} theme="dark" breakpoint="md" collapsedWidth="0">
           <Menu
             mode="inline"
-            defaultSelectedKeys={["1"]}
+            selectedKeys={[selectedMenuKey]}
             defaultOpenKeys={["sub1"]}
-            style={{
-              height: "100%",
-              borderRight: 0,
-            }}
-            items={items2}
-          />
+            style={{ height: "100%", borderRight: 0 }}
+            onClick={handleMenuClick}
+          >
+            <SubMenu key="sub1" icon={<UserOutlined />} title="Quản lí">
+              <Menu.Item key="1">Khách hàng</Menu.Item>
+              <Menu.Item key="2">Chủ sở hữu sản phẩm</Menu.Item>
+              <Menu.Item key="3">Nhân viên</Menu.Item>
+            </SubMenu>
+          </Menu>
         </Sider>
         <Layout
           style={{
             padding: "0 24px 24px",
           }}
         >
-          <Breadcrumb
-            style={{
-              margin: "16px 0",
-            }}
-          >
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-          </Breadcrumb>
+          
           <Content
             style={{
               padding: 24,
@@ -166,7 +211,7 @@ const Admin = () => {
               background: colorBgContainer,
             }}
           >
-            <UserTable />
+            {renderContent()}
           </Content>
         </Layout>
       </Layout>
