@@ -19,8 +19,8 @@ const LoginForm = () => {
     console.log("Received values:", values);
     try {
       const response = await axios.post(
-        `http://159.223.36.66:8080/account/login?email=` +
-         email +
+        `http://134.209.111.144:8080/account/login?email=` +
+          email +
           `&password=` +
           password
       );
@@ -29,13 +29,13 @@ const LoginForm = () => {
         localStorage.setItem("accountId", response.data.accountID);
         localStorage.setItem("roleId", response.data.role.roleID);
       }
-      if (response.data.role.roleID == 2) {
+      if (response.data.role.roleID == 4) {
         // const accountID = response.data.accountID;
         // try {
         //   const response = await axios.get(
         //     "http://localhost:8080/showrooms/get-showroom/" + userID
         //   );
-          handleNavigationAdmin();
+        handleNavigationAdmin();
         // } catch (error) {
         //   console.error(error);
         // }
