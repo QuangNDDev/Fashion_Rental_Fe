@@ -1,9 +1,11 @@
 
 import { SearchOutlined } from '@ant-design/icons';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { Button, Input, Space, Table, Tag } from 'antd';
 import RenderTag from '../render-tag/RenderTag';
+import axios from 'axios';
+
 const data = [
   {
     key: '1',
@@ -55,10 +57,43 @@ const data = [
     status: 'Active'
   }
 ];
+
+
 const UserTable = () => {
+  const [users, setUsers] = useState();
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
+  // const fetchUsers = async () => {
+  //   try {
+  //     const response = await axios.get("http://159.223.36.66:8080/customer/get-all-customer");
+  //     const users = response.data;
+  //     setUsers(users);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+  
+  // useEffect(() => {
+  //   fetchUsers();
+  // }, []);
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("http://159.223.36.66:8080/customer/get-all-customer");
+      const users = response.data.map(user => ({
+        ...user,
+        roleName: user.accountDTO.roleDTO.roleName,
+        email: user.accountDTO.email
+      }));
+      setUsers(users);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(()=>{
+    fetchUsers();
+  },[]
+  );
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -153,23 +188,30 @@ const UserTable = () => {
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      width: '30%',
-      ...getColumnSearchProps('name'),
+      dataIndex: 'fullName',
+      key: 'fullName',
+      width: '20%',
+      ...getColumnSearchProps('fullName'),
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-      width: '20%',
-      ...getColumnSearchProps('age'),
+      title: 'Role Name',
+      dataIndex: 'roleName',
+      key: 'roleName',
+      width: '15%',
+      ...getColumnSearchProps('roleName'),
+      render: (roleName) => (
+        <p style={{ textAlign: "center" }}>
+          <RenderTag tagRender={roleName}/>
+        </p>
+      ),
+      
+      
     },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      width: '20%',
+      width: '10%',
       ...getColumnSearchProps('status'),
       render: (status) => (
         <p style={{ textAlign: "center" }}>
@@ -179,15 +221,30 @@ const UserTable = () => {
       
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-      ...getColumnSearchProps('address'),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ['descend', 'ascend'],
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+      width: '20%',
+      ...getColumnSearchProps('email'),
     },
+    {
+      title: 'Phone',
+      dataIndex: 'phone',
+      key: 'phone',
+      width: '20%',
+      ...getColumnSearchProps('phone'),
+    },
+
+    // {
+    //   title: 'Address',
+    //   dataIndex: 'address',
+    //   key: 'address',
+    //   ...getColumnSearchProps('address'),
+    //   sorter: (a, b) => a.address.length - b.address.length,
+    //   sortDirections: ['descend', 'ascend'],
+    // },
     
   ];
-  return <Table columns={columns} dataSource={data} />;
+  return <Table columns={columns} dataSource={users} />;
 };
 export default UserTable;

@@ -133,7 +133,7 @@ const Admin = () => {
           >
             <Breadcrumb.Item>Home</Breadcrumb.Item>
             <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
+            <Breadcrumb.Item>User</Breadcrumb.Item>
           </Breadcrumb>
           <Content
             style={{
@@ -149,7 +149,7 @@ const Admin = () => {
       </Layout>
       {/* Modal for Notifications */}
       <Modal
-        title="Thông báo"
+        title="Noti"
         visible={isNotificationModalVisible}
         onCancel={hideNotificationModal}
         footer={null}

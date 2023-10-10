@@ -5,12 +5,18 @@ export default function RenderTag(props) {
   const [colors, setColor] = useState("");
   const [status, setStatus] = useState("");
   useEffect(() => {
-    if (renderTag == "Active") {
+    if (renderTag == "1") {
       setColor("green");
-      setStatus("Đang hoạt động");
-    } else if (renderTag == "Inactive"){
+      setStatus("Active");
+    } else if (renderTag == "0"){
         setColor("red");
-        setStatus("Không hoạt động")
+        setStatus("Inactive")
+    }else if (renderTag == "Customer"){
+      setColor("green");
+      setStatus("Khách hàng")
+    }else if (renderTag == "ProductOwner"){
+      setColor("yellow");
+      setStatus("Chủ sản phẩm")
     }
   }, []);
 
