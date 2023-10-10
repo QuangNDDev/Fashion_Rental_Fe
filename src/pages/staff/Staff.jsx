@@ -1,47 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   NotificationOutlined,
-  UserOutlined,
+  CloseCircleTwoTone,
   LogoutOutlined,
   LaptopOutlined,
   BellOutlined,
-} from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme, Button, Avatar, Modal, Badge } from 'antd';
+  CheckOutlined,
+  CheckCircleTwoTone,
+  ClockCircleTwoTone,
+} from "@ant-design/icons";
+import {
+  Breadcrumb,
+  Layout,
+  Menu,
+  theme,
+  Button,
+  Avatar,
+  Modal,
+  Badge,
+} from "antd";
 
 const { Header, Content, Sider } = Layout;
 
-const items1 = ['1', '2', '3'].map((key) => ({
+const items1 = ["1", "2", "3"].map((key) => ({
   key,
   label: `nav ${key}`,
 }));
 
-const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon, index) => {
-  const key = String(index + 1);
-  return {
-    key: `sub${key}`,
-    icon: React.createElement(icon),
-    label: `subnav ${key}`,
+const items2 = [
+  {
+    key: "sub1",
+    icon: <CheckOutlined />,
+    label: "Duyệt Đơn",
+    children: [
+      {
+        key: 1,
+        icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
+        label: "Đơn đã duyệt",
+      },
+      {
+        key: 2,
+        icon: <ClockCircleTwoTone twoToneColor="#ffcc00" />,
+        label: "Đơn đang chờ xử lý",
+      },
+      {
+        key: 3,
+        icon: <CloseCircleTwoTone twoToneColor="#ff0000" />,
+        label: "Đơn đã từ chối",
+      },
+    ],
+  },
+
+  {
+    key: "sub2",
+    icon: React.createElement(LaptopOutlined),
+    label: "Custom Subnav 2", // Đổi tên của subnav này
     children: new Array(4).fill(null).map((_, j) => {
-      const subKey = index * 4 + j + 1;
+      const subKey = 4 * 1 + j + 1;
       return {
         key: subKey,
         label: `option${subKey}`,
       };
     }),
-  };
-});
+  },
+  {
+    key: "sub3",
+    icon: React.createElement(NotificationOutlined),
+    label: "Custom Subnav 3", // Đổi tên của subnav này
+    children: new Array(4).fill(null).map((_, j) => {
+      const subKey = 4 * 2 + j + 1;
+      return {
+        key: subKey,
+        label: `option${subKey}`,
+      };
+    }),
+  },
+];
 
 const Staff = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const [isNotificationModalVisible, setNotificationModalVisible] = useState(false);
+  const [isNotificationModalVisible, setNotificationModalVisible] =
+    useState(false);
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(3);
 
   const handleLogout = () => {
-    // Handle logout logic here
-    console.log('Logged out');
+    // Xử lý logic đăng xuất ở đây
+    console.log("Logged out");
   };
 
   const showNotificationModal = () => {
@@ -57,31 +104,43 @@ const Staff = () => {
     <Layout>
       <Header
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between', // Căn chỉnh các phần tử theo chiều ngang và cách đều nhau
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between", // Căn chỉnh các phần tử theo chiều ngang và cách đều nhau
         }}
       >
-        {/* Display a placeholder logo */}
+        {/* Hiển thị logo tạm thời */}
         <img
-          src="https://www.frs.world/fileadmin/_processed_/3/4/csm_frs-world-logo_1774725601.jpg"
+          src="https://scontent.fsgn5-9.fna.fbcdn.net/v/t1.15752-9/386474503_267425062928341_6987759511620074342_n.png?_nc_cat=106&ccb=1-7&_nc_sid=ae9488&_nc_ohc=4-cFRFMOAdUAX8yq9zd&_nc_ht=scontent.fsgn5-9.fna&_nc_e2o=s&oh=03_AdRDDVQ4N7qwFYjv9hA4tjrRIWC67TdiUvArbX1kCTzZKw&oe=6544BA5F"
           alt="Brand Logo"
-          width={120}
-          height={40}
+          width={70}
+          height={50}
         />
-        {/* Notification bell icon and avatar */}
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        {/* Biểu tượng chuông thông báo và avatar */}
+        <div style={{ display: "flex", alignItems: "center" }}>
           <Avatar
             src="https://via.placeholder.com/40x40.png?text=Avatar"
             alt="User Avatar"
-            style={{ width: '38px', height: '38px', marginLeft: '10px' }}
+            style={{ width: "38px", height: "38px", marginLeft: "10px" }}
           />
-          <span style={{ marginLeft: '10px', color: 'white', fontSize: '16px', fontWeight: 'bold' }}>
+          <span
+            style={{
+              marginLeft: "10px",
+              color: "white",
+              fontSize: "16px",
+              fontWeight: "bold",
+            }}
+          >
             Name staff
           </span>
           <Badge count={unreadNotificationCount}>
             <BellOutlined
-              style={{ fontSize: '20px', color: 'white', cursor: 'pointer', marginLeft: '25px' }}
+              style={{
+                fontSize: "20px",
+                color: "white",
+                cursor: "pointer",
+                marginLeft: "25px",
+              }}
               onClick={showNotificationModal}
             />
           </Badge>
@@ -89,7 +148,7 @@ const Staff = () => {
             type="link"
             icon={<LogoutOutlined />}
             onClick={handleLogout}
-            style={{ marginLeft: 16, color: 'white' }}
+            style={{ marginLeft: 16, color: "white" }}
           >
             Logout
           </Button>
@@ -105,23 +164,24 @@ const Staff = () => {
         >
           <Menu
             mode="inline"
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
+            defaultSelectedKeys={["1"]}
+            defaultOpenKeys={["sub1"]}
             style={{
-              height: '100%',
+              height: "100%",
               borderRight: 0,
+              width: "110%",
             }}
             items={items2}
           />
         </Sider>
         <Layout
           style={{
-            padding: '0 24px 24px',
+            padding: "0 24px 24px",
           }}
         >
           <Breadcrumb
             style={{
-              margin: '16px 0',
+              margin: "16px 10px",
             }}
           >
             <Breadcrumb.Item>Home</Breadcrumb.Item>
@@ -131,7 +191,7 @@ const Staff = () => {
           <Content
             style={{
               padding: 24,
-              margin: 0,
+              marginLeft: 10,
               minHeight: 280,
               background: colorBgContainer,
             }}
@@ -140,13 +200,13 @@ const Staff = () => {
           </Content>
         </Layout>
       </Layout>
-      {/* Modal for Notifications */}
+      {/* Modal cho Thông báo */}
       <Modal
         title="Thông báo"
         visible={isNotificationModalVisible}
         onCancel={hideNotificationModal}
         footer={null}
-        style={{ position: 'absolute', bottom: '50px', right: '20px' }}
+        style={{ position: "absolute", bottom: "50px", right: "20px" }}
       >
         {/* Nội dung thông báo ở đây */}
       </Modal>
