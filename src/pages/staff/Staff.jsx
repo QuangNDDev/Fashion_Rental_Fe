@@ -8,6 +8,7 @@ import {
   CheckOutlined,
   CheckCircleTwoTone,
   ClockCircleTwoTone,
+  UserOutlined,
 } from "@ant-design/icons";
 import {
   Breadcrumb,
@@ -19,6 +20,9 @@ import {
   Modal,
   Badge,
 } from "antd";
+import CustomerTable from "../../components/admin-table/CustomerTable";
+import SubMenu from "antd/es/menu/SubMenu";
+import StaffGrid from "../../components/Staff-Grid";
 
 const { Header, Content, Sider } = Layout;
 
@@ -27,64 +31,58 @@ const items1 = ["1", "2", "3"].map((key) => ({
   label: `nav ${key}`,
 }));
 
-const items2 = [
-  {
-    key: "sub1",
-    icon: <CheckOutlined />,
-    label: "Duyệt Đơn",
-    children: [
-      {
-        key: 1,
-        icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
-        label: "Đơn đã duyệt",
-      },
-      {
-        key: 2,
-        icon: <ClockCircleTwoTone twoToneColor="#ffcc00" />,
-        label: "Đơn đang chờ xử lý",
-      },
-      {
-        key: 3,
-        icon: <CloseCircleTwoTone twoToneColor="#ff0000" />,
-        label: "Đơn đã từ chối",
-      },
-    ],
-  },
+const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
+  (icon, index) => {
+    const key = String(index + 1);
+    return {
+      key: `sub${key}`,
+      icon: React.createElement(icon),
+      label: `customLabel ${key}`,
+      children: new Array(4).fill(null).map((_, j) => {
+        const subKey = index * 4 + j + 1;
+        return {
+          key: subKey,
+          label: `option${subKey}`,
+        };
+      }),
+    };
+  }
+);
 
-  {
-    key: "sub2",
-    icon: React.createElement(LaptopOutlined),
-    label: "Custom Subnav 2", // Đổi tên của subnav này
-    children: new Array(4).fill(null).map((_, j) => {
-      const subKey = 4 * 1 + j + 1;
-      return {
-        key: subKey,
-        label: `option${subKey}`,
-      };
-    }),
-  },
-  {
-    key: "sub3",
-    icon: React.createElement(NotificationOutlined),
-    label: "Custom Subnav 3", // Đổi tên của subnav này
-    children: new Array(4).fill(null).map((_, j) => {
-      const subKey = 4 * 2 + j + 1;
-      return {
-        key: subKey,
-        label: `option${subKey}`,
-      };
-    }),
-  },
-];
+//   {
+//     key: "sub2",
+//     icon: React.createElement(LaptopOutlined),
+//     label: "Custom Subnav 2", // Đổi tên của subnav này
+//     children: new Array(4).fill(null).map((_, j) => {
+//       const subKey = 4 * 1 + j + 1;
+//       return {
+//         key: subKey,
+//         label: `option${subKey}`,
+//       };
+//     }),
+//   },
+//   {
+//     key: "sub3",
+//     icon: React.createElement(NotificationOutlined),
+//     label: "Custom Subnav 3", // Đổi tên của subnav này
+//     children: new Array(4).fill(null).map((_, j) => {
+//       const subKey = 4 * 2 + j + 1;
+//       return {
+//         key: subKey,
+//         label: `option${subKey}`,
+//       };
+//     }),
+//   },
+// ];
 
 const Staff = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
+  const [selectedMenuKey, setSelectedMenuKey] = useState("1");
   const [isNotificationModalVisible, setNotificationModalVisible] =
     useState(false);
-  const [unreadNotificationCount, setUnreadNotificationCount] = useState(3);
+  const [unreadNotificationCount, setUnreadNotificationCount] = useState("3");
 
   const handleLogout = () => {
     // Xử lý logic đăng xuất ở đây
@@ -100,6 +98,55 @@ const Staff = () => {
     setNotificationModalVisible(false);
   };
 
+  const handleMenuClick = ({ key }) => {
+    setSelectedMenuKey(key);
+  };
+  const renderContent = () => {
+    switch (selectedMenuKey) {
+      case "1":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Duyệt Đơn</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn đã duyệt</Breadcrumb.Item>
+            </Breadcrumb>
+            <StaffGrid />
+          </div>
+        );
+      case "2":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Duyệt đơn</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn đang chờ xử lý</Breadcrumb.Item>
+            </Breadcrumb>
+          </div>
+        );
+      case "3":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Duyệt đơn</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn bị từ chối</Breadcrumb.Item>
+            </Breadcrumb>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
   return (
     <Layout>
       <Header
@@ -164,30 +211,43 @@ const Staff = () => {
         >
           <Menu
             mode="inline"
-            defaultSelectedKeys={["1"]}
+            selectedKeys={[selectedMenuKey]}
             defaultOpenKeys={["sub1"]}
             style={{
               height: "100%",
               borderRight: 0,
               width: "110%",
             }}
-            items={items2}
-          />
+            onClick={handleMenuClick}
+          >
+            <SubMenu key="sub1" icon={<CheckOutlined />} title="Duyệt đơn">
+              <Menu.Item
+                key="1"
+                icon={<CheckCircleTwoTone twoToneColor="#52c41a" />}
+              >
+                Đơn đã duyệt
+              </Menu.Item>
+              <Menu.Item
+                key="2"
+                icon={<ClockCircleTwoTone twoToneColor="#ffcc00" />}
+              >
+                Đơn chờ xử lý
+              </Menu.Item>
+
+              <Menu.Item
+                key="3"
+                icon={<CloseCircleTwoTone twoToneColor="#ff0000" />}
+              >
+                Đơn bị từ chối
+              </Menu.Item>
+            </SubMenu>
+          </Menu>
         </Sider>
         <Layout
           style={{
             padding: "0 24px 24px",
           }}
         >
-          <Breadcrumb
-            style={{
-              margin: "16px 10px",
-            }}
-          >
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb>
           <Content
             style={{
               padding: 24,
@@ -196,7 +256,7 @@ const Staff = () => {
               background: colorBgContainer,
             }}
           >
-            Content
+            {renderContent()}
           </Content>
         </Layout>
       </Layout>
