@@ -5,6 +5,7 @@ import { Button, Drawer, Form, Input, Radio, Space, Table, Tag } from "antd";
 import RenderTag from "../render-tag/RenderTag";
 import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
 import axios from "axios";
+
 const CustomerTable = () => {
   const [users, setUsers] = useState();
   const [searchText, setSearchText] = useState("");
@@ -13,6 +14,7 @@ const CustomerTable = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
@@ -28,18 +30,22 @@ const CustomerTable = () => {
       console.error(error);
     }
   };
+
   useEffect(() => {
     fetchUsers();
   }, []);
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
+
   const handleReset = (clearFilters) => {
     clearFilters();
     setSearchText("");
   };
+
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -134,19 +140,22 @@ const CustomerTable = () => {
         text
       ),
   });
+
   const [form] = Form.useForm();
+
   const showEditDrawer = (record) => {
     setEditingUser(record);
-    console.log(editingUser);
     setIsEdit(true);
     setIsDrawerVisible(true);
     form.setFieldsValue(record);
   };
+
   const onClose = () => {
     setIsDrawerVisible(false);
     setIsEdit(false);
     form.resetFields();
   };
+
   const editUser = async () => {
     form.validateFields().then((values) => {
       const editData = {
@@ -155,7 +164,6 @@ const CustomerTable = () => {
         phone: values.phone,
         status: values.status,
       };
-      console.log(editData);
 
       try {
         axios
@@ -178,12 +186,14 @@ const CustomerTable = () => {
       onClose();
     });
   };
+
   const addUser = () => {
     form.validateFields().then((values) => {
       setUsers([...users, values]);
       onClose();
     });
   };
+
   const columns = [
     {
       title: "ID",
@@ -206,8 +216,9 @@ const CustomerTable = () => {
       dataIndex: "roleName",
       key: "roleName",
       width: "15%",
+      ...getColumnSearchProps("roleName"),
       render: (roleName) => (
-        <p style={{ textAlign: "center", marginBottom: "50px" }}>
+        <p style={{ textAlign: "center" }}>
           <RenderTag tagRender={roleName} />
         </p>
       ),
@@ -219,7 +230,7 @@ const CustomerTable = () => {
       width: "10%",
       ...getColumnSearchProps("status"),
       render: (status) => (
-        <p style={{ textAlign: "center", marginBottom: "50px" }}>
+        <p style={{ textAlign: "center" }}>
           <RenderTag tagRender={status} />
         </p>
       ),
@@ -258,15 +269,8 @@ const CustomerTable = () => {
         </div>
       ),
     },
-    // {
-    //   title: 'Address',
-    //   dataIndex: 'address',
-    //   key: 'address',
-    //   ...getColumnSearchProps('address'),
-    //   sorter: (a, b) => a.address.length - b.address.length,
-    //   sortDirections: ['descend', 'ascend'],
-    // },
   ];
+
   return (
     <div>
       <Table columns={columns} dataSource={users} />
@@ -332,4 +336,5 @@ const CustomerTable = () => {
     </div>
   );
 };
+
 export default CustomerTable;

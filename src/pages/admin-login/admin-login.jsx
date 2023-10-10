@@ -20,13 +20,18 @@ const LoginForm = () => {
           password
       );
       console.log(response);
-      if (response.data.role.roleID == 4) {
-        localStorage.setItem("roleID",response.data.role.roleID);
-        handleNavigationAdmin();
-      } else if (response.data.roleID == 1) {
-        handleNavigationAdmin();
-      } else {
-        message.info("Tài khoản của bạn không có quyền truy cập!!!");
+
+      if (response.data) {
+        localStorage.setItem("accountId", response.data.accountID);
+        localStorage.setItem("roleId", response.data.role.roleID);
+
+        if (response.data.role.roleID == 4) {
+          handleNavigationAdmin();
+        } else if (response.data.role.roleID == 1) {
+          handleNavigationAdmin();
+        } else {
+          message.info("Tài khoản của bạn không có quyền truy cập!!!");
+        }
       }
     } catch (error) {
       console.error(error);
@@ -42,16 +47,16 @@ const LoginForm = () => {
     >
       <div
         style={{
-          flex: 8, // Occupies 4 parts
+          flex: 8,
           backgroundImage:
             "url('https://img3.thuthuatphanmem.vn/uploads/2019/10/10/background-anh-dong_032845920.gif')",
           backgroundSize: "cover",
-          transform: "translateZ(0)", // Reduces aliasing effect
+          transform: "translateZ(0)",
         }}
       />
       <div
         style={{
-          flex: 3, // Occupies 8 parts
+          flex: 3,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",

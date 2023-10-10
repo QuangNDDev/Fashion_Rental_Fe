@@ -56,21 +56,21 @@ const Admin = () => {
         return (
           <div>
             <Breadcrumb
-            style={{
-              padding: "0 16px",
-            }}
-          >
-            <Breadcrumb.Item>Quản lí</Breadcrumb.Item>
-            <Breadcrumb.Item>Khách hàng</Breadcrumb.Item>
-          </Breadcrumb>
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Quản lí</Breadcrumb.Item>
+              <Breadcrumb.Item>Khách hàng</Breadcrumb.Item>
+            </Breadcrumb>
             <CustomerTable />
-            
           </div>
         );
-        case "2":
+      case "2":
         return (
           <div>
             <Breadcrumb
+
             style={{
               padding: "0 16px",
             }}
@@ -81,12 +81,14 @@ const Admin = () => {
           <ProductOwnerTable/>
             
             
+
           </div>
         );
-        case "3":
+      case "3":
         return (
           <div>
             <Breadcrumb
+
             style={{
               padding: "0 16px",
             }}
@@ -97,6 +99,7 @@ const Admin = () => {
           <StaffTable/>
             
             
+
           </div>
         );
       default:
@@ -154,7 +157,7 @@ const Admin = () => {
             onClick={handleLogout}
             style={{ marginLeft: 16, color: "white" }}
           >
-           Đăng xuất
+            Đăng xuất
           </Button>
         </div>
       </Header>
@@ -185,7 +188,6 @@ const Admin = () => {
             padding: "0 24px 24px",
           }}
         >
-          
           <Content
             style={{
               padding: 24,
@@ -200,8 +202,10 @@ const Admin = () => {
       </Layout>
       {/* Modal for Notifications */}
       <Modal
+
         title="Thông báo"
         visible={isNotificationModalVisible}
+
         onCancel={hideNotificationModal}
         footer={null}
         style={{ position: "absolute", bottom: "50px", right: "20px" }}
