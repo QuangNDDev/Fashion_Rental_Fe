@@ -5,78 +5,11 @@ import Highlighter from 'react-highlight-words';
 import { Button, Input, Space, Table, Tag } from 'antd';
 import RenderTag from '../render-tag/RenderTag';
 import axios from 'axios';
-
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    status: 'Active'
-  },
-  {
-    key: '2',
-    name: 'Joe Black',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    status: 'Active'
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    status: 'Active'
-  },
-  {
-    key: '4',
-    name: 'Joe Black',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    status: 'Inactive'
-  },
-  {
-    key: '5',
-    name: 'Joe Black',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    status: 'Inactive'
-  },
-  {
-    key: '6',
-    name: 'Joe Black',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    status: 'Active'
-  },
-  {
-    key: '7',
-    name: 'Joe Black',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    status: 'Active'
-  }
-];
-
-
-const UserTable = () => {
+const CustomerTable = () => {
   const [users, setUsers] = useState();
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
-  // const fetchUsers = async () => {
-  //   try {
-  //     const response = await axios.get("http://159.223.36.66:8080/customer/get-all-customer");
-  //     const users = response.data;
-  //     setUsers(users);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-  
-  // useEffect(() => {
-  //   fetchUsers();
-  // }, []);
   const fetchUsers = async () => {
     try {
       const response = await axios.get("http://159.223.36.66:8080/customer/get-all-customer");
@@ -187,14 +120,14 @@ const UserTable = () => {
   
   const columns = [
     {
-      title: 'Name',
+      title: 'Họ và tên',
       dataIndex: 'fullName',
       key: 'fullName',
       width: '20%',
       ...getColumnSearchProps('fullName'),
     },
     {
-      title: 'Role Name',
+      title: 'Vai trò',
       dataIndex: 'roleName',
       key: 'roleName',
       width: '15%',
@@ -208,7 +141,7 @@ const UserTable = () => {
       
     },
     {
-      title: 'Status',
+      title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
       width: '10%',
@@ -228,7 +161,7 @@ const UserTable = () => {
       ...getColumnSearchProps('email'),
     },
     {
-      title: 'Phone',
+      title: 'SĐT',
       dataIndex: 'phone',
       key: 'phone',
       width: '20%',
@@ -247,4 +180,4 @@ const UserTable = () => {
   ];
   return <Table columns={columns} dataSource={users} />;
 };
-export default UserTable;
+export default CustomerTable;
