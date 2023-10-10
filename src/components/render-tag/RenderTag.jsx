@@ -7,10 +7,10 @@ export default function RenderTag(props) {
   useEffect(() => {
     if (renderTag == "Active") {
       setColor("green");
-      setStatus("Đang hoạt động");
+      setStatus("Active");
     } else if (renderTag == "Inactive"){
         setColor("red");
-        setStatus("Không hoạt động")
+        setStatus("Inactive")
     }
   }, []);
 
