@@ -1,14 +1,9 @@
-import React, { useState } from "react";
 import { Form, Input, Button, Card, message } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const handleNavigationOwner = (idUser) => {
-    const paramValue = idUser;
-    navigate(`/admin?idShowroom=${paramValue}`);
-  };
   const handleNavigationAdmin = () => {
     navigate(`/admin`);
   };
@@ -19,26 +14,15 @@ const LoginForm = () => {
     console.log("Received values:", values);
     try {
       const response = await axios.post(
-        `http://159.223.36.66:8080/account/login?email=` +
-         email +
+        `http://134.209.111.144:8080/account/login?email=` +
+          email +
           `&password=` +
           password
       );
       console.log(response);
-      if (response.data) {
-        localStorage.setItem("accountId", response.data.accountID);
-        localStorage.setItem("roleId", response.data.role.roleID);
-      }
-      if (response.data.role.roleID == 2) {
-        // const accountID = response.data.accountID;
-        // try {
-        //   const response = await axios.get(
-        //     "http://localhost:8080/showrooms/get-showroom/" + userID
-        //   );
-          handleNavigationAdmin();
-        // } catch (error) {
-        //   console.error(error);
-        // }
+      if (response.data.role.roleID == 4) {
+        localStorage.setItem("roleID",response.data.role.roleID);
+        handleNavigationAdmin();
       } else if (response.data.roleID == 1) {
         handleNavigationAdmin();
       } else {
@@ -121,7 +105,6 @@ const LoginForm = () => {
                 type="primary"
                 htmlType="submit"
                 style={{ width: "100%" }}
-                // onClick={onClickOnwer}
               >
                 Đăng Nhập
               </Button>

@@ -2,10 +2,10 @@ import { SearchOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import { Button, Drawer, Form, Input, Radio, Space, Table, Tag } from "antd";
-import RenderTag from "../render-tag/RenderTag";
 import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
+import RenderTag from "../render-tag/RenderTag";
 import axios from "axios";
-const CustomerTable = () => {
+const ProductOwnerTable = () => {
   const [users, setUsers] = useState();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -16,7 +16,7 @@ const CustomerTable = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "http://134.209.111.144:8080/customer/get-all-customer"
+        "http://134.209.111.144:8080/po/get-all-po"
       );
       const users = response.data.map((user) => ({
         ...user,
@@ -39,6 +39,19 @@ const CustomerTable = () => {
   const handleReset = (clearFilters) => {
     clearFilters();
     setSearchText("");
+  };
+  const [form] = Form.useForm();
+  const showEditDrawer = (record) => {
+    setEditingUser(record);
+    console.log(editingUser);
+    setIsEdit(true);
+    setIsDrawerVisible(true);
+    form.setFieldsValue(record);
+  };
+  const onClose = () => {
+    setIsDrawerVisible(false);
+    setIsEdit(false);
+    form.resetFields();
   };
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -134,22 +147,10 @@ const CustomerTable = () => {
         text
       ),
   });
-  const [form] = Form.useForm();
-  const showEditDrawer = (record) => {
-    setEditingUser(record);
-    console.log(editingUser);
-    setIsEdit(true);
-    setIsDrawerVisible(true);
-    form.setFieldsValue(record);
-  };
-  const onClose = () => {
-    setIsDrawerVisible(false);
-    setIsEdit(false);
-    form.resetFields();
-  };
   const editUser = async () => {
     form.validateFields().then((values) => {
       const editData = {
+        address: values.address,
         avatarUrl: values.avatarUrl,
         fullName: values.fullName,
         phone: values.phone,
@@ -160,8 +161,8 @@ const CustomerTable = () => {
       try {
         axios
           .put(
-            `http://134.209.111.144:8080/customer?customerID=` +
-              editingUser.customerID,
+            `http://134.209.111.144:8080/po?productownerID=` +
+              editingUser.productownerID,
             editData
           )
           .then((response) => {
@@ -187,17 +188,17 @@ const CustomerTable = () => {
   const columns = [
     {
       title: "ID",
-      dataIndex: "customerID",
-      key: "customerID",
+      dataIndex: "productownerID",
+      key: "productownerID",
       width: "1%",
-      ...getColumnSearchProps("customerID"),
+      ...getColumnSearchProps("productownerID"),
       render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
     },
     {
       title: "Họ và tên",
       dataIndex: "fullName",
       key: "fullName",
-      width: "20%",
+      width: "10%",
       ...getColumnSearchProps("fullName"),
       render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
     },
@@ -205,7 +206,7 @@ const CustomerTable = () => {
       title: "Vai trò",
       dataIndex: "roleName",
       key: "roleName",
-      width: "15%",
+      width: "10%",
       render: (roleName) => (
         <p style={{ textAlign: "center", marginBottom: "50px" }}>
           <RenderTag tagRender={roleName} />
@@ -228,15 +229,26 @@ const CustomerTable = () => {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      width: "20%",
+      width: "10%",
       ...getColumnSearchProps("email"),
+      render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
     },
     {
       title: "SĐT",
       dataIndex: "phone",
       key: "phone",
-      width: "20%",
+      width: "10%",
       ...getColumnSearchProps("phone"),
+      render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
+    },
+    {
+      title: "Địa chỉ",
+      dataIndex: "address",
+      key: "address",
+      width: "15%",
+      ...getColumnSearchProps("address"),
+      sorter: (a, b) => a.address.length - b.address.length,
+      sortDirections: ["descend", "ascend"],
       render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
     },
     {
@@ -258,14 +270,6 @@ const CustomerTable = () => {
         </div>
       ),
     },
-    // {
-    //   title: 'Address',
-    //   dataIndex: 'address',
-    //   key: 'address',
-    //   ...getColumnSearchProps('address'),
-    //   sorter: (a, b) => a.address.length - b.address.length,
-    //   sortDirections: ['descend', 'ascend'],
-    // },
   ];
   return (
     <div>
@@ -306,6 +310,14 @@ const CustomerTable = () => {
           >
             <Input />
           </Form.Item>
+
+          <Form.Item
+            name="address"
+            label="Địa chỉ"
+            rules={[{ required: true, message: "Xin vui lòng nhập địa chỉ!" }]}
+          >
+            <Input />
+          </Form.Item>
           <Form.Item
             name="status"
             label="Trạng thái hoạt động"
@@ -332,4 +344,4 @@ const CustomerTable = () => {
     </div>
   );
 };
-export default CustomerTable;
+export default ProductOwnerTable;

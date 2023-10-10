@@ -15,8 +15,11 @@ export default function RenderTag(props) {
       setColor("green");
       setStatus("Khách hàng")
     }else if (renderTag == "ProductOwner"){
-      setColor("yellow");
+      setColor("green");
       setStatus("Chủ sản phẩm")
+    }else if (renderTag == "Staff"){
+      setColor("yellow");
+      setStatus("Nhân viên")
     }
   }, []);
 
