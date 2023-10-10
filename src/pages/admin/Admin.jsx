@@ -100,7 +100,7 @@ const Admin = () => {
             }}
           >
             <Breadcrumb.Item>Quản lí</Breadcrumb.Item>
-            <Breadcrumb.Item>Người sở hữu sản phẩm</Breadcrumb.Item>
+            <Breadcrumb.Item>Chủ sở hữu sản phẩm</Breadcrumb.Item>
           </Breadcrumb>
             
             
