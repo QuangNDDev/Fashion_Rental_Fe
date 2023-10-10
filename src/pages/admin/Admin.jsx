@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import {
-  NotificationOutlined,
   UserOutlined,
   LogoutOutlined,
-  LaptopOutlined,
   BellOutlined,
 } from "@ant-design/icons";
 import {
@@ -15,38 +13,15 @@ import {
   Avatar,
   Modal,
   Badge,
-  Table,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import Notification from "../../components/notification/Notification";
 import CustomerTable from "../../components/admin-table/CustomerTable";
+import ProductOwnerTable from "../../components/admin-table/ProductOwnerTable";
+import StaffTable from "../../components/admin-table/StaffTable";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
-
-const items1 = ["1", "2", "3"].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}));
-
-const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-  (icon, index) => {
-    const key = String(index + 1);
-    return {
-      key: `sub${key}`,
-      icon: React.createElement(icon),
-      label: `customLabel ${key}`,
-      children: new Array(4).fill(null).map((_, j) => {
-        const subKey = index * 4 + j + 1;
-        return {
-          key: subKey,
-          label: `option${subKey}`,
-        };
-      }),
-    };
-  }
-);
-
 const Admin = () => {
   const navigate = useNavigate();
   const [selectedMenuKey, setSelectedMenuKey] = useState("1");
@@ -59,7 +34,8 @@ const Admin = () => {
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(3);
 
   const handleLogout = () => {
-    // Handle logout logic here
+    navigate("/login");
+    localStorage.removeItem("roleID");
     console.log("Logged out");
   };
 
@@ -94,26 +70,36 @@ const Admin = () => {
         return (
           <div>
             <Breadcrumb
-              style={{
-                padding: "0 16px",
-              }}
-            >
-              <Breadcrumb.Item>Quản lí</Breadcrumb.Item>
-              <Breadcrumb.Item>Người sở hữu sản phẩm</Breadcrumb.Item>
-            </Breadcrumb>
+
+            style={{
+              padding: "0 16px",
+            }}
+          >
+            <Breadcrumb.Item>Quản lí</Breadcrumb.Item>
+            <Breadcrumb.Item>Chủ sở hữu sản phẩm</Breadcrumb.Item>
+          </Breadcrumb>
+          <ProductOwnerTable/>
+            
+            
+
           </div>
         );
       case "3":
         return (
           <div>
             <Breadcrumb
-              style={{
-                padding: "0 16px",
-              }}
-            >
-              <Breadcrumb.Item>Quản lí</Breadcrumb.Item>
-              <Breadcrumb.Item>Nhân viên</Breadcrumb.Item>
-            </Breadcrumb>
+
+            style={{
+              padding: "0 16px",
+            }}
+          >
+            <Breadcrumb.Item>Quản lí</Breadcrumb.Item>
+            <Breadcrumb.Item>Nhân viên</Breadcrumb.Item>
+          </Breadcrumb>
+          <StaffTable/>
+            
+            
+
           </div>
         );
       default:
@@ -152,7 +138,7 @@ const Admin = () => {
               fontWeight: "bold",
             }}
           >
-            Admin Name
+            Admin
           </span>
           <Badge count={unreadNotificationCount}>
             <BellOutlined
@@ -190,6 +176,11 @@ const Admin = () => {
               <Menu.Item key="2">Chủ sở hữu sản phẩm</Menu.Item>
               <Menu.Item key="3">Nhân viên</Menu.Item>
             </SubMenu>
+            {/* <SubMenu key="sub2" icon={<UserOutlined />} title="Quản lí 1">
+              <Menu.Item key="1">Khách hàng</Menu.Item>
+              <Menu.Item key="2">Chủ sở hữu sản phẩm</Menu.Item>
+              <Menu.Item key="3">Nhân viên</Menu.Item>
+            </SubMenu> */}
           </Menu>
         </Sider>
         <Layout
@@ -211,8 +202,10 @@ const Admin = () => {
       </Layout>
       {/* Modal for Notifications */}
       <Modal
-        title="Noti"
-        open={isNotificationModalVisible}
+
+        title="Thông báo"
+        visible={isNotificationModalVisible}
+
         onCancel={hideNotificationModal}
         footer={null}
         style={{ position: "absolute", bottom: "50px", right: "20px" }}

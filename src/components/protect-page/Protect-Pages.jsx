@@ -9,10 +9,9 @@ function PrivateRoute() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    const account = localStorage.getItem("roleId");
-    if (account == 1) {
-    } else {
-      navigate("/admin/login");
+    const account = localStorage.getItem("roleID");
+    if (account != 4) {
+      navigate("/login");
     }
   });
 
