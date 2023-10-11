@@ -9,7 +9,7 @@ function PrivateRoute() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    const account = localStorage.getItem("roleID");
+    const account = localStorage.getItem("roleId");
     if (account != 4) {
       navigate("/login");
     }
