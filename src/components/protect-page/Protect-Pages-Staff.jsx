@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
 
-function PrivateRoute() {
+function PrivateRouteStaff() {
   const isAuthen = true;
   // let [isLoad, setIsLoad] = useState(true);
   let navigate = useNavigate();
 
   useEffect(() => {
     const account = localStorage.getItem("roleId");
-    if (account != 4) {
+    if (account != 3) {
       navigate("/login");
     }
   });
@@ -22,4 +22,4 @@ function PrivateRoute() {
   return <div>PrivateRoute</div>;
 }
 
-export default PrivateRoute;
+export default PrivateRouteStaff;
