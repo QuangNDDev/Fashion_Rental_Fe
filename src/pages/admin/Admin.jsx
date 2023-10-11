@@ -35,7 +35,7 @@ const Admin = () => {
 
   const handleLogout = () => {
     navigate("/login");
-    localStorage.removeItem("roleID");
+    localStorage.removeItem("roleId");
     console.log("Logged out");
   };
 

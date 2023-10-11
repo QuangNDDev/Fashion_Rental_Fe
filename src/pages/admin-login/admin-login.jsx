@@ -7,6 +7,9 @@ const LoginForm = () => {
   const handleNavigationAdmin = () => {
     navigate(`/admin`);
   };
+  const handleNavigationLogin = () => {
+    navigate(`/`);
+  }
 
   const onFinish = async (values) => {
     const email = values.email;
@@ -27,8 +30,7 @@ const LoginForm = () => {
 
         if (response.data.role.roleID == 4) {
           handleNavigationAdmin();
-        } else if (response.data.role.roleID == 1) {
-          handleNavigationAdmin();
+        
         } else {
           message.info("Tài khoản của bạn không có quyền truy cập!!!");
         }
