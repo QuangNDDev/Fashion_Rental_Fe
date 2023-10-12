@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import {
-  NotificationOutlined,
   CloseCircleTwoTone,
   LogoutOutlined,
-  LaptopOutlined,
   BellOutlined,
   CheckOutlined,
   CheckCircleTwoTone,
   ClockCircleTwoTone,
-  UserOutlined,
 } from "@ant-design/icons";
 import {
   Breadcrumb,
@@ -20,62 +17,14 @@ import {
   Modal,
   Badge,
 } from "antd";
-import CustomerTable from "../../components/admin-table/CustomerTable";
 import SubMenu from "antd/es/menu/SubMenu";
 import StaffGrid from "../../components/Staff-Grid";
+import { useNavigate } from "react-router-dom";
 
 const { Header, Content, Sider } = Layout;
 
-const items1 = ["1", "2", "3"].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}));
-
-const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-  (icon, index) => {
-    const key = String(index + 1);
-    return {
-      key: `sub${key}`,
-      icon: React.createElement(icon),
-      label: `customLabel ${key}`,
-      children: new Array(4).fill(null).map((_, j) => {
-        const subKey = index * 4 + j + 1;
-        return {
-          key: subKey,
-          label: `option${subKey}`,
-        };
-      }),
-    };
-  }
-);
-
-//   {
-//     key: "sub2",
-//     icon: React.createElement(LaptopOutlined),
-//     label: "Custom Subnav 2", // Đổi tên của subnav này
-//     children: new Array(4).fill(null).map((_, j) => {
-//       const subKey = 4 * 1 + j + 1;
-//       return {
-//         key: subKey,
-//         label: `option${subKey}`,
-//       };
-//     }),
-//   },
-//   {
-//     key: "sub3",
-//     icon: React.createElement(NotificationOutlined),
-//     label: "Custom Subnav 3", // Đổi tên của subnav này
-//     children: new Array(4).fill(null).map((_, j) => {
-//       const subKey = 4 * 2 + j + 1;
-//       return {
-//         key: subKey,
-//         label: `option${subKey}`,
-//       };
-//     }),
-//   },
-// ];
-
 const Staff = () => {
+  const navigate = useNavigate();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -85,7 +34,8 @@ const Staff = () => {
   const [unreadNotificationCount, setUnreadNotificationCount] = useState("3");
 
   const handleLogout = () => {
-    // Xử lý logic đăng xuất ở đây
+    navigate("/login");
+    localStorage.removeItem("roleId");
     console.log("Logged out");
   };
 
@@ -111,7 +61,7 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>Duyệt Đơn</Breadcrumb.Item>
+              <Breadcrumb.Item>Duyệt đơn</Breadcrumb.Item>
               <Breadcrumb.Item>Đơn đã duyệt</Breadcrumb.Item>
             </Breadcrumb>
             <StaffGrid />
@@ -150,19 +100,23 @@ const Staff = () => {
   return (
     <Layout>
       <Header
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between", // Căn chỉnh các phần tử theo chiều ngang và cách đều nhau
-        }}
+       style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        backgroundColor:"#008000" // Căn chỉnh các phần tử theo chiều ngang và cách đều nhau
+      }}
       >
         {/* Hiển thị logo tạm thời */}
+        <div style={{color :"#fff" , display:"flex",alignItems:"center"}}>
         <img
-          src="https://scontent.fsgn5-9.fna.fbcdn.net/v/t1.15752-9/386474503_267425062928341_6987759511620074342_n.png?_nc_cat=106&ccb=1-7&_nc_sid=ae9488&_nc_ohc=4-cFRFMOAdUAX8yq9zd&_nc_ht=scontent.fsgn5-9.fna&_nc_e2o=s&oh=03_AdRDDVQ4N7qwFYjv9hA4tjrRIWC67TdiUvArbX1kCTzZKw&oe=6544BA5F"
+          src="https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.15752-9/386474503_267425062928341_6987759511620074342_n.png?_nc_cat=106&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=sCYtopH2K4kAX-Ordr1&_nc_ht=scontent.fsgn2-5.fna&oh=03_AdRCrANYpogO50o9LUSIzscNAVPVMn2v3OMN1BmYx1MAAA&oe=654E9D9F"
           alt="Brand Logo"
           width={70}
           height={50}
         />
+        <h2 style={{color :"#fff",fontWeight: "normal"}}>Kênh nhân viên</h2>
+        </div>
         {/* Biểu tượng chuông thông báo và avatar */}
         <div style={{ display: "flex", alignItems: "center" }}>
           <Avatar
@@ -197,7 +151,7 @@ const Staff = () => {
             onClick={handleLogout}
             style={{ marginLeft: 16, color: "white" }}
           >
-            Logout
+            Đăng xuất
           </Button>
         </div>
       </Header>

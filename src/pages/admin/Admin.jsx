@@ -19,7 +19,6 @@ import Notification from "../../components/notification/Notification";
 import CustomerTable from "../../components/admin-table/CustomerTable";
 import ProductOwnerTable from "../../components/admin-table/ProductOwnerTable";
 import StaffTable from "../../components/admin-table/StaffTable";
-import { Footer } from "antd/es/layout/layout";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -120,13 +119,15 @@ const Admin = () => {
         }}
       >
         {/* Display a placeholder logo */}
+        <div style={{color :"#fff" , display:"flex",alignItems:"center"}}>
         <img
           src="https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.15752-9/386474503_267425062928341_6987759511620074342_n.png?_nc_cat=106&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=sCYtopH2K4kAX-Ordr1&_nc_ht=scontent.fsgn2-5.fna&oh=03_AdRCrANYpogO50o9LUSIzscNAVPVMn2v3OMN1BmYx1MAAA&oe=654E9D9F"
           alt="Brand Logo"
           width={70}
           height={50}
         />
-        <h2 style={{color :"#fff"}}>Kênh người quản lý</h2>
+        <h2 style={{color :"#fff",fontWeight: "normal"}}>Kênh người quản lý</h2>
+        </div>
         {/* Notification bell icon and avatar */}
         <div style={{ display: "flex", alignItems: "center" }}>
           <Avatar
