@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { EditOutlined, SettingOutlined } from "@ant-design/icons";
-import { Avatar, Card, Form, Modal, Button, Result } from "antd";
+import { EditOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons";
+import { Avatar, Card, Form, Modal, Button, Result, Carousel } from "antd";
 import MuntilImage from "../Mutil-Image";
 import { Input } from "antd";
 import { Tag } from "antd";
@@ -19,8 +19,7 @@ const CardDetail = () => {
     invoice_Code: "ACCCAAA",
     address: "Vinhome grandpark Quận 9",
     phone_Number: "0822833799",
-    imgProduct:
-      "https://vn.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-t%C3%BAi-onthego-mm-monogram-t%C3%BAi--M45321_PM2_Front%20view.jpg",
+    imgProduct: { MuntilImage },
   });
 
   const tagColor = {
@@ -33,10 +32,15 @@ const CardDetail = () => {
     InActive: "red",
   };
 
+  const contentStyle = {
+    display: "flex",
+  };
+
   const showModal = () => {
     setIsModalVisible(true);
     // Cập nhật dữ liệu cho Modal dựa trên thẻ hiện tại
     form.setFieldsValue({
+      avatar: cardData.avatar,
       productName: cardData.product_Name,
       ownerName: cardData.productOwner_Name,
       invoiceCode: cardData.invoice_Code,
@@ -60,6 +64,11 @@ const CardDetail = () => {
     setFormData(values);
     // Đóng modal
     handleCancel();
+  };
+
+  const centeredCarousel = {
+    display: "flex",
+    justifyContent: "center",
   };
 
   return (
@@ -104,11 +113,12 @@ const CardDetail = () => {
               </div>
             </>
           }
+          icon={formData && formData.imgProduct ? <MuntilImage /> : null}
         />
       </Card>
       <Modal
-        title="Chi tiết Card"
-        visible={isModalVisible}
+        title="Chi tiết đơn duyệt sản phẩm"
+        open={isModalVisible}
         onCancel={handleCancel}
         footer={null}
       >
@@ -118,6 +128,17 @@ const CardDetail = () => {
           onFinish={onFinish}
           initialValues={{}} // Đặt giá trị mặc định cho các trường nếu cần
         >
+          <Form.Item
+            label="Hình đại diện"
+            name="avatar" //lấy value của cái name gán lên cái setFormValue
+          >
+            <Avatar
+              style={{ width: "80%" }}
+              icon={<UserOutlined />}
+              src={cardData.avatar}
+            />
+          </Form.Item>
+
           <Form.Item
             label="Tên sản phẩm"
             name="productName" //lấy value của cái name gán lên cái setFormValue
@@ -167,11 +188,7 @@ const CardDetail = () => {
             name="imgProduct"
             rules={[{ required: true, message: "" }]}
           >
-            <img
-              src={cardData.imgProduct}
-              alt="Product"
-              style={{ maxWidth: "100%" }}
-            />
+            {cardData && cardData.imgProduct ? <MuntilImage /> : null}
           </Form.Item>
 
           <Form.Item style={{ textAlign: "center" }}>
