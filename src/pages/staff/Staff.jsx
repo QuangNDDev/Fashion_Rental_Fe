@@ -19,7 +19,9 @@ import {
 } from "antd";
 import SubMenu from "antd/es/menu/SubMenu";
 import StaffGrid from "../../components/Staff-Grid";
-import { useNavigate } from "react-router-dom";
+
+import { Navigate, useNavigate } from "react-router-dom";
+
 
 const { Header, Content, Sider } = Layout;
 
@@ -34,6 +36,7 @@ const Staff = () => {
   const [unreadNotificationCount, setUnreadNotificationCount] = useState("3");
 
   const handleLogout = () => {
+
     navigate("/login");
     localStorage.removeItem("roleId");
     console.log("Logged out");
