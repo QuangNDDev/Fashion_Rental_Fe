@@ -19,6 +19,7 @@ import Notification from "../../components/notification/Notification";
 import CustomerTable from "../../components/admin-table/CustomerTable";
 import ProductOwnerTable from "../../components/admin-table/ProductOwnerTable";
 import StaffTable from "../../components/admin-table/StaffTable";
+import { Footer } from "antd/es/layout/layout";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -108,21 +109,24 @@ const Admin = () => {
   };
 
   return (
+    
     <Layout>
       <Header
         style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between", // Căn chỉnh các phần tử theo chiều ngang và cách đều nhau
+          justifyContent: "space-between",
+          backgroundColor:"#008000" // Căn chỉnh các phần tử theo chiều ngang và cách đều nhau
         }}
       >
         {/* Display a placeholder logo */}
         <img
-          src="https://scontent.fsgn5-9.fna.fbcdn.net/v/t1.15752-9/386474503_267425062928341_6987759511620074342_n.png?_nc_cat=106&ccb=1-7&_nc_sid=ae9488&_nc_ohc=4-cFRFMOAdUAX8yq9zd&_nc_ht=scontent.fsgn5-9.fna&_nc_e2o=s&oh=03_AdRDDVQ4N7qwFYjv9hA4tjrRIWC67TdiUvArbX1kCTzZKw&oe=6544BA5F"
+          src="https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.15752-9/386474503_267425062928341_6987759511620074342_n.png?_nc_cat=106&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=sCYtopH2K4kAX-Ordr1&_nc_ht=scontent.fsgn2-5.fna&oh=03_AdRCrANYpogO50o9LUSIzscNAVPVMn2v3OMN1BmYx1MAAA&oe=654E9D9F"
           alt="Brand Logo"
           width={70}
           height={50}
         />
+        <h2 style={{color :"#fff"}}>Kênh người quản lý</h2>
         {/* Notification bell icon and avatar */}
         <div style={{ display: "flex", alignItems: "center" }}>
           <Avatar
@@ -200,6 +204,7 @@ const Admin = () => {
           </Content>
         </Layout>
       </Layout>
+    
       {/* Modal for Notifications */}
       <Modal
 
@@ -213,6 +218,7 @@ const Admin = () => {
         <Notification />
         {/* Nội dung thông báo ở đây */}
       </Modal>
+      
     </Layout>
   );
 };
