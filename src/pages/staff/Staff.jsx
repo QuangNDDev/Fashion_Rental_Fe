@@ -23,6 +23,7 @@ import {
 import CustomerTable from "../../components/admin-table/CustomerTable";
 import SubMenu from "antd/es/menu/SubMenu";
 import StaffGrid from "../../components/Staff-Grid";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const { Header, Content, Sider } = Layout;
 
@@ -76,6 +77,7 @@ const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
 // ];
 
 const Staff = () => {
+  const navigate = useNavigate();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -86,6 +88,8 @@ const Staff = () => {
 
   const handleLogout = () => {
     // Xử lý logic đăng xuất ở đây
+    navigate("/login");
+    localStorage.removeItem("roleId");
     console.log("Logged out");
   };
 
