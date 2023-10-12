@@ -9,7 +9,7 @@ const MuntilImage = () => (
   >
     <Image
       width={100}
-      src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"
+      src="https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg"
     />
     <Image
       width={100}
