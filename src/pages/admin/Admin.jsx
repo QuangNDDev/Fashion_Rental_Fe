@@ -176,7 +176,7 @@ const Admin = () => {
             style={{ height: "100%", borderRight: 0 }}
             onClick={handleMenuClick}
           >
-            <SubMenu key="sub1" icon={<UserOutlined />} title="Quản lí">
+            <SubMenu key="sub1" icon={<UserOutlined />} title="Quản lí người dùng">
               <Menu.Item key="1">Khách hàng</Menu.Item>
               <Menu.Item key="2">Chủ sở hữu sản phẩm</Menu.Item>
               <Menu.Item key="3">Nhân viên</Menu.Item>

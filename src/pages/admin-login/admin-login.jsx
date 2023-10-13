@@ -10,6 +10,10 @@ const LoginForm = () => {
   const handleNavigationStaff = () => {
     navigate(`/staff`);
   }
+  const handleNavigationProductOwner = () => {
+    // const paramValue = idPo;
+    navigate(`/productOwner`);
+  }
 
   const onFinish = async (values) => {
     const email = values.email;
@@ -33,6 +37,10 @@ const LoginForm = () => {
         
         } else if (response.data.role.roleID == 3){
           handleNavigationStaff();
+        } else if (response.data.role.roleID == 2){
+          // const idPo = response.data.productowner.productownerID;
+          // localStorage.setItem("poId",idPo);
+          handleNavigationProductOwner();
         }
          else {
           message.info("Tài khoản của bạn không có quyền truy cập!!!");
