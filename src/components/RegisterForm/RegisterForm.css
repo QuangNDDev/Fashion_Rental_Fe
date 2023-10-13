@@ -1,0 +1,32 @@
+/* RegisterForm.css */
+
+.register-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* căn giữa theo chiều dọc */
+}
+
+.register-card {
+  box-shadow: 1px 1px 1px grey;
+  width: 60%; /* Điều chỉnh kích thước của Card */
+  margin-bottom: 30%;
+}
+
+.ant-form-item {
+  margin-bottom: 10px; /* Khoảng cách giữa các Form.Item */
+  text-align: center; /* Canh giữa nội dung bên trong Form.Item */
+}
+.card_children {
+  margin-top: 20px;
+  width: 40%;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px;
+  margin: auto;
+  margin-top: 40px;
+}
+
+.btn-submit {
+  text-align: center;
+  background-color: green !important;
+  margin-left: 40%;
+}
