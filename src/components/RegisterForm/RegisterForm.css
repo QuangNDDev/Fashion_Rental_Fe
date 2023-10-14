@@ -17,7 +17,15 @@
   margin-bottom: 10px; /* Khoảng cách giữa các Form.Item */
   text-align: center; /* Canh giữa nội dung bên trong Form.Item */
 }
-.card_children {
+.card__children {
+  margin-top: 20px;
+  width: 40%;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px;
+  margin: auto;
+  margin-top: 40px;
+}
+
+.card__children--chooserole {
   margin-top: 20px;
   width: 40%;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px;
@@ -29,4 +37,38 @@
   text-align: center;
   background-color: green !important;
   margin-left: 40%;
+}
+
+.card__children--icon {
+  margin-top: 20px;
+  width: 20%;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px;
+  margin: auto;
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card__children--icons--icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.p {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* styles.css */
+/* RegisterForm.css */
+/* ... */
+.progress-bar {
+  background-color: green;
+}
+
+.progress-text {
+  color: green;
+  font-weight: bold;
 }
