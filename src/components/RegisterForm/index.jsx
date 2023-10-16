@@ -331,7 +331,7 @@ const RegisterForm = () => {
             // onChange={handleFileChange}
             beforeUpload={() => false}
           >
-            <Button icon={<UploadOutlined />}>Select Image</Button>
+            <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
           </Upload>
         </Form.Item>
 
