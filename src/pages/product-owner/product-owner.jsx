@@ -18,14 +18,13 @@ import {
 import {  useNavigate } from "react-router-dom";
 import Notification from "../../components/notification/Notification";
 import axios from "axios";
+import ProductCard from "../../components/product-card/product-card";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
 const ProductOwner = () => {
   const navigate = useNavigate();
   const [selectedMenuKey, setSelectedMenuKey] = useState("1");
-//   const location = useLocation();
-//   const params = new URLSearchParams(location.search);
   const idAccount = localStorage.getItem("accountId");
   const [productowner, setProductOwner] = useState([]);
   const fetchProductOwner = async () => {
@@ -33,11 +32,6 @@ const ProductOwner = () => {
       const response = await axios.get(
         "http://fashionrental.online:8080/account/getaccount?accountID=" + idAccount
       );
-    //   const productowners = response.data.map((po) => ({
-    //     ...po,
-    //     fullName: po.productowner.fullName,
-    //     avatarUrl: po.productowner.avatarUrl,
-    //   }));
       setProductOwner(response.data.productowner);
     } catch (error) {
       console.error(error);
@@ -129,7 +123,7 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Quản lí sản phẩm</Breadcrumb.Item>
               <Breadcrumb.Item>Tất cả sản phẩm</Breadcrumb.Item>
             </Breadcrumb>
-            
+            <ProductCard/>
           </div>
         );
         case "5":
