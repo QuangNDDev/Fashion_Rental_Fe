@@ -16,7 +16,7 @@ const { Item } = Form;
 
 const RegisterForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [selectedRole, setSelectedRole] = useState("customer"); //theo dõi lựa chọn tại bước 2
+  const [selectedRole, setSelectedRole] = useState(""); //theo dõi lựa chọn tại bước 2
   const [createDetails, setCreateDetails] = useState(null);
   const [chooseRoleDetail, setChooseRoleDetail] = useState(null);
   const [formCus, setFormCus] = useState("");
@@ -27,8 +27,9 @@ const RegisterForm = () => {
   const [allDetails, setAllDetails] = useState({
     createDetails: null,
     chooseRoleDetail: null,
+    formDetails: null,
   });
-
+  console.log(allDetails);
   // Khi hoàn thành bước 1
   const onFinishCreateForm = (values) => {
     setCreateDetails(values);
@@ -53,18 +54,23 @@ const RegisterForm = () => {
     setAllDetails({ ...allDetails, chooseRoleDetail: values });
   };
 
-  const onFinishFormCus = (values) => {
-    setFormCus(values);
-    setCurrentStep(3);
-    // Luu gia tri step 3 cho form customer
-    setAllDetails({ ...allDetails, formCus: values });
-  };
+  // const onFinishFormCus = (values) => {
+  //   setFormCus(values);
+  //   setCurrentStep(3);
+  //   // Luu gia tri step 3 cho form customer
+  //   setAllDetails({ ...allDetails, formCus: values });
+  // };
 
-  const onFinishFormPO = (values) => {
-    setFormPO(values);
+  // const onFinishFormPO = (values) => {
+  //   setFormPO(values);
+  //   setCurrentStep(3);
+  //   // Luu gia tri step 3 cho form product owner
+  //   setAllDetails({ ...allDetails, formPO: values });
+  // };
+
+  const onFishFormDetails = (values) => {
+    setAllDetails({ ...allDetails, formDetails: values });
     setCurrentStep(3);
-    // Luu gia tri step 3 cho form product owner
-    setAllDetails({ ...allDetails, formPO: values });
   };
 
   return (
@@ -101,9 +107,9 @@ const RegisterForm = () => {
         {currentStep === 2 && (
           <Card className="card__children">
             {selectedRole === "customer" ? (
-              <FormCus onFinish={onFinishFormCus} />
+              <FormCus onFinish={onFishFormDetails} />
             ) : (
-              <FormPO onFinish={onFinishFormPO} />
+              <FormPO onFinish={onFishFormDetails} />
             )}
           </Card>
         )}
@@ -163,6 +169,7 @@ const RegisterForm = () => {
       <Form onFinish={onFinish}>
         <Form.Item
           label="Chọn vai trò"
+          initialValue={selectedRole}
           name={"roleID"}
           rules={[
             {
@@ -171,13 +178,68 @@ const RegisterForm = () => {
             },
           ]}
         >
-          <Radio.Group
-            onChange={(e) => setSelectedRole(e.target.value)}
-            value={selectedRole}
-          >
-            <Radio value="1">Khách hàng</Radio>
-            <Radio value="2">Chủ sản phẩm</Radio>
-          </Radio.Group>
+          <br />
+          <div className="Custom-radio">
+            <Radio.Group
+              onChange={(e) => setSelectedRole(e.target.value)}
+              value={selectedRole}
+            >
+              <div className="radio-container">
+                <Radio
+                  style={{ marginRight: "77px", marginTop: "10px" }}
+                  value="1"
+                >
+                  <p>Khách Hàng</p>
+                </Radio>
+                <Radio
+                  style={{ marginTop: "10px", marginLeft: "70px" }}
+                  value="2"
+                >
+                  <p style={{ marginRight: "52.5px" }}>Chủ Sản Phẩm</p>
+                </Radio>
+              </div>
+            </Radio.Group>
+            <div className="image-container">
+              <Card
+                size="small"
+                title="Khách Hàng"
+                style={{
+                  width: 260,
+                }}
+              >
+                <p>
+                  <img
+                    style={{ width: "110px" }}
+                    src="https://cdn-icons-png.flaticon.com/512/4143/4143099.png"
+                    alt=""
+                  />
+                </p>
+                <ul className="card__content">
+                  <li>Thuê Hoặc Mua Sản Phẩm</li>
+                  <li>Đảm Bảo Quyền Lợi Khách Hàng</li>
+                </ul>
+              </Card>
+              <Card
+                size="small"
+                title="Chủ Sản Phẩm"
+                style={{
+                  width: 260,
+                }}
+              >
+                <p>
+                  <img
+                    style={{ width: "110px" }}
+                    src="https://cdn-icons-png.flaticon.com/512/4143/4143099.png"
+                    alt=""
+                  />
+                </p>
+                <ul className="card__content">
+                  <li>Thuê Hoặc Mua Sản Phẩm</li>
+                  <li>Đảm Bảo Quyền Lợi Khách Hàng</li>
+                </ul>
+              </Card>
+            </div>
+          </div>
         </Form.Item>
         <Button className="btn-submit" type="primary" htmlType="submit">
           Tiếp Tục
