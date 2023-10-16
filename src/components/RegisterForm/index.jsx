@@ -40,12 +40,13 @@ const RegisterForm = () => {
 
   const onFinishChooseRoleForm = (values) => {
     setChooseRoleDetail(values);
+
     setCurrentStep(2);
 
-    if (selectedRole === "customer") {
-      setFormCus(values);
+    if (values.roleID === "1") {
+      setSelectedRole("customer");
     } else {
-      setFormPO(values);
+      setSelectedRole("productOwner");
     }
 
     // Luu gia tri step 2
