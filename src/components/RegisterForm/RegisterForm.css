@@ -10,7 +10,7 @@
 .register-card {
   box-shadow: 1px 1px 1px grey;
   width: 60%; /* Điều chỉnh kích thước của Card */
-  margin-bottom: 30%;
+  margin-bottom: 20%;
 }
 
 .ant-form-item {
@@ -27,7 +27,7 @@
 
 .card__children--chooserole {
   margin-top: 20px;
-  width: 40%;
+  width: 50%;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px;
   margin: auto;
   margin-top: 40px;
@@ -69,6 +69,28 @@
 }
 
 .progress-text {
-  color: green;
   font-weight: bold;
+}
+
+.Custom-radio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.radio-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.image-container {
+  display: flex;
+  margin-right: 20%;
+  margin-top: 10px;
+}
+
+.card__content {
+  font-weight: bold;
+  font-size: 12.7px;
+  margin-top: 15%;
 }
