@@ -5,12 +5,17 @@
   justify-content: center;
   align-items: center;
   height: 100vh; /* căn giữa theo chiều dọc */
+  background-image: url("https://cdn.pixabay.com/photo/2021/11/18/03/30/floral-6805334_1280.png");
 }
 
 .register-card {
-  box-shadow: 1px 1px 1px grey;
-  width: 60%; /* Điều chỉnh kích thước của Card */
-  margin-bottom: 20%;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 10px;
+  width: 45%; /* Điều chỉnh kích thước của Card */
+  margin-bottom: 4%;
+  margin-left: auto;
+  /* border-radius: 50px; */
+  margin-right: 50px;
+  height: 70%;
 }
 
 .ant-form-item {
@@ -18,19 +23,28 @@
   text-align: center; /* Canh giữa nội dung bên trong Form.Item */
 }
 .card__children {
-  margin-top: 20px;
-  width: 40%;
+  width: 55%;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px;
   margin: auto;
-  margin-top: 40px;
+  margin-top: 70px;
 }
 
 .card__children--chooserole {
-  margin-top: 20px;
-  width: 50%;
+  width: 67%;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px;
   margin: auto;
-  margin-top: 40px;
+  margin-top: 50px;
+  height: auto;
+}
+
+.card__children--form {
+  width: 60%;
+  /* height: 50%; */
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px;
+  /* margin: auto; */
+  margin-top: 70px;
+  margin-left: 20%;
+  height: 150%;
 }
 
 .btn-submit {
