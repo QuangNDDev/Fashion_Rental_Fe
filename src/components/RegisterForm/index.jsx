@@ -8,7 +8,16 @@ import {
   CheckCircleTwoTone,
   CloseCircleOutlined,
 } from "@ant-design/icons";
-import { Steps, Card, Form, Input, Button, Radio, Upload } from "antd";
+import {
+  Steps,
+  Card,
+  Form,
+  Input,
+  Button,
+  Radio,
+  Upload,
+  notification,
+} from "antd";
 import "./RegisterForm.css";
 
 const { Step } = Steps;
@@ -54,23 +63,16 @@ const RegisterForm = () => {
     setAllDetails({ ...allDetails, chooseRoleDetail: values });
   };
 
-  // const onFinishFormCus = (values) => {
-  //   setFormCus(values);
-  //   setCurrentStep(3);
-  //   // Luu gia tri step 3 cho form customer
-  //   setAllDetails({ ...allDetails, formCus: values });
-  // };
-
-  // const onFinishFormPO = (values) => {
-  //   setFormPO(values);
-  //   setCurrentStep(3);
-  //   // Luu gia tri step 3 cho form product owner
-  //   setAllDetails({ ...allDetails, formPO: values });
-  // };
-
   const onFishFormDetails = (values) => {
     setAllDetails({ ...allDetails, formDetails: values });
     setCurrentStep(3);
+  };
+  //ham hien thi thong bao
+  const openNotificationWithIcon = (type, message, description) => {
+    notification[type]({
+      message: message,
+      description: description,
+    });
   };
 
   return (
@@ -79,19 +81,68 @@ const RegisterForm = () => {
         <Steps current={currentStep} onChange={setCurrentStep}>
           <Step
             title="Thông tin"
+            disabled={currentStep < 0}
             icon={<UserOutlined style={{ color: "green" }} />}
+            onClick={() => {
+              if (currentStep >= 0) {
+                setCurrentStep(0);
+              } else {
+                openNotificationWithIcon(
+                  "info",
+                  "Vui lòng hoàn thành bước 0 để tiếp tục."
+                );
+              }
+            }}
           />
           <Step
+            style={{ cursor: "pointer" }}
             title="Chọn vai trò"
+            disabled={currentStep < 1}
             icon={<SolutionOutlined style={{ color: "green" }} />}
+            onClick={() => {
+              if (currentStep >= 1) {
+                // Bước 1 đã hoàn thành, cho phép chuyển đến bước 1
+                setCurrentStep(1);
+              } else {
+                // Bước 1 chưa hoàn thành, hiển thị thông báo
+                openNotificationWithIcon(
+                  "info",
+                  "Vui lòng hoàn thành bước nhập Thông Tin để tiếp tục."
+                );
+              }
+            }}
           />
           <Step
             title="Thông tin chi tiết"
+            disabled={currentStep < 2}
+            style={{ cursor: "pointer" }}
             icon={<LoadingOutlined style={{ color: "green" }} />}
+            onClick={() => {
+              if (currentStep >= 2) {
+                setCurrentStep(2);
+              } else {
+                openNotificationWithIcon(
+                  "info",
+                  "Vui lòng chọn Vai Trò để tiếp tục."
+                );
+              }
+            }}
           />
           <Step
             title="Đăng ký"
+            disabled={currentStep < 3}
+            style={{ cursor: "pointer" }}
             icon={<UserAddOutlined style={{ color: "green" }} />}
+            onClick={() => {
+              if (currentStep >= 3) {
+                setCurrentStep(3);
+              } else {
+                openNotificationWithIcon(
+                  "info",
+                  "Vui lòng điền thông tin chi tiết để hoàn tất."
+                );
+              }
+            }}
           />
         </Steps>
         {currentStep === 0 && (
@@ -105,7 +156,14 @@ const RegisterForm = () => {
           </Card>
         )}
         {currentStep === 2 && (
-          <Card className="card__children">
+          <Card
+            title={
+              selectedRole === "customer"
+                ? "Đăng kí khách hàng"
+                : "Đăng kí chủ sản phẩm"
+            }
+            className="card__children--form"
+          >
             {selectedRole === "customer" ? (
               <FormCus onFinish={onFishFormDetails} />
             ) : (
@@ -350,6 +408,8 @@ const RegisterForm = () => {
         >
           <Input />
         </Form.Item>
+        <br />
+        <br />
         <Form.Item
           label="Số điện thoại"
           name={"phone"}
@@ -366,6 +426,8 @@ const RegisterForm = () => {
         >
           <Input />
         </Form.Item>
+        <br />
+        <br />
         <Form.Item
           label="Địa chỉ"
           name={"address"}
@@ -378,6 +440,8 @@ const RegisterForm = () => {
         >
           <Input />
         </Form.Item>
+        <br />
+        <br />
 
         <Form.Item
           label="Ảnh đại diện"
@@ -397,6 +461,8 @@ const RegisterForm = () => {
             <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
           </Upload>
         </Form.Item>
+        <br />
+        <br />
 
         <Button className="btn-submit" type="primary" htmlType="submit">
           Đăng Ký
@@ -412,7 +478,7 @@ const RegisterForm = () => {
           twoToneColor="#52c41a"
           style={{ fontSize: "40px" }}
         />
-        <p>Đăng ký thành công</p>
+        <p style={{ fontWeight: "bold" }}>Đăng ký thành công</p>
       </div>
     );
   }
@@ -421,7 +487,7 @@ const RegisterForm = () => {
     return (
       <div className="card__children--icons--icon ">
         <CloseCircleOutlined style={{ color: "red", fontSize: "40px" }} />
-        <p>Đăng ký thât bại</p>
+        <p style={{ fontWeight: "bold" }}>Đăng ký thât bại</p>
       </div>
     );
   }
