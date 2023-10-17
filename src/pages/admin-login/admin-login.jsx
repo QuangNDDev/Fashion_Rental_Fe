@@ -38,8 +38,6 @@ const LoginForm = () => {
         } else if (response.data.role.roleID == 3){
           handleNavigationStaff();
         } else if (response.data.role.roleID == 2){
-          // const idPo = response.data.productowner.productownerID;
-          // localStorage.setItem("poId",idPo);
           handleNavigationProductOwner();
         }
          else {

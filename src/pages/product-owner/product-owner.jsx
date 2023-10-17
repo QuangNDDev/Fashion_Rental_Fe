@@ -4,6 +4,7 @@ import {
   LogoutOutlined,
   BellOutlined,
   ContainerOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import {
   Breadcrumb,
@@ -15,10 +16,11 @@ import {
   Modal,
   Badge,
 } from "antd";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Notification from "../../components/notification/Notification";
 import axios from "axios";
 import ProductCard from "../../components/product-card/product-card";
+import InformationPO from "../../components/infomation-productonwer/information-productowner";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -30,7 +32,8 @@ const ProductOwner = () => {
   const fetchProductOwner = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/account/getaccount?accountID=" + idAccount
+        "http://fashionrental.online:8080/account/getaccount?accountID=" +
+          idAccount
       );
       setProductOwner(response.data.productowner);
     } catch (error) {
@@ -41,7 +44,7 @@ const ProductOwner = () => {
   useEffect(() => {
     fetchProductOwner();
   }, []);
-  
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -68,6 +71,7 @@ const ProductOwner = () => {
   const handleMenuClick = ({ key }) => {
     setSelectedMenuKey(key);
   };
+  
   const renderContent = () => {
     switch (selectedMenuKey) {
       case "1":
@@ -81,7 +85,6 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Quản lí đơn hàng</Breadcrumb.Item>
               <Breadcrumb.Item>Tất cả</Breadcrumb.Item>
             </Breadcrumb>
-            
           </div>
         );
       case "2":
@@ -95,7 +98,6 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Quản lí đơn hàng</Breadcrumb.Item>
               <Breadcrumb.Item>Đơn huỷ</Breadcrumb.Item>
             </Breadcrumb>
-            
           </div>
         );
       case "3":
@@ -109,10 +111,9 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Quản lí đơn hàng</Breadcrumb.Item>
               <Breadcrumb.Item>Trả hàng,hoàn tiền</Breadcrumb.Item>
             </Breadcrumb>
-            
           </div>
         );
-        case "4":
+      case "4":
         return (
           <div>
             <Breadcrumb
@@ -123,10 +124,10 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Quản lí sản phẩm</Breadcrumb.Item>
               <Breadcrumb.Item>Tất cả sản phẩm</Breadcrumb.Item>
             </Breadcrumb>
-            <ProductCard/>
+            <ProductCard />
           </div>
         );
-        case "5":
+      case "5":
         return (
           <div>
             <Breadcrumb
@@ -140,11 +141,25 @@ const ProductOwner = () => {
             
           </div>
         );
+        case "6":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Quản lí tài khoản</Breadcrumb.Item>
+              <Breadcrumb.Item>Thông tin cơ bản</Breadcrumb.Item>
+            </Breadcrumb>
+            <InformationPO/>
+          </div>
+        );
       default:
         return null;
     }
   };
-
+  
   return (
     <Layout>
       <Header
@@ -231,6 +246,13 @@ const ProductOwner = () => {
             >
               <Menu.Item key="4">Tất cả sản phẩm</Menu.Item>
               <Menu.Item key="5">Thêm sản phẩm</Menu.Item>
+            </SubMenu>
+            <SubMenu
+              key="sub3"
+              icon={<UserOutlined />}
+              title="Quản Lí Tài Khoản"
+            >
+              <Menu.Item key="6">Thông tin cơ bản</Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>
