@@ -410,7 +410,7 @@ const RegisterForm = () => {
         >
           <Upload
             maxCount={1}
-            onChange={handleFileChange()}
+            onChange={handleFileChange}
             beforeUpload={() => false}
           >
             <Button icon={<UploadOutlined />}>Select Image</Button>
@@ -490,7 +490,7 @@ const RegisterForm = () => {
         >
           <Upload
             maxCount={1}
-            // onChange={handleFileChange}
+            onChange={handleFileChange}
             beforeUpload={() => false}
           >
             <Button icon={<UploadOutlined />}>Select Image</Button>
