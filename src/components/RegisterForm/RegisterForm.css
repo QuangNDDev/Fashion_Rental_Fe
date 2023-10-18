@@ -5,17 +5,26 @@
   justify-content: center;
   align-items: center;
   height: 100vh; /* căn giữa theo chiều dọc */
-  background-image: url("https://cdn.pixabay.com/photo/2021/11/18/03/30/floral-6805334_1280.png");
+  background-size: cover;
+  background-image: url("https://images.unsplash.com/photo-1596484552993-aec4311d3381?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=2070");
+
+  background-size: cover;
+}
+@media (max-width: 768px) {
+  .register-form-container {
+    background-size: cover; /* Điều chỉnh kích thước nền để nội dung vẫn hiển thị trong màn hình nhỏ hơn hoặc bằng 768px */
+  }
 }
 
 .register-card {
   box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 10px;
   width: 45%; /* Điều chỉnh kích thước của Card */
-  margin-bottom: 4%;
+  /* margin-bottom: %; */
   margin-left: auto;
   /* border-radius: 50px; */
-  margin-right: 50px;
-  height: 70%;
+  /* margin-right: 30px; */
+  height: 100%;
+  /* float: right; */
 }
 
 .ant-form-item {
@@ -23,10 +32,18 @@
   text-align: center; /* Canh giữa nội dung bên trong Form.Item */
 }
 .card__children {
-  width: 55%;
+  width: 65%;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px;
   margin: auto;
-  margin-top: 70px;
+  margin-top: 100px;
+  opacity: 1;
+  height: 300px;
+}
+@media (max-width: 768px) {
+  .card__children {
+    width: 90%; /* Điều chỉnh lại kích thước cho màn hình nhỏ hơn 768px */
+    margin-top: 20px; /* Điều chỉnh khoảng cách trên cùng */
+  }
 }
 
 .card__children--chooserole {
@@ -35,6 +52,7 @@
   margin: auto;
   margin-top: 50px;
   height: auto;
+  opacity: 1;
 }
 
 .card__children--form {
@@ -45,6 +63,14 @@
   margin-top: 70px;
   margin-left: 20%;
   height: 150%;
+}
+
+@media (max-width: 768px) {
+  .card__children--form {
+    width: 90%; /* Thay đổi kích thước cho màn hình nhỏ hơn hoặc bằng 768px */
+    margin-left: 5%; /* Điều chỉnh margin-left để căn giữa */
+    height: auto; /* Đặt lại chiều cao để theo nội dung */
+  }
 }
 
 .btn-submit {
@@ -78,23 +104,36 @@
 /* styles.css */
 /* RegisterForm.css */
 /* ... */
-.progress-bar {
+/* .progress-bar {
   background-color: green;
 }
 
 .progress-text {
   font-weight: bold;
-}
+} */
 
 .Custom-radio {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+@media (max-width: 768px) {
+  .Custom-radio {
+    flex-direction: row; /* Thay đổi thành chiều ngang trên màn hình nhỏ hơn hoặc bằng 768px */
+    align-items: center;
+  }
+}
 
 .radio-container {
   display: flex;
   justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .radio-container {
+    flex-direction: column; /* Thay đổi thành chiều dọc trên màn hình nhỏ hơn hoặc bằng 768px */
+    align-items: center;
+  }
 }
 
 .image-container {
@@ -103,8 +142,23 @@
   margin-top: 10px;
 }
 
+@media (max-width: 768px) {
+  .image-container {
+    display: block; /* Thay đổi hiển thị thành block trên màn hình nhỏ hơn hoặc bằng 768px */
+    margin-right: 0; /* Đặt lại margin-right */
+    margin-top: 20px; /* Điều chỉnh khoảng cách trên cùng */
+  }
+}
+
 .card__content {
   font-weight: bold;
   font-size: 12.7px;
   margin-top: 15%;
+}
+@media (max-width: 768px) {
+  .img__chooserole {
+    flex-direction: column; /* Thay đổi thành chiều dọc trên màn hình nhỏ hơn hoặc bằng 768px */
+    margin-right: 0; /* Đặt lại margin-right */
+    width: 100%; /* Điều chỉnh chiều rộng cho màn hình nhỏ hơn hoặc bằng 768px */
+  }
 }
