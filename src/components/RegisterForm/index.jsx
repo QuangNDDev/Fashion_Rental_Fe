@@ -19,6 +19,9 @@ import {
   notification,
 } from "antd";
 import "./RegisterForm.css";
+import { storage } from "../../firebase/firebase";
+import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
+import { v4 } from "uuid";
 
 const { Step } = Steps;
 const { Item } = Form;
@@ -31,12 +34,27 @@ const RegisterForm = () => {
   const [formCus, setFormCus] = useState("");
   const [formPO, setFormPO] = useState("");
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [urlImage, setUrlImage] = useState("");
+
+  //convert img to url
+  const handleFileChange = (event) => {
+    if (event.file) {
+      const imageRef = ref(storage, `images/${event.file.name + v4()}`);
+      uploadBytes(imageRef, event.file).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          setUrlImage(url);
+        });
+      });
+    }
+  };
 
   //luu gia trị tát cả các field đã nhập vao state
   const [allDetails, setAllDetails] = useState({
     createDetails: null,
     chooseRoleDetail: null,
-    formDetails: null,
+    // formDetails: null,
+    formCus: {},
+    formPO: {},
   });
   console.log(allDetails);
   // Khi hoàn thành bước 1
@@ -63,8 +81,17 @@ const RegisterForm = () => {
     setAllDetails({ ...allDetails, chooseRoleDetail: values });
   };
 
-  const onFishFormDetails = (values) => {
-    setAllDetails({ ...allDetails, formDetails: values });
+  // const onFishFormDetails = (values) => {
+  //   setAllDetails({ ...allDetails, formDetails: values });
+  //   setCurrentStep(3);
+  // };
+  const onFinishFormCus = (values) => {
+    setAllDetails({ ...allDetails, formCus: values });
+    setCurrentStep(3);
+  };
+
+  const onFinishFormPO = (values) => {
+    setAllDetails({ ...allDetails, formPO: values });
     setCurrentStep(3);
   };
   //ham hien thi thong bao
@@ -165,9 +192,15 @@ const RegisterForm = () => {
             className="card__children--form"
           >
             {selectedRole === "customer" ? (
-              <FormCus onFinish={onFishFormDetails} />
+              <FormCus
+                onFinish={onFinishFormCus}
+                initialValues={allDetails.formCus}
+              />
             ) : (
-              <FormPO onFinish={onFishFormDetails} />
+              <FormPO
+                onFinish={onFinishFormPO}
+                initialValues={allDetails.formPO}
+              />
             )}
           </Card>
         )}
@@ -259,6 +292,7 @@ const RegisterForm = () => {
             </Radio.Group>
             <div className="image-container">
               <Card
+                className="img__chooserole"
                 size="small"
                 title="Khách Hàng"
                 style={{
@@ -278,6 +312,7 @@ const RegisterForm = () => {
                 </ul>
               </Card>
               <Card
+                className="img__chooserole"
                 size="small"
                 title="Chủ Sản Phẩm"
                 style={{
@@ -375,7 +410,7 @@ const RegisterForm = () => {
         >
           <Upload
             maxCount={1}
-            // onChange={handleFileChange}
+            onChange={handleFileChange()}
             beforeUpload={() => false}
           >
             <Button icon={<UploadOutlined />}>Select Image</Button>
@@ -458,7 +493,7 @@ const RegisterForm = () => {
             // onChange={handleFileChange}
             beforeUpload={() => false}
           >
-            <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+            <Button icon={<UploadOutlined />}>Select Image</Button>
           </Upload>
         </Form.Item>
         <br />
