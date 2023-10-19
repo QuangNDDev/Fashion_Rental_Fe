@@ -38,13 +38,21 @@ const RegisterForm = () => {
 
   //convert img to url
   const handleFileChange = (event) => {
+    console.log("handleFileChange called");
+    console.log("File selected:", event.file);
     if (event.file) {
       const imageRef = ref(storage, `images/${event.file.name + v4()}`);
-      uploadBytes(imageRef, event.file).then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => {
-          setUrlImage(url);
+
+      uploadBytes(imageRef, event.file)
+        .then((snapshot) => {
+          // Set the URL after a successful upload
+          getDownloadURL(snapshot.ref).then((url) => {
+            setUrlImage(url);
+          });
+        })
+        .catch((error) => {
+          console.error("Error uploading image:", error);
         });
-      });
     }
   };
 
@@ -490,7 +498,7 @@ const RegisterForm = () => {
         >
           <Upload
             maxCount={1}
-            onChange={handleFileChange}
+            // onChange={handleFileChange}
             beforeUpload={() => false}
           >
             <Button icon={<UploadOutlined />}>Select Image</Button>
