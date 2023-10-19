@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import { Button, Drawer, Form, Input, Radio, Space, Table, Tag } from "antd";
 import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
-import RenderTag from "../render-tag/RenderTag";
+import RenderTag from "../render/RenderTag";
 import axios from "axios";
 const ProductOwnerTable = () => {
   const [users, setUsers] = useState();

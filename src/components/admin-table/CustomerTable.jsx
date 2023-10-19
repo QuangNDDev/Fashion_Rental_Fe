@@ -2,7 +2,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import { Button, Drawer, Form, Input, Radio, Space, Table, Tag } from "antd";
-import RenderTag from "../render-tag/RenderTag";
+import RenderTag from "../render/RenderTag";
 import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
 import axios from "axios";
 
