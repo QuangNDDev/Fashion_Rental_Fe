@@ -124,6 +124,26 @@ const StaffTable = () => {
       onClose();
     });
   };
+  const deleteUser = async () => {
+    form.validateFields().then((values) => {
+      try {
+        console.log(values.staffID);
+        axios
+          .delete(`http://fashionrental.online:8080/staff?id=`+ values.staffID)
+          .then((response) => {
+            message.success("Xoá tài khoản thành công!");
+            console.log(response);
+            fetchUsers();
+          })
+          .catch((error) => {
+            console.error("Error deleting user:", error);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+      onClose();
+    });
+  };
   const addUser = async () => {
     try {
       const formValues = await form.validateFields();
@@ -152,6 +172,7 @@ const StaffTable = () => {
         );
 
         message.success("Thêm mới thành công!");
+        fetchUsers();
         onClose();
         form.resetFields();
         console.log("Registration successful", staffResponse.data);
@@ -376,6 +397,7 @@ const StaffTable = () => {
                   width: "20%",
                   marginLeft: "10px",
                 }}
+                onClick={deleteUser}
               >
                 <DeleteOutlined />
               </Button>
@@ -477,6 +499,7 @@ const StaffTable = () => {
                   color: "#fff",
                   width: "100%",
                 }}
+                disabled={!urlImage}
               >
                 {isEdit ? "Chỉnh sửa" : "Thêm mới"}
               </Button>
