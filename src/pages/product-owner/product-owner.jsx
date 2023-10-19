@@ -21,6 +21,8 @@ import Notification from "../../components/notification/Notification";
 import axios from "axios";
 import ProductCard from "../../components/product-card/product-card";
 import InformationPO from "../../components/infomation-productonwer/information-productowner";
+import OrderTable from "../../components/product-owner-table/OrderTable";
+import CancelOrderTable from "../../components/product-owner-table/CancelOrderTable";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -85,6 +87,7 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Quản lí đơn hàng</Breadcrumb.Item>
               <Breadcrumb.Item>Tất cả</Breadcrumb.Item>
             </Breadcrumb>
+            <OrderTable/>
           </div>
         );
       case "2":
@@ -98,6 +101,7 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Quản lí đơn hàng</Breadcrumb.Item>
               <Breadcrumb.Item>Đơn huỷ</Breadcrumb.Item>
             </Breadcrumb>
+            <CancelOrderTable/>
           </div>
         );
       case "3":

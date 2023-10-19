@@ -20,6 +20,18 @@ export default function RenderTag(props) {
     }else if (renderTag == "Staff"){
       setColor("yellow");
       setStatus("Nhân viên")
+    }else if (renderTag == "Pending"){
+      setColor("yellow");
+      setStatus("Chờ duyệt")
+    }else if (renderTag == "Approve"){
+      setColor("green");
+      setStatus("Đã duyệt")
+    }else if (renderTag == "Refuse"){
+      setColor("red");
+      setStatus("Từ chối")
+    }else if (renderTag == "Cancel"){
+      setColor("red");
+      setStatus("Đã huỷ")
     }
   }, []);
 
