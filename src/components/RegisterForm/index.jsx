@@ -31,8 +31,8 @@ const RegisterForm = () => {
   const [selectedRole, setSelectedRole] = useState(""); //theo dõi lựa chọn tại bước 2
   const [createDetails, setCreateDetails] = useState(null);
   const [chooseRoleDetail, setChooseRoleDetail] = useState(null);
-  const [formCus, setFormCus] = useState("");
-  const [formPO, setFormPO] = useState("");
+  const [formCus, setFormCus] = useState({});
+  const [formPO, setFormPO] = useState({});
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [urlImage, setUrlImage] = useState("");
 
@@ -47,6 +47,7 @@ const RegisterForm = () => {
         .then((snapshot) => {
           // Set the URL after a successful upload
           getDownloadURL(snapshot.ref).then((url) => {
+            // Lưu URL ảnh trong trạng thái của component
             setUrlImage(url);
           });
         })
@@ -57,20 +58,20 @@ const RegisterForm = () => {
   };
 
   //luu gia trị tát cả các field đã nhập vao state
-  const [allDetails, setAllDetails] = useState({
-    createDetails: null,
-    chooseRoleDetail: null,
-    // formDetails: null,
-    formCus: {},
-    formPO: {},
-  });
-  console.log(allDetails);
+  // const [allDetails, setAllDetails] = useState({
+  //   createDetails: null,
+  //   chooseRoleDetail: null,
+  //   // formDetails: null,
+  //   formCus: {},
+  //   formPO: {},
+  // });
+  // console.log(allDetails);
   // Khi hoàn thành bước 1
   const onFinishCreateForm = (values) => {
     setCreateDetails(values);
     setCurrentStep(1);
     //luu gia trị step 1
-    setAllDetails({ ...allDetails, createDetails: values });
+    // setAllDetails({ ...allDetails, createDetails: values });
   };
   //radioButton
 
@@ -86,7 +87,7 @@ const RegisterForm = () => {
     }
 
     // Luu gia tri step 2
-    setAllDetails({ ...allDetails, chooseRoleDetail: values });
+    // setAllDetails({ ...allDetails, chooseRoleDetail: values });
   };
 
   // const onFishFormDetails = (values) => {
@@ -94,12 +95,14 @@ const RegisterForm = () => {
   //   setCurrentStep(3);
   // };
   const onFinishFormCus = (values) => {
-    setAllDetails({ ...allDetails, formCus: values });
+    // setAllDetails({ ...allDetails, formCus: values });
+    setFormCus(values);
     setCurrentStep(3);
   };
 
   const onFinishFormPO = (values) => {
-    setAllDetails({ ...allDetails, formPO: values });
+    // setAllDetails({ ...allDetails, formPO: values });
+    setFormPO(values);
     setCurrentStep(3);
   };
   //ham hien thi thong bao
@@ -200,15 +203,9 @@ const RegisterForm = () => {
             className="card__children--form"
           >
             {selectedRole === "customer" ? (
-              <FormCus
-                onFinish={onFinishFormCus}
-                initialValues={allDetails.formCus}
-              />
+              <FormCus onFinish={onFinishFormCus} initialValues={formCus} />
             ) : (
-              <FormPO
-                onFinish={onFinishFormPO}
-                initialValues={allDetails.formPO}
-              />
+              <FormPO onFinish={onFinishFormPO} initialValues={formPO} />
             )}
           </Card>
         )}
@@ -360,7 +357,7 @@ const RegisterForm = () => {
       <Form onFinish={onFinish}>
         <Form.Item
           label="Họ và Tên"
-          name={"fullName"}
+          name="fullName"
           rules={[
             {
               required: true,
@@ -376,7 +373,7 @@ const RegisterForm = () => {
         </Form.Item>
         <Form.Item
           label="Số điện thoại"
-          name={"phone"}
+          name="phone"
           rules={[
             {
               required: true,
@@ -392,7 +389,7 @@ const RegisterForm = () => {
         </Form.Item>
         <Form.Item
           label="Giới tính"
-          name={"sex"}
+          name="sex"
           rules={[
             {
               required: true,
@@ -408,7 +405,7 @@ const RegisterForm = () => {
 
         <Form.Item
           label="Ảnh đại diện"
-          name={"avatarUrl"}
+          name="avatarUrl"
           rules={[
             {
               required: true,
@@ -437,7 +434,7 @@ const RegisterForm = () => {
       <Form onFinish={onFinish}>
         <Form.Item
           label="Họ và Tên"
-          name={"fullName"}
+          name="fullName"
           rules={[
             {
               required: true,
@@ -455,7 +452,7 @@ const RegisterForm = () => {
         <br />
         <Form.Item
           label="Số điện thoại"
-          name={"phone"}
+          name="phone"
           rules={[
             {
               required: true,
@@ -473,7 +470,7 @@ const RegisterForm = () => {
         <br />
         <Form.Item
           label="Địa chỉ"
-          name={"address"}
+          name="address"
           rules={[
             {
               required: true,
@@ -488,7 +485,7 @@ const RegisterForm = () => {
 
         <Form.Item
           label="Ảnh đại diện"
-          name={"avatarUrl"}
+          name="avatarUrl"
           rules={[
             {
               required: true,
@@ -498,7 +495,7 @@ const RegisterForm = () => {
         >
           <Upload
             maxCount={1}
-            // onChange={handleFileChange}
+            onChange={handleFileChange}
             beforeUpload={() => false}
           >
             <Button icon={<UploadOutlined />}>Select Image</Button>

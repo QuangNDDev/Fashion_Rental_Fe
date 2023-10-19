@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CloseCircleTwoTone,
   LogoutOutlined,
@@ -20,11 +20,29 @@ import {
 import SubMenu from "antd/es/menu/SubMenu";
 import StaffGrid from "../../components/Staff-Grid";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 
 const { Header, Content, Sider } = Layout;
 
 const Staff = () => {
+  const idAccount = localStorage.getItem("accountId");
+  const [staff, setStaff] = useState([]);
+  const fetchStaff = async () => {
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/account/getaccount?accountID=" +
+          idAccount
+      );
+      setStaff(response.data.staff);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchStaff();
+  }, []);
+
   const navigate = useNavigate();
   const {
     token: { colorBgContainer },
@@ -35,7 +53,6 @@ const Staff = () => {
   const [unreadNotificationCount, setUnreadNotificationCount] = useState("3");
 
   const handleLogout = () => {
-
     navigate("/login");
     localStorage.removeItem("roleId");
     console.log("Logged out");
@@ -102,27 +119,29 @@ const Staff = () => {
   return (
     <Layout>
       <Header
-       style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        backgroundColor:"#008000" // Căn chỉnh các phần tử theo chiều ngang và cách đều nhau
-      }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          backgroundColor: "#008000", // Căn chỉnh các phần tử theo chiều ngang và cách đều nhau
+        }}
       >
         {/* Hiển thị logo tạm thời */}
-        <div style={{color :"#fff" , display:"flex",alignItems:"center"}}>
-        <img
-          src="https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.15752-9/386474503_267425062928341_6987759511620074342_n.png?_nc_cat=106&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=sCYtopH2K4kAX-Ordr1&_nc_ht=scontent.fsgn2-5.fna&oh=03_AdRCrANYpogO50o9LUSIzscNAVPVMn2v3OMN1BmYx1MAAA&oe=654E9D9F"
-          alt="Brand Logo"
-          width={70}
-          height={50}
-        />
-        <h2 style={{color :"#fff",fontWeight: "normal"}}>Kênh nhân viên</h2>
+        <div style={{ color: "#fff", display: "flex", alignItems: "center" }}>
+          <img
+            src="https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.15752-9/386474503_267425062928341_6987759511620074342_n.png?_nc_cat=106&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=sCYtopH2K4kAX-Ordr1&_nc_ht=scontent.fsgn2-5.fna&oh=03_AdRCrANYpogO50o9LUSIzscNAVPVMn2v3OMN1BmYx1MAAA&oe=654E9D9F"
+            alt="Brand Logo"
+            width={70}
+            height={50}
+          />
+          <h2 style={{ color: "#fff", fontWeight: "normal" }}>
+            Kênh nhân viên
+          </h2>
         </div>
         {/* Biểu tượng chuông thông báo và avatar */}
         <div style={{ display: "flex", alignItems: "center" }}>
           <Avatar
-            src="https://via.placeholder.com/40x40.png?text=Avatar"
+            src={staff.avatarUrl}
             alt="User Avatar"
             style={{ width: "38px", height: "38px", marginLeft: "10px" }}
           />
@@ -134,7 +153,7 @@ const Staff = () => {
               fontWeight: "bold",
             }}
           >
-            Name staff
+            {staff.fullName}
           </span>
           <Badge count={unreadNotificationCount}>
             <BellOutlined

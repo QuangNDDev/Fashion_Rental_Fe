@@ -9,11 +9,11 @@ const LoginForm = () => {
   };
   const handleNavigationStaff = () => {
     navigate(`/staff`);
-  }
+  };
   const handleNavigationProductOwner = () => {
     // const paramValue = idPo;
     navigate(`/productOwner`);
-  }
+  };
 
   const onFinish = async (values) => {
     const email = values.email;
@@ -34,13 +34,11 @@ const LoginForm = () => {
 
         if (response.data.role.roleID == 4) {
           handleNavigationAdmin();
-        
-        } else if (response.data.role.roleID == 3){
+        } else if (response.data.role.roleID == 3) {
           handleNavigationStaff();
-        } else if (response.data.role.roleID == 2){
+        } else if (response.data.role.roleID == 2) {
           handleNavigationProductOwner();
-        }
-         else {
+        } else {
           message.info("Tài khoản của bạn không có quyền truy cập!!!");
         }
       }
@@ -60,7 +58,7 @@ const LoginForm = () => {
         style={{
           flex: 8,
           backgroundImage:
-            "url('https://img3.thuthuatphanmem.vn/uploads/2019/10/10/background-anh-dong_032845920.gif')",
+            "url('https://images.unsplash.com/photo-1596484552993-aec4311d3381?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=2070')",
           backgroundSize: "cover",
           transform: "translateZ(0)",
         }}
