@@ -32,12 +32,8 @@ const LoginForm = () => {
         localStorage.setItem("accountId", response.data.accountID);
         localStorage.setItem("roleId", response.data.role.roleID);
 
-        if (response.data.role.roleID == 4) {
-          handleNavigationAdmin();
-        } else if (response.data.role.roleID == 3) {
+        if (response.data.role.roleID == 3) {
           handleNavigationStaff();
-        } else if (response.data.role.roleID == 2) {
-          handleNavigationProductOwner();
         } else {
           message.info("Tài khoản của bạn không có quyền truy cập!!!");
         }
@@ -84,20 +80,22 @@ const LoginForm = () => {
             <Form.Item
               name="email"
               rules={[
-                { required: true, message: "Vui lòng nhập email!" },
+                { required: true, message: "Please enter your username!" },
                 // { validator: validateEmailOrPhone },
               ]}
             >
               <Input
                 style={{ fontSize: "15px", padding: "10px" }}
                 prefix={<UserOutlined />}
-                placeholder="Email r"
+                placeholder="Email or phone number"
               />
             </Form.Item>
 
             <Form.Item
               name="password"
-              rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
+              rules={[
+                { required: true, message: "Please enter your password!" },
+              ]}
             >
               <Input.Password
                 style={{ fontSize: "15px", padding: "10px" }}
@@ -107,8 +105,12 @@ const LoginForm = () => {
             </Form.Item>
             <Form.Item>
               <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>Ghi Nhớ</Checkbox>
+                <Checkbox>Remember me</Checkbox>
               </Form.Item>
+
+              <a className="login-form-forgot" href="">
+                Forgot password
+              </a>
             </Form.Item>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <Form.Item style={{ width: "100%" }}>

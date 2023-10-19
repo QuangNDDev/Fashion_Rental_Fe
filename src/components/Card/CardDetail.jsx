@@ -12,11 +12,13 @@ const CardDetail = () => {
   const [formData, setFormData] = useState(null);
   const [form] = Form.useForm();
   const [cardData, setCardData] = useState({
-    avatar: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+    // avatar: "https://xsgames.co/randomusers/avatar.php?g=pixel",
     product_Name: "Louis Vuitton", // Thay đổi title
     productOwner_Name: "Nguyễn Đăng Quang", // Thay đổi description
     status: "Đã duyệt",
     invoice_Code: "ACCCAAA",
+    condition: "Mới",
+    formal: "Thuê",
     address: "Vinhome grandpark Quận 9",
     phone_Number: "0822833799",
     imgProduct: { MuntilImage },
@@ -40,10 +42,12 @@ const CardDetail = () => {
     setIsModalVisible(true);
     // Cập nhật dữ liệu cho Modal dựa trên thẻ hiện tại
     form.setFieldsValue({
-      avatar: cardData.avatar,
+      // avatar: cardData.avatar,
       productName: cardData.product_Name,
       ownerName: cardData.productOwner_Name,
       invoiceCode: cardData.invoice_Code,
+      condition: cardData.condition,
+      formal: cardData.formal,
       address: cardData.address,
       status: cardData.status,
       phoneNumber: cardData.phone_Number,
@@ -128,7 +132,7 @@ const CardDetail = () => {
           onFinish={onFinish}
           initialValues={{}} // Đặt giá trị mặc định cho các trường nếu cần
         >
-          <Form.Item
+          {/* <Form.Item
             label="Hình đại diện"
             name="avatar" //lấy value của cái name gán lên cái setFormValue
           >
@@ -137,57 +141,40 @@ const CardDetail = () => {
               icon={<UserOutlined />}
               src={cardData.avatar}
             />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item
             label="Tên sản phẩm"
             name="productName" //lấy value của cái name gán lên cái setFormValue
-            rules={[{ required: true, message: "Vui lòng nhập tên sản phẩm!" }]}
           >
-            <Input style={{ width: "300px", marginLeft: "13px" }} />
+            <Input readOnly style={{ width: "300px", marginLeft: "13px" }} />
           </Form.Item>
 
-          <Form.Item
-            label="Tên chủ sở hữu"
-            name="ownerName"
-            rules={[
-              { required: true, message: "Vui lòng nhập tên chủ sở hữu!" },
-            ]}
-          >
-            <Input style={{ width: "300px", marginLeft: "7.1px" }} />
+          <Form.Item label="Tên chủ sở hữu" name="ownerName">
+            <Input readOnly style={{ width: "300px", marginLeft: "7.1px" }} />
           </Form.Item>
 
-          <Form.Item
-            label="Mã hóa đơn"
-            name="invoiceCode"
-            rules={[{ required: true, message: "Vui lòng nhập mã hóa đơn!" }]}
-          >
-            <Input style={{ width: "300px", marginLeft: "24px" }} />
+          <Form.Item label="Mã hóa đơn" name="invoiceCode">
+            <Input readOnly style={{ width: "300px", marginLeft: "24px" }} />
           </Form.Item>
 
-          <Form.Item
-            label="Địa chỉ"
-            name="address"
-            rules={[{ required: true, message: "Vui lòng nhập địa chỉ!" }]}
-          >
-            <Input style={{ width: "300px", marginLeft: "56.2px" }} />
+          <Form.Item label="Tình trạng" name="condition">
+            <Input readOnly style={{ width: "300px", marginLeft: "32px" }} />
           </Form.Item>
 
-          <Form.Item
-            label="Số điện thoại"
-            name="phoneNumber"
-            rules={[
-              { required: true, message: "Vui lòng nhập số điện thoại!" },
-            ]}
-          >
-            <Input style={{ width: "300px", marginLeft: "16.8px" }} />
+          <Form.Item label="Hình thức" name="formal">
+            <Input readOnly style={{ width: "300px", marginLeft: "38.5px" }} />
           </Form.Item>
 
-          <Form.Item
-            label="Hình ảnh sản phẩm"
-            name="imgProduct"
-            rules={[{ required: true, message: "" }]}
-          >
+          <Form.Item label="Địa chỉ" name="address">
+            <Input readOnly style={{ width: "300px", marginLeft: "56.2px" }} />
+          </Form.Item>
+
+          <Form.Item label="Số điện thoại" name="phoneNumber">
+            <Input readOnly style={{ width: "300px", marginLeft: "16.8px" }} />
+          </Form.Item>
+
+          <Form.Item label="Hình ảnh sản phẩm" name="imgProduct">
             {cardData && cardData.imgProduct ? <MuntilImage /> : null}
           </Form.Item>
 

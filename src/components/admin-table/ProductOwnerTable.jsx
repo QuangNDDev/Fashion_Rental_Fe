@@ -306,9 +306,18 @@ const ProductOwnerTable = () => {
           <Form.Item
             name="email"
             label="Email"
-            rules={[{ required: true, message: "Xin vui lòng nhập email!" }]}
+            rules={[
+              {
+                required: true,
+                message: "Xin vui lòng nhập email!",
+              },
+              {
+                type: "email",
+                message: "Email không hợp lệ. Vui lòng kiểm tra lại!",
+              },
+            ]}
           >
-            <Input />
+            <Input placeholder="email" />
           </Form.Item>
 
           <Form.Item
@@ -316,7 +325,7 @@ const ProductOwnerTable = () => {
             label="Địa chỉ"
             rules={[{ required: true, message: "Xin vui lòng nhập địa chỉ!" }]}
           >
-            <Input />
+            <Input placeholder="địa chỉ" />
           </Form.Item>
           <Form.Item
             name="status"
@@ -332,7 +341,15 @@ const ProductOwnerTable = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" onClick={isEdit ? editUser : addUser} style={{ backgroundColor: "#008000", color: "#fff", width: "100%" }}>
+            <Button
+              type="primary"
+              onClick={isEdit ? editUser : addUser}
+              style={{
+                backgroundColor: "#008000",
+                color: "#fff",
+                width: "100%",
+              }}
+            >
               {isEdit ? "Update" : "Add"}
             </Button>
           </Form.Item>

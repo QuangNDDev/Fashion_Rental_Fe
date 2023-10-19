@@ -6,6 +6,15 @@ import {
   CheckOutlined,
   CheckCircleTwoTone,
   ClockCircleTwoTone,
+  ShoppingTwoTone,
+  SyncOutlined,
+  DollarOutlined,
+  DollarTwoTone,
+  QuestionCircleTwoTone,
+  EyeTwoTone,
+  NotificationTwoTone,
+  NotificationFilled,
+  MailFilled,
 } from "@ant-design/icons";
 import {
   Breadcrumb,
@@ -21,6 +30,7 @@ import SubMenu from "antd/es/menu/SubMenu";
 import StaffGrid from "../../components/Staff-Grid";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import CancelOrderTable from "../../components/product-owner-table/CancelOrderTable";
 
 const { Header, Content, Sider } = Layout;
 
@@ -30,8 +40,7 @@ const Staff = () => {
   const fetchStaff = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/account/getaccount?accountID=" +
-          idAccount
+        "http://fashionrental.online:8080/account/" + idAccount
       );
       setStaff(response.data.staff);
     } catch (error) {
@@ -80,9 +89,19 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>Duyệt đơn</Breadcrumb.Item>
-              <Breadcrumb.Item>Đơn đã duyệt</Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
+                  Duyệt đơn sản phẩm
+                </strong>
+              </Breadcrumb.Item>
+
+              <Breadcrumb.Item separator="?">
+                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
+                  Đơn đã duyệt
+                </strong>
+              </Breadcrumb.Item>
             </Breadcrumb>
+
             <StaffGrid />
           </div>
         );
@@ -94,8 +113,16 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>Duyệt đơn</Breadcrumb.Item>
-              <Breadcrumb.Item>Đơn đang chờ xử lý</Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
+                  Duyệt đơn sản phẩm
+                </strong>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
+                  Đơn đang chờ xử lý
+                </strong>
+              </Breadcrumb.Item>
             </Breadcrumb>
           </div>
         );
@@ -107,8 +134,104 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>Duyệt đơn</Breadcrumb.Item>
-              <Breadcrumb.Item>Đơn bị từ chối</Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
+                  Duyệt đơn sản phẩm
+                </strong>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
+                  Đơn bị từ chối
+                </strong>
+              </Breadcrumb.Item>
+            </Breadcrumb>
+          </div>
+        );
+
+      case "4":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>
+                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
+                  Xem đơn đặt hàng
+                </strong>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
+                  Sản phẩm cho thuê
+                </strong>
+              </Breadcrumb.Item>
+            </Breadcrumb>
+          </div>
+        );
+
+      case "5":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>
+                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
+                  Xem đơn đặt hàng
+                </strong>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
+                  Sản phẩm bán
+                </strong>
+              </Breadcrumb.Item>
+            </Breadcrumb>
+          </div>
+        );
+
+      case "6":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>
+                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
+                  Xem đơn đặt hàng
+                </strong>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
+                  Sản phẩm bị trả về
+                </strong>
+              </Breadcrumb.Item>
+            </Breadcrumb>
+            <CancelOrderTable />
+          </div>
+        );
+      case "7":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>
+                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
+                  Báo cáo
+                </strong>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
+                  Báo cáo sản phẩm
+                </strong>
+              </Breadcrumb.Item>
             </Breadcrumb>
           </div>
         );
@@ -191,29 +314,115 @@ const Staff = () => {
             style={{
               height: "100%",
               borderRight: 0,
-              width: "110%",
+              width: "121%",
             }}
             onClick={handleMenuClick}
           >
-            <SubMenu key="sub1" icon={<CheckOutlined />} title="Duyệt đơn">
+            <SubMenu
+              key="sub1"
+              icon={<CheckOutlined style={{ fontSize: "17px" }} />}
+              title="Duyệt đơn sản phẩm"
+              style={{ fontWeight: "bold", fontSize: "15px" }}
+            >
               <Menu.Item
                 key="1"
-                icon={<CheckCircleTwoTone twoToneColor="#52c41a" />}
+                icon={
+                  <CheckCircleTwoTone
+                    twoToneColor="#52c41a"
+                    style={{ fontSize: "23px" }}
+                  />
+                }
               >
-                Đơn đã duyệt
+                Đơn duyệt
               </Menu.Item>
               <Menu.Item
                 key="2"
-                icon={<ClockCircleTwoTone twoToneColor="#ffcc00" />}
+                icon={
+                  <ClockCircleTwoTone
+                    twoToneColor="#ffcc00"
+                    style={{ fontSize: "23px" }}
+                  />
+                }
               >
                 Đơn chờ xử lý
               </Menu.Item>
 
               <Menu.Item
                 key="3"
-                icon={<CloseCircleTwoTone twoToneColor="#ff0000" />}
+                icon={
+                  <CloseCircleTwoTone
+                    twoToneColor="#ff0000"
+                    style={{ fontSize: "23px" }}
+                  />
+                }
               >
-                Đơn bị từ chối
+                Đơn bị hủy
+              </Menu.Item>
+            </SubMenu>
+
+            <SubMenu
+              key="sub2"
+              icon={<EyeTwoTone style={{ fontSize: "17px" }} />}
+              title="Xem đơn đặt hàng"
+              style={{ fontWeight: "bold", fontSize: "15px" }}
+            >
+              <Menu.Item
+                key="4"
+                icon={
+                  <SyncOutlined
+                    spin
+                    twoToneColor="#52c41a"
+                    style={{ fontSize: "23px" }}
+                  />
+                }
+              >
+                Sản phẩm cho thuê
+              </Menu.Item>
+              <Menu.Item
+                key="5"
+                icon={
+                  <DollarTwoTone
+                    twoToneColor="#52c41a"
+                    style={{ fontSize: "23px" }}
+                  />
+                }
+              >
+                Sản phẩm bán
+              </Menu.Item>
+
+              <Menu.Item
+                key="6"
+                icon={
+                  <QuestionCircleTwoTone
+                    twoToneColor="#ff0000"
+                    style={{ fontSize: "23px" }}
+                  />
+                }
+              >
+                Sản phẩm bị trả về
+              </Menu.Item>
+            </SubMenu>
+
+            <SubMenu
+              key="sub3"
+              icon={
+                <NotificationFilled
+                  style={{ fontSize: "17px", color: "red" }}
+                />
+              }
+              title="Báo cáo"
+              style={{ fontWeight: "bold", fontSize: "15px" }}
+            >
+              <Menu.Item
+                key="7"
+                icon={
+                  <MailFilled
+                    style={{ fontSize: "23px" }}
+                    twoToneColor="#ff0000"
+                  />
+                }
+              >
+                Báo cáo sản phẩm
               </Menu.Item>
             </SubMenu>
           </Menu>
@@ -226,7 +435,7 @@ const Staff = () => {
           <Content
             style={{
               padding: 24,
-              marginLeft: 10,
+              marginLeft: 12,
               minHeight: 280,
               background: colorBgContainer,
             }}
