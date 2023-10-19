@@ -294,6 +294,7 @@ const CustomerTable = () => {
           >
             <Input />
           </Form.Item>
+          <br />
           <Form.Item
             name="phone"
             label="SĐT"
@@ -303,6 +304,7 @@ const CustomerTable = () => {
           >
             <Input />
           </Form.Item>
+          <br />
           <Form.Item
             name="email"
             label="Email"
@@ -310,6 +312,7 @@ const CustomerTable = () => {
           >
             <Input />
           </Form.Item>
+          <br />
           <Form.Item
             name="status"
             label="Trạng thái hoạt động"
@@ -322,15 +325,25 @@ const CustomerTable = () => {
               <Radio value={false}>Không hoạt động</Radio>
             </Radio.Group>
           </Form.Item>
+          <br />
 
           <Form.Item>
-            <Button type="primary" onClick={isEdit ? editUser : addUser} style={{ backgroundColor: "#008000", color: "#fff", width: "100%" }}>
+            <Button
+              type="primary"
+              onClick={isEdit ? editUser : addUser}
+              style={{
+                backgroundColor: "#008000",
+                color: "#fff",
+                width: "100%",
+              }}
+            >
               {isEdit ? "Update" : "Add"}
             </Button>
           </Form.Item>
           <Form.Item name="roleID">
             <Input style={{ display: "none" }} />
           </Form.Item>
+          <br />
         </Form>
       </Drawer>
     </div>
