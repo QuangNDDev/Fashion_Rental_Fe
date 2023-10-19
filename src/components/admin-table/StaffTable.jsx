@@ -1,20 +1,54 @@
-import { SearchOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  UploadOutlined,
+  EditTwoTone,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { Button, Drawer, Input, Space, Table, Tag } from "antd";
-import RenderTag from "../render-tag/RenderTag";
+import {
+  Button,
+  Drawer,
+  Form,
+  Input,
+  message,
+  Radio,
+  Space,
+  Table,
+  Upload,
+} from "antd";
+import { storage } from "../../firebase/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { v4 } from "uuid";
 import axios from "axios";
+import RenderTag from "../render/RenderTag";
 const StaffTable = () => {
   const [users, setUsers] = useState();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
-  const [open, setOpen] = useState(false);
-  const showDrawer = () => {
-    setOpen(true);
-  };
-  const onClose = () => {
-    setOpen(false);
+  const [editingUser, setEditingUser] = useState(null);
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [urlImage, setUrlImage] = useState("");
+
+  const handleFileChange = (event) => {
+    console.log("handleFileChange called");
+    console.log("File selected:", event.file);
+    if (event.file) {
+      const imageRef = ref(storage, `images/${event.file.name + v4()}`);
+
+      uploadBytes(imageRef, event.file)
+        .then((snapshot) => {
+          // Set the URL after a successful upload
+          getDownloadURL(snapshot.ref).then((url) => {
+            setUrlImage(url);
+          });
+        })
+        .catch((error) => {
+          console.error("Error uploading image:", error);
+        });
+    }
   };
   const fetchUsers = async () => {
     try {
@@ -43,6 +77,94 @@ const StaffTable = () => {
     clearFilters();
     setSearchText("");
   };
+  const [form] = Form.useForm();
+
+  const showEditDrawer = (record) => {
+    setEditingUser(record);
+    setIsEdit(true);
+    setIsDrawerVisible(true);
+    form.setFieldsValue(record);
+  };
+  const showAddDrawer = () => {
+    setIsEdit(false);
+    setIsDrawerVisible(true);
+  };
+
+  const onClose = () => {
+    setIsDrawerVisible(false);
+    setIsEdit(false);
+    form.resetFields();
+  };
+  const editUser = async () => {
+    form.validateFields().then((values) => {
+      const editData = {
+        staffID: values.staffID,
+        status: values.status,
+      };
+      try {
+        console.log(editData)
+        axios
+          .put(`http://fashionrental.online:8080/staff?staffID=`+values.staffID+`&status=`+values.status)
+          .then((response) => {
+            message.success("Chỉnh sửa thành công!");
+            console.log(response);
+            setUsers((prevUsers) =>
+            prevUsers.map((user) =>
+              user.staffID === values.staffID
+                ? { ...user, status: values.status, key: v4() }
+                : user
+            )
+          );
+          });
+      } catch (error) {
+        console.log(error);
+      }
+
+      
+      onClose();
+    });
+  };
+  const addUser = async () => {
+    try {
+      const formValues = await form.validateFields();
+      const registerAccountData = {
+        email: formValues.email,
+        password: formValues.password,
+        roleID: "3",
+      };
+
+      try {
+        const response = await axios.post(
+          "http://fashionrental.online:8080/account/create",
+          registerAccountData
+        );
+
+        const registerStaffData = {
+          accountID: response.data.accountID,
+          avatarUrl: urlImage,
+          fullName: formValues.fullName,
+          status: true,
+        };
+
+        const staffResponse = await axios.post(
+          "http://fashionrental.online:8080/staff/createstaff",
+          registerStaffData
+        );
+
+        message.success("Thêm mới thành công!");
+        onClose();
+        form.resetFields();
+        console.log("Registration successful", staffResponse.data);
+      } catch (error) {
+        message.error("Vui lòng nhập lại dữ liệu!");
+        console.error("Registration failed", error);
+      }
+    } catch (error) {
+      message.error("Đăng kí thất bại!");
+      console.error("Validation failed", error);
+    }
+  };
+
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -172,8 +294,24 @@ const StaffTable = () => {
       ...getColumnSearchProps("status"),
       render: (status) => (
         <p style={{ textAlign: "center" }}>
-          <RenderTag tagRender={status} />
+          <RenderTag key={status} tagRender={status} />
         </p>
+      ),
+    },
+    {
+      title: "",
+      key: "action",
+      align: "left",
+      width: "10%",
+      render: (_, record) => (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            style={{ marginRight: "15px" }}
+            onClick={() => showEditDrawer(record)}
+          >
+            <EditTwoTone />
+          </Button>
+        </div>
       ),
     },
     // {
@@ -187,11 +325,164 @@ const StaffTable = () => {
   ];
   return (
     <>
-      <Button style={{float:"right",backgroundColor: "#008000", color: "#fff",marginBottom:"10px"}} onClick={showDrawer}>Thêm mới nhân viên</Button>
-      <Drawer title="Basic Drawer" placement="right" onClose={onClose} open={open}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+      <Button
+        style={{
+          float: "right",
+          backgroundColor: "#008000",
+          color: "#fff",
+          marginBottom: "10px",
+        }}
+        onClick={() => showAddDrawer()}
+      >
+        Thêm mới nhân viên
+      </Button>
+      <Drawer
+        title={isEdit ? "Cập Nhật" : "Thêm mới nhân viên"}
+        visible={isDrawerVisible}
+        onClose={onClose}
+        width={400}
+      >
+        {isEdit ? (
+          // Render edit form when isEdit is true
+          <Form form={form}>
+             
+            <Form.Item
+              name="status"
+              label="Trạng thái hoạt động"
+              rules={[
+                { required: true, message: "Cập nhật trạng thái hoạt động!" },
+              ]}
+            >
+              <Radio.Group>
+                <Radio value={true}>Đang hoạt động</Radio>
+                <Radio value={false}>Không hoạt động</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                onClick={isEdit ? editUser : addUser}
+                style={{
+                  backgroundColor: "#008000",
+                  color: "#fff",
+                  width: "70%",
+                }}
+              >
+                {isEdit ? "Chỉnh sửa" : "Thêm mới"}
+              </Button>
+              <Button
+                danger
+                style={{
+                  width: "20%",
+                  marginLeft: "10px",
+                }}
+              >
+                <DeleteOutlined />
+              </Button>
+            </Form.Item>
+            <Form.Item
+              name="staffID"
+             display="none"
+            >
+            </Form.Item>
+          </Form>
+        ) : (
+          // Render add form when isEdit is false
+          <Form form={form}>
+            <Form.Item
+              name="email"
+              label="E-mail"
+              rules={[
+                {
+                  type: "email",
+                  message: "The input is not valid E-mail!",
+                },
+                {
+                  required: true,
+                  message: "Please input your E-mail!",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              name="password"
+              label="Mật khẩu"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your password!",
+                },
+              ]}
+              hasFeedback
+            >
+              <Input.Password />
+            </Form.Item>
+
+            <Form.Item
+              name="confirm"
+              label="Nhập lại mật khẩu"
+              dependencies={["password"]}
+              hasFeedback
+              rules={[
+                {
+                  required: true,
+                  message: "Please confirm your password!",
+                },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("password") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      new Error(
+                        "The new password that you entered do not match!"
+                      )
+                    );
+                  },
+                }),
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
+            <Form.Item
+              name="fullName"
+              label="Họ và tên"
+              rules={[
+                { required: true, message: "Xin vui lòng nhập Họ và Tên!" },
+                {
+                  pattern: /^[^\d]+$/,
+                  message: "Không được nhập số!",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item label="Ảnh đại diện">
+              <Upload
+                maxCount={1}
+                onChange={handleFileChange}
+                beforeUpload={() => false}
+              >
+                <Button icon={<UploadOutlined />}>Select Image</Button>
+              </Upload>
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                onClick={isEdit ? editUser : addUser}
+                style={{
+                  backgroundColor: "#008000",
+                  color: "#fff",
+                  width: "100%",
+                }}
+              >
+                {isEdit ? "Chỉnh sửa" : "Thêm mới"}
+              </Button>
+            </Form.Item>
+          </Form>
+        )}
       </Drawer>
 
       <Table columns={columns} dataSource={users} />

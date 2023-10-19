@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Drawer, Form, Image, Input, Upload } from "antd";
+import { Button, Drawer, Form, Image, Input, message, Upload } from "antd";
 import { SettingOutlined, UploadOutlined } from "@ant-design/icons";
 import { storage } from "../../firebase/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -9,8 +9,8 @@ const InformationPO = () => {
   const idAccount = localStorage.getItem("accountId");
   const [productowner, setProductOwner] = useState([]);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [urlImage, setUrlImage] = useState("");
+
   const fetchProductOwner = async () => {
     try {
       const response = await axios.get(
@@ -45,6 +45,7 @@ const InformationPO = () => {
           )
           .then((response) => {
             console.log(response);
+            message.success("Chỉnh sửa thành công!");
             setProductOwner((prevProductOwner) => ({
               ...prevProductOwner,
               ...editData,
@@ -154,7 +155,7 @@ const InformationPO = () => {
                   onChange={handleFileChange}
                   beforeUpload={() => false}
                 >
-                  <Button icon={<UploadOutlined />}>Select Image</Button>
+                  <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
                 </Upload>
               </Form.Item>
 
@@ -162,6 +163,7 @@ const InformationPO = () => {
                 <Button
                   style={{ backgroundColor: "#008000", color: "#fff",width:"100%" }}
                   onClick={editUser}
+                  disabled={!urlImage}
                 >
                   Chỉnh sửa
                 </Button>
