@@ -332,7 +332,7 @@ const ProductOwnerTable = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" onClick={isEdit ? editUser : addUser}>
+            <Button type="primary" onClick={isEdit ? editUser : addUser} style={{ backgroundColor: "#008000", color: "#fff", width: "100%" }}>
               {isEdit ? "Update" : "Add"}
             </Button>
           </Form.Item>

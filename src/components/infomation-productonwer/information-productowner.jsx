@@ -9,6 +9,7 @@ const InformationPO = () => {
   const idAccount = localStorage.getItem("accountId");
   const [productowner, setProductOwner] = useState([]);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [urlImage, setUrlImage] = useState("");
   const fetchProductOwner = async () => {
     try {
@@ -68,14 +69,23 @@ const InformationPO = () => {
     form.resetFields();
     setIsDrawerVisible(false);
   };
+  
   const handleFileChange = (event) => {
+    console.log("handleFileChange called");
+    console.log("File selected:", event.file);
     if (event.file) {
       const imageRef = ref(storage, `images/${event.file.name + v4()}`);
-      uploadBytes(imageRef, event.file).then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => {
-          setUrlImage(url);
+      
+      uploadBytes(imageRef, event.file)
+        .then((snapshot) => {
+          // Set the URL after a successful upload
+          getDownloadURL(snapshot.ref).then((url) => {
+            setUrlImage(url);
+          });
+        })
+        .catch((error) => {
+          console.error("Error uploading image:", error);
         });
-      });
     }
   };
   return (
@@ -102,7 +112,7 @@ const InformationPO = () => {
             onClose={onClose}
             open={open}
           >
-            <Form form={form} style={{ padding: "10px" }}>
+            <Form form={form} style={{ padding: "5px" }}>
               <Form.Item
                 name="fullName"
                 label="Họ và tên"
@@ -150,7 +160,7 @@ const InformationPO = () => {
 
               <Form.Item>
                 <Button
-                 style={{ backgroundColor: "#008000", color: "#fff", width: "100%" }}
+                  style={{ backgroundColor: "#008000", color: "#fff",width:"100%" }}
                   onClick={editUser}
                 >
                   Chỉnh sửa
