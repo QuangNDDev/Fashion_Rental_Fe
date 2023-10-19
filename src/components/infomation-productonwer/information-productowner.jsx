@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, Drawer, Form, Image, Input, InputNumber } from "antd";
-import { SettingOutlined } from "@ant-design/icons";
+import { Button, Drawer, Form, Image, Input, Upload } from "antd";
+import { SettingOutlined, UploadOutlined } from "@ant-design/icons";
+import { storage } from "../../firebase/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { v4 } from "uuid";
 import axios from "axios";
 const InformationPO = () => {
   const idAccount = localStorage.getItem("accountId");
   const [productowner, setProductOwner] = useState([]);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-  const [editingUser, setEditingUser] = useState(null);
+  const [urlImage, setUrlImage] = useState("");
   const fetchProductOwner = async () => {
     try {
       const response = await axios.get(
@@ -26,7 +29,7 @@ const InformationPO = () => {
     form.validateFields().then((values) => {
       const editData = {
         address: values.address,
-        avatarUrl: values.avatarUrl,
+        avatarUrl: urlImage,
         fullName: values.fullName,
         phone: values.phone,
       };
@@ -46,12 +49,10 @@ const InformationPO = () => {
               ...editData,
             }));
           });
-          
       } catch (error) {
         console.log(error);
       }
 
-     
       onClose();
     });
   };
@@ -61,13 +62,21 @@ const InformationPO = () => {
     setOpen(true);
     form.setFieldsValue(productonwer);
     setIsDrawerVisible(true);
-    setEditingUser(productonwer);
-   
   };
   const onClose = () => {
     setOpen(false);
     form.resetFields();
     setIsDrawerVisible(false);
+  };
+  const handleFileChange = (event) => {
+    if (event.file) {
+      const imageRef = ref(storage, `images/${event.file.name + v4()}`);
+      uploadBytes(imageRef, event.file).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          setUrlImage(url);
+        });
+      });
+    }
   };
   return (
     <div style={{ justifyContent: "center" }}>
@@ -93,7 +102,7 @@ const InformationPO = () => {
             onClose={onClose}
             open={open}
           >
-            <Form form={form} style={{padding:"5px"}}>
+            <Form form={form} style={{ padding: "10px" }}>
               <Form.Item
                 name="fullName"
                 label="Họ và tên"
@@ -129,12 +138,23 @@ const InformationPO = () => {
               >
                 <Input />
               </Form.Item>
-              <Form.Item name="avatarUrl" label="Ảnh đại diện">
-                <Input />
+              <Form.Item label="Ảnh đại diện" >
+                <Upload
+                  maxCount={1}
+                  onChange={handleFileChange}
+                  beforeUpload={() => false}
+                >
+                  <Button icon={<UploadOutlined />}>Select Image</Button>
+                </Upload>
               </Form.Item>
 
               <Form.Item>
-                <Button style={{backgroundColor: "#008000",color:"#fff"}} onClick={editUser}>Chỉnh sửa</Button>
+                <Button
+                 style={{ backgroundColor: "#008000", color: "#fff", width: "100%" }}
+                  onClick={editUser}
+                >
+                  Chỉnh sửa
+                </Button>
               </Form.Item>
               <Form.Item name="roleID">
                 <Input style={{ display: "none" }} />
