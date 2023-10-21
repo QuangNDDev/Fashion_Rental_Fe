@@ -14,7 +14,7 @@ const InformationPO = () => {
   const fetchProductOwner = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/account/getaccount?accountID=" +
+        "http://fashionrental.online:8080/account/" +
           idAccount
       );
       setProductOwner(response.data.productowner);
@@ -39,7 +39,7 @@ const InformationPO = () => {
       try {
         axios
           .put(
-            `http://134.209.111.144:8080/po?productownerID=` +
+            `http://fashionrental.online:8080/po?productownerID=` +
               productowner.productownerID,
             editData
           )

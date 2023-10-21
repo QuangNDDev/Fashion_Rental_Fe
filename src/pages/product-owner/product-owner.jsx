@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
-  ShoppingOutlined,
   LogoutOutlined,
   BellOutlined,
   ContainerOutlined,
   UserOutlined,
-  GroupOutlined,
-  CloseOutlined,
-  SwapOutlined,
-  ProfileTwoTone,
   ShopFilled,
-  ShoppingFilled,
-  PlusCircleOutlined,
+  WalletOutlined,
 } from "@ant-design/icons";
 import {
   Breadcrumb,
@@ -30,6 +24,7 @@ import ProductCard from "../../components/product-card/product-card";
 import InformationPO from "../../components/infomation-productonwer/information-productowner";
 import OrderTable from "../../components/product-owner-table/OrderTable";
 import CancelOrderTable from "../../components/product-owner-table/CancelOrderTable";
+import Revenue from "../../components/revenue-product-owner/revenue";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -90,16 +85,8 @@ const ProductOwner = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Quản lí đơn hàng
-                </strong>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Tất cả
-                </strong>
-              </Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lí đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Tất cả</Breadcrumb.Item>
             </Breadcrumb>
             <OrderTable />
           </div>
@@ -112,16 +99,8 @@ const ProductOwner = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Quản lý đơn hàng
-                </strong>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Đơn huỷ
-                </strong>
-              </Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn huỷ</Breadcrumb.Item>
             </Breadcrumb>
             <CancelOrderTable />
           </div>
@@ -134,16 +113,8 @@ const ProductOwner = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Quản lý đơn hàng
-                </strong>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Trả hàng,hoàn tiền
-                </strong>
-              </Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Trả hàng,hoàn tiền</Breadcrumb.Item>
             </Breadcrumb>
           </div>
         );
@@ -155,16 +126,8 @@ const ProductOwner = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Quản lý sản phẩm
-                </strong>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Tất cả sản phẩm
-                </strong>
-              </Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý sản phẩm</Breadcrumb.Item>
+              <Breadcrumb.Item>Tất cả sản phẩm</Breadcrumb.Item>
             </Breadcrumb>
             <ProductCard />
           </div>
@@ -177,16 +140,8 @@ const ProductOwner = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Quản lý sản phẩm
-                </strong>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Thêm sản phẩm
-                </strong>
-              </Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý sản phẩm</Breadcrumb.Item>
+              <Breadcrumb.Item>Thêm sản phẩm</Breadcrumb.Item>
             </Breadcrumb>
           </div>
         );
@@ -198,18 +153,37 @@ const ProductOwner = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Quản lý tài khoản
-                </strong>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Thông tin cơ bản
-                </strong>
-              </Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý tài khoản</Breadcrumb.Item>
+              <Breadcrumb.Item>Thông tin cơ bản</Breadcrumb.Item>
             </Breadcrumb>
             <InformationPO />
+          </div>
+        );
+      case "7":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Tài chính</Breadcrumb.Item>
+              <Breadcrumb.Item>Doanh thu</Breadcrumb.Item>
+            </Breadcrumb>
+            <Revenue/>
+          </div>
+        );
+      case "8":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Tài chính</Breadcrumb.Item>
+              <Breadcrumb.Item>Số dư TK</Breadcrumb.Item>
+            </Breadcrumb>
           </div>
         );
       default:
@@ -291,72 +265,33 @@ const ProductOwner = () => {
               key="sub1"
               icon={<ContainerOutlined style={{ fontSize: "17px" }} />}
               title="Quản Lý Đơn Hàng"
-              style={{ fontWeight: "bold", fontSize: "15px" }}
             >
-              <Menu.Item
-                key="1"
-                icon={
-                  <GroupOutlined style={{ fontSize: "17px", color: "green" }} />
-                }
-              >
-                Tất cả
-              </Menu.Item>
-              <Menu.Item
-                icon={
-                  <CloseOutlined style={{ fontSize: "17px", color: "red" }} />
-                }
-                key="2"
-              >
-                Đơn huỷ
-              </Menu.Item>
-              <Menu.Item
-                icon={
-                  <SwapOutlined style={{ fontSize: "17px", color: "orange" }} />
-                }
-                key="3"
-              >
-                Trả hàng/Hoàn tiền
-              </Menu.Item>
+              <Menu.Item key="1">Tất cả</Menu.Item>
+              <Menu.Item key="2">Đơn huỷ</Menu.Item>
+              <Menu.Item key="3">Trả hàng/Hoàn tiền</Menu.Item>
             </SubMenu>
             <SubMenu
               key="sub2"
               icon={<ShopFilled style={{ fontSize: "17px" }} />}
               title="Quản Lí Sản Phẩm"
-              style={{ fontWeight: "bold", fontSize: "15px" }}
             >
-              <Menu.Item
-                icon={
-                  <ShoppingFilled
-                    style={{ fontSize: "17px", color: "black" }}
-                  />
-                }
-                key="4"
-              >
-                Tất cả sản phẩm
-              </Menu.Item>
-              <Menu.Item
-                icon={
-                  <PlusCircleOutlined
-                    style={{ fontSize: "17px", color: "green" }}
-                  />
-                }
-                key="5"
-              >
-                Thêm sản phẩm
-              </Menu.Item>
+              <Menu.Item key="4">Tất cả sản phẩm</Menu.Item>
+              <Menu.Item key="5">Thêm sản phẩm</Menu.Item>
             </SubMenu>
             <SubMenu
               key="sub3"
               icon={<UserOutlined style={{ fontSize: "17px" }} />}
               title="Quản Lý Tài Khoản"
-              style={{ fontWeight: "bold", fontSize: "15px" }}
             >
-              <Menu.Item
-                icon={<ProfileTwoTone style={{ fontSize: "17px" }} />}
-                key="6"
-              >
-                Thông tin cơ bản
-              </Menu.Item>
+              <Menu.Item key="6">Thông tin cơ bản</Menu.Item>
+            </SubMenu>
+            <SubMenu
+              key="sub4"
+              icon={<WalletOutlined style={{ fontSize: "17px" }} />}
+              title="Tài chính"
+            >
+              <Menu.Item key="7">Doanh thu</Menu.Item>
+              <Menu.Item key="8">Số dư TK</Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>
