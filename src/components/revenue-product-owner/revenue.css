@@ -1,0 +1,79 @@
+.overview {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 10px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.payment-status {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.unpaid {
+    display: grid;
+    align-content: space-between;
+    grid-gap: 15px;
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.paid-this-week {
+    display: grid;
+    grid-gap: 15px;
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.paid-this-month {
+    display: grid;
+    align-content: space-between;
+    margin-top: 70px;
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.total-paid {
+    display: grid;
+    align-content: space-between;
+    margin-top: 70px;
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.money-1 {
+    font-size: 25px;
+    font-weight: bold;
+    color: #ff6600;
+}
+
+.money-2 {
+    font-weight: bold;
+    color: #008000;
+}
+
+.detail-title {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.detail-table {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+}
