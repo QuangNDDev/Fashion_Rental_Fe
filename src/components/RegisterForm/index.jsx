@@ -17,520 +17,195 @@ import {
   Radio,
   Upload,
   notification,
+  Col,
+  Segmented,
+  Row,
+  Checkbox,
 } from "antd";
 import "./RegisterForm.css";
 import { storage } from "../../firebase/firebase";
 import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
-
-const { Step } = Steps;
-const { Item } = Form;
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [selectedRole, setSelectedRole] = useState(""); //theo dõi lựa chọn tại bước 2
-  const [createDetails, setCreateDetails] = useState(null);
-  const [chooseRoleDetail, setChooseRoleDetail] = useState(null);
-  const [formCus, setFormCus] = useState({});
-  const [formPO, setFormPO] = useState({});
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
-  const [urlImage, setUrlImage] = useState("");
+  const [accountType, setAccountType] = useState(1);
 
-  //convert img to url
-  const handleFileChange = (event) => {
-    console.log("handleFileChange called");
-    console.log("File selected:", event.file);
-    if (event.file) {
-      const imageRef = ref(storage, `images/${event.file.name + v4()}`);
+  const navigate = useNavigate();
 
-      uploadBytes(imageRef, event.file)
-        .then((snapshot) => {
-          // Set the URL after a successful upload
-          getDownloadURL(snapshot.ref).then((url) => {
-            // Lưu URL ảnh trong trạng thái của component
-            setUrlImage(url);
+  const [api, contextHolder] = notification.useNotification();
+
+  const onFinish = async (values) => {
+    const registerData = {
+      agree: values.agree,
+      email: values.email,
+      password: values.password,
+
+      roleID: accountType,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://fashionrental.online:8080/account/create",
+        registerData
+      );
+      if (response?.status === 200) {
+        await new Promise((resolve) => {
+          api["success"]({
+            message: "Đăng Ký Thành Công!",
+            description: response.data.message,
+            onClose: () => resolve(undefined), // Pass a dummy argument
+            duration: 1000,
           });
-        })
-        .catch((error) => {
-          console.error("Error uploading image:", error);
         });
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+
+      api["error"]({
+        message: "Đăng Ký Thất Bại",
+        description: error.response.data,
+      });
     }
-  };
-
-  //luu gia trị tát cả các field đã nhập vao state
-  // const [allDetails, setAllDetails] = useState({
-  //   createDetails: null,
-  //   chooseRoleDetail: null,
-  //   // formDetails: null,
-  //   formCus: {},
-  //   formPO: {},
-  // });
-  // console.log(allDetails);
-  // Khi hoàn thành bước 1
-  const onFinishCreateForm = (values) => {
-    setCreateDetails(values);
-    setCurrentStep(1);
-    //luu gia trị step 1
-    // setAllDetails({ ...allDetails, createDetails: values });
-  };
-  //radioButton
-
-  const onFinishChooseRoleForm = (values) => {
-    setChooseRoleDetail(values);
-
-    setCurrentStep(2);
-
-    if (values.roleID === "1") {
-      setSelectedRole("customer");
-    } else {
-      setSelectedRole("productOwner");
-    }
-
-    // Luu gia tri step 2
-    // setAllDetails({ ...allDetails, chooseRoleDetail: values });
-  };
-
-  // const onFishFormDetails = (values) => {
-  //   setAllDetails({ ...allDetails, formDetails: values });
-  //   setCurrentStep(3);
-  // };
-  const onFinishFormCus = (values) => {
-    // setAllDetails({ ...allDetails, formCus: values });
-    setFormCus(values);
-    setCurrentStep(3);
-  };
-
-  const onFinishFormPO = (values) => {
-    // setAllDetails({ ...allDetails, formPO: values });
-    setFormPO(values);
-    setCurrentStep(3);
-  };
-  //ham hien thi thong bao
-  const openNotificationWithIcon = (type, message, description) => {
-    notification[type]({
-      message: message,
-      description: description,
-    });
   };
 
   return (
-    <div className="register-form-container">
-      <Card className="register-card">
-        <Steps current={currentStep} onChange={setCurrentStep}>
-          <Step
-            title="Thông tin"
-            disabled={currentStep < 0}
-            icon={<UserOutlined style={{ color: "green" }} />}
-            onClick={() => {
-              if (currentStep >= 0) {
-                setCurrentStep(0);
-              } else {
-                openNotificationWithIcon(
-                  "info",
-                  "Vui lòng hoàn thành bước 0 để tiếp tục."
-                );
-              }
-            }}
-          />
-          <Step
-            style={{ cursor: "pointer" }}
-            title="Chọn vai trò"
-            disabled={currentStep < 1}
-            icon={<SolutionOutlined style={{ color: "green" }} />}
-            onClick={() => {
-              if (currentStep >= 1) {
-                // Bước 1 đã hoàn thành, cho phép chuyển đến bước 1
-                setCurrentStep(1);
-              } else {
-                // Bước 1 chưa hoàn thành, hiển thị thông báo
-                openNotificationWithIcon(
-                  "info",
-                  "Vui lòng hoàn thành bước nhập Thông Tin để tiếp tục."
-                );
-              }
-            }}
-          />
-          <Step
-            title="Thông tin chi tiết"
-            disabled={currentStep < 2}
-            style={{ cursor: "pointer" }}
-            icon={<LoadingOutlined style={{ color: "green" }} />}
-            onClick={() => {
-              if (currentStep >= 2) {
-                setCurrentStep(2);
-              } else {
-                openNotificationWithIcon(
-                  "info",
-                  "Vui lòng chọn Vai Trò để tiếp tục."
-                );
-              }
-            }}
-          />
-          <Step
-            title="Đăng ký"
-            disabled={currentStep < 3}
-            style={{ cursor: "pointer" }}
-            icon={<UserAddOutlined style={{ color: "green" }} />}
-            onClick={() => {
-              if (currentStep >= 3) {
-                setCurrentStep(3);
-              } else {
-                openNotificationWithIcon(
-                  "info",
-                  "Vui lòng điền thông tin chi tiết để hoàn tất."
-                );
-              }
-            }}
-          />
-        </Steps>
-        {currentStep === 0 && (
-          <Card className="card__children">
-            <CreateForm onFinish={onFinishCreateForm} />
-          </Card>
-        )}
-        {currentStep === 1 && (
-          <Card className="card__children--chooserole">
-            <ChooseRole onFinish={onFinishChooseRoleForm} />
-          </Card>
-        )}
-        {currentStep === 2 && (
+    <div className="registration-container">
+      <div className="left-panel">
+        <div className="right-panel">
           <Card
-            title={
-              selectedRole === "customer"
-                ? "Đăng kí khách hàng"
-                : "Đăng kí chủ sản phẩm"
-            }
-            className="card__children--form"
+            style={{
+              width: "70%",
+              marginLeft: "auto",
+              marginTop: "20%",
+            }}
           >
-            {selectedRole === "customer" ? (
-              <FormCus onFinish={onFinishFormCus} initialValues={formCus} />
-            ) : (
-              <FormPO onFinish={onFinishFormPO} initialValues={formPO} />
-            )}
-          </Card>
-        )}
+            {contextHolder}
+            <div
+              style={{ marginBottom: "30px", marginTop: "30px" }}
+              className="d-flex mb-4"
+            >
+              <h1>Đăng Ký</h1>
+            </div>
 
-        {currentStep === 3 && (
-          <Card className="card__children--icon">
-            {registrationSuccess ? <DoneSuccess /> : <DoneFailure />}
+            {/* <div style={{ marginBottom: "20px" }}>
+              Already have an account? <Link to="/login"> Sign in</Link>
+            </div> */}
+            <Form
+              className="registerForm"
+              layout="vertical"
+              onFinish={onFinish}
+            >
+              <Segmented
+                className="choose"
+                style={{ marginBottom: 30, fontWeight: "bold" }}
+                options={["Khách Hàng", "Chủ Sản Phẩm"]}
+                onChange={(e) => {
+                  if (e === "Khách Hàng") {
+                    setAccountType(1);
+                  }
+                  if (e === "Chủ Sản Phẩm") {
+                    setAccountType(2);
+                  }
+                }}
+              />
+              <Row gutter={[16, 4]}>
+                <Col xs={24} sm={24} md={12} lg={12}>
+                  <Form.Item
+                    name="email"
+                    label="Email"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng nhập Email",
+                      },
+                      {
+                        type: "email",
+                        message: "Vui lòng nhập đúng định dạng Email",
+                      },
+                    ]}
+                  >
+                    <Input className="registerForm__input" />
+                  </Form.Item>
+                </Col>
+
+                <Col xs={24} sm={24} md={12} lg={12}>
+                  <Form.Item
+                    name="password"
+                    label="Mật Khẩu"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng nhập mật khẩu",
+                      },
+                    ]}
+                  >
+                    <Input.Password className="registerForm__input" />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} sm={24} md={12} lg={12}>
+                  <Form.Item
+                    name="confirmPassword"
+                    label="Nhâp lại mật khẩu"
+                    dependencies={["password"]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng nhập lại mật khẩu",
+                      },
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (!value || getFieldValue("password") === value) {
+                            return Promise.resolve();
+                          }
+                          return Promise.reject(
+                            new Error("The two passwords do not match")
+                          );
+                        },
+                      }),
+                    ]}
+                  >
+                    <Input.Password className="registerForm__input" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Form.Item
+                name="agree"
+                valuePropName="checked"
+                rules={[
+                  {
+                    validator: (_, value) =>
+                      value
+                        ? Promise.resolve()
+                        : Promise.reject(
+                            new Error(
+                              "Vui lòng đồng ý với các điều khoản và điều kiện"
+                            )
+                          ),
+                  },
+                ]}
+              >
+                <Checkbox>
+                  Vui lòng đồng ý với các điều khoản và điều kiện
+                </Checkbox>
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  className="registerForm__button"
+                  type="primary"
+                  htmlType="submit"
+                >
+                  Register
+                </Button>
+              </Form.Item>
+            </Form>
           </Card>
-        )}
-      </Card>
+        </div>
+      </div>
     </div>
   );
-
-  function CreateForm({ onFinish }) {
-    return (
-      <Form onFinish={onFinish}>
-        <Form.Item
-          label="Email"
-          name={"email"}
-          rules={[
-            {
-              required: true,
-              type: "email",
-              message: "Vui lòng điền Email",
-            },
-          ]}
-        >
-          <Input style={{ width: "348px", marginLeft: "24px" }} />
-        </Form.Item>
-        <Form.Item
-          label="Mật khẩu"
-          name={"password"}
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng điền password",
-            },
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-
-        <Button className="btn-submit" type="primary" htmlType="submit">
-          Tiếp Tục
-        </Button>
-      </Form>
-    );
-  }
-
-  function ChooseRole({ onFinish }) {
-    const [value, setValue] = useState(1);
-    const onChange = (e) => {
-      console.log("radio checked", e.target.value);
-      setValue(e.target.value);
-    };
-    return (
-      <Form onFinish={onFinish}>
-        <Form.Item
-          label="Chọn vai trò"
-          initialValue={selectedRole}
-          name={"roleID"}
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng điền chọn vai trò",
-            },
-          ]}
-        >
-          <br />
-          <div className="Custom-radio">
-            <Radio.Group
-              onChange={(e) => setSelectedRole(e.target.value)}
-              value={selectedRole}
-            >
-              <div className="radio-container">
-                <Radio
-                  style={{ marginRight: "77px", marginTop: "10px" }}
-                  value="1"
-                >
-                  <p>Khách Hàng</p>
-                </Radio>
-                <Radio
-                  style={{ marginTop: "10px", marginLeft: "70px" }}
-                  value="2"
-                >
-                  <p style={{ marginRight: "52.5px" }}>Chủ Sản Phẩm</p>
-                </Radio>
-              </div>
-            </Radio.Group>
-            <div className="image-container">
-              <Card
-                className="img__chooserole"
-                size="small"
-                title="Khách Hàng"
-                style={{
-                  width: 260,
-                }}
-              >
-                <p>
-                  <img
-                    style={{ width: "110px" }}
-                    src="https://cdn-icons-png.flaticon.com/512/4143/4143099.png"
-                    alt=""
-                  />
-                </p>
-                <ul className="card__content">
-                  <li>Thuê Hoặc Mua Sản Phẩm</li>
-                  <li>Đảm Bảo Quyền Lợi Khách Hàng</li>
-                </ul>
-              </Card>
-              <Card
-                className="img__chooserole"
-                size="small"
-                title="Chủ Sản Phẩm"
-                style={{
-                  width: 260,
-                }}
-              >
-                <p>
-                  <img
-                    style={{ width: "110px" }}
-                    src="https://cdn-icons-png.flaticon.com/512/4143/4143099.png"
-                    alt=""
-                  />
-                </p>
-                <ul className="card__content">
-                  <li>Thuê Hoặc Mua Sản Phẩm</li>
-                  <li>Đảm Bảo Quyền Lợi Khách Hàng</li>
-                </ul>
-              </Card>
-            </div>
-          </div>
-        </Form.Item>
-        <Button className="btn-submit" type="primary" htmlType="submit">
-          Tiếp Tục
-        </Button>
-      </Form>
-    );
-  }
-
-  function FormCus({ onFinish }) {
-    const [value, setValue] = useState(1);
-    const onChange = (e) => {
-      console.log("radio checked", e.target.value);
-      setValue(e.target.value);
-    };
-
-    return (
-      <Form onFinish={onFinish}>
-        <Form.Item
-          label="Họ và Tên"
-          name="fullName"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng điền tên khách hàng",
-            },
-            {
-              pattern: /^[^\d]+$/,
-              message: "Họ và tên không hợp lệ",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Số điện thoại"
-          name="phone"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng điền số điện thoại",
-            },
-            {
-              pattern: /^\d{10}$/,
-              message: "Số điện thoại không hợp lệ",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Giới tính"
-          name="sex"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn giới tính",
-            },
-          ]}
-        >
-          <Radio.Group onChange={onChange} value={value}>
-            <Radio value={1}>Nam</Radio>
-            <Radio value={2}>Nữ</Radio>
-          </Radio.Group>
-        </Form.Item>
-
-        <Form.Item
-          label="Ảnh đại diện"
-          name="avatarUrl"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn ảnh đại diện",
-            },
-          ]}
-        >
-          <Upload
-            maxCount={1}
-            onChange={handleFileChange}
-            beforeUpload={() => false}
-          >
-            <Button icon={<UploadOutlined />}>Select Image</Button>
-          </Upload>
-        </Form.Item>
-
-        <Button className="btn-submit" type="primary" htmlType="submit">
-          Đăng Ký
-        </Button>
-      </Form>
-    );
-  }
-
-  function FormPO({ onFinish }) {
-    return (
-      <Form onFinish={onFinish}>
-        <Form.Item
-          label="Họ và Tên"
-          name="fullName"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng điền tên khách hàng",
-            },
-            {
-              pattern: /^[^\d]+$/,
-              message: "Họ và tên không hợp lệ",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <br />
-        <br />
-        <Form.Item
-          label="Số điện thoại"
-          name="phone"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng điền số điện thoại",
-            },
-            {
-              pattern: /^\d{10}$/,
-              message: "Số điện thoại không hợp lệ",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <br />
-        <br />
-        <Form.Item
-          label="Địa chỉ"
-          name="address"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập địa chỉ",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <br />
-        <br />
-
-        <Form.Item
-          label="Ảnh đại diện"
-          name="avatarUrl"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn ảnh đại diện",
-            },
-          ]}
-        >
-          <Upload
-            maxCount={1}
-            onChange={handleFileChange}
-            beforeUpload={() => false}
-          >
-            <Button icon={<UploadOutlined />}>Select Image</Button>
-          </Upload>
-        </Form.Item>
-        <br />
-        <br />
-
-        <Button className="btn-submit" type="primary" htmlType="submit">
-          Đăng Ký
-        </Button>
-      </Form>
-    );
-  }
-
-  function DoneSuccess() {
-    return (
-      <div className="card__children--icons--icon ">
-        <CheckCircleTwoTone
-          twoToneColor="#52c41a"
-          style={{ fontSize: "40px" }}
-        />
-        <p style={{ fontWeight: "bold" }}>Đăng ký thành công</p>
-      </div>
-    );
-  }
-
-  function DoneFailure() {
-    return (
-      <div className="card__children--icons--icon ">
-        <CloseCircleOutlined style={{ color: "red", fontSize: "40px" }} />
-        <p style={{ fontWeight: "bold" }}>Đăng ký thât bại</p>
-      </div>
-    );
-  }
 };
 
 export default RegisterForm;
