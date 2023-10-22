@@ -119,7 +119,7 @@ const LoginForm = () => {
                   // loading={loadings[0]}
                   // onClick={() => enterLoading(0)}
                 >
-                  Log in
+                  Đăng Nhập
                 </Button>
               </Form.Item>
             </div>
