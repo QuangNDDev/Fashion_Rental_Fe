@@ -38,7 +38,8 @@ const ProductOwner = () => {
       const response = await axios.get(
         "http://fashionrental.online:8080/account/" + idAccount
       );
-      setProductOwner(response.data.productowner);
+      setProductOwner(response.data.data.productowner);
+      localStorage.setItem("productownerId", response.data.data.productowner.productownerID);
     } catch (error) {
       console.error(error);
     }
@@ -210,7 +211,7 @@ const ProductOwner = () => {
             height={50}
           />
           <h2 style={{ color: "#fff", fontWeight: "normal" }}>
-            Kênh người bán
+            Chủ sản phẩm
           </h2>
         </div>
         {/* Notification bell icon and avatar */}

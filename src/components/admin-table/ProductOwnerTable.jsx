@@ -16,14 +16,9 @@ const ProductOwnerTable = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "http://134.209.111.144:8080/po/get-all-po"
+        "http://fashionrental.online:8080/po/get-all-po"
       );
-      const users = response.data.map((user) => ({
-        ...user,
-        roleName: user.accountDTO.roleDTO.roleName,
-        email: user.accountDTO.email,
-      }));
-      setUsers(users);
+      setUsers(response.data);
     } catch (error) {
       console.error(error);
     }

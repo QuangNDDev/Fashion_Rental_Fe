@@ -18,14 +18,9 @@ const CustomerTable = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "http://134.209.111.144:8080/customer/get-all-customer"
+        "http://fashionrental.online:8080/customer/get-all-customer"
       );
-      const users = response.data.map((user) => ({
-        ...user,
-        roleName: user.accountDTO.roleDTO.roleName,
-        email: user.accountDTO.email,
-      }));
-      setUsers(users);
+      setUsers(response.data);
     } catch (error) {
       console.error(error);
     }

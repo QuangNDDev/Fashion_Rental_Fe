@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   EditOutlined,
   EllipsisOutlined,
@@ -7,6 +7,7 @@ import {
 import { Avatar, Card, Col, Input, Row } from "antd";
 import { Form, Modal, Button } from "antd";
 import MuntilImage from "../Mutil-Image";
+import axios from "axios";
 const { Meta } = Card;
 // const products = [
 //   {
@@ -65,108 +66,44 @@ const ProductCard = () => {
   const [formData, setFormData] = useState(null);
   const [form] = Form.useForm();
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [productData, setProductData] = useState([
-    {
-      id: "1",
-      avatar:
-        "https://vn.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-t%C3%BAi-onthego-mm-monogram-t%C3%BAi--M45321_PM2_Front%20view.jpg",
-      product_Name: "Louis Vuitton", // Thay đổi title
-      price: "1.000.000",
-      invoice_Code: "ACCCAAA",
-      address: "Vinhome grandpark Quận 9",
-      phone_Number: "0822833799",
-      imgProduct: { MuntilImage },
-    },
-    {
-      id: "2",
-      avatar:
-        "https://images.unsplash.com/photo-1591348278863-a8fb3887e2aa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2735&q=80",
-      product_Name: "Prada", // Thay đổi title
-      price: "3.000.000",
-      invoice_Code: "ACCCAAA",
-      address: "Vinhome grandpark Quận 9",
-      phone_Number: "0822833799",
-      imgProduct: { MuntilImage },
-    },
-    {
-      id: "3",
-      avatar:
-        "https://images.unsplash.com/photo-1598452963314-b09f397a5c48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2981&q=80",
-      product_Name: "Gucci", // Thay đổi title
-      price: "10.000.000",
-      invoice_Code: "ACCCAAA",
-      address: "Vinhome grandpark Quận 9",
-      phone_Number: "0822833799",
-      imgProduct: { MuntilImage },
-    },
-    {
-      id: "4",
-      avatar:
-        "https://images.unsplash.com/photo-1590739225287-bd31519780c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2592&q=80",
-      product_Name: "Chanel", // Thay đổi title
-      price: "5.000.000",
-      invoice_Code: "ACCCAAA",
-      address: "Vinhome grandpark Quận 9",
-      phone_Number: "0822833799",
-      imgProduct: { MuntilImage },
-    },
-    {
-      id: "5",
-      avatar:
-        "https://images.unsplash.com/photo-1592842312573-dca0b185d2e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2592&q=80",
-      product_Name: "Chanel", // Thay đổi title
-      price: "3.000.000",
-      invoice_Code: "ACCCAAA",
-      address: "Vinhome grandpark Quận 9",
-      phone_Number: "0822833799",
-      imgProduct: { MuntilImage },
-    },
-    {
-      id: "6",
-      avatar:
-        "https://images.unsplash.com/photo-1624796037770-c57cb79a567a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2970&q=80",
-      product_Name: "Gucci", // Thay đổi title
-      price: "1.000.000",
-      invoice_Code: "ACCCAAA",
-      address: "Vinhome grandpark Quận 9",
-      phone_Number: "0822833799",
-      imgProduct: { MuntilImage },
-    },
-    {
-      id: "7",
-      avatar:
-        "https://images.unsplash.com/photo-1591348278863-a8fb3887e2aa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2735&q=80",
-      product_Name: "Louis Vuitton", // Thay đổi title
-      price: "1.000.000",
-      invoice_Code: "ACCCAAA",
-      address: "Vinhome grandpark Quận 9",
-      phone_Number: "0822833799",
-      imgProduct: { MuntilImage },
-    },
-    {
-      id: "8",
-      avatar:
-        "https://images.unsplash.com/photo-1591348278863-a8fb3887e2aa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2735&q=80",
-      product_Name: "Louis Vuitton", // Thay đổi title
-      price: "1.000.000",
-      invoice_Code: "ACCCAAA",
-      address: "Vinhome grandpark Quận 9",
-      phone_Number: "0822833799",
-      imgProduct: { MuntilImage },
-    },
-  ]);
+  const productownerId = localStorage.getItem("productownerId");
+  const idAccount = localStorage.getItem("accountId");
+  const [productData, setProductData] = useState([]);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/product/getproducts/" + productownerId
+      );
+      setProductData(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
   const showModal = (productData) => {
     setIsModalVisible(true);
     setSelectedProduct(productData);
-    // Cập nhật dữ liệu cho Modal dựa trên thẻ hiện tại
+    const specificationData = JSON.parse(productData.productSpecificationData);
+  const madeOfValue = specificationData.madeof;
+  const brand = specificationData.brandName;
     form.setFieldsValue({
       avatar: productData.avatar,
-      productName: productData.product_Name,
-      invoiceCode: productData.invoice_Code,
-      address: productData.address,
+      productName: productData.productName,
+      productReceiptUrl: productData.productReceiptUrl,
+      description: productData.description,
       price: productData.price,
-      phoneNumber: productData.phone_Number,
+      status: productData.status,
+      forSale: productData.forSale,
+      forRent: productData.forRent,
+      categoryName: productData.category.categoryName,
       imgProduct: productData.imgProduct,
+      madeOf : madeOfValue,
+      brandName : brand,
+
       // Các trường dữ liệu khác tương tự
     });
   };
@@ -215,8 +152,7 @@ const ProductCard = () => {
               ]}
             >
               <Meta
-                //   avatar={<Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />}
-                title={product.product_Name}
+                title={product.productName}
                 description={product.price}
                 style={{ textAlign: "center" }}
               />
@@ -247,15 +183,15 @@ const ProductCard = () => {
 
             <Form.Item
               label="Mã hóa đơn"
-              name="invoiceCode"
+              name="productReceiptUrl"
               rules={[{ required: true, message: "Vui lòng nhập mã hóa đơn!" }]}
             >
               <Input readOnly style={{ width: "300px", marginLeft: "24px" }} />
             </Form.Item>
 
             <Form.Item
-              label="Địa chỉ"
-              name="address"
+              label="Mô tả"
+              name="description"
               rules={[{ required: true, message: "Vui lòng nhập địa chỉ!" }]}
             >
               <Input
@@ -265,8 +201,20 @@ const ProductCard = () => {
             </Form.Item>
 
             <Form.Item
-              label="Số điện thoại"
-              name="phoneNumber"
+              label="Chất liệu"
+              name="madeOf"
+              rules={[
+                { required: true, message: "Vui lòng nhập số điện thoại!" },
+              ]}
+            >
+              <Input
+                readOnly
+                style={{ width: "300px", marginLeft: "16.8px" }}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Thương hiệu"
+              name="brandName"
               rules={[
                 { required: true, message: "Vui lòng nhập số điện thoại!" },
               ]}

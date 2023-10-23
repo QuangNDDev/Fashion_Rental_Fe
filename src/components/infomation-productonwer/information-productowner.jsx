@@ -14,10 +14,9 @@ const InformationPO = () => {
   const fetchProductOwner = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/account/" +
-          idAccount
+        "http://fashionrental.online:8080/account/" + idAccount
       );
-      setProductOwner(response.data.productowner);
+      setProductOwner(response.data.data.productowner);
     } catch (error) {
       console.error(error);
     }
@@ -64,19 +63,21 @@ const InformationPO = () => {
     setOpen(true);
     form.setFieldsValue(productonwer);
     setIsDrawerVisible(true);
+    // setUrlImage(productonwer.avatarUrl);
+    // console.log(urlImage);
   };
   const onClose = () => {
     setOpen(false);
     form.resetFields();
     setIsDrawerVisible(false);
   };
-  
+
   const handleFileChange = (event) => {
     console.log("handleFileChange called");
     console.log("File selected:", event.file);
     if (event.file) {
       const imageRef = ref(storage, `images/${event.file.name + v4()}`);
-      
+
       uploadBytes(imageRef, event.file)
         .then((snapshot) => {
           // Set the URL after a successful upload
@@ -149,7 +150,7 @@ const InformationPO = () => {
               >
                 <Input />
               </Form.Item>
-              <Form.Item label="Ảnh đại diện" >
+              <Form.Item label="Ảnh đại diện">
                 <Upload
                   maxCount={1}
                   onChange={handleFileChange}
@@ -161,7 +162,11 @@ const InformationPO = () => {
 
               <Form.Item>
                 <Button
-                  style={{ backgroundColor: "#008000", color: "#fff",width:"100%" }}
+                  style={{
+                    backgroundColor: "#008000",
+                    color: "#fff",
+                    width: "100%",
+                  }}
                   onClick={editUser}
                   disabled={!urlImage}
                 >
