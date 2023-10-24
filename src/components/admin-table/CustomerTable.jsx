@@ -20,7 +20,13 @@ const CustomerTable = () => {
       const response = await axios.get(
         "http://fashionrental.online:8080/customer/get-all-customer"
       );
-      setUsers(response.data);
+      const updatedUsers = response.data.map((user) => ({
+        ...user,
+        status: user.accountDTO.status,
+        email: user.accountDTO.email,
+        roleName: user.accountDTO.roleDTO.roleName,
+      }));
+      setUsers(updatedUsers);
     } catch (error) {
       console.error(error);
     }
@@ -213,7 +219,7 @@ const CustomerTable = () => {
       width: "15%",
       ...getColumnSearchProps("roleName"),
       render: (roleName) => (
-        <p style={{ textAlign: "center" }}>
+        <p style={{ textAlign: "center",justifyContent:"center" }}>
           <RenderTag tagRender={roleName} />
         </p>
       ),
