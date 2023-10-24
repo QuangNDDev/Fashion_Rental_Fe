@@ -18,7 +18,14 @@ const ProductOwnerTable = () => {
       const response = await axios.get(
         "http://fashionrental.online:8080/po/get-all-po"
       );
-      setUsers(response.data);
+      const updatedUsers = response.data.map((user) => ({
+        ...user,
+        status: user.accountDTO.status,
+        email: user.accountDTO.email,
+        roleName: user.accountDTO.roleDTO.roleName,
+      }));
+
+      setUsers(updatedUsers);
     } catch (error) {
       console.error(error);
     }
@@ -203,7 +210,7 @@ const ProductOwnerTable = () => {
       key: "roleName",
       width: "10%",
       render: (roleName) => (
-        <p style={{ textAlign: "center", marginBottom: "50px" }}>
+        <p style={{ textAlign: "center", marginBottom: "20px" }}>
           <RenderTag tagRender={roleName} />
         </p>
       ),
@@ -215,7 +222,7 @@ const ProductOwnerTable = () => {
       width: "10%",
       ...getColumnSearchProps("status"),
       render: (status) => (
-        <p style={{ textAlign: "center", marginBottom: "50px" }}>
+        <p style={{ textAlign: "center", marginBottom: "20px" }}>
           <RenderTag tagRender={status} />
         </p>
       ),

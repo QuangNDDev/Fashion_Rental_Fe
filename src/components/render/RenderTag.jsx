@@ -32,6 +32,12 @@ export default function RenderTag(props) {
     }else if (renderTag == "Cancel"){
       setColor("red");
       setStatus("Đã huỷ")
+    }else if (renderTag == "VERIFIED"){
+      setColor("green");
+      setStatus("Đã xác minh")
+    }else if (renderTag == "NOT_VERIFIED"){
+      setColor("red");
+      setStatus("Chưa xác minh")
     }
   }, []);
 
