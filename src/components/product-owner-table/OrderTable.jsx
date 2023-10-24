@@ -59,7 +59,6 @@ const OrderTable = () => {
       address: "Công viên phần mềm, Quận 12",
       status: "Refuse",
     },
-    
   ]);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -283,19 +282,6 @@ const OrderTable = () => {
       key: "action",
       align: "left",
       width: "5%",
-      render: (_, record) => (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Button
-            style={{ marginRight: "15px" }}
-            onClick={() => showEditDrawer(record)}
-          >
-            <EditTwoTone />
-          </Button>
-          <Button danger>
-            <DeleteFilled />
-          </Button>
-        </div>
-      ),
     },
   ];
   return (
@@ -361,27 +347,25 @@ const OrderTable = () => {
           <Form.Item>
             <Button
               type="primary"
-            
               style={{
                 backgroundColor: "#008000",
                 color: "#fff",
                 width: "70%",
               }}
             >
-             Xác nhận
+              Xác nhận
             </Button>
             <Button
               type="primary"
-            
               style={{
                 backgroundColor: "red",
                 color: "#fff",
                 width: "25%",
-                marginLeft:"10px"
+                marginLeft: "10px",
               }}
               danger
             >
-             Từ chối
+              Từ chối
             </Button>
           </Form.Item>
         </Form>

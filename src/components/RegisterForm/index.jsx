@@ -1,33 +1,18 @@
-import React, { useState } from "react";
 import {
-  LoadingOutlined,
-  UserAddOutlined,
-  SolutionOutlined,
-  UserOutlined,
-  UploadOutlined,
-  CheckCircleTwoTone,
-  CloseCircleOutlined,
-} from "@ant-design/icons";
-import {
-  Steps,
+  Button,
   Card,
+  Checkbox,
+  Col,
   Form,
   Input,
-  Button,
-  Radio,
-  Upload,
-  notification,
-  Col,
-  Segmented,
   Row,
-  Checkbox,
+  Segmented,
+  notification,
 } from "antd";
-import "./RegisterForm.css";
-import { storage } from "../../firebase/firebase";
-import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
-import { v4 } from "uuid";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./RegisterForm.css";
 
 const RegisterForm = () => {
   const [accountType, setAccountType] = useState(1);
@@ -51,22 +36,35 @@ const RegisterForm = () => {
         registerData
       );
       if (response?.status === 200) {
-        await new Promise((resolve) => {
+        const responseData = response.data;
+
+        if (responseData.message === "registration_successful") {
           api["success"]({
             message: "Đăng Ký Thành Công!",
-            description: response.data.message,
-            onClose: () => resolve(undefined), // Pass a dummy argument
+            description: "Registration Successful",
             duration: 1000,
           });
-        });
-        navigate("/");
+          navigate("/");
+        } else if (
+          responseData.message === "Created Fail By Email Already Existed"
+        ) {
+          api["warning"]({
+            message: "Đăng Ký Thất Bại",
+            description: "Email đã tồn tại",
+          });
+        } else {
+          api["error"]({
+            message: "Đăng Ký Thất Bại",
+            description: "Đăng Ký Thất Bại",
+          });
+        }
       }
     } catch (error) {
       console.log(error);
 
       api["error"]({
         message: "Đăng Ký Thất Bại",
-        description: error.response.data,
+        description: error.response.data.message || "Đăng Ký Thất Bại",
       });
     }
   };
