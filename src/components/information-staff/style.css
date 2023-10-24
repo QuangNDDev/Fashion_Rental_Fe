@@ -1,0 +1,37 @@
+/* Profile.css */
+
+/* Định dạng cho phần tử chứa thông tin cá nhân */
+.profile-container {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  width: 50%;
+  margin: auto;
+  margin-top: 20px;
+}
+
+/* Định dạng cho tên người dùng */
+.user-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Định dạng cho mô tả cá nhân */
+.user-description {
+  font-size: 16px;
+  color: #666;
+}
+.input-container {
+  margin-top: 10px;
+  width: 50%;
+}
+
+.select-image {
+  margin-top: 10px;
+}
+
+.update-button {
+  margin-top: 10px;
+}

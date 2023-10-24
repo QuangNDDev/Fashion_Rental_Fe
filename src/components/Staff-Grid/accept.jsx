@@ -25,7 +25,7 @@ const data = [
     phone: 32,
     address: "New York No. 1 Lake Park",
     invoiceCode: "https://kenh14cdn.com/2017/photo-4-1488968670853.jpg",
-    status: "Approve",
+    status: "Pending",
     detailImg: {
       images: [
         "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=2069&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -45,7 +45,7 @@ const data = [
     phone: 42,
     address: "London No. 1 Lake Park",
     invoiceCode: "https://kenh14cdn.com/2017/photo-4-1488968670853.jpg",
-    status: "Approve",
+    status: "Pending",
     detailImg: {
       images: [
         "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=2069&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -72,7 +72,7 @@ const data = [
     address: "London No. 2 Lake Park",
   },
 ];
-const TablePending = () => {
+const TableAccept = () => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -343,4 +343,4 @@ const TablePending = () => {
     </div>
   );
 };
-export default TablePending;
+export default TableAccept;

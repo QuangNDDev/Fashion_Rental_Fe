@@ -14,6 +14,7 @@ const CustomerTable = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [form] = Form.useForm();
 
   const fetchUsers = async () => {
     try {
@@ -141,8 +142,6 @@ const CustomerTable = () => {
         text
       ),
   });
-
-  const [form] = Form.useForm();
 
   const showEditDrawer = (record) => {
     setEditingUser(record);
