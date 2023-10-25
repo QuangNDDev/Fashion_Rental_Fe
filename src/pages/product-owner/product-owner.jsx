@@ -25,6 +25,7 @@ import InformationPO from "../../components/infomation-productonwer/information-
 import OrderTable from "../../components/product-owner-table/OrderTable";
 import CancelOrderTable from "../../components/product-owner-table/CancelOrderTable";
 import Revenue from "../../components/revenue-product-owner/revenue";
+import CreateProduct from "../../components/create-product/create-product";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -144,6 +145,7 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Quản lý sản phẩm</Breadcrumb.Item>
               <Breadcrumb.Item>Thêm sản phẩm</Breadcrumb.Item>
             </Breadcrumb>
+            <CreateProduct/>
           </div>
         );
       case "6":

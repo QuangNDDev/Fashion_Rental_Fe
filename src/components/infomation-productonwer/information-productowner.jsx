@@ -63,7 +63,7 @@ const InformationPO = () => {
     setOpen(true);
     form.setFieldsValue(productonwer);
     setIsDrawerVisible(true);
-    // setUrlImage(productonwer.avatarUrl);
+    setUrlImage(productonwer.avatarUrl);
     // console.log(urlImage);
   };
   const onClose = () => {
@@ -74,7 +74,8 @@ const InformationPO = () => {
 
   const handleFileChange = (event) => {
     console.log("handleFileChange called");
-    console.log("File selected:", event.file);
+    console.log("File selected:", event.file)
+    if(event.file.status!=="removed"){
     if (event.file) {
       const imageRef = ref(storage, `images/${event.file.name + v4()}`);
 
@@ -88,8 +89,11 @@ const InformationPO = () => {
         .catch((error) => {
           console.error("Error uploading image:", error);
         });
+    }}else{
+      setUrlImage(productowner.avatarUrl);
     }
   };
+ 
   return (
     <div style={{ justifyContent: "center" }}>
       <div

@@ -53,7 +53,7 @@ const StaffTable = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "http://134.209.111.144:8080/staff/getstaffs"
+        "http://fashionrental.online:8080/staff/getstaffs"
       );
       const users = response.data.map((user) => ({
         ...user,
@@ -158,24 +158,11 @@ const StaffTable = () => {
           "http://fashionrental.online:8080/account/create",
           registerAccountData
         );
-
-        const registerStaffData = {
-          accountID: response.data.accountID,
-          avatarUrl: urlImage,
-          fullName: formValues.fullName,
-          status: true,
-        };
-
-        const staffResponse = await axios.post(
-          "http://fashionrental.online:8080/staff/createstaff",
-          registerStaffData
-        );
-
-        message.success("Thêm mới thành công!");
+        message.success("Thêm mới thành công!",response.data);
         fetchUsers();
         onClose();
         form.resetFields();
-        console.log("Registration successful", staffResponse.data);
+        console.log("Registration successful", response.data);
       } catch (error) {
         message.error("Vui lòng nhập lại dữ liệu!");
         console.error("Registration failed", error);
@@ -417,11 +404,11 @@ const StaffTable = () => {
               rules={[
                 {
                   type: "email",
-                  message: "The input is not valid E-mail!",
+                  message: "Thông tin email không hợp lệ!",
                 },
                 {
                   required: true,
-                  message: "Please input your E-mail!",
+                  message: "Hãy nhập e-mail!",
                 },
               ]}
             >
@@ -434,7 +421,7 @@ const StaffTable = () => {
               rules={[
                 {
                   required: true,
-                  message: "Please input your password!",
+                  message: "Hãy nhập mật khẩu!",
                 },
               ]}
               hasFeedback
@@ -450,7 +437,7 @@ const StaffTable = () => {
               rules={[
                 {
                   required: true,
-                  message: "Please confirm your password!",
+                  message: "Hãy xác nhận mật khẩu của bạn!",
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
@@ -459,7 +446,7 @@ const StaffTable = () => {
                     }
                     return Promise.reject(
                       new Error(
-                        "The new password that you entered do not match!"
+                        "Mật khẩu không khớp!"
                       )
                     );
                   },
@@ -467,28 +454,6 @@ const StaffTable = () => {
               ]}
             >
               <Input.Password />
-            </Form.Item>
-            <Form.Item
-              name="fullName"
-              label="Họ và tên"
-              rules={[
-                { required: true, message: "Xin vui lòng nhập Họ và Tên!" },
-                {
-                  pattern: /^[^\d]+$/,
-                  message: "Không được nhập số!",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item label="Ảnh đại diện">
-              <Upload
-                maxCount={1}
-                onChange={handleFileChange}
-                beforeUpload={() => false}
-              >
-                <Button icon={<UploadOutlined />}>Select Image</Button>
-              </Upload>
             </Form.Item>
             <Form.Item>
               <Button
@@ -499,7 +464,7 @@ const StaffTable = () => {
                   color: "#fff",
                   width: "100%",
                 }}
-                disabled={!urlImage}
+                
               >
                 {isEdit ? "Chỉnh sửa" : "Thêm mới"}
               </Button>
