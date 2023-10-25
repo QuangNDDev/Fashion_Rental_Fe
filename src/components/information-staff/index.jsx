@@ -18,7 +18,7 @@ import axios from "axios";
 
 const { Meta } = Card;
 
-const ProfileStaff = (userHeaderInfo) => {
+const ProfileStaff = () => {
   const [loading, setLoading] = useState(false);
   const [urlImage, setUrlImage] = useState("");
   const [api, contextHolder] = notification.useNotification();

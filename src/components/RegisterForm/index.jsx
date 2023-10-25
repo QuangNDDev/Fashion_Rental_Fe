@@ -26,7 +26,6 @@ const RegisterForm = () => {
       agree: values.agree,
       email: values.email,
       password: values.password,
-
       roleID: accountType,
     };
 
@@ -36,42 +35,49 @@ const RegisterForm = () => {
         registerData
       );
       if (response?.status === 200) {
-        const responseData = response.data;
-
-        if (responseData.message === "registration_successful") {
-          api["success"]({
-            message: "Đăng Ký Thành Công!",
-            description: "Chúc mừng bạn đã đăng ký thành công",
-            duration: 1000,
-          });
+        api["success"]({
+          message: "Đăng Ký Thành Công!",
+          description: "Chúc mừng bạn đã đăng ký thành công",
+          duration: 1000,
+        });
+        setTimeout(() => {
           navigate("/");
-        } else if (
-          responseData.message === "Created Fail By Email Already Existed"
+        }, 1000);
+      }
+    } catch (error) {
+      console.log(error);
+
+      if (error.response && error.response.data) {
+        if (
+          error.response.data.message ===
+          "Created Fail By Email Already Existed"
         ) {
           api["warning"]({
-            message: "Đăng Ký Thất Bại",
+            message: "Đăng Ký Thất Bại!",
             description: "Email đã tồn tại",
           });
         } else {
           api["error"]({
             message: "Đăng Ký Thất Bại",
-            description: "Đăng Ký Thất Bại",
+            description: error.response.data.message || "Đăng Ký Thất Bại",
+            duration: 1000,
           });
         }
+      } else {
+        api["error"]({
+          message: "Đăng Ký Thất Bại",
+          description: "Đăng Ký Thất Bại",
+          duration: 1000,
+        });
       }
-    } catch (error) {
-      console.log(error);
-
-      api["error"]({
-        message: "Đăng Ký Thất Bại",
-        description: error.response.data.message || "Đăng Ký Thất Bại",
-      });
     }
   };
-  const validateEmail = (email) => {
-    const regex =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return regex.test(String(email).toLowerCase());
+  const emailValidator = (rule, value, callback) => {
+    if (value && !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
+      callback("Vui lòng nhập địa chỉ email phù hợp!");
+    } else {
+      callback();
+    }
   };
   return (
     <div className="registration-container">
@@ -120,10 +126,7 @@ const RegisterForm = () => {
                         required: true,
                         message: "Vui lòng nhập email!",
                       },
-                      {
-                        validator: (_, value) =>
-                          validateEmail(value) || "Email không hợp lệ!",
-                      },
+                      { validator: emailValidator },
                     ]}
                   >
                     <Input className="registerForm__input" />

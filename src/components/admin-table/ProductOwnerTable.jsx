@@ -1,7 +1,17 @@
 import { SearchOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { Button, Drawer, Form, Input, Radio, Space, Table, Tag } from "antd";
+import {
+  Button,
+  Drawer,
+  Form,
+  Input,
+  Radio,
+  Space,
+  Table,
+  Tag,
+  notification,
+} from "antd";
 import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
@@ -13,6 +23,7 @@ const ProductOwnerTable = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
@@ -168,9 +179,17 @@ const ProductOwnerTable = () => {
             editData
           )
           .then((response) => {
+            api["success"]({
+              message: "Cập Nhật Thành Công",
+              description: null,
+            });
             console.log(response);
           });
       } catch (error) {
+        api["error"]({
+          message: "Cập Nhật Thất Bại",
+          description: null,
+        });
         console.log(error);
       }
 
@@ -276,6 +295,7 @@ const ProductOwnerTable = () => {
   return (
     <div>
       <Table columns={columns} dataSource={users} />
+      {contextHolder}
       <Drawer
         title={isEdit ? "Cập Nhật" : "Add User"}
         visible={isDrawerVisible}
@@ -283,9 +303,9 @@ const ProductOwnerTable = () => {
         width={400}
       >
         <Form form={form}>
+          <p style={{ fontWeight: "bold" }}>Họ và tên:</p>
           <Form.Item
             name="fullName"
-            label="Họ và tên"
             rules={[
               { required: true, message: "Xin vui lòng nhập Họ và Tên!" },
               {
@@ -296,18 +316,18 @@ const ProductOwnerTable = () => {
           >
             <Input />
           </Form.Item>
+          <p style={{ fontWeight: "bold" }}>Số Điện Thoại:</p>
           <Form.Item
             name="phone"
-            label="SĐT"
             rules={[
               { required: true, message: "Xin vui lòng nhập số điện thoại!" },
             ]}
           >
             <Input />
           </Form.Item>
+          <p style={{ fontWeight: "bold" }}>Email:</p>
           <Form.Item
             name="email"
-            label="Email"
             rules={[
               {
                 required: true,
@@ -321,23 +341,26 @@ const ProductOwnerTable = () => {
           >
             <Input placeholder="email" />
           </Form.Item>
-
+          <p style={{ fontWeight: "bold" }}>Địa Chỉ:</p>
           <Form.Item
             name="address"
-            label="Địa chỉ"
             rules={[{ required: true, message: "Xin vui lòng nhập địa chỉ!" }]}
           >
             <Input placeholder="địa chỉ" />
           </Form.Item>
+          <p style={{ marginBottom: "10px", fontWeight: "bold" }}>
+            Trạng Thái Hoạt Động:
+          </p>
           <Form.Item
             name="status"
-            label="Trạng thái hoạt động"
             rules={[
               { required: true, message: "Cập nhật trạng thái hoạt động!" },
             ]}
           >
             <Radio.Group>
-              <Radio value={true}>Đang hoạt động</Radio>
+              <Radio style={{ marginLeft: "50px" }} value={true}>
+                Đang hoạt động
+              </Radio>
               <Radio value={false}>Không hoạt động</Radio>
             </Radio.Group>
           </Form.Item>
@@ -352,7 +375,7 @@ const ProductOwnerTable = () => {
                 width: "100%",
               }}
             >
-              {isEdit ? "Update" : "Add"}
+              {isEdit ? "Cập Nhật" : "Add"}
             </Button>
           </Form.Item>
           <Form.Item name="roleID">
