@@ -1,0 +1,66 @@
+.section-title{
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 10px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+}
+.product-details{
+    display: grid;
+    padding: 20px;
+    
+
+}
+.name span{
+    font-weight: bold;
+   
+}
+.name{
+    padding:20px;
+}
+.description{
+    padding:20px;
+}
+.description span{
+    font-weight: bold;
+}
+.price{
+    display: grid;
+    padding:20px;
+}
+.price span{
+    font-weight: bold;
+}
+.image{
+    display: grid;
+    padding:20px;
+}
+.image span{
+    font-weight: bold;
+    
+}
+.rent-sale span{
+    font-weight: bold;
+
+}
+.rent-sale{
+    display: grid;
+    padding:20px;
+}
+.receipt {
+    display: grid;
+    padding:20px;
+}
+.receipt span {
+    font-weight: bold;
+}
+
+.numeric-input .ant-tooltip-inner {
+    min-width: 32px;
+    min-height: 37px;
+  }
+  
+  .numeric-input .numeric-input-title {
+    font-size: 14px;
+  }

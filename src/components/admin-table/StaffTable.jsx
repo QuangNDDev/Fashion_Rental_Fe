@@ -53,7 +53,7 @@ const StaffTable = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "http://134.209.111.144:8080/staff/getstaffs"
+        "http://fashionrental.online:8080/staff/getstaffs"
       );
       const users = response.data.map((user) => ({
         ...user,
@@ -163,7 +163,9 @@ const StaffTable = () => {
           registerAccountData
         );
 
+
         message.success("Thêm mới thành công!");
+
         fetchUsers();
         onClose();
         form.resetFields();
@@ -404,11 +406,13 @@ const StaffTable = () => {
               rules={[
                 {
                   type: "email",
+
                   message: "Vui lòng nhập email",
                 },
                 {
                   required: true,
                   message: "Vui lòng nhập email",
+
                 },
               ]}
             >
@@ -420,7 +424,9 @@ const StaffTable = () => {
               rules={[
                 {
                   required: true,
+
                   message: "Vui lòng nhập mật khẩu!",
+
                 },
               ]}
               hasFeedback
@@ -435,7 +441,9 @@ const StaffTable = () => {
               rules={[
                 {
                   required: true,
+
                   message: "Vui lòng nhập lại mật khẩu!",
+
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
@@ -444,7 +452,7 @@ const StaffTable = () => {
                     }
                     return Promise.reject(
                       new Error(
-                        "The new password that you entered do not match!"
+                        "Mật khẩu không khớp!"
                       )
                     );
                   },
@@ -453,6 +461,7 @@ const StaffTable = () => {
             >
               <Input.Password />
             </Form.Item>
+
             {/* <Form.Item
               name="fullName"
               label="Họ và tên"
@@ -475,6 +484,7 @@ const StaffTable = () => {
                 <Button icon={<UploadOutlined />}>Select Image</Button>
               </Upload>
             </Form.Item> */}
+
             <Form.Item>
               <Button
                 type="primary"
@@ -484,7 +494,9 @@ const StaffTable = () => {
                   color: "#fff",
                   width: "100%",
                 }}
+
                 // disabled={!urlImage}
+
               >
                 {isEdit ? "Chỉnh sửa" : "Thêm mới"}
               </Button>

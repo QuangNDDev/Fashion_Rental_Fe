@@ -99,7 +99,11 @@ const LoginForm = () => {
               <Input
                 style={{ fontSize: "15px", padding: "10px" }}
                 prefix={<UserOutlined />}
+
+
                 placeholder="Email"
+
+
               />
             </Form.Item>
 
@@ -110,7 +114,11 @@ const LoginForm = () => {
               <Input.Password
                 style={{ fontSize: "15px", padding: "10px" }}
                 prefix={<LockOutlined />}
+
+
                 placeholder="Mật Khẩu"
+
+
               />
             </Form.Item>
             <Form.Item>
