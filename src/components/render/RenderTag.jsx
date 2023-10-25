@@ -38,6 +38,15 @@ export default function RenderTag(props) {
     }else if (renderTag == "NOT_VERIFIED"){
       setColor("red");
       setStatus("Chưa xác minh")
+    }else if (renderTag == "NOT_APPROVED"){
+      setColor("red");
+      setStatus("Đã từ chối")
+    }else if (renderTag == "APPROVED"){
+      setColor("green");
+      setStatus("Đã duyệt")
+    }else if (renderTag == "APPROVING"){
+      setColor("yellow");
+      setStatus("Chờ duyệt")
     }
   }, []);
 

@@ -62,6 +62,7 @@ const ProductOwner = () => {
     navigate("/login");
     localStorage.removeItem("roleId");
     localStorage.removeItem("accountId");
+    localStorage.removeItem("productownerId");
     console.log("Logged out");
   };
 

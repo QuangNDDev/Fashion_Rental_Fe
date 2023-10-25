@@ -46,6 +46,7 @@ const Staff = () => {
         "http://fashionrental.online:8080/account/" + idAccount
       );
       setStaff(response.data.data.staff);
+      localStorage.setItem("staffId", response.data.data.staff.staffID);
     } catch (error) {
       console.error(error);
     }
@@ -67,6 +68,8 @@ const Staff = () => {
   const handleLogout = () => {
     navigate("/login");
     localStorage.removeItem("roleId");
+    localStorage.removeItem("staffId");
+    localStorage.removeItem("accountId");
     console.log("Logged out");
   };
 
