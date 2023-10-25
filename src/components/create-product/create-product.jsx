@@ -1,7 +1,7 @@
 import "./create-product.css";
 import React, { useEffect, useState } from "react";
 import { storage } from "../../firebase/firebase";
-import { Button, Upload, Modal, Input, Tooltip, Radio } from "antd";
+import { Button, Upload, Modal, Input, Tooltip, Select, Space } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
@@ -21,6 +21,8 @@ const CreateProduct = () => {
   const [urlReceiptImage, setUrlReceiptImage] = useState("");
   const [value, setValue] = useState("");
   const handleCancel = () => setPreviewOpen(false);
+  const [productType, setProductType] = useState("bán"); // Giá trị mặc định của cái select
+
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -74,6 +76,13 @@ const CreateProduct = () => {
       console.error("Error uploading image:", error);
     }
   };
+
+  //ham select ------------------------------------------------------------------------
+  const selectChange = (value) => {
+    console.log(`Đã chọn giá trị ${value}`);
+    setProductType(value);
+  };
+  //-----------------------------------------------------------------------------------
   const formatNumber = (value) => new Intl.NumberFormat().format(value);
   const NumericInput = (props) => {
     const { value, onChange } = props;
@@ -98,6 +107,7 @@ const CreateProduct = () => {
     ) : (
       "Nhập giá sản phẩm..."
     );
+
     return (
       <Tooltip
         trigger={["focus"]}
@@ -131,20 +141,109 @@ const CreateProduct = () => {
         <div className="rent-sale">
           <span>Cấu hình sản phẩm:</span>
 
-          <Radio value={true}>Bán</Radio>
-          <Radio value={false}>Cho thuê</Radio>
+          {/* <Radio value={true}>Bán</Radio>
+          <Radio value={false}>Cho thuê</Radio> */}
+          <Space wrap>
+            <Select
+              defaultValue="bán"
+              style={{
+                width: 150,
+              }}
+              onChange={selectChange}
+              options={[
+                {
+                  value: "bán",
+                  label: "Bán",
+                },
+                {
+                  value: "cho thuê",
+                  label: "Cho Thuê",
+                },
+                {
+                  value: "cả hai",
+                  label: "bán và cho thuê",
+                },
+              ]}
+            />
+          </Space>
         </div>
 
-        <div className="price">
-          <span>Giá sản phẩm:</span>
-          <NumericInput
-            style={{
-              width: 250,
-            }}
-            value={value}
-            onChange={setValue}
-          />
-        </div>
+        {productType === "bán" && (
+          <>
+            <div className="price">
+              <span>Giá sản phẩm:</span>
+              <NumericInput
+                style={{
+                  width: 250,
+                }}
+                value={value}
+                onChange={setValue}
+              />
+            </div>
+            <div className="rent-price">
+              <span>Giá thuê sản phẩm:</span>
+              <NumericInput
+                style={{
+                  width: 250,
+                }}
+                value={value}
+                onChange={setValue}
+                disabled={true}
+              />
+            </div>
+          </>
+        )}
+
+        {productType === "cho thuê" && (
+          <>
+            <div className="rent-price">
+              <span>Giá thuê sản phẩm:</span>
+              <NumericInput
+                style={{
+                  width: 250,
+                }}
+                value={value}
+                onChange={setValue}
+              />
+            </div>
+            <div className="price">
+              <span>Giá sản phẩm:</span>
+              <NumericInput
+                style={{
+                  width: 250,
+                }}
+                value={value}
+                onChange={setValue}
+                disabled={true}
+              />
+            </div>
+          </>
+        )}
+
+        {productType === "cả hai" && (
+          <>
+            <div className="price">
+              <span>Giá sản phẩm:</span>
+              <NumericInput
+                style={{
+                  width: 250,
+                }}
+                value={value}
+                onChange={setValue}
+              />
+            </div>
+            <div className="rent-price">
+              <span>Giá thuê sản phẩm:</span>
+              <NumericInput
+                style={{
+                  width: 250,
+                }}
+                value={value}
+                onChange={setValue}
+              />
+            </div>
+          </>
+        )}
 
         <div className="receipt">
           <span>Hoá đơn sản phẩm:</span>
