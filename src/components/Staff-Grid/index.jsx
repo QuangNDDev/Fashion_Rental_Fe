@@ -14,7 +14,8 @@ import {
   Space,
   Table,
 } from "antd";
-import React, { useRef, useState } from "react";
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import RenderTag from "../render/RenderTag";
 
@@ -93,11 +94,35 @@ const TablePending = () => {
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [form] = Form.useForm();
+  const [requestsData, setRequestsData] = useState();
+  const fetchRequests = async () => {
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/request/getapproving"
+      );
+      setRequestsData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  useEffect(() => {
+    fetchRequests();
+  }, []);
   const showDrawer = (record) => {
     console.log(record);
-    setSelectedRecord(record);
-    setIsDrawerVisible(true);
+
+    
+    axios.get("http://fashionrental.online:8080/product/"+record.productID)
+    .then(response => {
+      console.log(response.data);
+      form.setFieldsValue(response.data);
+      setSelectedRecord(response.data);
+      setIsDrawerVisible(true);
+    })
+    .catch(error => {
+      console.error(error);
+    });
   };
   const closeDrawer = () => {
     setIsDrawerVisible(false);
@@ -218,49 +243,29 @@ const TablePending = () => {
   });
   const columns = [
     {
-      title: "Họ và Tên",
-      dataIndex: "fullName",
-      key: "fullName",
+      title: "ID",
+      dataIndex: "requestAddingProductID",
+      key: "requestAddingProductID",
       // width: "20%",
-      ...getColumnSearchProps("fullName"),
+      ...getColumnSearchProps("requestAddingProductID"),
+      render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
     },
     {
-      title: <p style={{ textAlign: "center" }}>Số Điện Thoại</p>,
-      dataIndex: "phone",
-      key: "phone",
+      title: "Ngày tạo",
+      dataIndex: "createdDate",
+      key: "createdDate",
       // width: "10%",
-      ...getColumnSearchProps("phone"),
-      render: (number) => <p style={{ textAlign: "center" }}>{number}</p>,
+      ...getColumnSearchProps("createdDate"),
+      render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
     },
     {
-      title: "Địa Chỉ",
-      dataIndex: "address",
-      key: "address",
-      ...getColumnSearchProps("address"),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ["descend", "ascend"],
-      // width: "25%",
-    },
-    // {
-    //   title: <p style={{ textAlign: "center" }}>Hóa Đơn</p>,
-    //   dataIndex: "invoiceCode",
-    //   key: "invoiceCode",
-    //   render: (text, record) => (
-    //     <div style={{ display: "flex", justifyContent: "center" }}>
-    //       <Image style={{ borderRadius: "10px" }} width={100} src={text} />
-    //     </div>
-    //   ),
-    //   // width: "20%",
-    // },
-
-    {
-      title: <p style={{ textAlign: "center" }}>Trạng Thái</p>,
+      title: "Trạng thái",
       dataIndex: "status",
       key: "status",
       render: (status) => (
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <p style={{ textAlign: "center",justifyContent:"center" }}>
           <RenderTag tagRender={status} />
-        </div>
+        </p>
       ),
     },
     // {
@@ -307,7 +312,7 @@ const TablePending = () => {
   ];
   return (
     <div>
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={requestsData} />
       <Drawer
         title="Thông tin đơn hàng " // Customize the title as needed
         width={450} // Customize the width as needed
@@ -338,10 +343,10 @@ const TablePending = () => {
             {/* <Input value={selectedRecord?.productName} readOnly /> */}
           </Form.Item>
 
-          <Form.Item name="statusProduct">
+          <Form.Item name="status">
             <span>Trạng Thái Sản Phẩm: </span>
             <strong style={{ marginLeft: "10px" }}>
-              {selectedRecord?.statusProduct}
+              {selectedRecord?.status}
             </strong>
             {/* <Input value={selectedRecord?.productName} readOnly /> */}
           </Form.Item>
@@ -363,7 +368,7 @@ const TablePending = () => {
           <Form.Item name="categoryName">
             <span>Phân Loại: </span>
             <strong style={{ marginLeft: "10px" }}>
-              {selectedRecord?.categoryName}
+              {selectedRecord?.category.categoryName}
             </strong>
           </Form.Item>
           <p style={{ marginBottom: "10px" }}>Ảnh Hóa Đơn:</p>
