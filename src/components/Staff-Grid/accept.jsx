@@ -25,7 +25,7 @@ const data = [
     phone: 32,
     address: "New York No. 1 Lake Park",
     invoiceCode: "https://kenh14cdn.com/2017/photo-4-1488968670853.jpg",
-    status: "Pending",
+    status: "Approve",
     detailImg: {
       images: [
         "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=2069&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -38,6 +38,7 @@ const data = [
         "https://images.unsplash.com/photo-1691480288782-142b953cf664?auto=format&fit=crop&q=80&w=2080&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       ],
     },
+    fullName: "Tui LV",
   },
   {
     key: "2",
@@ -45,7 +46,7 @@ const data = [
     phone: 42,
     address: "London No. 1 Lake Park",
     invoiceCode: "https://kenh14cdn.com/2017/photo-4-1488968670853.jpg",
-    status: "Pending",
+    status: "Approve",
     detailImg: {
       images: [
         "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=2069&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -58,6 +59,7 @@ const data = [
         "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       ],
     },
+    fullName: "Tui LV",
   },
   {
     key: "3",
@@ -310,6 +312,14 @@ const TableAccept = () => {
         open={isDrawerVisible} // Show the Drawer when isDrawerVisible is true
       >
         <Form form={form}>
+          <p>Input</p>
+          <Form.Item name="productName">
+            {selectedRecord?.productName ? (
+              <Input value={selectedRecord.productName} readOnly />
+            ) : (
+              <Input placeholder="Tên sản phẩm" readOnly />
+            )}
+          </Form.Item>
           <p style={{ marginBottom: "10px" }}>Ảnh Hóa Đơn:</p>
           <Form.Item name="invoiceCode">
             {selectedRecord?.invoiceCode && (

@@ -102,25 +102,29 @@ const StaffTable = () => {
         status: values.status,
       };
       try {
-        console.log(editData)
+        console.log(editData);
         axios
-          .put(`http://fashionrental.online:8080/staff?staffID=`+values.staffID+`&status=`+values.status)
+          .put(
+            `http://fashionrental.online:8080/staff?staffID=` +
+              values.staffID +
+              `&status=` +
+              values.status
+          )
           .then((response) => {
             message.success("Chỉnh sửa thành công!");
             console.log(response);
             setUsers((prevUsers) =>
-            prevUsers.map((user) =>
-              user.staffID === values.staffID
-                ? { ...user, status: values.status, key: v4() }
-                : user
-            )
-          );
+              prevUsers.map((user) =>
+                user.staffID === values.staffID
+                  ? { ...user, status: values.status, key: v4() }
+                  : user
+              )
+            );
           });
       } catch (error) {
         console.log(error);
       }
 
-      
       onClose();
     });
   };
@@ -129,7 +133,7 @@ const StaffTable = () => {
       try {
         console.log(values.staffID);
         axios
-          .delete(`http://fashionrental.online:8080/staff?id=`+ values.staffID)
+          .delete(`http://fashionrental.online:8080/staff?id=` + values.staffID)
           .then((response) => {
             message.success("Xoá tài khoản thành công!");
             console.log(response);
@@ -159,25 +163,13 @@ const StaffTable = () => {
           registerAccountData
         );
 
-        const registerStaffData = {
-          accountID: response.data.accountID,
-          avatarUrl: urlImage,
-          fullName: formValues.fullName,
-          status: true,
-        };
-
-        const staffResponse = await axios.post(
-          "http://fashionrental.online:8080/staff/createstaff",
-          registerStaffData
-        );
-
         message.success("Thêm mới thành công!");
         fetchUsers();
         onClose();
         form.resetFields();
-        console.log("Registration successful", staffResponse.data);
+        console.log("Registration successful", response.data);
       } catch (error) {
-        message.error("Vui lòng nhập lại dữ liệu!");
+        message.error("Email đã tồn tại!");
         console.error("Registration failed", error);
       }
     } catch (error) {
@@ -366,7 +358,6 @@ const StaffTable = () => {
         {isEdit ? (
           // Render edit form when isEdit is true
           <Form form={form}>
-             
             <Form.Item
               name="status"
               label="Trạng thái hoạt động"
@@ -402,55 +393,49 @@ const StaffTable = () => {
                 <DeleteOutlined />
               </Button>
             </Form.Item>
-            <Form.Item
-              name="staffID"
-             display="none"
-            >
-            </Form.Item>
+            <Form.Item name="staffID" display="none"></Form.Item>
           </Form>
         ) : (
           // Render add form when isEdit is false
           <Form form={form}>
+            <p>Email:</p>
             <Form.Item
               name="email"
-              label="E-mail"
               rules={[
                 {
                   type: "email",
-                  message: "The input is not valid E-mail!",
+                  message: "Vui lòng nhập email",
                 },
                 {
                   required: true,
-                  message: "Please input your E-mail!",
+                  message: "Vui lòng nhập email",
                 },
               ]}
             >
               <Input />
             </Form.Item>
-
+            <p>Mật Khẩu:</p>
             <Form.Item
               name="password"
-              label="Mật khẩu"
               rules={[
                 {
                   required: true,
-                  message: "Please input your password!",
+                  message: "Vui lòng nhập mật khẩu!",
                 },
               ]}
               hasFeedback
             >
               <Input.Password />
             </Form.Item>
-
+            <p>Nhập Lại Mật Khẩu:</p>
             <Form.Item
               name="confirm"
-              label="Nhập lại mật khẩu"
               dependencies={["password"]}
               hasFeedback
               rules={[
                 {
                   required: true,
-                  message: "Please confirm your password!",
+                  message: "Vui lòng nhập lại mật khẩu!",
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
@@ -468,7 +453,7 @@ const StaffTable = () => {
             >
               <Input.Password />
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               name="fullName"
               label="Họ và tên"
               rules={[
@@ -480,8 +465,8 @@ const StaffTable = () => {
               ]}
             >
               <Input />
-            </Form.Item>
-            <Form.Item label="Ảnh đại diện">
+            </Form.Item> */}
+            {/* <Form.Item label="Ảnh đại diện">
               <Upload
                 maxCount={1}
                 onChange={handleFileChange}
@@ -489,7 +474,7 @@ const StaffTable = () => {
               >
                 <Button icon={<UploadOutlined />}>Select Image</Button>
               </Upload>
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item>
               <Button
                 type="primary"
@@ -499,7 +484,7 @@ const StaffTable = () => {
                   color: "#fff",
                   width: "100%",
                 }}
-                disabled={!urlImage}
+                // disabled={!urlImage}
               >
                 {isEdit ? "Chỉnh sửa" : "Thêm mới"}
               </Button>

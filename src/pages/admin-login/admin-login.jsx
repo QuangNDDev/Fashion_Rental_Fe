@@ -1,6 +1,6 @@
 import { Form, Input, Button, Card, message, Checkbox } from "antd";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -14,6 +14,14 @@ const LoginForm = () => {
     // const paramValue = idPo;
     navigate(`/productOwner`);
   };
+
+  const validateEmail = (email) => {
+    const regex =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regex.test(String(email).toLowerCase());
+  };
+
+  // Sử dụng trong rules
 
   const onFinish = async (values) => {
     const email = values.email;
@@ -91,7 +99,7 @@ const LoginForm = () => {
               <Input
                 style={{ fontSize: "15px", padding: "10px" }}
                 prefix={<UserOutlined />}
-                placeholder="Email r"
+                placeholder="Email"
               />
             </Form.Item>
 
@@ -102,13 +110,16 @@ const LoginForm = () => {
               <Input.Password
                 style={{ fontSize: "15px", padding: "10px" }}
                 prefix={<LockOutlined />}
-                placeholder="Password"
+                placeholder="Mật Khẩu"
               />
             </Form.Item>
             <Form.Item>
               <Form.Item name="remember" valuePropName="checked" noStyle>
                 <Checkbox>Ghi Nhớ</Checkbox>
               </Form.Item>
+              <div style={{ marginTop: "20px" }}>
+                Bạn chưa có tài khoản? <Link to="/register"> Đăng ký</Link>
+              </div>
             </Form.Item>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <Form.Item style={{ width: "100%" }}>

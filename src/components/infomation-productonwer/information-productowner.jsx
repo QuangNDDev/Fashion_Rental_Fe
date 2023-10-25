@@ -115,9 +115,9 @@ const InformationPO = () => {
             open={open}
           >
             <Form form={form} style={{ padding: "5px" }}>
+              <p>Họ và Tên:</p>
               <Form.Item
                 name="fullName"
-                label="Họ và tên"
                 rules={[
                   { required: true, message: "Xin vui lòng nhập Họ và Tên!" },
                   {
@@ -128,9 +128,9 @@ const InformationPO = () => {
               >
                 <Input />
               </Form.Item>
+              <p>Số Điện Thoại:</p>
               <Form.Item
                 name="phone"
-                label="SĐT"
                 rules={[
                   {
                     required: true,
@@ -140,17 +140,17 @@ const InformationPO = () => {
               >
                 <Input />
               </Form.Item>
-
+              <p>Địa Chỉ:</p>
               <Form.Item
                 name="address"
-                label="Địa chỉ"
                 rules={[
                   { required: true, message: "Xin vui lòng nhập địa chỉ!" },
                 ]}
               >
                 <Input />
               </Form.Item>
-              <Form.Item label="Ảnh đại diện">
+              <p>Ảnh Đại Diện:</p>
+              <Form.Item>
                 <Upload
                   maxCount={1}
                   onChange={handleFileChange}
