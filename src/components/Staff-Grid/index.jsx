@@ -25,7 +25,7 @@ const data = [
     phone: 32,
     address: "New York No. 1 Lake Park",
     invoiceCode: "https://kenh14cdn.com/2017/photo-4-1488968670853.jpg",
-    status: "Approve",
+    status: "Pending",
     detailImg: {
       images: [
         "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=2069&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -38,6 +38,14 @@ const data = [
         "https://images.unsplash.com/photo-1691480288782-142b953cf664?auto=format&fit=crop&q=80&w=2080&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       ],
     },
+    productName: "Tui LV",
+    description: "aaaaaaaaa",
+    price: "2000000",
+    statusProduct: "SOLD_OUT",
+    forSale: true,
+    forRent: true,
+    categoryID: 1,
+    categoryName: "Female",
   },
   {
     key: "2",
@@ -45,7 +53,7 @@ const data = [
     phone: 42,
     address: "London No. 1 Lake Park",
     invoiceCode: "https://kenh14cdn.com/2017/photo-4-1488968670853.jpg",
-    status: "Approve",
+    status: "Pending",
     detailImg: {
       images: [
         "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=2069&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -58,6 +66,14 @@ const data = [
         "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       ],
     },
+    productName: "Tui LV",
+    description: "aaaaaaaaa",
+    price: "2000000",
+    statusProduct: "SOLD_OUT",
+    forSale: true,
+    forRent: true,
+    categoryID: 1,
+    categoryName: "Female",
   },
   {
     key: "3",
@@ -78,19 +94,8 @@ const TablePending = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const [form] = Form.useForm();
 
-  {
-    previewImage && (
-      <div className="image-preview">
-        <img
-          src={previewImage}
-          alt="Xem Trước"
-          onClick={() => setPreviewImage(null)} // Khi nhấp vào xem trước, đóng cửa sổ xem trước
-        />
-      </div>
-    );
-  }
-
   const showDrawer = (record) => {
+    console.log(record);
     setSelectedRecord(record);
     setIsDrawerVisible(true);
   };
@@ -304,12 +309,63 @@ const TablePending = () => {
     <div>
       <Table columns={columns} dataSource={data} />
       <Drawer
-        title="Thông tin đơn hàng" // Customize the title as needed
+        title="Thông tin đơn hàng " // Customize the title as needed
         width={450} // Customize the width as needed
         onClose={() => setIsDrawerVisible(false)} // Close the Drawer when the close button is clicked
         open={isDrawerVisible} // Show the Drawer when isDrawerVisible is true
       >
         <Form form={form}>
+          <Form.Item name="productName">
+            <span>Tên Sản Phẩm: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.productName}
+            </strong>
+            {/* <Input value={selectedRecord?.productName} readOnly /> */}
+          </Form.Item>
+          <Form.Item name="description">
+            <span>Mô Tả: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.description}
+            </strong>
+            {/* <Input value={selectedRecord?.productName} readOnly /> */}
+          </Form.Item>
+
+          <Form.Item name="price">
+            <span>Giá Sản Phẩm: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.price}vnđ
+            </strong>
+            {/* <Input value={selectedRecord?.productName} readOnly /> */}
+          </Form.Item>
+
+          <Form.Item name="statusProduct">
+            <span>Trạng Thái Sản Phẩm: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.statusProduct}
+            </strong>
+            {/* <Input value={selectedRecord?.productName} readOnly /> */}
+          </Form.Item>
+
+          <Form.Item name="forRent">
+            <span>Hình Thức Thuê: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.forRent ? "Có" : "Không"}
+            </strong>
+          </Form.Item>
+
+          <Form.Item name="forSale">
+            <span>Hình Thức Bán: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.forSale ? "Có" : "Không"}
+            </strong>
+          </Form.Item>
+
+          <Form.Item name="categoryName">
+            <span>Phân Loại: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.categoryName}
+            </strong>
+          </Form.Item>
           <p style={{ marginBottom: "10px" }}>Ảnh Hóa Đơn:</p>
           <Form.Item name="invoiceCode">
             {selectedRecord?.invoiceCode && (
@@ -320,23 +376,24 @@ const TablePending = () => {
               />
             )}
           </Form.Item>
+          <p style={{ marginBottom: "10px" }}>Ảnh Chi Tiết Sản Phẩm:</p>
+          <Form.Item name={"detailImg"}>
+            {selectedRecord?.detailImg?.images && (
+              <Carousel autoplay>
+                {selectedRecord.detailImg.images.map((image, index) => (
+                  <div key={index}>
+                    <img
+                      style={{ width: "100%", height: "200px" }}
+                      src={image}
+                      alt={`Image ${index}`}
+                    />
+                  </div>
+                ))}
+              </Carousel>
+            )}
+          </Form.Item>
         </Form>
         {/* Customize the content of the Drawer using selectedRecord */}
-        <Form.Item name={"detailImg"} label="Ảnh Chi Tiết Sản Phẩm">
-          {selectedRecord?.detailImg?.images && (
-            <Carousel autoplay>
-              {selectedRecord.detailImg.images.map((image, index) => (
-                <div key={index}>
-                  <img
-                    style={{ width: "100%", height: "200px" }}
-                    src={image}
-                    alt={`Image ${index}`}
-                  />
-                </div>
-              ))}
-            </Carousel>
-          )}
-        </Form.Item>
 
         {/* Add more details as needed */}
       </Drawer>

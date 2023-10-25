@@ -11,7 +11,7 @@ import {
 } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./RegisterForm.css";
 
 const RegisterForm = () => {
@@ -41,7 +41,7 @@ const RegisterForm = () => {
         if (responseData.message === "registration_successful") {
           api["success"]({
             message: "Đăng Ký Thành Công!",
-            description: "Registration Successful",
+            description: "Chúc mừng bạn đã đăng ký thành công",
             duration: 1000,
           });
           navigate("/");
@@ -68,7 +68,11 @@ const RegisterForm = () => {
       });
     }
   };
-
+  const validateEmail = (email) => {
+    const regex =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regex.test(String(email).toLowerCase());
+  };
   return (
     <div className="registration-container">
       <div className="left-panel">
@@ -88,9 +92,6 @@ const RegisterForm = () => {
               <h1>Đăng Ký</h1>
             </div>
 
-            {/* <div style={{ marginBottom: "20px" }}>
-              Already have an account? <Link to="/login"> Sign in</Link>
-            </div> */}
             <Form
               className="registerForm"
               layout="vertical"
@@ -117,11 +118,11 @@ const RegisterForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Vui lòng nhập Email",
+                        message: "Vui lòng nhập email!",
                       },
                       {
-                        type: "email",
-                        message: "Vui lòng nhập đúng định dạng Email",
+                        validator: (_, value) =>
+                          validateEmail(value) || "Email không hợp lệ!",
                       },
                     ]}
                   >
@@ -195,8 +196,11 @@ const RegisterForm = () => {
                   type="primary"
                   htmlType="submit"
                 >
-                  Register
+                  Đăng Ký
                 </Button>
+                <div style={{ marginTop: "20px" }}>
+                  Bạn đã có tài khoản? <Link to="/login"> Đăng nhập</Link>
+                </div>
               </Form.Item>
             </Form>
           </Card>

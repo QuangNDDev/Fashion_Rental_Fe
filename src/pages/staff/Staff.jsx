@@ -33,6 +33,7 @@ import axios from "axios";
 import CancelOrderTable from "../../components/product-owner-table/CancelOrderTable";
 import TableAccept from "./../../components/Staff-Grid/accept";
 import ProfileStaff from "../../components/information-staff";
+import TablePending from "../../components/Staff-Grid";
 
 const { Header, Content, Sider } = Layout;
 
@@ -98,11 +99,11 @@ const Staff = () => {
               </Breadcrumb.Item>
               <Breadcrumb.Item>
                 <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Sản phẩm chờ xử lý
+                  Đơn chờ xử lý
                 </strong>
               </Breadcrumb.Item>
             </Breadcrumb>
-            <TableAccept />
+            <TablePending />
           </div>
         );
       case "2":
@@ -121,12 +122,12 @@ const Staff = () => {
 
               <Breadcrumb.Item separator="?">
                 <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Sản phẩm đã duyệt
+                  Đơn đã duyệt
                 </strong>
               </Breadcrumb.Item>
             </Breadcrumb>
 
-            <StaffGrid />
+            <TableAccept />
           </div>
         );
       case "3":
@@ -144,7 +145,7 @@ const Staff = () => {
               </Breadcrumb.Item>
               <Breadcrumb.Item>
                 <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Sản phẩm bị từ chối
+                  Đơn bị từ chối
                 </strong>
               </Breadcrumb.Item>
             </Breadcrumb>
@@ -289,7 +290,11 @@ const Staff = () => {
         {/* Biểu tượng chuông thông báo và avatar */}
         <div style={{ display: "flex", alignItems: "center" }}>
           <Avatar
-            src={staff.avatarUrl}
+            src={
+              staff?.avatarUrl
+                ? staff.avatarUrl
+                : "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg"
+            }
             alt="User Avatar"
             style={{ width: "38px", height: "38px", marginLeft: "10px" }}
           />
@@ -301,7 +306,7 @@ const Staff = () => {
               fontWeight: "bold",
             }}
           >
-            {staff.fullName}
+            {staff?.fullName ? staff.fullName : ""}
           </span>
           <Badge count={unreadNotificationCount}>
             <BellOutlined
@@ -358,7 +363,7 @@ const Staff = () => {
                   />
                 }
               >
-                Sản phẩm chờ xử lý
+                Đơn chờ xử lý
               </Menu.Item>
 
               <Menu.Item
@@ -370,7 +375,7 @@ const Staff = () => {
                   />
                 }
               >
-                Sản phẩm đã duyệt
+                Đơn đã duyệt
               </Menu.Item>
 
               <Menu.Item
@@ -382,7 +387,7 @@ const Staff = () => {
                   />
                 }
               >
-                Sản phẩm bị từ chối
+                Đơn đã từ chối
               </Menu.Item>
             </SubMenu>
 
@@ -402,7 +407,7 @@ const Staff = () => {
                   />
                 }
               >
-                Sản phẩm cho thuê
+                Sản phẩm đang cho thuê
               </Menu.Item>
               <Menu.Item
                 key="5"
