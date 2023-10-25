@@ -12,6 +12,7 @@ import {
   Form,
   Input,
   message,
+  notification,
   Radio,
   Space,
   Table,
@@ -31,6 +32,7 @@ const StaffTable = () => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [urlImage, setUrlImage] = useState("");
+  const [api, contextHolder] = notification.useNotification();
 
   const handleFileChange = (event) => {
     console.log("handleFileChange called");
@@ -111,7 +113,10 @@ const StaffTable = () => {
               values.status
           )
           .then((response) => {
-            message.success("Chỉnh sửa thành công!");
+            api["success"]({
+              message: "Cập Nhật Thành Công",
+              description: null,
+            });
             console.log(response);
             setUsers((prevUsers) =>
               prevUsers.map((user) =>
@@ -163,19 +168,34 @@ const StaffTable = () => {
           registerAccountData
         );
 
-
-        message.success("Thêm mới thành công!");
+        api["success"]({
+          message: "Thêm Mới Nhân Viên Thành Công",
+          description: (
+            <div style={{ fontSize: "15px" }}>
+              Email: {formValues.email}
+              <br />
+              Mật Khẩu: {formValues.password}
+            </div>
+          ),
+          duration: 10000,
+        });
 
         fetchUsers();
         onClose();
         form.resetFields();
         console.log("Registration successful", response.data);
       } catch (error) {
-        message.error("Email đã tồn tại!");
+        api["warning"]({
+          message: "Đăng Ký Thất Bại!",
+          description: "Email đã tồn tại",
+        });
         console.error("Registration failed", error);
       }
     } catch (error) {
-      message.error("Đăng kí thất bại!");
+      api["error"]({
+        message: "Đăng Ký Thất Bại!",
+        description: null,
+      });
       console.error("Validation failed", error);
     }
   };
@@ -340,6 +360,7 @@ const StaffTable = () => {
   ];
   return (
     <>
+      {contextHolder}
       <Button
         style={{
           float: "right",
@@ -400,7 +421,7 @@ const StaffTable = () => {
         ) : (
           // Render add form when isEdit is false
           <Form form={form}>
-            <p>Email:</p>
+            <p style={{ fontWeight: "bold" }}>Email:</p>
             <Form.Item
               name="email"
               rules={[
@@ -412,13 +433,12 @@ const StaffTable = () => {
                 {
                   required: true,
                   message: "Vui lòng nhập email",
-
                 },
               ]}
             >
               <Input />
             </Form.Item>
-            <p>Mật Khẩu:</p>
+            <p style={{ fontWeight: "bold" }}>Mật Khẩu:</p>
             <Form.Item
               name="password"
               rules={[
@@ -426,14 +446,13 @@ const StaffTable = () => {
                   required: true,
 
                   message: "Vui lòng nhập mật khẩu!",
-
                 },
               ]}
               hasFeedback
             >
               <Input.Password />
             </Form.Item>
-            <p>Nhập Lại Mật Khẩu:</p>
+            <p style={{ fontWeight: "bold" }}>Nhập Lại Mật Khẩu:</p>
             <Form.Item
               name="confirm"
               dependencies={["password"]}
@@ -443,18 +462,13 @@ const StaffTable = () => {
                   required: true,
 
                   message: "Vui lòng nhập lại mật khẩu!",
-
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
                     if (!value || getFieldValue("password") === value) {
                       return Promise.resolve();
                     }
-                    return Promise.reject(
-                      new Error(
-                        "Mật khẩu không khớp!"
-                      )
-                    );
+                    return Promise.reject(new Error("Mật khẩu không khớp!"));
                   },
                 }),
               ]}
@@ -496,7 +510,6 @@ const StaffTable = () => {
                 }}
 
                 // disabled={!urlImage}
-
               >
                 {isEdit ? "Chỉnh sửa" : "Thêm mới"}
               </Button>

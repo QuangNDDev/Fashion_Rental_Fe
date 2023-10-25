@@ -1,7 +1,17 @@
 import { SearchOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { Button, Drawer, Form, Input, Radio, Space, Table, Tag } from "antd";
+import {
+  Button,
+  Drawer,
+  Form,
+  Input,
+  Radio,
+  Space,
+  Table,
+  Tag,
+  notification,
+} from "antd";
 import RenderTag from "../render/RenderTag";
 import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
 import axios from "axios";
@@ -14,6 +24,7 @@ const CustomerTable = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
   const [form] = Form.useForm();
 
   const fetchUsers = async () => {
@@ -173,9 +184,17 @@ const CustomerTable = () => {
             editData
           )
           .then((response) => {
+            api["success"]({
+              message: "Cập Nhật Thành Công!",
+              description: null,
+            });
             console.log(response);
           });
       } catch (error) {
+        api["error"]({
+          message: "Cập Nhật Thất Bại!",
+          description: null,
+        });
         console.log(error);
       }
 
@@ -218,7 +237,7 @@ const CustomerTable = () => {
       width: "15%",
       ...getColumnSearchProps("roleName"),
       render: (roleName) => (
-        <p style={{ textAlign: "center",justifyContent:"center" }}>
+        <p style={{ textAlign: "center", justifyContent: "center" }}>
           <RenderTag tagRender={roleName} />
         </p>
       ),
@@ -274,16 +293,17 @@ const CustomerTable = () => {
   return (
     <div>
       <Table columns={columns} dataSource={users} />
+      {contextHolder}
       <Drawer
-        title={isEdit ? "Cập Nhật" : "Add User"}
+        title={isEdit ? "Cập Nhật Thông Tin Khách Hàng" : "Add User"}
         visible={isDrawerVisible}
         onClose={onClose}
         width={400}
       >
         <Form form={form}>
+          <p style={{ fontWeight: "bold" }}>Họ và Tên:</p>
           <Form.Item
             name="fullName"
-            label="Họ và tên"
             rules={[
               { required: true, message: "Xin vui lòng nhập Họ và Tên!" },
               {
@@ -294,34 +314,35 @@ const CustomerTable = () => {
           >
             <Input />
           </Form.Item>
-          <br />
+          <p style={{ fontWeight: "bold" }}>Số Điện Thoại:</p>
           <Form.Item
             name="phone"
-            label="SĐT"
             rules={[
               { required: true, message: "Xin vui lòng nhập số điện thoại!" },
             ]}
           >
             <Input />
           </Form.Item>
-          <br />
+          <p style={{ fontWeight: "bold" }}>Email:</p>
           <Form.Item
             name="email"
-            label="Email"
             rules={[{ required: true, message: "Xin vui lòng nhập email!" }]}
           >
             <Input />
           </Form.Item>
-          <br />
+          <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+            Trạng Thái Hoạt Động:
+          </p>
           <Form.Item
             name="status"
-            label="Trạng thái hoạt động"
             rules={[
               { required: true, message: "Cập nhật trạng thái hoạt động!" },
             ]}
           >
             <Radio.Group>
-              <Radio value={true}>Đang hoạt động</Radio>
+              <Radio style={{ marginLeft: "50px" }} value={true}>
+                Đang hoạt động
+              </Radio>
               <Radio value={false}>Không hoạt động</Radio>
             </Radio.Group>
           </Form.Item>
@@ -337,7 +358,7 @@ const CustomerTable = () => {
                 width: "100%",
               }}
             >
-              {isEdit ? "Update" : "Add"}
+              {isEdit ? "Cập Nhật" : "Add"}
             </Button>
           </Form.Item>
           <Form.Item name="roleID">

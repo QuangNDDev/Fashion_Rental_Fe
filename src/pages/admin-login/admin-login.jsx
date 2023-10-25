@@ -1,8 +1,17 @@
-import { Form, Input, Button, Card, message, Checkbox } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Card,
+  message,
+  Checkbox,
+  notification,
+} from "antd";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 const LoginForm = () => {
+  const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
   const handleNavigationAdmin = () => {
     navigate(`/admin`);
@@ -15,13 +24,13 @@ const LoginForm = () => {
     navigate(`/productOwner`);
   };
 
-  const validateEmail = (email) => {
-    const regex =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return regex.test(String(email).toLowerCase());
+  const emailValidator = (rule, value, callback) => {
+    if (value && !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
+      callback("Vui lòng nhập địa chỉ email phù hợp!");
+    } else {
+      callback();
+    }
   };
-
-  // Sử dụng trong rules
 
   const onFinish = async (values) => {
     const email = values.email;
@@ -41,17 +50,57 @@ const LoginForm = () => {
         localStorage.setItem("roleId", response.data.role.roleID);
 
         if (response.data.role.roleID == 4) {
-          handleNavigationAdmin();
+          api["success"]({
+            message: "Đăng Nhập Thành Công",
+            description: `Xin Chào Admin!`,
+            duration: 1000,
+          });
+          setTimeout(() => {
+            handleNavigationAdmin();
+          }, 1000);
         } else if (response.data.role.roleID == 3) {
-          handleNavigationStaff();
+          api["success"]({
+            message: "Đăng Nhập Thành Công",
+            description: `Xin Chào ${response.data.staff.fullName}`,
+            duration: 1000,
+          });
+          setTimeout(() => {
+            handleNavigationStaff();
+          }, 1000);
         } else if (response.data.role.roleID == 2) {
-          handleNavigationProductOwner();
+          api["success"]({
+            message: "Đăng Nhập Thành Công",
+            description: `Xin Chào ${response.data.productowner.fullName}`,
+            duration: 1000,
+          });
+          setTimeout(() => {
+            handleNavigationProductOwner();
+          }, 1000);
         } else {
-          message.info("Tài khoản của bạn không có quyền truy cập!!!");
+          api["warning"]({
+            message: "Đăng Nhập Thất Bại",
+            description: "Tài khoản của bạn không có quyền truy cập!!!",
+          });
         }
       }
     } catch (error) {
       console.error(error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message === "Login Fail"
+      ) {
+        api["error"]({
+          message: "Đăng Nhập Thất Bại",
+          description: " Vui lòng kiểm tra lại email và mật khẩu.",
+        });
+      } else {
+        message.error("Đã xảy ra lỗi trong quá trình đăng nhập.");
+        api["error"]({
+          message: "Đăng Nhập Thất Bại",
+          description: " Đã xảy ra lỗi trong quá trình đăng nhập.",
+        });
+      }
     }
   };
 
@@ -81,6 +130,7 @@ const LoginForm = () => {
         }}
       >
         <Card style={{ width: 400 }}>
+          {contextHolder}
           <h2 style={{ textAlign: "center", marginBottom: 24 }}>ĐĂNG NHẬP</h2>
           <Form
             name="loginForm"
@@ -93,17 +143,13 @@ const LoginForm = () => {
               name="email"
               rules={[
                 { required: true, message: "Vui lòng nhập email!" },
-                // { validator: validateEmailOrPhone },
+                { validator: emailValidator },
               ]}
             >
               <Input
                 style={{ fontSize: "15px", padding: "10px" }}
                 prefix={<UserOutlined />}
-
-
                 placeholder="Email"
-
-
               />
             </Form.Item>
 
@@ -114,11 +160,7 @@ const LoginForm = () => {
               <Input.Password
                 style={{ fontSize: "15px", padding: "10px" }}
                 prefix={<LockOutlined />}
-
-
                 placeholder="Mật Khẩu"
-
-
               />
             </Form.Item>
             <Form.Item>

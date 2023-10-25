@@ -127,6 +127,14 @@ const CreateProduct = () => {
           <span>Mô tả sản phẩm:</span>
           <TextArea rows={4} placeholder="Nhập mô tả sản phẩm..." />
         </div>
+
+        <div className="rent-sale">
+          <span>Cấu hình sản phẩm:</span>
+
+          <Radio value={true}>Bán</Radio>
+          <Radio value={false}>Cho thuê</Radio>
+        </div>
+
         <div className="price">
           <span>Giá sản phẩm:</span>
           <NumericInput
@@ -137,12 +145,7 @@ const CreateProduct = () => {
             onChange={setValue}
           />
         </div>
-        <div className="rent-sale">
-          <span>Cấu hình sản phẩm:</span>
 
-          <Radio value={true}>Bán</Radio>
-          <Radio value={false}>Cho thuê</Radio>
-        </div>
         <div className="receipt">
           <span>Hoá đơn sản phẩm:</span>
           <Upload
@@ -154,7 +157,7 @@ const CreateProduct = () => {
             <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
           </Upload>
         </div>
-        
+
         <div className="image">
           <span>Hình ảnh sản phẩm:</span>
 
@@ -163,6 +166,7 @@ const CreateProduct = () => {
             onChange={handleFileChange}
             onPreview={handlePreview}
             beforeUpload={() => false}
+            multiple={true}
           >
             <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
           </Upload>
