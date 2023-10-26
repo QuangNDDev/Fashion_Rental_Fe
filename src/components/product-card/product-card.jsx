@@ -4,62 +4,12 @@ import {
   EllipsisOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Avatar, Card, Col, Input, Row } from "antd";
+import { Avatar, Card, Col, Image, Input, Row } from "antd";
 import { Form, Modal, Button } from "antd";
 import MuntilImage from "../Mutil-Image";
 import axios from "axios";
+import RenderTag from "../render/RenderTag";
 const { Meta } = Card;
-// const products = [
-//   {
-//     id: 1,
-//     img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2969&q=80",
-//     name: "Túi Gucci",
-//     price: "13.000.000 VND",
-//   },
-//   {
-//     id: 2,
-//     img: "https://images.unsplash.com/photo-1591348278863-a8fb3887e2aa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2735&q=80",
-//     name: "Túi Prada",
-//     price: "7.000.000 VND",
-//   },
-//   {
-//     id: 3,
-//     img: "https://images.unsplash.com/photo-1598452963314-b09f397a5c48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2981&q=80",
-//     name: "Son Gucci",
-//     price: "700.000 VND",
-//   },
-//   {
-//     id: 4,
-//     img: "https://images.unsplash.com/photo-1575176647993-a8a6f538e940?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3087&q=80",
-//     name: "Giày Gucci",
-//     price: "4.000.000 VND",
-//   },
-//   {
-//     id: 5,
-//     img: "https://images.unsplash.com/photo-1590739225287-bd31519780c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2592&q=80",
-//     name: "Túi Prada",
-//     price: "11.000.000 VND",
-//   },
-//   {
-//     id: 6,
-//     img: "https://images.unsplash.com/photo-1571273260782-bab4699dde20?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3087&q=80",
-//     name: "Gucci Bag",
-//     price: "5.000.000 VND",
-//   },
-//   {
-//     id: 7,
-//     img: "https://images.unsplash.com/photo-1624796037770-c57cb79a567a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2970&q=80",
-//     name: "Túi Gucii",
-//     price: "8.000.000 VND",
-//   },
-//   {
-//     id: 8,
-//     img: "https://images.unsplash.com/photo-1592842312573-dca0b185d2e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2592&q=80",
-//     name: "Nước Hoa Chanel",
-//     price: "2.500.000 VND",
-//   },
-
-// ];
 
 const ProductCard = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -75,7 +25,16 @@ const ProductCard = () => {
       const response = await axios.get(
         "http://fashionrental.online:8080/product/getproducts/" + productownerId
       );
-      setProductData(response.data);
+      const updatedProducts = response.data.map((product) => {
+        const productAvt =
+          product?.requestAddingProductDTO?.productDTO?.productAvt || "";
+        return {
+          ...product,
+          productAvt,
+        };
+      });
+      setProductData(updatedProducts);
+      console.log(updatedProducts);
       console.log(response.data);
     } catch (error) {
       console.error(error);
@@ -86,10 +45,10 @@ const ProductCard = () => {
   }, []);
   const showModal = (productData) => {
     setIsModalVisible(true);
-    setSelectedProduct(productData);
+
     const specificationData = JSON.parse(productData.productSpecificationData);
-  const madeOfValue = specificationData.madeof;
-  const brand = specificationData.brandName;
+    const madeOfValue = specificationData.madeof;
+    const brand = specificationData.brandName;
     form.setFieldsValue({
       avatar: productData.avatar,
       productName: productData.productName,
@@ -101,10 +60,24 @@ const ProductCard = () => {
       forRent: productData.forRent,
       categoryName: productData.category.categoryName,
       imgProduct: productData.imgProduct,
-      madeOf : madeOfValue,
-      brandName : brand,
+      madeOf: madeOfValue,
+      brandName: brand,
 
       // Các trường dữ liệu khác tương tự
+    });
+    setSelectedProduct({
+      avatar: productData.avatar,
+      productName: productData.productName,
+      productReceiptUrl: productData.productReceiptUrl,
+      description: productData.description,
+      price: productData.price,
+      status: productData.status,
+      forSale: productData.forSale,
+      forRent: productData.forRent,
+      categoryName: productData.category.categoryName,
+      imgProduct: productData.imgProduct,
+      madeOf: madeOfValue,
+      brandName: brand,
     });
   };
 
@@ -119,6 +92,13 @@ const ProductCard = () => {
     setFormData(values);
     // Đóng modal
     handleCancel();
+  };
+  const [open, setOpen] = useState(false);
+  const hide = () => {
+    setOpen(false);
+  };
+  const handleOpenChange = (newOpen) => {
+    setOpen(newOpen);
   };
   return (
     <>
@@ -140,7 +120,7 @@ const ProductCard = () => {
               cover={
                 <img
                   alt="example"
-                  src={product.avatar}
+                  src={product.productAvt}
                   style={{
                     height: 150,
                   }}
@@ -148,7 +128,8 @@ const ProductCard = () => {
               }
               actions={[
                 <EditOutlined key="edit" onClick={() => showModal(product)} />,
-                <EllipsisOutlined key="ellipsis" />,
+                <EllipsisOutlined key="ellipsis"  />,
+                
               ]}
             >
               <Meta
@@ -172,75 +153,107 @@ const ProductCard = () => {
             // Đặt giá trị mặc định cho các trường nếu cần
           >
             <Form.Item
-              label="Tên sản phẩm"
               name="productName" //lấy value của cái name gán lên cái setFormValue
-              rules={[
-                { required: true, message: "Vui lòng nhập tên sản phẩm!" },
-              ]}
+              initialValue={selectedProduct && selectedProduct.productName}
             >
-              <Input readOnly style={{ width: "300px", marginLeft: "13px" }} />
+              <div style={{ display: "flex" }}>
+                <strong>Tên sản phẩm:</strong>
+                <p style={{ marginLeft: "10px" }}>
+                  {selectedProduct && selectedProduct.productName}
+                </p>
+              </div>
             </Form.Item>
 
             <Form.Item
-              label="Mã hóa đơn"
-              name="productReceiptUrl"
-              rules={[{ required: true, message: "Vui lòng nhập mã hóa đơn!" }]}
-            >
-              <Input readOnly style={{ width: "300px", marginLeft: "24px" }} />
-            </Form.Item>
-
-            <Form.Item
-              label="Mô tả"
               name="description"
-              rules={[{ required: true, message: "Vui lòng nhập địa chỉ!" }]}
+              initialValue={selectedProduct && selectedProduct.description}
             >
-              <Input
-                readOnly
-                style={{ width: "300px", marginLeft: "56.2px" }}
+              <div style={{ display: "flex" }}>
+                <strong>Mô tả:</strong>
+                <p style={{ marginLeft: "10px" }}>
+                  {selectedProduct && selectedProduct.description}
+                </p>
+              </div>
+            </Form.Item>
+
+            <Form.Item
+              name="madeOf"
+              initialValue={selectedProduct && selectedProduct.madeOf}
+            >
+              <div style={{ display: "flex" }}>
+                <strong>Chất liệu:</strong>
+                <p style={{ marginLeft: "10px" }}>
+                  {selectedProduct && selectedProduct.madeOf}
+                </p>
+              </div>
+            </Form.Item>
+            <Form.Item
+              name="brandName"
+              initialValue={selectedProduct && selectedProduct.brandName}
+            >
+              <div style={{ display: "flex" }}>
+                <strong>Thương hiệu:</strong>
+                <p style={{ marginLeft: "10px" }}>
+                  {selectedProduct && selectedProduct.brandName}
+                </p>
+              </div>
+            </Form.Item>
+            <Form.Item
+              name="price"
+              initialValue={selectedProduct && selectedProduct.price}
+            >
+              <div style={{ display: "flex" }}>
+                <strong>Giá sản phẩm:</strong>
+                <p style={{ marginLeft: "10px" }}>
+                  {selectedProduct && selectedProduct.price}
+                </p>
+                <strong style={{ marginLeft: "10px" }}>vnđ</strong>
+              </div>
+            </Form.Item>
+            {/* <Form.Item
+              name="price"
+              initialValue={selectedProduct && selectedProduct.price}
+            >
+              <div style={{ display: "flex" }}>
+                <strong>Giá sản phẩm:</strong>
+                <p style={{ marginLeft: "10px" }}>
+                  {selectedProduct && selectedProduct.price}
+                </p>
+                <strong style={{ marginLeft: "10px" }}>vnđ</strong>
+              </div>
+            </Form.Item> */}
+            <Form.Item
+              name="status"
+              initialValue={selectedProduct && selectedProduct.status}
+            >
+              <div style={{ display: "flex" }}>
+                <strong>Trạng thái:</strong>
+
+                <p style={{ marginLeft: "10px" }}>
+                  <RenderTag
+                    tagRender={selectedProduct && selectedProduct.status}
+                  />
+                </p>
+              </div>
+            </Form.Item>
+            <Form.Item
+              name="productReceiptUrl"
+              initialValue={
+                selectedProduct && selectedProduct.productReceiptUrl
+              }
+            >
+              <strong style={{marginRight:"10px"}}>Hoá đơn:</strong>
+              <Image
+                width={150}
+                src={selectedProduct && selectedProduct.productReceiptUrl}
               />
             </Form.Item>
 
             <Form.Item
-              label="Chất liệu"
-              name="madeOf"
-              rules={[
-                { required: true, message: "Vui lòng nhập số điện thoại!" },
-              ]}
-            >
-              <Input
-                readOnly
-                style={{ width: "300px", marginLeft: "16.8px" }}
-              />
-            </Form.Item>
-            <Form.Item
-              label="Thương hiệu"
-              name="brandName"
-              rules={[
-                { required: true, message: "Vui lòng nhập số điện thoại!" },
-              ]}
-            >
-              <Input
-                readOnly
-                style={{ width: "300px", marginLeft: "16.8px" }}
-              />
-            </Form.Item>
-            <Form.Item
-              label="Giá sản phẩm"
-              name="price"
-              rules={[
-                { required: true, message: "Vui lòng nhập giá của sản phẩm!" },
-              ]}
-            >
-              <Input
-                readOnly
-                style={{ width: "300px", marginLeft: "16.8px" }}
-              />
-            </Form.Item>
-            <Form.Item
-              label="Hình ảnh sản phẩm"
               name="imgProduct"
-              rules={[{ required: true, message: "" }]}
+              initialValue={selectedProduct && selectedProduct.imgProduct}
             >
+              <strong>Hình ảnh sản phẩm:</strong>
               {productData && productData.imgProduct ? <MuntilImage /> : null}
             </Form.Item>
 
@@ -251,7 +264,7 @@ const ProductCard = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                style={{ marginLeft: "20px" }}
+                style={{ marginLeft: "20px", backgroundColor: "#008000" }}
               >
                 Xác Nhận
               </Button>
