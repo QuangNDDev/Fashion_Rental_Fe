@@ -24,14 +24,6 @@ const LoginForm = () => {
     navigate(`/productOwner`);
   };
 
-  const emailValidator = (rule, value, callback) => {
-    if (value && !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
-      callback("Vui lòng nhập địa chỉ email phù hợp!");
-    } else {
-      callback();
-    }
-  };
-
   const onFinish = async (values) => {
     const email = values.email;
     const password = values.password;
