@@ -34,22 +34,11 @@ const StaffTable = () => {
   const [urlImage, setUrlImage] = useState("");
   const [api, contextHolder] = notification.useNotification();
 
-  const handleFileChange = (event) => {
-    console.log("handleFileChange called");
-    console.log("File selected:", event.file);
-    if (event.file) {
-      const imageRef = ref(storage, `images/${event.file.name + v4()}`);
-
-      uploadBytes(imageRef, event.file)
-        .then((snapshot) => {
-          // Set the URL after a successful upload
-          getDownloadURL(snapshot.ref).then((url) => {
-            setUrlImage(url);
-          });
-        })
-        .catch((error) => {
-          console.error("Error uploading image:", error);
-        });
+  const emailValidator = (rule, value, callback) => {
+    if (value && !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
+      callback("Vui lòng nhập địa chỉ email phù hợp!");
+    } else {
+      callback();
     }
   };
   const fetchUsers = async () => {
@@ -426,14 +415,11 @@ const StaffTable = () => {
               name="email"
               rules={[
                 {
-                  type: "email",
+                  required: true,
 
                   message: "Vui lòng nhập email",
                 },
-                {
-                  required: true,
-                  message: "Vui lòng nhập email",
-                },
+                { validator: emailValidator },
               ]}
             >
               <Input />
