@@ -238,6 +238,16 @@ const CreateProduct = () => {
             beforeUpload={() => false}
           >
             <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+            <span
+              style={{
+                marginLeft: "20px",
+                fontStyle: "italic",
+                fontWeight: "normal",
+                color: "grey",
+              }}
+            >
+              • Tối đa 9 ảnh
+            </span>
           </Upload>
         </div>
 
