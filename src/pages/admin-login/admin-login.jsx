@@ -141,10 +141,7 @@ const LoginForm = () => {
           >
             <Form.Item
               name="email"
-              rules={[
-                { required: true, message: "Vui lòng nhập email!" },
-                { validator: emailValidator },
-              ]}
+              rules={[{ required: true, message: "Vui lòng nhập email!" }]}
             >
               <Input
                 style={{ fontSize: "15px", padding: "10px" }}
@@ -168,7 +165,7 @@ const LoginForm = () => {
                 <Checkbox>Ghi Nhớ</Checkbox>
               </Form.Item>
               <div style={{ marginTop: "20px" }}>
-                Bạn chưa có tài khoản? <Link to="/register"> Đăng ký</Link>
+                Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link>
               </div>
             </Form.Item>
             <div style={{ display: "flex", justifyContent: "center" }}>
