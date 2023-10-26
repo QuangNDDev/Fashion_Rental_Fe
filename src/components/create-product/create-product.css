@@ -67,8 +67,9 @@
 
 .rent-price span {
   font-weight: bold;
+  /* margin-left: 60px; */
 }
 
 .rent-price__day {
-  margin-right: 20px;
+  margin-right: 30px;
 }

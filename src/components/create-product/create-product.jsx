@@ -23,6 +23,21 @@ const CreateProduct = () => {
   const handleCancel = () => setPreviewOpen(false);
   const [productType, setProductType] = useState("bán"); // Giá trị mặc định của cái select
 
+  //------------------------regex chỉ được nhập số---------------------
+
+  const [inputValue, setInputValue] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    // Sử dụng regex để chỉ chấp nhận số
+    const regex = /^[0-9]*$/;
+
+    if (regex.test(value)) {
+      setInputValue(value);
+    }
+  };
+  //-------------------------------------------------------------------
+
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -141,8 +156,6 @@ const CreateProduct = () => {
         <div className="rent-sale">
           <span>Cấu hình sản phẩm:</span>
 
-          {/* <Radio value={true}>Bán</Radio>
-          <Radio value={false}>Cho thuê</Radio> */}
           <Space wrap>
             <Select
               defaultValue="bán"
@@ -170,31 +183,51 @@ const CreateProduct = () => {
 
         <div className="price">
           <span>Giá sản phẩm:</span>
-          <Input style={{ width: "15%" }} />
+          <Input suffix="VND" style={{ width: "11.6%" }} />
         </div>
 
-        <div className="rent-price">
-          <div className="rent-price__day">
-            <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 1 ngày:</p>
-            <Input style={{ width: "100%", marginRight: "30px" }} />
+        {(productType === "cho thuê" || productType === "cả hai") && (
+          <div className="rent-price">
+            <div className="rent-price__day">
+              <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 1 ngày:</p>
+              <Input
+                prefix=""
+                suffix="VND"
+                style={{ width: "70%", marginRight: "30px" }}
+                value={inputValue}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="rent-price__day">
+              <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 4 ngày:</p>
+              <Input
+                suffix="VND"
+                style={{ width: "70%", marginRight: "30px" }}
+              />
+            </div>
+            <div className="rent-price__day">
+              <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 7 ngày:</p>
+              <Input
+                suffix="VND"
+                style={{ width: "70%", marginRight: "30px" }}
+              />
+            </div>
+            <div className="rent-price__day">
+              <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 10 ngày:</p>
+              <Input
+                suffix="VND"
+                style={{ width: "70%", marginRight: "30px" }}
+              />
+            </div>
+            <div className="rent-price__day">
+              <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 14 ngày:</p>
+              <Input
+                suffix="VND"
+                style={{ width: "70%", marginRight: "30px" }}
+              />
+            </div>
           </div>
-          <div className="rent-price__day">
-            <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 4 ngày:</p>
-            <Input style={{ width: "100%", marginRight: "30px" }} />
-          </div>
-          <div className="rent-price__day">
-            <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 7 ngày:</p>
-            <Input style={{ width: "100%", marginRight: "30px" }} />
-          </div>
-          <div className="rent-price__day">
-            <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 10 ngày:</p>
-            <Input style={{ width: "100%", marginRight: "30px" }} />
-          </div>
-          <div className="rent-price__day">
-            <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 14 ngày:</p>
-            <Input style={{ width: "100%", marginRight: "30px" }} />
-          </div>
-        </div>
+        )}
 
         <div className="receipt">
           <span>Hoá đơn sản phẩm:</span>
