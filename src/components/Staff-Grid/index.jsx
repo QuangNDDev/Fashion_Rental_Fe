@@ -11,6 +11,7 @@ import {
   Form,
   Image,
   Input,
+  Modal,
   Space,
   Table,
 } from "antd";
@@ -95,6 +96,10 @@ const TablePending = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const [form] = Form.useForm();
   const [requestsData, setRequestsData] = useState();
+  const [isCustomModalVisible, setIsCustomModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisibleNotApprove, setIsModalVisibleNotApprove] =
+    useState(false);
   const fetchRequests = async () => {
     try {
       const response = await axios.get(
@@ -112,21 +117,40 @@ const TablePending = () => {
   const showDrawer = (record) => {
     console.log(record);
 
-    
-    axios.get("http://fashionrental.online:8080/product/"+record.productID)
-    .then(response => {
-      console.log(response.data);
-      form.setFieldsValue(response.data);
-      setSelectedRecord(response.data);
-      setIsDrawerVisible(true);
-    })
-    .catch(error => {
-      console.error(error);
-    });
+    axios
+      .get("http://fashionrental.online:8080/product/" + record.productID)
+      .then((response) => {
+        console.log(response.data);
+        form.setFieldsValue(response.data);
+        setSelectedRecord(response.data);
+        setIsDrawerVisible(true);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
   const closeDrawer = () => {
     setIsDrawerVisible(false);
   };
+  //Modal duyet
+  const showModalApprove = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+  //-----------------------------
+  const handleOk = () => {};
+  //Modal Huy
+  const showModalNotApprove = () => {
+    setIsModalVisibleNotApprove(true);
+  };
+  const handleCancelNotApprove = () => {
+    setIsModalVisibleNotApprove(false);
+  };
+  const handleSend = () => {};
+
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
@@ -263,7 +287,7 @@ const TablePending = () => {
       dataIndex: "status",
       key: "status",
       render: (status) => (
-        <p style={{ textAlign: "center",justifyContent:"center" }}>
+        <p style={{ textAlign: "center", justifyContent: "center" }}>
           <RenderTag tagRender={status} />
         </p>
       ),
@@ -300,12 +324,72 @@ const TablePending = () => {
             <EyeTwoTone />
             Xem Đơn
           </Button>
-          <Button style={{ marginRight: "15px" }}>
+          <Button style={{ marginRight: "15px" }} onClick={showModalApprove}>
             <CheckCircleTwoTone twoToneColor="#52c41a" />
           </Button>
-          <Button>
+          <Button onClick={showModalNotApprove}>
             <CloseCircleTwoTone twoToneColor="#ff4d4f" />
           </Button>
+          <Modal
+            title="Duyệt Sản Phẩm"
+            open={isModalVisible}
+            onOk={handleOk}
+            onCancel={handleCancel}
+            footer={null}
+          >
+            <Form form={form}>
+              <p>Lý Do Duyệt:</p>
+              <Form.Item name="description">
+                <Input />
+              </Form.Item>
+              <Form.Item style={{ textAlign: "center" }}>
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: "red" }}
+                  onClick={handleCancel}
+                >
+                  Hủy
+                </Button>
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: "#008000", marginLeft: "20px" }}
+                  onClick={handleOk}
+                >
+                  Duyệt
+                </Button>
+              </Form.Item>
+            </Form>
+          </Modal>
+          <Modal
+            title="Từ Chối Sản Phẩm"
+            open={isModalVisibleNotApprove}
+            onOk={handleSend}
+            onCancel={handleCancelNotApprove}
+            footer={null}
+          >
+            <Form form={form}>
+              <p>Lý Do Từ Chối:</p>
+              <Form.Item name="description">
+                <Input />
+              </Form.Item>
+              <Form.Item style={{ textAlign: "center" }}>
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: "red" }}
+                  onClick={handleCancelNotApprove}
+                >
+                  Hủy
+                </Button>
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: "#008000", marginLeft: "20px" }}
+                  onClick={handleSend}
+                >
+                  Gửi
+                </Button>
+              </Form.Item>
+            </Form>
+          </Modal>
         </div>
       ),
     },
