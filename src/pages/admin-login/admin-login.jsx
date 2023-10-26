@@ -38,7 +38,7 @@ const LoginForm = () => {
     console.log("Received values:", values);
     try {
       const response = await axios.post(
-        `http://134.209.111.144:8080/account/login?email=` +
+        `http://fashionrental.online:8080/account/login?email=` +
           email +
           `&password=` +
           password
