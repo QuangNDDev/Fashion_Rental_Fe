@@ -61,10 +61,14 @@
 }
 
 .rent-price {
-  display: grid;
+  display: flex;
   padding: 20px;
 }
 
 .rent-price span {
   font-weight: bold;
+}
+
+.rent-price__day {
+  margin-right: 20px;
 }

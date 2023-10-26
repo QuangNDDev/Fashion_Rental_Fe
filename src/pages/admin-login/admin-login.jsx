@@ -57,7 +57,7 @@ const LoginForm = () => {
           });
           setTimeout(() => {
             handleNavigationAdmin();
-          }, 1000);
+          }, 500);
         } else if (response.data.role.roleID == 3) {
           api["success"]({
             message: "Đăng Nhập Thành Công",
@@ -66,7 +66,7 @@ const LoginForm = () => {
           });
           setTimeout(() => {
             handleNavigationStaff();
-          }, 1000);
+          }, 500);
         } else if (response.data.role.roleID == 2) {
           api["success"]({
             message: "Đăng Nhập Thành Công",
@@ -75,7 +75,7 @@ const LoginForm = () => {
           });
           setTimeout(() => {
             handleNavigationProductOwner();
-          }, 1000);
+          }, 500);
         } else {
           api["warning"]({
             message: "Đăng Nhập Thất Bại",

@@ -168,82 +168,33 @@ const CreateProduct = () => {
           </Space>
         </div>
 
-        {productType === "bán" && (
-          <>
-            <div className="price">
-              <span>Giá sản phẩm:</span>
-              <NumericInput
-                style={{
-                  width: 250,
-                }}
-                value={value}
-                onChange={setValue}
-              />
-            </div>
-            <div className="rent-price">
-              <span>Giá thuê sản phẩm:</span>
-              <NumericInput
-                style={{
-                  width: 250,
-                }}
-                value={value}
-                onChange={setValue}
-                disabled={true}
-              />
-            </div>
-          </>
-        )}
+        <div className="price">
+          <span>Giá sản phẩm:</span>
+          <Input style={{ width: "15%" }} />
+        </div>
 
-        {productType === "cho thuê" && (
-          <>
-            <div className="rent-price">
-              <span>Giá thuê sản phẩm:</span>
-              <NumericInput
-                style={{
-                  width: 250,
-                }}
-                value={value}
-                onChange={setValue}
-              />
-            </div>
-            <div className="price">
-              <span>Giá sản phẩm:</span>
-              <NumericInput
-                style={{
-                  width: 250,
-                }}
-                value={value}
-                onChange={setValue}
-                disabled={true}
-              />
-            </div>
-          </>
-        )}
-
-        {productType === "cả hai" && (
-          <>
-            <div className="price">
-              <span>Giá sản phẩm:</span>
-              <NumericInput
-                style={{
-                  width: 250,
-                }}
-                value={value}
-                onChange={setValue}
-              />
-            </div>
-            <div className="rent-price">
-              <span>Giá thuê sản phẩm:</span>
-              <NumericInput
-                style={{
-                  width: 250,
-                }}
-                value={value}
-                onChange={setValue}
-              />
-            </div>
-          </>
-        )}
+        <div className="rent-price">
+          <div className="rent-price__day">
+            <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 1 ngày:</p>
+            <Input style={{ width: "100%", marginRight: "30px" }} />
+          </div>
+          <div className="rent-price__day">
+            <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 4 ngày:</p>
+            <Input style={{ width: "100%", marginRight: "30px" }} />
+          </div>
+          <div className="rent-price__day">
+            <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 7 ngày:</p>
+            <Input style={{ width: "100%", marginRight: "30px" }} />
+          </div>
+          <div className="rent-price__day">
+            <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 10 ngày:</p>
+            <Input style={{ width: "100%", marginRight: "30px" }} />
+          </div>
+          <div className="rent-price__day">
+            <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 14 ngày:</p>
+            <Input style={{ width: "100%", marginRight: "30px" }} />
+          </div>
+        </div>
 
         <div className="receipt">
           <span>Hoá đơn sản phẩm:</span>
