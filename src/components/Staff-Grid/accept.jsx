@@ -84,15 +84,7 @@ const TableAccept = () => {
         "http://fashionrental.online:8080/staffrequested/approved/" + idStaff
       );
 
-      const updatedRequests = response.data.map((request) => ({
-        ...request,
-        requestAddingProductID:
-          request.requestAddingProductDTO.requestAddingProductID,
-        status: request.requestAddingProductDTO.status,
-        description: request.requestAddingProductDTO.description,
-      }));
-      setRequestsData(updatedRequests);
-      console.log(updatedRequests);
+      setRequestsData(response.data);
 
     } catch (error) {
       console.error(error);
@@ -357,18 +349,10 @@ const TableAccept = () => {
             {/* <Input value={selectedRecord?.productName} readOnly /> */}
           </Form.Item>
 
-          <Form.Item name="forRent">
-            <span>Hình Thức Thuê: </span>
-            <strong style={{ marginLeft: "10px" }}>
-              {selectedRecord?.forRent ? "Có" : "Không"}
-            </strong>
-          </Form.Item>
-
-          <Form.Item name="forSale">
-            <span>Hình Thức Bán: </span>
-            <strong style={{ marginLeft: "10px" }}>
-              {selectedRecord?.forSale ? "Có" : "Không"}
-            </strong>
+          <Form.Item name="checkType">
+          <span>Hình Thức Sản Phẩm: </span>
+            <RenderTag tagRender={selectedRecord?.checkType} />
+           
           </Form.Item>
 
           <Form.Item name="categoryName">
@@ -379,12 +363,12 @@ const TableAccept = () => {
           </Form.Item>
 
           <p style={{ marginBottom: "10px" }}>Ảnh Hóa Đơn:</p>
-          <Form.Item name="invoiceCode">
-            {selectedRecord?.invoiceCode && (
+          <Form.Item name="productReceiptUrl">
+            {selectedRecord?.productReceiptUrl && (
               <Image
                 style={{ borderRadius: "10px" }}
-                width={300}
-                src={selectedRecord.invoiceCode}
+                width={200}
+                src={selectedRecord.productReceiptUrl}
               />
             )}
           </Form.Item>

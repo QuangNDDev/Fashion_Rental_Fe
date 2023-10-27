@@ -21,7 +21,7 @@ const CreateProduct = () => {
   const [urlReceiptImage, setUrlReceiptImage] = useState("");
   const [value, setValue] = useState("");
   const handleCancel = () => setPreviewOpen(false);
-  const [productType, setProductType] = useState("bán"); // Giá trị mặc định của cái select
+  const [productType, setProductType] = useState("SALE"); // Giá trị mặc định của cái select
 
   //------------------------regex chỉ được nhập số---------------------
 
@@ -165,16 +165,16 @@ const CreateProduct = () => {
               onChange={selectChange}
               options={[
                 {
-                  value: "bán",
+                  value: "SALE",
                   label: "Bán",
                 },
                 {
-                  value: "cho thuê",
+                  value: "RENT",
                   label: "Cho Thuê",
                 },
                 {
-                  value: "cả hai",
-                  label: "bán và cho thuê",
+                  value: "SALE_RENT",
+                  label: "Bán Và Cho Thuê",
                 },
               ]}
             />
@@ -238,16 +238,7 @@ const CreateProduct = () => {
             beforeUpload={() => false}
           >
             <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
-            <span
-              style={{
-                marginLeft: "20px",
-                fontStyle: "italic",
-                fontWeight: "normal",
-                color: "grey",
-              }}
-            >
-              • Tối đa 9 ảnh
-            </span>
+            
           </Upload>
         </div>
 
@@ -262,7 +253,18 @@ const CreateProduct = () => {
             multiple={true}
           >
             <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+            <span
+              style={{
+                marginLeft: "20px",
+                fontStyle: "italic",
+                fontWeight: "normal",
+                color: "grey",
+              }}
+            >
+              • Tối đa 9 ảnh
+            </span>
           </Upload>
+          
           <Modal
             open={previewOpen}
             title={previewTitle}
