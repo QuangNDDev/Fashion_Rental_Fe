@@ -287,7 +287,7 @@ const TablePending = () => {
       dataIndex: "status",
       key: "status",
       render: (status) => (
-        <p style={{ textAlign: "center", justifyContent: "center" }}>
+        <p style={{ textAlign: "left", justifyContent: "left" }}>
           <RenderTag tagRender={status} />
         </p>
       ),
@@ -422,7 +422,10 @@ const TablePending = () => {
           <Form.Item name="price">
             <span>Giá Sản Phẩm: </span>
             <strong style={{ marginLeft: "10px" }}>
-              {selectedRecord?.price}vnđ
+              {selectedRecord?.price.toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              })}
             </strong>
             {/* <Input value={selectedRecord?.productName} readOnly /> */}
           </Form.Item>

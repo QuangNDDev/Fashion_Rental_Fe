@@ -1,6 +1,4 @@
-import { SearchOutlined } from "@ant-design/icons";
-import React, { useEffect, useRef, useState } from "react";
-import Highlighter from "react-highlight-words";
+import { DeleteFilled, EditTwoTone, SearchOutlined } from "@ant-design/icons";
 import {
   Button,
   Drawer,
@@ -9,12 +7,12 @@ import {
   Radio,
   Space,
   Table,
-  Tag,
   notification,
 } from "antd";
-import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
-import RenderTag from "../render/RenderTag";
 import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
+import Highlighter from "react-highlight-words";
+import RenderTag from "../render/RenderTag";
 const ProductOwnerTable = () => {
   const [users, setUsers] = useState();
   const [searchText, setSearchText] = useState("");

@@ -11,6 +11,7 @@ import {
   Space,
   Form,
   message,
+  notification,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -36,6 +37,7 @@ const CreateProduct = () => {
   const [checkCategory, setCheckCategory] = useState(""); // Giá trị mặc định của cái select
   const [categorys, setCategorys] = useState();
   const productownerId = localStorage.getItem("productownerId");
+  const [form] = Form.useForm();
   const fetchCategorys = async () => {
     try {
       const response = await axios.get(
@@ -55,7 +57,7 @@ const CreateProduct = () => {
   //------------------------regex chỉ được nhập số---------------------
 
   const [inputValue, setInputValue] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [api, contextHolder] = notification.useNotification();
   const handleInputChange = (e) => {
     const { value } = e.target;
     // Sử dụng regex để chỉ chấp nhận số
@@ -91,33 +93,41 @@ const CreateProduct = () => {
         addProductData
       );
 
-      message.success("Thêm sản phẩm mới thành công!");
+      api["success"]({
+        message: "Thêm Sản Phẩm Thành Công",
+        description: `Bạn đã thêm ${values.productName} thành công`,
+      });
+      form.resetFields();
       console.log("Registration successful", response.data);
-      if (response.data.checkType === "RENT" || response.data.checkType === "SALE_RENT") {
+      if (
+        response.data.checkType === "RENT" ||
+        response.data.checkType === "SALE_RENT"
+      ) {
         // Gọi API khi checkType là "RENT" hoặc "SALE_RENT"
         const formRentPrice = {
           productID: response.data.productID,
-          rentPrice1:values.rentPrice1,
-          rentPrice4:values.rentPrice4,
-          rentPrice7:values.rentPrice7,
-          rentPrice10:values.rentPrice10,
-          rentPrice14:values.rentPrice14,
-        }
+          rentPrice1: values.rentPrice1,
+          rentPrice4: values.rentPrice4,
+          rentPrice7: values.rentPrice7,
+          rentPrice10: values.rentPrice10,
+          rentPrice14: values.rentPrice14,
+        };
         try {
           const rentPriceResponse = await axios.post(
             "http://fashionrental.online:8080/rentprice/create",
             formRentPrice
           );
-  
+
           console.log("Rent price Success!!");
           console.log(rentPriceResponse.data);
+          formRentPrice.resetField();
         } catch (error) {
           console.error("Error rent price:", error);
         }
       }
       const formRequest = {
-        productID: response.data.productID
-      }
+        productID: response.data.productID,
+      };
       try {
         const requestResponse = await axios.post(
           "http://fashionrental.online:8080/request",
@@ -146,6 +156,11 @@ const CreateProduct = () => {
       }
     } catch (error) {
       console.error("Add new product failed", error);
+      api["error"]({
+        message: "Thêm Sản Phẩm Thất Bại",
+        description: `Bạn đã thêm ${values.productName} thất bại`,
+        duration: 1000,
+      });
     }
 
     console.log(addProductData);
@@ -260,30 +275,43 @@ const CreateProduct = () => {
 
   return (
     <div style={{ backgroundColor: "#f9f9f9" }}>
+      {contextHolder}
       <div className="section-title">Thông tin sản phẩm</div>
-      <Form onFinish={onFinish}>
+      <Form form={form} onFinish={onFinish}>
         <div className="product-details">
           <div className="name">
             <span>Tên sản phẩm:</span>
-            <Form.Item name={"productName"}>
+            <Form.Item
+              name={"productName"}
+              rules={[{ required: true, message: "Không được để trống!" }]}
+            >
               <Input placeholder="Nhập tên sản phẩm..." />
             </Form.Item>
           </div>
           <div className="name">
             <span>Thương hiệu:</span>
-            <Form.Item name={"brandName"}>
+            <Form.Item
+              name={"brandName"}
+              rules={[{ required: true, message: "Không được để trống!" }]}
+            >
               <Input placeholder="Nhập tên thương hiệu..." />
             </Form.Item>
           </div>
           <div className="name">
             <span>Chất liệu:</span>
-            <Form.Item name={"madeOf"}>
+            <Form.Item
+              name={"madeOf"}
+              rules={[{ required: true, message: "Không được để trống!" }]}
+            >
               <Input placeholder="Nhập chất liệu..." />
             </Form.Item>
           </div>
           <div className="description">
             <span>Mô tả sản phẩm:</span>
-            <Form.Item name={"description"}>
+            <Form.Item
+              name={"description"}
+              rules={[{ required: true, message: "Không được để trống!" }]}
+            >
               <TextArea rows={4} placeholder="Nhập mô tả sản phẩm..." />
             </Form.Item>
           </div>
@@ -339,38 +367,58 @@ const CreateProduct = () => {
             rules={[
               {
                 required: true,
-                message: "Vui lòng nhập giá!",
+                message: "Không được để trống!",
+              },
+              {
+                pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
+                message: "Chỉ được nhập số!",
               },
             ]}
           >
             <div className="price">
               <span>Giá sản phẩm:</span>
-              <Input
-                suffix="VND"
-                style={{ width: "11.6%" }}
-                onChange={handleInputChange}
-                value={inputValue}
-              />
+              <Input suffix="VND" style={{ width: "11.6%" }} />
             </div>
           </Form.Item>
 
           {(checkType === "RENT" || checkType === "SALE_RENT") && (
             <div className="rent-price">
-              <Form.Item name={"rentPrice1"}>
+              <Form.Item
+                name={"rentPrice1"}
+                rules={[
+                  {
+                    required: true,
+                    message: "Không được để trống!",
+                  },
+                  {
+                    pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
+                    message: "Chỉ được nhập số!",
+                  },
+                ]}
+              >
                 <div className="rent-price__day">
                   <p style={{ fontWeight: "bold" }}>
                     Giá thuê sản phẩm 1 ngày:
                   </p>
                   <Input
-                    prefix=""
                     suffix="VND"
                     style={{ width: "70%", marginRight: "30px" }}
-                    value={inputValue}
-                    onChange={handleInputChange}
                   />
                 </div>
               </Form.Item>
-              <Form.Item name={"rentPrice4"}>
+              <Form.Item
+                name={"rentPrice4"}
+                rules={[
+                  {
+                    required: true,
+                    message: "Không được để trống!",
+                  },
+                  {
+                    pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
+                    message: "Chỉ được nhập số!",
+                  },
+                ]}
+              >
                 <div className="rent-price__day">
                   <p style={{ fontWeight: "bold" }}>
                     Giá thuê sản phẩm 4 ngày:
@@ -378,11 +426,23 @@ const CreateProduct = () => {
                   <Input
                     suffix="VND"
                     style={{ width: "70%", marginRight: "30px" }}
-                    onChange={handleInputChange}
                   />
                 </div>
               </Form.Item>
-              <Form.Item name={"rentPrice7"}>
+
+              <Form.Item
+                name={"rentPrice7"}
+                rules={[
+                  {
+                    required: true,
+                    message: "Không được để trống!",
+                  },
+                  {
+                    pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
+                    message: "Chỉ được nhập số!",
+                  },
+                ]}
+              >
                 <div className="rent-price__day">
                   <p style={{ fontWeight: "bold" }}>
                     Giá thuê sản phẩm 7 ngày:
@@ -390,11 +450,23 @@ const CreateProduct = () => {
                   <Input
                     suffix="VND"
                     style={{ width: "70%", marginRight: "30px" }}
-                    onChange={handleInputChange}
                   />
                 </div>
               </Form.Item>
-              <Form.Item name={"rentPrice10"}>
+
+              <Form.Item
+                name={"rentPrice10"}
+                rules={[
+                  {
+                    required: true,
+                    message: "Không được để trống!",
+                  },
+                  {
+                    pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
+                    message: "Chỉ được nhập số!",
+                  },
+                ]}
+              >
                 <div className="rent-price__day">
                   <p style={{ fontWeight: "bold" }}>
                     Giá thuê sản phẩm 10 ngày:
@@ -402,19 +474,42 @@ const CreateProduct = () => {
                   <Input
                     suffix="VND"
                     style={{ width: "70%", marginRight: "30px" }}
-                    onChange={handleInputChange}
                   />
                 </div>
               </Form.Item>
-              <Form.Item name={"rentPrice14"}>
-                <div className="rent-price__day">
+
+              <Form.Item
+                name={"rentPrice14"}
+                rules={[
+                  {
+                    required: true,
+                    message: "Không được để trống!",
+                  },
+                  {
+                    pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
+                    message: "Chỉ được nhập số!",
+                  },
+                ]}
+              >
+                <div
+                  className="rent-price__day"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Không được để trống!",
+                    },
+                    {
+                      pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
+                      message: "Chỉ được nhập số!",
+                    },
+                  ]}
+                >
                   <p style={{ fontWeight: "bold" }}>
                     Giá thuê sản phẩm 14 ngày:
                   </p>
                   <Input
                     suffix="VND"
                     style={{ width: "70%", marginRight: "30px" }}
-                    onChange={handleInputChange}
                   />
                 </div>
               </Form.Item>
