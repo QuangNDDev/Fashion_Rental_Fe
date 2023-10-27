@@ -69,23 +69,31 @@ const ProfileStaff = () => {
     axios
       .post("http://fashionrental.online:8080/staff/createstaff", verifyData)
       .then((response) => {
-        // Handle the response from the server if needed
-        console.log("Staff member created:", response.data);
-        setUserInfo({
-          fullName: response.data.fullName,
-          avatarUrl: response.data.avatarUrl,
-        });
-        api["success"]({
-          message: "Xác Thực Thành Công!",
-          description: "Chúc mừng bạn đã đăng ký thành công",
-
-          duration: 1800,
-        });
+        if (response.data.message === "Created Fail By Email Already Existed") {
+          // Xử lý trường hợp tài khoản đã tồn tại
+          api["error"]({
+            message: "Tài Khoản Này Đã Được Xác Thực",
+            description: "Thông báo tài khoản đã tồn tại",
+            duration: 1800,
+          });
+        } else {
+          // Xử lý trường hợp tài khoản đã xác thực thành công
+          console.log("Staff member created:", response.data);
+          setUserInfo({
+            fullName: response.data.fullName,
+            avatarUrl: response.data.avatarUrl,
+          });
+          api["success"]({
+            message: "Xác Thực Thành Công!",
+            description: "Chúc mừng bạn đã đăng ký thành công",
+            duration: 1800,
+          });
+        }
         window.location.reload();
       })
       .catch((error) => {
-        // Handle any errors that occur during the request
-        console.error("Error creating staff member:", error);
+        // Xử lý các lỗi khác
+        console.error("Created Fail By Email Already Existed:", error);
         api["error"]({
           message: "Xác Thực Thất Bại!",
           description: "Bạn đã xác thực thất bại",
@@ -94,20 +102,37 @@ const ProfileStaff = () => {
       });
   };
   return (
-    <Card className="profile-container">
+    <Card
+      className="profile-container"
+      title={
+        <p
+          style={{
+            textAlign: "center",
+            fontWeight: "bold",
+            fontSize: "30px",
+            fontStyle: "italic",
+          }}
+        >
+          Xác Thực Tài Khoản
+        </p>
+      }
+    >
       {contextHolder}
       <Form onFinish={onFinish}>
-        <Form.Item>
-          {userInfo && (
-            <Meta
-              avatar={<Avatar size={75} src={userInfo.avatarUrl} />}
-              title={<div className="userName">{userInfo.fullName}</div>}
-              description={<div className="userDescription">aaaaaaa</div>}
-            />
-          )}
+        <Form.Item
+          name="fullName"
+          rules={[{ required: true, message: "Vui lòng nhập Họ và Tên!" }]}
+          style={{ textAlign: "center" }}
+        >
+          <div className="input-container">
+            <Input style={{ width: "55%" }} placeholder="Họ và Tên" />
+          </div>
         </Form.Item>
-
-        <Form.Item name="avatarUrl">
+        <Form.Item
+          name="avatarUrl"
+          rules={[{ required: true, message: "Vui lòng chọn ảnh đại diện!" }]}
+          style={{ textAlign: "center" }}
+        >
           <div className="select-image">
             <Upload
               label="Hình đại diện"
@@ -121,18 +146,16 @@ const ProfileStaff = () => {
           </div>
         </Form.Item>
 
-        <Form.Item name="fullName">
-          <div className="input-container">
-            <Input placeholder="Họ và Tên" />
-          </div>
-        </Form.Item>
-
-        <Form.Item>
+        <Form.Item style={{ textAlign: "center" }}>
           {loading ? ( // Nếu đang loading, hiển thị trạng thái loading
             <Spin />
           ) : (
             <div className="update-button">
-              <Button type="primary" htmlType="submit">
+              <Button
+                style={{ backgroundColor: "green" }}
+                type="primary"
+                htmlType="submit"
+              >
                 Xác Thực
               </Button>
             </div>

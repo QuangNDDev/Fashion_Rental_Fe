@@ -40,7 +40,10 @@ const ProductOwner = () => {
         "http://fashionrental.online:8080/account/" + idAccount
       );
       setProductOwner(response.data.data.productowner);
-      localStorage.setItem("productownerId", response.data.data.productowner.productownerID);
+      localStorage.setItem(
+        "productownerId",
+        response.data.data.productowner.productownerID
+      );
     } catch (error) {
       console.error(error);
     }
@@ -146,7 +149,7 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Quản lý sản phẩm</Breadcrumb.Item>
               <Breadcrumb.Item>Thêm sản phẩm</Breadcrumb.Item>
             </Breadcrumb>
-            <CreateProduct/>
+            <CreateProduct />
           </div>
         );
       case "6":
@@ -174,7 +177,7 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Tài chính</Breadcrumb.Item>
               <Breadcrumb.Item>Doanh thu</Breadcrumb.Item>
             </Breadcrumb>
-            <Revenue/>
+            <Revenue />
           </div>
         );
       case "8":
@@ -213,14 +216,16 @@ const ProductOwner = () => {
             width={70}
             height={50}
           />
-          <h2 style={{ color: "#fff", fontWeight: "normal" }}>
-            Chủ sản phẩm
-          </h2>
+          <h2 style={{ color: "#fff", fontWeight: "normal" }}>Chủ sản phẩm</h2>
         </div>
         {/* Notification bell icon and avatar */}
         <div style={{ display: "flex", alignItems: "center" }}>
           <Avatar
-            src={productowner.avatarUrl}
+            src={
+              productowner?.avatarUrl
+                ? productowner.avatarUrl
+                : "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg"
+            }
             alt="User Avatar"
             style={{ width: "38px", height: "38px", marginLeft: "10px" }}
           />
@@ -232,7 +237,7 @@ const ProductOwner = () => {
               fontWeight: "bold",
             }}
           >
-            {productowner.fullName}
+            {productowner?.fullName ? productowner.fullName : ""}
           </span>
           <Badge count={unreadNotificationCount}>
             <BellOutlined

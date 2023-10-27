@@ -53,7 +53,7 @@ const LoginForm = () => {
         } else if (response.data.role.roleID == 3) {
           api["success"]({
             message: "Đăng Nhập Thành Công",
-            description: `Xin Chào ${response.data.staff.fullName}`,
+            description: null,
             duration: 1000,
           });
           setTimeout(() => {
@@ -62,7 +62,8 @@ const LoginForm = () => {
         } else if (response.data.role.roleID == 2) {
           api["success"]({
             message: "Đăng Nhập Thành Công",
-            description: `Xin Chào ${response.data.productowner.fullName}`,
+            description: null,
+
             duration: 1000,
           });
           setTimeout(() => {
@@ -87,7 +88,6 @@ const LoginForm = () => {
           description: " Vui lòng kiểm tra lại email và mật khẩu.",
         });
       } else {
-        message.error("Đã xảy ra lỗi trong quá trình đăng nhập.");
         api["error"]({
           message: "Đăng Nhập Thất Bại",
           description: " Đã xảy ra lỗi trong quá trình đăng nhập.",

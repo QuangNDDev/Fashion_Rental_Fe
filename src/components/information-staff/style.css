@@ -26,12 +26,5 @@
 .input-container {
   margin-top: 10px;
   width: 50%;
-}
-
-.select-image {
-  margin-top: 10px;
-}
-
-.update-button {
-  margin-top: 10px;
+  margin: auto;
 }
