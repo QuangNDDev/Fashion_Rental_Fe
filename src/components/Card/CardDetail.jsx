@@ -1,9 +1,7 @@
+import { EditOutlined, SettingOutlined } from "@ant-design/icons";
+import { Avatar, Button, Card, Form, Input, Modal, Tag } from "antd";
 import React, { useState } from "react";
-import { EditOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons";
-import { Avatar, Card, Form, Modal, Button, Result, Carousel } from "antd";
 import MuntilImage from "../Mutil-Image";
-import { Input } from "antd";
-import { Tag } from "antd";
 
 const { Meta } = Card;
 
@@ -12,7 +10,6 @@ const CardDetail = () => {
   const [formData, setFormData] = useState(null);
   const [form] = Form.useForm();
   const [cardData, setCardData] = useState({
-    // avatar: "https://xsgames.co/randomusers/avatar.php?g=pixel",
     product_Name: "Louis Vuitton", // Thay đổi title
     productOwner_Name: "Nguyễn Đăng Quang", // Thay đổi description
     status: "Đã duyệt",
@@ -23,20 +20,6 @@ const CardDetail = () => {
     phone_Number: "0822833799",
     imgProduct: { MuntilImage },
   });
-
-  const tagColor = {
-    Active: "green",
-    InActive: "red",
-  };
-
-  const tagValue = {
-    Active: "green",
-    InActive: "red",
-  };
-
-  const contentStyle = {
-    display: "flex",
-  };
 
   const showModal = () => {
     setIsModalVisible(true);

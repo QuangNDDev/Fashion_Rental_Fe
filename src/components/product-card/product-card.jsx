@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from "react";
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  UserOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
-import { Avatar, Card, Col, Image, Input, Row, Switch } from "antd";
-import { Form, Modal, Button } from "antd";
-import MuntilImage from "../Mutil-Image";
+import { EyeOutlined } from "@ant-design/icons";
+import { Card, Col, Form, Image, Modal, Row, Switch } from "antd";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import MuntilImage from "../Mutil-Image";
 import RenderTag from "../render/RenderTag";
 const { Meta } = Card;
 
@@ -20,6 +14,15 @@ const ProductCard = () => {
   const productownerId = localStorage.getItem("productownerId");
   const idAccount = localStorage.getItem("accountId");
   const [productData, setProductData] = useState([]);
+
+  //chuyen doi thanh dang tien te vnd ------------------------------------------------------
+  const formatPriceWithVND = (price) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+  };
+  //-------------------------------------------------------------------------------------------------
 
   //-------------------------SWITCH-----------------------------------
   const onChange = (checked) => {
@@ -136,7 +139,7 @@ const ProductCard = () => {
             >
               <Meta
                 title={product.productName}
-                description={product.price + " VND"}
+                description={formatPriceWithVND(product.price)}
                 style={{ textAlign: "center" }}
               />
             </Card>
@@ -256,7 +259,7 @@ const ProductCard = () => {
               initialValue={selectedProduct && selectedProduct.imgProduct}
             >
               <strong>Hình ảnh sản phẩm:</strong>
-              {productData && productData.imgProduct ? <MuntilImage  /> : null}
+              {productData && productData.imgProduct ? <MuntilImage /> : null}
             </Form.Item>
           </Form>
         </Modal>
