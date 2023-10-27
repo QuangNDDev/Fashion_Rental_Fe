@@ -25,16 +25,8 @@ const ProductCard = () => {
       const response = await axios.get(
         "http://fashionrental.online:8080/product/getproducts/" + productownerId
       );
-      const updatedProducts = response.data.map((product) => {
-        const productAvt =
-          product?.requestAddingProductDTO?.productDTO?.productAvt || "";
-        return {
-          ...product,
-          productAvt,
-        };
-      });
-      setProductData(updatedProducts);
-      console.log(updatedProducts);
+      
+      setProductData(response.data);
       console.log(response.data);
     } catch (error) {
       console.error(error);

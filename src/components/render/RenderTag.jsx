@@ -50,8 +50,17 @@ export default function RenderTag(props) {
     }else if (renderTag === "WAITING"){
       setColor("yellow");
       setStatus("Chờ duyệt")
+    }else if (renderTag === "RENT"){
+      setColor("green");
+      setStatus("THUÊ")
+    }else if (renderTag === "SALE"){
+      setColor("green");
+      setStatus("BÁN")
+    }else if (renderTag === "SALE_RENT"){
+      setColor("green");
+      setStatus("THUÊ/BÁN")
     }
   }, []);
 
-  return <Tag style={{ float: "left" }} color={colors}>{status}</Tag>;
+  return <Tag  color={colors}>{status}</Tag>;
 }
