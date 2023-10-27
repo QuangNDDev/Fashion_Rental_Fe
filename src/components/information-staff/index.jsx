@@ -111,6 +111,7 @@ const ProfileStaff = () => {
             fontWeight: "bold",
             fontSize: "30px",
             fontStyle: "italic",
+            marginTop: "70px",
           }}
         >
           Xác Thực Tài Khoản
