@@ -1,7 +1,16 @@
 import "./create-product.css";
 import React, { useEffect, useState } from "react";
 import { storage } from "../../firebase/firebase";
-import { Button, Upload, Modal, Input, Tooltip, Select, Space } from "antd";
+import {
+  Button,
+  Upload,
+  Modal,
+  Input,
+  Tooltip,
+  Select,
+  Space,
+  Form,
+} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
@@ -21,7 +30,7 @@ const CreateProduct = () => {
   const [urlReceiptImage, setUrlReceiptImage] = useState("");
   const [value, setValue] = useState("");
   const handleCancel = () => setPreviewOpen(false);
-  const [productType, setProductType] = useState("SALE"); // Giá trị mặc định của cái select
+  const [checkType, setCheckType] = useState("SALE"); // Giá trị mặc định của cái select
 
   //------------------------regex chỉ được nhập số---------------------
 
@@ -37,6 +46,18 @@ const CreateProduct = () => {
     }
   };
   //-------------------------------------------------------------------
+
+  const onFinish = async (values) => {
+    const addProductData = {
+      checkType: checkType,
+      description: values.description,
+      price: values.price,
+      productAvt: urlImages,
+      productName: values.productName,
+      productReceiptUrl: urlReceiptImage,
+    };
+    console.log(addProductData);
+  };
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -95,7 +116,7 @@ const CreateProduct = () => {
   //ham select ------------------------------------------------------------------------
   const selectChange = (value) => {
     console.log(`Đã chọn giá trị ${value}`);
-    setProductType(value);
+    setCheckType(value);
   };
   //-----------------------------------------------------------------------------------
   const formatNumber = (value) => new Intl.NumberFormat().format(value);
@@ -140,147 +161,205 @@ const CreateProduct = () => {
       </Tooltip>
     );
   };
+
   return (
     <div style={{ backgroundColor: "#f9f9f9" }}>
       <div className="section-title">Thông tin sản phẩm</div>
-      <div className="product-details">
-        <div className="name">
-          <span>Tên sản phẩm:</span>
-          <Input placeholder="Nhập tên sản phẩm..." />
-        </div>
-        <div className="description">
-          <span>Mô tả sản phẩm:</span>
-          <TextArea rows={4} placeholder="Nhập mô tả sản phẩm..." />
-        </div>
-
-        <div className="rent-sale">
-          <span>Cấu hình sản phẩm:</span>
-
-          <Space wrap>
-            <Select
-              defaultValue="bán"
-              style={{
-                width: 150,
-              }}
-              onChange={selectChange}
-              options={[
-                {
-                  value: "SALE",
-                  label: "Bán",
-                },
-                {
-                  value: "RENT",
-                  label: "Cho Thuê",
-                },
-                {
-                  value: "SALE_RENT",
-                  label: "Bán Và Cho Thuê",
-                },
-              ]}
-            />
-          </Space>
-        </div>
-
-        <div className="price">
-          <span>Giá sản phẩm:</span>
-          <Input suffix="VND" style={{ width: "11.6%" }} />
-        </div>
-
-        {(productType === "cho thuê" || productType === "cả hai") && (
-          <div className="rent-price">
-            <div className="rent-price__day">
-              <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 1 ngày:</p>
-              <Input
-                prefix=""
-                suffix="VND"
-                style={{ width: "70%", marginRight: "30px" }}
-                value={inputValue}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="rent-price__day">
-              <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 4 ngày:</p>
-              <Input
-                suffix="VND"
-                style={{ width: "70%", marginRight: "30px" }}
-              />
-            </div>
-            <div className="rent-price__day">
-              <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 7 ngày:</p>
-              <Input
-                suffix="VND"
-                style={{ width: "70%", marginRight: "30px" }}
-              />
-            </div>
-            <div className="rent-price__day">
-              <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 10 ngày:</p>
-              <Input
-                suffix="VND"
-                style={{ width: "70%", marginRight: "30px" }}
-              />
-            </div>
-            <div className="rent-price__day">
-              <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 14 ngày:</p>
-              <Input
-                suffix="VND"
-                style={{ width: "70%", marginRight: "30px" }}
-              />
-            </div>
+      <Form onFinish={onFinish}>
+        <div className="product-details">
+          <div className="name">
+            <span>Tên sản phẩm:</span>
+            <Form.Item name={"productName"}>
+              <Input placeholder="Nhập tên sản phẩm..." />
+            </Form.Item>
           </div>
-        )}
+          <div className="description">
+            <span>Mô tả sản phẩm:</span>
+            <Form.Item name={"description"}>
+              <TextArea rows={4} placeholder="Nhập mô tả sản phẩm..." />
+            </Form.Item>
+          </div>
 
-        <div className="receipt">
-          <span>Hoá đơn sản phẩm:</span>
-          <Upload
-            maxCount={1}
-            onChange={handleFileChangeReceipt}
-            onPreview={handlePreview}
-            beforeUpload={() => false}
+          <div className="rent-sale">
+            <span>Cấu hình sản phẩm:</span>
+
+            <Space wrap>
+              <Select
+                defaultValue="bán"
+                style={{
+                  width: 150,
+                }}
+                onChange={selectChange}
+                options={[
+                  {
+                    value: "SALE",
+                    label: "Bán",
+                  },
+                  {
+                    value: "RENT",
+                    label: "Cho Thuê",
+                  },
+                  {
+                    value: "SALE_RENT",
+                    label: "Bán Và Cho Thuê",
+                  },
+                ]}
+              />
+            </Space>
+          </div>
+          <Form.Item
+            name={"price"}
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập giá!",
+              },
+            ]}
           >
-            <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
-            
-          </Upload>
-        </div>
+            <div className="price">
+              <span>Giá sản phẩm:</span>
+              <Input
+                suffix="VND"
+                style={{ width: "11.6%" }}
+                onChange={handleInputChange}
+                value={inputValue}
+              />
+            </div>
+          </Form.Item>
 
-        <div className="image">
-          <span>Hình ảnh sản phẩm:</span>
+          {(checkType === "RENT" || checkType === "SALE_RENT") && (
+            <div className="rent-price">
+              <Form.Item name={"rentPrice1"}>
+                <div className="rent-price__day">
+                  <p style={{ fontWeight: "bold" }}>
+                    Giá thuê sản phẩm 1 ngày:
+                  </p>
+                  <Input
+                    prefix=""
+                    suffix="VND"
+                    style={{ width: "70%", marginRight: "30px" }}
+                    value={inputValue}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </Form.Item>
+              <Form.Item name={"rentPrice4"}>
+                <div className="rent-price__day">
+                  <p style={{ fontWeight: "bold" }}>
+                    Giá thuê sản phẩm 4 ngày:
+                  </p>
+                  <Input
+                    suffix="VND"
+                    style={{ width: "70%", marginRight: "30px" }}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </Form.Item>
+              <Form.Item name={"rentPrice7"}>
+                <div className="rent-price__day">
+                  <p style={{ fontWeight: "bold" }}>
+                    Giá thuê sản phẩm 7 ngày:
+                  </p>
+                  <Input
+                    suffix="VND"
+                    style={{ width: "70%", marginRight: "30px" }}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </Form.Item>
+              <Form.Item name={"rentPrice10"}>
+                <div className="rent-price__day">
+                  <p style={{ fontWeight: "bold" }}>
+                    Giá thuê sản phẩm 10 ngày:
+                  </p>
+                  <Input
+                    suffix="VND"
+                    style={{ width: "70%", marginRight: "30px" }}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </Form.Item>
+              <Form.Item name={"rentPrice14"}>
+                <div className="rent-price__day">
+                  <p style={{ fontWeight: "bold" }}>
+                    Giá thuê sản phẩm 14 ngày:
+                  </p>
+                  <Input
+                    suffix="VND"
+                    style={{ width: "70%", marginRight: "30px" }}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </Form.Item>
+            </div>
+          )}
+          <Form.Item name={"productReceiptUrl"}>
+            <div className="receipt">
+              <span>Hoá đơn sản phẩm:</span>
+              <Upload
+                maxCount={1}
+                onChange={handleFileChangeReceipt}
+                onPreview={handlePreview}
+                beforeUpload={() => false}
+              >
+                <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+              </Upload>
+            </div>
+          </Form.Item>
 
-          <Upload
-            maxCount={9}
-            onChange={handleFileChange}
-            onPreview={handlePreview}
-            beforeUpload={() => false}
-            multiple={true}
-          >
-            <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
-            <span
-              style={{
-                marginLeft: "20px",
-                fontStyle: "italic",
-                fontWeight: "normal",
-                color: "grey",
-              }}
+          <div className="image">
+            <span>Hình ảnh sản phẩm:</span>
+            <Form.Item name={"productAvt"}>
+              <Upload
+                maxCount={9}
+                onChange={handleFileChange}
+                onPreview={handlePreview}
+                beforeUpload={() => false}
+                multiple={true}
+              >
+                <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+                <span
+                  style={{
+                    marginLeft: "20px",
+                    fontStyle: "italic",
+                    fontWeight: "normal",
+                    color: "grey",
+                  }}
+                >
+                  • Tối đa 9 ảnh
+                </span>
+              </Upload>
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{
+                  width: "20%",
+                  backgroundColor: "green",
+                }}
+              >
+                Thêm Sản Phẩm
+              </Button>
+            </Form.Item>
+
+            <Modal
+              open={previewOpen}
+              title={previewTitle}
+              footer={null}
+              onCancel={handleCancel}
             >
-              • Tối đa 9 ảnh
-            </span>
-          </Upload>
-          
-          <Modal
-            open={previewOpen}
-            title={previewTitle}
-            footer={null}
-            onCancel={handleCancel}
-          >
-            <img
-              alt="example"
-              style={{
-                width: "100%",
-              }}
-              src={previewImage}
-            />
-          </Modal>
+              <img
+                alt="example"
+                style={{
+                  width: "100%",
+                }}
+                src={previewImage}
+              />
+            </Modal>
+          </div>
         </div>
-      </div>
+      </Form>
     </div>
   );
 };

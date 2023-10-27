@@ -3,8 +3,9 @@ import {
   EditOutlined,
   EllipsisOutlined,
   UserOutlined,
+  EyeOutlined,
 } from "@ant-design/icons";
-import { Avatar, Card, Col, Image, Input, Row } from "antd";
+import { Avatar, Card, Col, Image, Input, Row, Switch } from "antd";
 import { Form, Modal, Button } from "antd";
 import MuntilImage from "../Mutil-Image";
 import axios from "axios";
@@ -20,12 +21,17 @@ const ProductCard = () => {
   const idAccount = localStorage.getItem("accountId");
   const [productData, setProductData] = useState([]);
 
+  //-------------------------SWITCH-----------------------------------
+  const onChange = (checked) => {
+    console.log(`switch to ${checked}`);
+  };
+  //----------------------------------------------------------------------
   const fetchProducts = async () => {
     try {
       const response = await axios.get(
         "http://fashionrental.online:8080/product/getproducts/" + productownerId
       );
-      
+
       setProductData(response.data);
       console.log(response.data);
     } catch (error) {
@@ -119,14 +125,18 @@ const ProductCard = () => {
                 />
               }
               actions={[
-                <EditOutlined key="edit" onClick={() => showModal(product)} />,
-                <EllipsisOutlined key="ellipsis"  />,
-                
+                <Switch
+                  defaultChecked
+                  onChange={onChange}
+                  style={{ backgroundColor: "green" }}
+                  size="small"
+                />,
+                <EyeOutlined key="edit" onClick={() => showModal(product)} />,
               ]}
             >
               <Meta
                 title={product.productName}
-                description={product.price}
+                description={product.price + " VND"}
                 style={{ textAlign: "center" }}
               />
             </Card>
@@ -234,7 +244,7 @@ const ProductCard = () => {
                 selectedProduct && selectedProduct.productReceiptUrl
               }
             >
-              <strong style={{marginRight:"10px"}}>Hoá đơn:</strong>
+              <strong style={{ marginRight: "10px" }}>Hoá đơn:</strong>
               <Image
                 width={150}
                 src={selectedProduct && selectedProduct.productReceiptUrl}
@@ -247,19 +257,6 @@ const ProductCard = () => {
             >
               <strong>Hình ảnh sản phẩm:</strong>
               {productData && productData.imgProduct ? <MuntilImage /> : null}
-            </Form.Item>
-
-            <Form.Item style={{ textAlign: "center" }}>
-              <Button type="primary" danger onClick={handleCancel}>
-                Hủy
-              </Button>
-              <Button
-                type="primary"
-                htmlType="submit"
-                style={{ marginLeft: "20px", backgroundColor: "#008000" }}
-              >
-                Xác Nhận
-              </Button>
             </Form.Item>
           </Form>
         </Modal>
