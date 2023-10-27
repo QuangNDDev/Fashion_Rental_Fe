@@ -10,11 +10,13 @@ import {
   Select,
   Space,
   Form,
+  message,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 import TextArea from "antd/es/input/TextArea";
+import axios from "axios";
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -30,8 +32,26 @@ const CreateProduct = () => {
   const [urlReceiptImage, setUrlReceiptImage] = useState("");
   const [value, setValue] = useState("");
   const handleCancel = () => setPreviewOpen(false);
-  const [checkType, setCheckType] = useState("SALE"); // Giá trị mặc định của cái select
+  const [checkType, setCheckType] = useState("SALE");
+  const [checkCategory, setCheckCategory] = useState(""); // Giá trị mặc định của cái select
+  const [categorys, setCategorys] = useState();
+  const productownerId = localStorage.getItem("productownerId");
+  const fetchCategorys = async () => {
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/category/getall"
+      );
 
+      setCategorys(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategorys();
+  }, []);
   //------------------------regex chỉ được nhập số---------------------
 
   const [inputValue, setInputValue] = useState("");
@@ -48,14 +68,86 @@ const CreateProduct = () => {
   //-------------------------------------------------------------------
 
   const onFinish = async (values) => {
+    const productSpecificationData = {
+      madeOf: values.madeOf,
+      brandName: values.brandName,
+    };
     const addProductData = {
       checkType: checkType,
       description: values.description,
       price: values.price,
-      productAvt: urlImages,
+      productAvt: urlImages.length > 0 ? urlImages[0].imgUrl : "",
       productName: values.productName,
+      productSpecificationData: JSON.stringify(productSpecificationData),
       productReceiptUrl: urlReceiptImage,
+      categoryID: checkCategory,
+      status: "WAITING",
+      productownerID: productownerId,
     };
+
+    try {
+      const response = await axios.post(
+        "http://fashionrental.online:8080/product/create",
+        addProductData
+      );
+
+      message.success("Thêm sản phẩm mới thành công!");
+      console.log("Registration successful", response.data);
+      if (response.data.checkType === "RENT" || response.data.checkType === "SALE_RENT") {
+        // Gọi API khi checkType là "RENT" hoặc "SALE_RENT"
+        const formRentPrice = {
+          productID: response.data.productID,
+          rentPrice1:values.rentPrice1,
+          rentPrice4:values.rentPrice4,
+          rentPrice7:values.rentPrice7,
+          rentPrice10:values.rentPrice10,
+          rentPrice14:values.rentPrice14,
+        }
+        try {
+          const rentPriceResponse = await axios.post(
+            "http://fashionrental.online:8080/rentprice/create",
+            formRentPrice
+          );
+  
+          console.log("Rent price Success!!");
+          console.log(rentPriceResponse.data);
+        } catch (error) {
+          console.error("Error rent price:", error);
+        }
+      }
+      const formRequest = {
+        productID: response.data.productID
+      }
+      try {
+        const requestResponse = await axios.post(
+          "http://fashionrental.online:8080/request",
+          formRequest
+        );
+
+        console.log("Request Success!!");
+        console.log(requestResponse.data);
+      } catch (error) {
+        console.error("Error request:", error);
+      }
+      const formData = {
+        imgUrl: urlImages.map((image) => image.imgUrl),
+        productID: response.data.productID,
+      };
+      try {
+        const imgResponse = await axios.post(
+          "http://fashionrental.online:8080/productimg",
+          formData
+        );
+
+        console.log("Img Success!!");
+        console.log(imgResponse.data);
+      } catch (error) {
+        console.error("Error uploading images:", error);
+      }
+    } catch (error) {
+      console.error("Add new product failed", error);
+    }
+
     console.log(addProductData);
   };
 
@@ -118,6 +210,10 @@ const CreateProduct = () => {
     console.log(`Đã chọn giá trị ${value}`);
     setCheckType(value);
   };
+  const selectChangeCategory = (value) => {
+    console.log(`Đã chọn giá trị ${value}`);
+    setCheckCategory(value);
+  };
   //-----------------------------------------------------------------------------------
   const formatNumber = (value) => new Intl.NumberFormat().format(value);
   const NumericInput = (props) => {
@@ -173,19 +269,50 @@ const CreateProduct = () => {
               <Input placeholder="Nhập tên sản phẩm..." />
             </Form.Item>
           </div>
+          <div className="name">
+            <span>Thương hiệu:</span>
+            <Form.Item name={"brandName"}>
+              <Input placeholder="Nhập tên thương hiệu..." />
+            </Form.Item>
+          </div>
+          <div className="name">
+            <span>Chất liệu:</span>
+            <Form.Item name={"madeOf"}>
+              <Input placeholder="Nhập chất liệu..." />
+            </Form.Item>
+          </div>
           <div className="description">
             <span>Mô tả sản phẩm:</span>
             <Form.Item name={"description"}>
               <TextArea rows={4} placeholder="Nhập mô tả sản phẩm..." />
             </Form.Item>
           </div>
+          <div className="category">
+            <span>Phân loại sản phẩm:</span>
 
+            <Space wrap>
+              <Select
+                defaultValue="Chọn loại sản phẩm"
+                style={{
+                  width: 150,
+                }}
+                onChange={selectChangeCategory}
+                options={
+                  categorys &&
+                  categorys.map((category) => ({
+                    value: category.categoryID,
+                    label: category.categoryName,
+                  }))
+                }
+              />
+            </Space>
+          </div>
           <div className="rent-sale">
             <span>Cấu hình sản phẩm:</span>
 
             <Space wrap>
               <Select
-                defaultValue="bán"
+                defaultValue="Chọn cấu hình sản phẩm"
                 style={{
                   width: 150,
                 }}

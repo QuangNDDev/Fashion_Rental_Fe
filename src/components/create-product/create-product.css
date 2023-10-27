@@ -16,6 +16,13 @@
 .name {
   padding: 20px;
 }
+.category span{
+  font-weight: bold;
+}
+.category {
+  display: grid;
+  padding: 20px;
+}
 .description {
   padding: 20px;
 }

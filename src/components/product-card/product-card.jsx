@@ -256,7 +256,7 @@ const ProductCard = () => {
               initialValue={selectedProduct && selectedProduct.imgProduct}
             >
               <strong>Hình ảnh sản phẩm:</strong>
-              {productData && productData.imgProduct ? <MuntilImage /> : null}
+              {productData && productData.imgProduct ? <MuntilImage  /> : null}
             </Form.Item>
           </Form>
         </Modal>
