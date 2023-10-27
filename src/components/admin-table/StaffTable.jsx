@@ -18,8 +18,6 @@ import {
   Table,
   Upload,
 } from "antd";
-import { storage } from "../../firebase/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 import axios from "axios";
 import RenderTag from "../render/RenderTag";
@@ -31,7 +29,6 @@ const StaffTable = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [urlImage, setUrlImage] = useState("");
   const [api, contextHolder] = notification.useNotification();
 
   const emailValidator = (rule, value, callback) => {
@@ -50,6 +47,8 @@ const StaffTable = () => {
         ...user,
         roleName: user.accountDTO.roleDTO.roleName,
         email: user.accountDTO.email,
+        status: user.accountDTO.status,
+        accountID : user.accountDTO.accountID,
       }));
       setUsers(users);
     } catch (error) {
@@ -88,16 +87,11 @@ const StaffTable = () => {
   };
   const editUser = async () => {
     form.validateFields().then((values) => {
-      const editData = {
-        staffID: values.staffID,
-        status: values.status,
-      };
       try {
-        console.log(editData);
         axios
           .put(
-            `http://fashionrental.online:8080/staff?staffID=` +
-              values.staffID +
+            `http://fashionrental.online:8080/account/updatestatus?accountID=` +
+              values.accountID +
               `&status=` +
               values.status
           )
@@ -286,17 +280,24 @@ const StaffTable = () => {
 
   const columns = [
     {
-      title: "ID",
+      title: "Mã tài khoản",
+      dataIndex: "accountID",
+      key: "accountID",
+      width: "5%",
+      ...getColumnSearchProps("accountID"),
+    },
+    {
+      title: "Mã nhân viên",
       dataIndex: "staffID",
       key: "staffID",
-      width: "1%",
+      width: "5%",
       ...getColumnSearchProps("staffID"),
     },
     {
       title: "Họ và tên",
       dataIndex: "fullName",
       key: "fullName",
-      width: "20%",
+      width: "10%",
       ...getColumnSearchProps("fullName"),
     },
     {
@@ -369,7 +370,11 @@ const StaffTable = () => {
       >
         {isEdit ? (
           // Render edit form when isEdit is true
+          
           <Form form={form}>
+             <Form.Item name="accountID" style={{ display: 'none' }}>
+      <Input />
+    </Form.Item>
             <Form.Item
               name="status"
               label="Trạng thái hoạt động"
@@ -378,8 +383,8 @@ const StaffTable = () => {
               ]}
             >
               <Radio.Group>
-                <Radio value={true}>Đang hoạt động</Radio>
-                <Radio value={false}>Không hoạt động</Radio>
+                <Radio value={"VERIFIED"}>Đang hoạt động</Radio>
+                <Radio value={"BLOCKED"}>Không hoạt động</Radio>
               </Radio.Group>
             </Form.Item>
             <Form.Item>
