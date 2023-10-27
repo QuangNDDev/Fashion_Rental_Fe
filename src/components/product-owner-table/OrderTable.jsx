@@ -98,7 +98,7 @@ const OrderTable = () => {
       >
         <Input
           ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`Tìm kiếm...`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -116,10 +116,11 @@ const OrderTable = () => {
             icon={<SearchOutlined />}
             size="small"
             style={{
-              width: 90,
+              width: 110,
+              backgroundColor:"#008000",
             }}
           >
-            Search
+            Tìm kiếm
           </Button>
           <Button
             onClick={() =>
@@ -131,9 +132,10 @@ const OrderTable = () => {
             size="small"
             style={{
               width: 90,
+              
             }}
           >
-            Reset
+            Đặt lại
           </Button>
           <Button
             type="link"
@@ -270,7 +272,6 @@ const OrderTable = () => {
       dataIndex: "status",
       key: "status",
       width: "10%",
-      ...getColumnSearchProps("status"),
       render: (status) => (
         <p style={{ textAlign: "center", marginBottom: "50px" }}>
           <RenderTag tagRender={status} />

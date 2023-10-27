@@ -83,6 +83,7 @@ const TableAccept = () => {
       const response = await axios.get(
         "http://fashionrental.online:8080/staffrequested/approved/" + idStaff
       );
+
       const updatedRequests = response.data.map((request) => ({
         ...request,
         requestAddingProductID:
@@ -92,6 +93,7 @@ const TableAccept = () => {
       }));
       setRequestsData(updatedRequests);
       console.log(updatedRequests);
+
     } catch (error) {
       console.error(error);
     }
@@ -248,24 +250,24 @@ const TableAccept = () => {
   const columns = [
     {
       title: "ID",
-      dataIndex: "requestAddingProductID",
-      key: "requestAddingProductID",
+      dataIndex: "staffRequestedID",
+      key: "staffRequestedID",
       // width: "20%",
-      ...getColumnSearchProps("requestAddingProductID"),
+      ...getColumnSearchProps("staffRequestedID"),
       render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
     },
     {
       title: "Ngày tạo",
-      dataIndex: "createdDate",
-      key: "createdDate",
+      dataIndex: "createDate",
+      key: "createDate",
       // width: "10%",
-      ...getColumnSearchProps("createdDate"),
+      ...getColumnSearchProps("createDate"),
       render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
     },
     {
       title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
+      dataIndex: "requestStatus",
+      key: "requestStatus",
       render: (status) => (
         <p style={{ textAlign: "center", justifyContent: "center" }}>
           <RenderTag tagRender={status} />
