@@ -24,14 +24,6 @@ const LoginForm = () => {
     navigate(`/productOwner`);
   };
 
-  const emailValidator = (rule, value, callback) => {
-    if (value && !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
-      callback("Vui lòng nhập địa chỉ email phù hợp!");
-    } else {
-      callback();
-    }
-  };
-
   const onFinish = async (values) => {
     const email = values.email;
     const password = values.password;
@@ -57,25 +49,26 @@ const LoginForm = () => {
           });
           setTimeout(() => {
             handleNavigationAdmin();
-          }, 1000);
+          }, 500);
         } else if (response.data.role.roleID == 3) {
           api["success"]({
             message: "Đăng Nhập Thành Công",
-            description: `Xin Chào ${response.data.staff.fullName}`,
+            description: null,
             duration: 1000,
           });
           setTimeout(() => {
             handleNavigationStaff();
-          }, 1000);
+          }, 500);
         } else if (response.data.role.roleID == 2) {
           api["success"]({
             message: "Đăng Nhập Thành Công",
-            description: `Xin Chào ${response.data.productowner.fullName}`,
+            description: null,
+
             duration: 1000,
           });
           setTimeout(() => {
             handleNavigationProductOwner();
-          }, 1000);
+          }, 500);
         } else {
           api["warning"]({
             message: "Đăng Nhập Thất Bại",
@@ -95,7 +88,6 @@ const LoginForm = () => {
           description: " Vui lòng kiểm tra lại email và mật khẩu.",
         });
       } else {
-        message.error("Đã xảy ra lỗi trong quá trình đăng nhập.");
         api["error"]({
           message: "Đăng Nhập Thất Bại",
           description: " Đã xảy ra lỗi trong quá trình đăng nhập.",
@@ -141,10 +133,7 @@ const LoginForm = () => {
           >
             <Form.Item
               name="email"
-              rules={[
-                { required: true, message: "Vui lòng nhập email!" },
-                { validator: emailValidator },
-              ]}
+              rules={[{ required: true, message: "Vui lòng nhập email!" }]}
             >
               <Input
                 style={{ fontSize: "15px", padding: "10px" }}
@@ -168,7 +157,7 @@ const LoginForm = () => {
                 <Checkbox>Ghi Nhớ</Checkbox>
               </Form.Item>
               <div style={{ marginTop: "20px" }}>
-                Bạn chưa có tài khoản? <Link to="/register"> Đăng ký</Link>
+                Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link>
               </div>
             </Form.Item>
             <div style={{ display: "flex", justifyContent: "center" }}>

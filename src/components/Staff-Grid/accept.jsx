@@ -1,9 +1,4 @@
-import {
-  CheckCircleTwoTone,
-  EyeTwoTone,
-  SearchOutlined,
-  CloseCircleTwoTone,
-} from "@ant-design/icons";
+import { EyeTwoTone, SearchOutlined } from "@ant-design/icons";
 import {
   Button,
   Carousel,
@@ -82,14 +77,23 @@ const TableAccept = () => {
   const [form] = Form.useForm();
   const [requestsData, setRequestsData] = useState([]);
   const idStaff = localStorage.getItem("staffId");
+
   const fetchRequests = async () => {
     try {
       const response = await axios.get(
         "http://fashionrental.online:8080/staffrequested/approved/" + idStaff
       );
-      
-      setRequestsData(response.data);
-      console.log(response.data);
+
+      const updatedRequests = response.data.map((request) => ({
+        ...request,
+        requestAddingProductID:
+          request.requestAddingProductDTO.requestAddingProductID,
+        status: request.requestAddingProductDTO.status,
+        description: request.requestAddingProductDTO.description,
+      }));
+      setRequestsData(updatedRequests);
+      console.log(updatedRequests);
+
     } catch (error) {
       console.error(error);
     }
@@ -111,12 +115,24 @@ const TableAccept = () => {
   }
 
   const showDrawer = (record) => {
-    setSelectedRecord(record);
+    console.log(record);
+
+    axios
+      .get("http://fashionrental.online:8080/product/" + record.productID)
+      .then((response) => {
+        console.log(response.data);
+        form.setFieldsValue(response.data);
+        setSelectedRecord(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     setIsDrawerVisible(true);
   };
   const closeDrawer = () => {
     setIsDrawerVisible(false);
   };
+
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
@@ -253,7 +269,7 @@ const TableAccept = () => {
       dataIndex: "requestStatus",
       key: "requestStatus",
       render: (status) => (
-        <p style={{ textAlign: "center",justifyContent:"center" }}>
+        <p style={{ textAlign: "center", justifyContent: "center" }}>
           <RenderTag tagRender={status} />
         </p>
       ),
@@ -262,11 +278,7 @@ const TableAccept = () => {
       title: "Lí do",
       dataIndex: "description",
       key: "description",
-      render: (description) => (
-        <p >
-          {description}
-        </p>
-      ),
+      render: (description) => <p>{description}</p>,
     },
     // {
     //   title: "Ảnh chi tiết",
@@ -300,12 +312,6 @@ const TableAccept = () => {
             <EyeTwoTone />
             Xem Đơn
           </Button>
-          <Button style={{ marginRight: "15px" }}>
-            <CheckCircleTwoTone twoToneColor="#52c41a" />
-          </Button>
-          <Button>
-            <CloseCircleTwoTone twoToneColor="#ff4d4f" />
-          </Button>
         </div>
       ),
     },
@@ -320,14 +326,58 @@ const TableAccept = () => {
         open={isDrawerVisible} // Show the Drawer when isDrawerVisible is true
       >
         <Form form={form}>
-          <p>Input</p>
           <Form.Item name="productName">
-            {selectedRecord?.productName ? (
-              <Input value={selectedRecord.productName} readOnly />
-            ) : (
-              <Input placeholder="Tên sản phẩm" readOnly />
-            )}
+            <span>Tên Sản Phẩm: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.productName}
+            </strong>
           </Form.Item>
+
+          <Form.Item name="description">
+            <span>Mô Tả: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.description}
+            </strong>
+            {/* <Input value={selectedRecord?.productName} readOnly /> */}
+          </Form.Item>
+
+          <Form.Item name="price">
+            <span>Giá Sản Phẩm: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.price}vnđ
+            </strong>
+            {/* <Input value={selectedRecord?.productName} readOnly /> */}
+          </Form.Item>
+
+          <Form.Item name="status">
+            <span>Trạng Thái Sản Phẩm: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.status}
+            </strong>
+            {/* <Input value={selectedRecord?.productName} readOnly /> */}
+          </Form.Item>
+
+          <Form.Item name="forRent">
+            <span>Hình Thức Thuê: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.forRent ? "Có" : "Không"}
+            </strong>
+          </Form.Item>
+
+          <Form.Item name="forSale">
+            <span>Hình Thức Bán: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.forSale ? "Có" : "Không"}
+            </strong>
+          </Form.Item>
+
+          <Form.Item name="categoryName">
+            <span>Phân Loại: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.category.categoryName}
+            </strong>
+          </Form.Item>
+
           <p style={{ marginBottom: "10px" }}>Ảnh Hóa Đơn:</p>
           <Form.Item name="invoiceCode">
             {selectedRecord?.invoiceCode && (

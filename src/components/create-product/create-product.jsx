@@ -23,6 +23,21 @@ const CreateProduct = () => {
   const handleCancel = () => setPreviewOpen(false);
   const [productType, setProductType] = useState("bán"); // Giá trị mặc định của cái select
 
+  //------------------------regex chỉ được nhập số---------------------
+
+  const [inputValue, setInputValue] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    // Sử dụng regex để chỉ chấp nhận số
+    const regex = /^[0-9]*$/;
+
+    if (regex.test(value)) {
+      setInputValue(value);
+    }
+  };
+  //-------------------------------------------------------------------
+
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -141,8 +156,6 @@ const CreateProduct = () => {
         <div className="rent-sale">
           <span>Cấu hình sản phẩm:</span>
 
-          {/* <Radio value={true}>Bán</Radio>
-          <Radio value={false}>Cho thuê</Radio> */}
           <Space wrap>
             <Select
               defaultValue="bán"
@@ -168,81 +181,52 @@ const CreateProduct = () => {
           </Space>
         </div>
 
-        {productType === "bán" && (
-          <>
-            <div className="price">
-              <span>Giá sản phẩm:</span>
-              <NumericInput
-                style={{
-                  width: 250,
-                }}
-                value={value}
-                onChange={setValue}
-              />
-            </div>
-            <div className="rent-price">
-              <span>Giá thuê sản phẩm:</span>
-              <NumericInput
-                style={{
-                  width: 250,
-                }}
-                value={value}
-                onChange={setValue}
-                disabled={true}
-              />
-            </div>
-          </>
-        )}
+        <div className="price">
+          <span>Giá sản phẩm:</span>
+          <Input suffix="VND" style={{ width: "11.6%" }} />
+        </div>
 
-        {productType === "cho thuê" && (
-          <>
-            <div className="rent-price">
-              <span>Giá thuê sản phẩm:</span>
-              <NumericInput
-                style={{
-                  width: 250,
-                }}
-                value={value}
-                onChange={setValue}
+        {(productType === "cho thuê" || productType === "cả hai") && (
+          <div className="rent-price">
+            <div className="rent-price__day">
+              <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 1 ngày:</p>
+              <Input
+                prefix=""
+                suffix="VND"
+                style={{ width: "70%", marginRight: "30px" }}
+                value={inputValue}
+                onChange={handleInputChange}
               />
             </div>
-            <div className="price">
-              <span>Giá sản phẩm:</span>
-              <NumericInput
-                style={{
-                  width: 250,
-                }}
-                value={value}
-                onChange={setValue}
-                disabled={true}
+            <div className="rent-price__day">
+              <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 4 ngày:</p>
+              <Input
+                suffix="VND"
+                style={{ width: "70%", marginRight: "30px" }}
               />
             </div>
-          </>
-        )}
-
-        {productType === "cả hai" && (
-          <>
-            <div className="price">
-              <span>Giá sản phẩm:</span>
-              <NumericInput
-                style={{
-                  width: 250,
-                }}
-                value={value}
-                onChange={setValue}
+            <div className="rent-price__day">
+              <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 7 ngày:</p>
+              <Input
+                suffix="VND"
+                style={{ width: "70%", marginRight: "30px" }}
               />
             </div>
-            <div className="rent-price">
-              <span>Giá thuê sản phẩm:</span>
-              <NumericInput
-                style={{
-                  width: 250,
-                }}
-                value={value}
-                onChange={setValue}
+            <div className="rent-price__day">
+              <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 10 ngày:</p>
+              <Input
+                suffix="VND"
+                style={{ width: "70%", marginRight: "30px" }}
               />
             </div>
-          </>
+            <div className="rent-price__day">
+              <p style={{ fontWeight: "bold" }}>Giá thuê sản phẩm 14 ngày:</p>
+              <Input
+                suffix="VND"
+                style={{ width: "70%", marginRight: "30px" }}
+              />
+            </div>
+          </div>
         )}
 
         <div className="receipt">
@@ -254,6 +238,16 @@ const CreateProduct = () => {
             beforeUpload={() => false}
           >
             <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+            <span
+              style={{
+                marginLeft: "20px",
+                fontStyle: "italic",
+                fontWeight: "normal",
+                color: "grey",
+              }}
+            >
+              • Tối đa 9 ảnh
+            </span>
           </Upload>
         </div>
 
