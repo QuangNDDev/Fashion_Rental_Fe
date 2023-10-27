@@ -74,26 +74,27 @@ const InformationPO = () => {
 
   const handleFileChange = (event) => {
     console.log("handleFileChange called");
-    console.log("File selected:", event.file)
-    if(event.file.status!=="removed"){
-    if (event.file) {
-      const imageRef = ref(storage, `images/${event.file.name + v4()}`);
+    console.log("File selected:", event.file);
+    if (event.file.status !== "removed") {
+      if (event.file) {
+        const imageRef = ref(storage, `images/${event.file.name + v4()}`);
 
-      uploadBytes(imageRef, event.file)
-        .then((snapshot) => {
-          // Set the URL after a successful upload
-          getDownloadURL(snapshot.ref).then((url) => {
-            setUrlImage(url);
+        uploadBytes(imageRef, event.file)
+          .then((snapshot) => {
+            // Set the URL after a successful upload
+            getDownloadURL(snapshot.ref).then((url) => {
+              setUrlImage(url);
+            });
+          })
+          .catch((error) => {
+            console.error("Error uploading image:", error);
           });
-        })
-        .catch((error) => {
-          console.error("Error uploading image:", error);
-        });
-    }}else{
+      }
+    } else {
       setUrlImage(productowner.avatarUrl);
     }
   };
- 
+
   return (
     <div style={{ justifyContent: "center" }}>
       <div
@@ -185,7 +186,14 @@ const InformationPO = () => {
         </>
       </div>
       <div style={{ display: "flex", flexDirection: "column", marginLeft: 20 }}>
-        <Image width={200} src={productowner.avatarUrl} />
+        <Image
+          width={200}
+          src={
+            productowner?.avatarUrl
+              ? productowner.avatarUrl
+              : "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg"
+          }
+        />
         <span
           style={{
             fontWeight: "bold",
@@ -195,7 +203,7 @@ const InformationPO = () => {
         >
           Họ và tên:{" "}
         </span>
-        {productowner.fullName}
+        {productowner?.fullName ? productowner.fullName : ""}
         <span
           style={{
             fontWeight: "bold",
@@ -205,7 +213,7 @@ const InformationPO = () => {
         >
           Địa chỉ:{" "}
         </span>
-        {productowner.address}
+        {productowner?.address ? productowner.address : ""}
         <span
           style={{
             fontWeight: "bold",
@@ -215,7 +223,7 @@ const InformationPO = () => {
         >
           Số điện thoại:
         </span>
-        {productowner.phone}
+        {productowner?.phone ? productowner.phone : ""}
       </div>
     </div>
   );
