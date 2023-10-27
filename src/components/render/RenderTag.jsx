@@ -59,6 +59,9 @@ export default function RenderTag(props) {
     }else if (renderTag === "SALE_RENT"){
       setColor("green");
       setStatus("THUÊ/BÁN")
+    }else if (renderTag === "BLOCKED"){
+      setColor("red");
+      setStatus("Tạm dừng")
     }
   }, []);
 
