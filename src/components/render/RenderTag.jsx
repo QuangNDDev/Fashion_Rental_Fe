@@ -59,12 +59,6 @@ export default function RenderTag(props) {
     } else if (renderTag === "SALE_RENT") {
       setColor("green");
       setStatus("THUÊ/BÁN");
-    } else if (renderTag === "RENTING") {
-      setColor("yellow");
-      setStatus("Đang được thuê");
-    } else if (renderTag === "SOLD_OUT") {
-      setColor("red");
-      setStatus("Đã bán");
     }
   }, []);
 
