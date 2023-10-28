@@ -12,6 +12,7 @@ import {
   Form,
   message,
   notification,
+  Slider,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -38,6 +39,11 @@ const CreateProduct = () => {
   const [categorys, setCategorys] = useState();
   const productownerId = localStorage.getItem("productownerId");
   const [form] = Form.useForm();
+  const [sliderValue, setSliderValue] = useState(50);
+  // Hàm cập nhật giá trị Slider khi người dùng thay đổi nó
+  const handleSliderChange = (value) => {
+    setSliderValue(value);
+  };
   const fetchCategorys = async () => {
     try {
       const response = await axios.get(
@@ -80,6 +86,7 @@ const CreateProduct = () => {
       price: values.price,
       productAvt: urlImages.length > 0 ? urlImages[0].imgUrl : "",
       productName: values.productName,
+      productCondition: sliderValue,
       productSpecificationData: JSON.stringify(productSpecificationData),
       productReceiptUrl: urlReceiptImage,
       categoryID: checkCategory,
@@ -542,6 +549,16 @@ const CreateProduct = () => {
               </Form.Item>
             </div>
           )}
+          <Form.Item name={"productCondition"} style={{ marginLeft: "16px" }}>
+            <p style={{ fontWeight: "bold" }}>Tình trạng sản phẩm:</p>
+            <Slider
+              style={{ width: "30%", track: { background: "green" } }}
+              value={sliderValue} // Sử dụng giá trị sliderValue
+              onChange={handleSliderChange}
+            />
+            <span style={{ marginLeft: "10px" }}>{sliderValue}%</span>
+          </Form.Item>
+
           <Form.Item name={"productReceiptUrl"}>
             <div className="receipt">
               <span>Hoá đơn sản phẩm:</span>
