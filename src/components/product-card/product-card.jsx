@@ -26,7 +26,6 @@ const ProductCard = () => {
   };
   //-------------------------------------------------------------------------------------------------
 
-
   //-------------------------SWITCH-----------------------------------
   const onChange = (checked) => {
     console.log(`switch to ${checked}`);
@@ -55,7 +54,7 @@ const ProductCard = () => {
           "http://fashionrental.online:8080/productimg?productID=" +
             productData.productID
         );
-        const imgUrlArray = response.data.map(item => item.imgUrl);
+        const imgUrlArray = response.data.map((item) => item.imgUrl);
         setProductImage(imgUrlArray);
         console.log(imgUrlArray);
       } catch (error) {
@@ -81,13 +80,13 @@ const ProductCard = () => {
       imgProduct: productData.imgProduct,
       madeOf: madeOfValue,
       brandName: brand,
-      
 
       // Các trường dữ liệu khác tương tự
     });
     setSelectedProduct({
       avatar: productData.avatar,
       productName: productData.productName,
+      productCondition: productData.productCondition,
       productReceiptUrl: productData.productReceiptUrl,
       description: productData.description,
       price: productData.price,
@@ -185,6 +184,18 @@ const ProductCard = () => {
                 <strong>Tên sản phẩm:</strong>
                 <p style={{ marginLeft: "10px" }}>
                   {selectedProduct && selectedProduct.productName}
+                </p>
+              </div>
+            </Form.Item>
+
+            <Form.Item
+              name="productCondition" //lấy value của cái name gán lên cái setFormValue
+              initialValue={selectedProduct && selectedProduct.productCondition}
+            >
+              <div style={{ display: "flex" }}>
+                <strong>Tình trạng sản phẩm:</strong>
+                <p style={{ marginLeft: "10px" }}>
+                  {selectedProduct && selectedProduct.productCondition}%
                 </p>
               </div>
             </Form.Item>
@@ -297,12 +308,9 @@ const ProductCard = () => {
             >
               <strong>Hình ảnh sản phẩm:</strong>
 
-              
-                <>
-                 <MuntilImage images={productImage} /> 
-                </>
-              
-
+              <>
+                <MuntilImage images={productImage} />
+              </>
             </Form.Item>
           </Form>
         </Modal>
