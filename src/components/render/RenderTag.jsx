@@ -51,7 +51,7 @@ export default function RenderTag(props) {
       setColor("yellow");
       setStatus("Chờ duyệt");
     } else if (renderTag === "RENT") {
-      setColor("green");
+      setColor("yellow");
       setStatus("THUÊ");
     } else if (renderTag === "SALE") {
       setColor("green");
@@ -59,7 +59,14 @@ export default function RenderTag(props) {
     } else if (renderTag === "SALE_RENT") {
       setColor("green");
       setStatus("THUÊ/BÁN");
+    }else if (renderTag === "SOLD_OUT") {
+      setColor("red");
+      setStatus("Đã bán");
+    }else if (renderTag === "RENTING") {
+      setColor("yellow");
+      setStatus("Đang được thuê");
     }
+    
   }, []);
 
   return <Tag color={colors}>{status}</Tag>;

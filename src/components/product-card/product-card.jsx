@@ -98,6 +98,7 @@ const ProductCard = () => {
       imgProduct: productData.imgProduct,
       madeOf: madeOfValue,
       brandName: brand,
+      checkType: productData.checkType,
     });
   };
 
@@ -259,6 +260,20 @@ const ProductCard = () => {
                 <p style={{ marginLeft: "10px" }}>
                   <RenderTag
                     tagRender={selectedProduct && selectedProduct.status}
+                  />
+                </p>
+              </div>
+            </Form.Item>
+            <Form.Item
+              name="checkType"
+              initialValue={selectedProduct && selectedProduct.checkType}
+            >
+              <div style={{ display: "flex" }}>
+                <strong>Hình thức sản phẩm:</strong>
+
+                <p style={{ marginLeft: "10px" }}>
+                  <RenderTag
+                    tagRender={selectedProduct && selectedProduct.checkType}
                   />
                 </p>
               </div>
