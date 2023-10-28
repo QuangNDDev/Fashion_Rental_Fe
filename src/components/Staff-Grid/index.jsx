@@ -14,82 +14,13 @@ import {
   Modal,
   Space,
   Table,
+  notification,
 } from "antd";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import RenderTag from "../render/RenderTag";
 
-const data = [
-  {
-    key: "1",
-    fullName: "John Brown",
-    phone: 32,
-    address: "New York No. 1 Lake Park",
-    invoiceCode: "https://kenh14cdn.com/2017/photo-4-1488968670853.jpg",
-    status: "Pending",
-    detailImg: {
-      images: [
-        "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=2069&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1691480288782-142b953cf664?auto=format&fit=crop&q=80&w=2080&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1691480288782-142b953cf664?auto=format&fit=crop&q=80&w=2080&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1691480288782-142b953cf664?auto=format&fit=crop&q=80&w=2080&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1691480288782-142b953cf664?auto=format&fit=crop&q=80&w=2080&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1691480288782-142b953cf664?auto=format&fit=crop&q=80&w=2080&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      ],
-    },
-    productName: "Tui LV",
-    description: "aaaaaaaaa",
-    price: "2000000",
-    statusProduct: "SOLD_OUT",
-    forSale: true,
-    forRent: true,
-    categoryID: 1,
-    categoryName: "Female",
-  },
-  {
-    key: "2",
-    fullName: "Joe Black",
-    phone: 42,
-    address: "London No. 1 Lake Park",
-    invoiceCode: "https://kenh14cdn.com/2017/photo-4-1488968670853.jpg",
-    status: "Pending",
-    detailImg: {
-      images: [
-        "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=2069&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      ],
-    },
-    productName: "Tui LV",
-    description: "aaaaaaaaa",
-    price: "2000000",
-    statusProduct: "SOLD_OUT",
-    forSale: true,
-    forRent: true,
-    categoryID: 1,
-    categoryName: "Female",
-  },
-  {
-    key: "3",
-    fullName: "Jim Green",
-    phone: 32,
-    address: "Sydney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    fullName: "Jim Red",
-    phone: 32,
-    address: "London No. 2 Lake Park",
-  },
-];
 const TablePending = () => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
@@ -103,6 +34,7 @@ const TablePending = () => {
   const staffId = localStorage.getItem("staffId");
   const [isModalVisibleNotApprove, setIsModalVisibleNotApprove] =
     useState(false);
+  const [api, contextHolder] = notification.useNotification();
   const fetchRequests = async () => {
     try {
       const response = await axios.get(
@@ -174,8 +106,16 @@ const TablePending = () => {
             "&staffID=" +
             staffId
         );
-        console.log("update request staff success",staffRequest.data);
+        api["success"]({
+          message: "Duyệt Sản Phẩm Thành Công!",
+          description: null,
+        });
+        console.log("update request staff success", staffRequest.data);
       } catch (error) {
+        api["error"]({
+          message: "Duyệt Sản Phẩm Thất Bại!",
+          description: null,
+        });
         console.error("Validation failed", error);
       }
       try {
@@ -184,7 +124,7 @@ const TablePending = () => {
             record.productID +
             `&status=AVAILABLE`
         );
-        console.log("update product success",productStatus.data);
+        console.log("update product success", productStatus.data);
       } catch (error) {
         console.error("Validation failed", error);
       }
@@ -194,7 +134,7 @@ const TablePending = () => {
       console.log(error);
     }
   };
-  
+
   //Modal Huy
   const showModalNotApprove = () => {
     setIsModalVisibleNotApprove(true);
@@ -452,6 +392,7 @@ const TablePending = () => {
   return (
     <div>
       <Table columns={columns} dataSource={requestsData} />
+      {contextHolder}
       <Drawer
         title="Thông tin đơn hàng " // Customize the title as needed
         width={450} // Customize the width as needed
@@ -470,6 +411,14 @@ const TablePending = () => {
             <span>Mô Tả: </span>
             <strong style={{ marginLeft: "10px" }}>
               {selectedRecord?.description}
+            </strong>
+            {/* <Input value={selectedRecord?.productName} readOnly /> */}
+          </Form.Item>
+
+          <Form.Item name="productCondition">
+            <span>Tình Trạng Sản Phẩm: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.productCondition}
             </strong>
             {/* <Input value={selectedRecord?.productName} readOnly /> */}
           </Form.Item>
