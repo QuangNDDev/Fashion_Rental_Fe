@@ -15,6 +15,8 @@ const ProductCard = () => {
   const idAccount = localStorage.getItem("accountId");
   const [productData, setProductData] = useState([]);
 
+  const [productImage, setProductImage] = useState();
+
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
   const formatPriceWithVND = (price) => {
     return new Intl.NumberFormat("vi-VN", {
@@ -23,6 +25,7 @@ const ProductCard = () => {
     }).format(price);
   };
   //-------------------------------------------------------------------------------------------------
+
 
   //-------------------------SWITCH-----------------------------------
   const onChange = (checked) => {
@@ -44,9 +47,24 @@ const ProductCard = () => {
   useEffect(() => {
     fetchProducts();
   }, []);
-  const showModal = (productData) => {
-    setIsModalVisible(true);
 
+  const showModal = (productData) => {
+    const fetchProductImg = async () => {
+      try {
+        const response = await axios.get(
+          "http://fashionrental.online:8080/productimg?productID=" +
+            productData.productID
+        );
+        const imgUrlArray = response.data.map(item => item.imgUrl);
+        setProductImage(imgUrlArray);
+        console.log(imgUrlArray);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchProductImg();
+    setIsModalVisible(true);
     const specificationData = JSON.parse(productData.productSpecificationData);
     const madeOfValue = specificationData.madeof;
     const brand = specificationData.brandName;
@@ -63,6 +81,7 @@ const ProductCard = () => {
       imgProduct: productData.imgProduct,
       madeOf: madeOfValue,
       brandName: brand,
+      
 
       // Các trường dữ liệu khác tương tự
     });
@@ -259,7 +278,13 @@ const ProductCard = () => {
               initialValue={selectedProduct && selectedProduct.imgProduct}
             >
               <strong>Hình ảnh sản phẩm:</strong>
-              {productData && productData.imgProduct ? <MuntilImage /> : null}
+
+              
+                <>
+                 <MuntilImage images={productImage} /> 
+                </>
+              
+
             </Form.Item>
           </Form>
         </Modal>

@@ -184,15 +184,30 @@ const CreateProduct = () => {
       if (event.file.status !== "removed") {
         console.log("handleFileChange called");
         console.log("File selected:", event.file);
-        const file = event.file;
-        const imageRef = ref(storage, `images/${file.name + v4()}`);
-        const snapshot = await uploadBytes(imageRef, file.originFileObj);
-        const url = await getDownloadURL(snapshot.ref);
+        // const file = event.file;
+        // const imageRef = ref(storage, `images/${file.name + v4()}`);
+        // const snapshot = await uploadBytes(imageRef, file.originFileObj);
+        // const url = await getDownloadURL(snapshot.ref);
 
-        setUrlImages((prevUrls) => [
-          ...prevUrls,
-          { imgUrl: url, fileName: event.file.name },
-        ]);
+        // setUrlImages((prevUrls) => [
+        //   ...prevUrls,
+        //   { imgUrl: url, fileName: event.file.name },
+        // ]);
+        const imageRef = ref(storage, `images/${event.file.name + v4()}`);
+
+        uploadBytes(imageRef, event.file)
+          .then((snapshot) => {
+            // Set the URL after a successful upload
+            getDownloadURL(snapshot.ref).then((url) => {
+              setUrlImages((prevUrls) => [
+                ...prevUrls,
+                { imgUrl: url, fileName: event.file.name },
+              ]);
+            });
+          })
+          .catch((error) => {
+            console.error("Error uploading image:", error);
+          });
       } else {
         setUrlImages((prevUrls) =>
           prevUrls.filter((item) => item.fileName !== event.file.name)
@@ -206,12 +221,24 @@ const CreateProduct = () => {
   const handleFileChangeReceipt = async (event) => {
     try {
       if (event.file.status !== "removed") {
-        const file = event.file;
-        const imageRef = ref(storage, `images/${file.name + v4()}`);
-        const snapshot = await uploadBytes(imageRef, file.originFileObj);
-        const url = await getDownloadURL(snapshot.ref);
+        // const file = event.file;
+        // const imageRef = ref(storage, `images/${file.name + v4()}`);
+        // const snapshot = await uploadBytes(imageRef, file.originFileObj);
+        // const url = await getDownloadURL(imageRef);
 
-        setUrlReceiptImage(url);
+        // setUrlReceiptImage(url);
+        const imageRef = ref(storage, `images/${event.file.name + v4()}`);
+
+        uploadBytes(imageRef, event.file)
+          .then((snapshot) => {
+            // Set the URL after a successful upload
+            getDownloadURL(snapshot.ref).then((url) => {
+              setUrlReceiptImage(url);
+            });
+          })
+          .catch((error) => {
+            console.error("Error uploading image:", error);
+          });
       } else {
         setUrlReceiptImage("");
       }
