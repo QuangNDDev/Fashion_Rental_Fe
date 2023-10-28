@@ -66,7 +66,7 @@ const ProductCard = () => {
     fetchProductImg();
     setIsModalVisible(true);
     const specificationData = JSON.parse(productData.productSpecificationData);
-    const madeOfValue = specificationData.madeof;
+    const madeOfValue = specificationData.madeOf;
     const brand = specificationData.brandName;
     form.setFieldsValue({
       avatar: productData.avatar,
