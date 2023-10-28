@@ -97,7 +97,10 @@ const TablePending = () => {
   const [form] = Form.useForm();
   const [requestsData, setRequestsData] = useState();
   const [isCustomModalVisible, setIsCustomModalVisible] = useState(false);
+  const [productImage, setProductImage] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [descriptionRequest, setDescriptionRequest] = useState("");
+  const staffId = localStorage.getItem("staffId");
   const [isModalVisibleNotApprove, setIsModalVisibleNotApprove] =
     useState(false);
   const fetchRequests = async () => {
@@ -116,7 +119,21 @@ const TablePending = () => {
   }, []);
   const showDrawer = (record) => {
     console.log(record);
+    const fetchProductImg = async () => {
+      try {
+        const response = await axios.get(
+          "http://fashionrental.online:8080/productimg?productID=" +
+            record.productID
+        );
+        const imgUrlArray = response.data.map((item) => item.imgUrl);
+        setProductImage(imgUrlArray);
+        console.log(imgUrlArray);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
+    fetchProductImg();
     axios
       .get("http://fashionrental.online:8080/product/" + record.productID)
       .then((response) => {
@@ -141,7 +158,43 @@ const TablePending = () => {
     setIsModalVisible(false);
   };
   //-----------------------------
-  const handleOk = () => {};
+  const handleOk = async (record) => {
+    try {
+      const response = await axios.put(
+        `http://fashionrental.online:8080/request?description=` +
+          descriptionRequest +
+          `&requestID=` +
+          record.requestAddingProductID +
+          `&status=APPROVED`
+      );
+      try {
+        const staffRequest = await axios.post(
+          "http://fashionrental.online:8080/staffrequested?requestAddingProductID=" +
+            response.data.requestAddingProductID +
+            "&staffID=" +
+            staffId
+        );
+        console.log("update request staff success",staffRequest.data);
+      } catch (error) {
+        console.error("Validation failed", error);
+      }
+      try {
+        const productStatus = await axios.put(
+          `http://fashionrental.online:8080/product/update/}?productID=` +
+            record.productID +
+            `&status=AVAILABLE`
+        );
+        console.log("update product success",productStatus.data);
+      } catch (error) {
+        console.error("Validation failed", error);
+      }
+      setIsModalVisible(false);
+      fetchRequests();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
   //Modal Huy
   const showModalNotApprove = () => {
     setIsModalVisibleNotApprove(true);
@@ -333,13 +386,15 @@ const TablePending = () => {
           <Modal
             title="Duyệt Sản Phẩm"
             open={isModalVisible}
-            onOk={handleOk}
             onCancel={handleCancel}
             footer={null}
           >
             <Form form={form}>
               <p>Lý Do Duyệt:</p>
-              <Form.Item name="description">
+              <Form.Item
+                name="descriptionRequest"
+                onChange={(e) => setDescriptionRequest(e.target.value)}
+              >
                 <Input />
               </Form.Item>
               <Form.Item style={{ textAlign: "center" }}>
@@ -353,7 +408,7 @@ const TablePending = () => {
                 <Button
                   type="primary"
                   style={{ backgroundColor: "#008000", marginLeft: "20px" }}
-                  onClick={handleOk}
+                  onClick={() => handleOk(record)}
                 >
                   Duyệt
                 </Button>
@@ -433,9 +488,7 @@ const TablePending = () => {
           <Form.Item name="status">
             <span>Trạng Thái Sản Phẩm: </span>
             <strong style={{ marginLeft: "10px" }}>
-            <RenderTag
-                    tagRender={selectedRecord?.status}
-                  />
+              <RenderTag tagRender={selectedRecord?.status} />
             </strong>
             {/* <Input value={selectedRecord?.productName} readOnly /> */}
           </Form.Item>
@@ -443,9 +496,7 @@ const TablePending = () => {
           <Form.Item name="checkType">
             <span>Hình Thức Sản Phẩm: </span>
             <strong style={{ marginLeft: "10px" }}>
-            <RenderTag
-                    tagRender={selectedRecord?.checkType}
-                  />
+              <RenderTag tagRender={selectedRecord?.checkType} />
             </strong>
           </Form.Item>
 
@@ -456,20 +507,20 @@ const TablePending = () => {
             </strong>
           </Form.Item>
           <p style={{ marginBottom: "10px" }}>Ảnh Hóa Đơn:</p>
-          <Form.Item name="invoiceCode">
-            {selectedRecord?.invoiceCode && (
+          <Form.Item name="productReceiptUrl">
+            {selectedRecord?.productReceiptUrl && (
               <Image
                 style={{ borderRadius: "10px" }}
                 width={300}
-                src={selectedRecord.invoiceCode}
+                src={selectedRecord.productReceiptUrl}
               />
             )}
           </Form.Item>
           <p style={{ marginBottom: "10px" }}>Ảnh Chi Tiết Sản Phẩm:</p>
-          <Form.Item name={"detailImg"}>
-            {selectedRecord?.detailImg?.images && (
+          <Form.Item name="detailImg">
+            {productImage && productImage.length > 0 ? (
               <Carousel autoplay>
-                {selectedRecord.detailImg.images.map((image, index) => (
+                {productImage.map((image, index) => (
                   <div key={index}>
                     <img
                       style={{ width: "100%", height: "200px" }}
@@ -479,6 +530,8 @@ const TablePending = () => {
                   </div>
                 ))}
               </Carousel>
+            ) : (
+              <div>No images available</div>
             )}
           </Form.Item>
         </Form>
