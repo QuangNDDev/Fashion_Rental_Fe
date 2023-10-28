@@ -14,62 +14,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import RenderTag from "../render/RenderTag";
 
-const data = [
-  {
-    key: "1",
-    fullName: "John Brown",
-    phone: 32,
-    address: "New York No. 1 Lake Park",
-    invoiceCode: "https://kenh14cdn.com/2017/photo-4-1488968670853.jpg",
-    status: "Approve",
-    detailImg: {
-      images: [
-        "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=2069&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1691480288782-142b953cf664?auto=format&fit=crop&q=80&w=2080&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1691480288782-142b953cf664?auto=format&fit=crop&q=80&w=2080&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1691480288782-142b953cf664?auto=format&fit=crop&q=80&w=2080&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1691480288782-142b953cf664?auto=format&fit=crop&q=80&w=2080&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1691480288782-142b953cf664?auto=format&fit=crop&q=80&w=2080&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      ],
-    },
-    fullName: "Tui LV",
-  },
-  {
-    key: "2",
-    fullName: "Joe Black",
-    phone: 42,
-    address: "London No. 1 Lake Park",
-    invoiceCode: "https://kenh14cdn.com/2017/photo-4-1488968670853.jpg",
-    status: "Approve",
-    detailImg: {
-      images: [
-        "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=2069&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      ],
-    },
-    fullName: "Tui LV",
-  },
-  {
-    key: "3",
-    fullName: "Jim Green",
-    phone: 32,
-    address: "Sydney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    fullName: "Jim Red",
-    phone: 32,
-    address: "London No. 2 Lake Park",
-  },
-];
 const TableAccept = () => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
@@ -77,6 +21,7 @@ const TableAccept = () => {
   const [form] = Form.useForm();
   const [requestsData, setRequestsData] = useState([]);
   const idStaff = localStorage.getItem("staffId");
+  const [productImage, setProductImage] = useState();
 
   const fetchRequests = async () => {
     try {
@@ -85,7 +30,6 @@ const TableAccept = () => {
       );
 
       setRequestsData(response.data);
-
     } catch (error) {
       console.error(error);
     }
@@ -119,8 +63,27 @@ const TableAccept = () => {
       .catch((error) => {
         console.error(error);
       });
+
     setIsDrawerVisible(true);
+
+    const fetchProductImg = async () => {
+      try {
+        const response = await axios.get(
+          "http://fashionrental.online:8080/productimg?productID=" +
+            record.productID
+        );
+        const imgUrlArray = response.data.map((item) => item.imgUrl);
+        setProductImage(imgUrlArray);
+        console.log(imgUrlArray);
+      } catch (error) {
+        console.error(error);
+      }
+      console.log(selectedRecord?.checkType);
+    };
+
+    fetchProductImg();
   };
+
   const closeDrawer = () => {
     setIsDrawerVisible(false);
   };
@@ -261,7 +224,7 @@ const TableAccept = () => {
       dataIndex: "requestStatus",
       key: "requestStatus",
       render: (status) => (
-        <p style={{ textAlign: "center", justifyContent: "center" }}>
+        <p style={{ textAlign: "left", justifyContent: "left" }}>
           <RenderTag tagRender={status} />
         </p>
       ),
@@ -333,10 +296,21 @@ const TableAccept = () => {
             {/* <Input value={selectedRecord?.productName} readOnly /> */}
           </Form.Item>
 
+          <Form.Item name="productCondition">
+            <span>Tình Trạng Sản Phẩm: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.productCondition}
+            </strong>
+            {/* <Input value={selectedRecord?.productName} readOnly /> */}
+          </Form.Item>
+
           <Form.Item name="price">
             <span>Giá Sản Phẩm: </span>
             <strong style={{ marginLeft: "10px" }}>
-              {selectedRecord?.price}vnđ
+              {selectedRecord?.price.toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              })}
             </strong>
             {/* <Input value={selectedRecord?.productName} readOnly /> */}
           </Form.Item>
@@ -350,9 +324,10 @@ const TableAccept = () => {
           </Form.Item>
 
           <Form.Item name="checkType">
-          <span>Hình Thức Sản Phẩm: </span>
-            <RenderTag tagRender={selectedRecord?.checkType} />
-           
+            <span>Hình Thức Sản Phẩm: </span>
+            <strong style={{ marginLeft: "10px" }}>
+              {selectedRecord?.checkType}
+            </strong>
           </Form.Item>
 
           <Form.Item name="categoryName">
@@ -362,7 +337,7 @@ const TableAccept = () => {
             </strong>
           </Form.Item>
 
-          <p style={{ marginBottom: "10px" }}>Ảnh Hóa Đơn:</p>
+          <p style={{ marginBottom: "3px" }}>Ảnh Hóa Đơn:</p>
           <Form.Item name="productReceiptUrl">
             {selectedRecord?.productReceiptUrl && (
               <Image
@@ -374,10 +349,11 @@ const TableAccept = () => {
           </Form.Item>
         </Form>
         {/* Customize the content of the Drawer using selectedRecord */}
-        <Form.Item name={"detailImg"} label="Ảnh Chi Tiết Sản Phẩm">
-          {selectedRecord?.detailImg?.images && (
+        <p style={{ marginBottom: "10px" }}>Ảnh Chi Tiết Sản Phảm:</p>
+        <Form.Item name="detailImg">
+          {productImage && productImage.length > 0 ? (
             <Carousel autoplay>
-              {selectedRecord.detailImg.images.map((image, index) => (
+              {productImage.map((image, index) => (
                 <div key={index}>
                   <img
                     style={{ width: "100%", height: "200px" }}
@@ -387,6 +363,8 @@ const TableAccept = () => {
                 </div>
               ))}
             </Carousel>
+          ) : (
+            <div>No images available</div>
           )}
         </Form.Item>
 

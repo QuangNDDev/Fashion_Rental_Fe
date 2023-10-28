@@ -127,7 +127,6 @@ const CreateProduct = () => {
 
           console.log("Rent price Success!!");
           console.log(rentPriceResponse.data);
-          formRentPrice.resetField();
         } catch (error) {
           console.error("Error rent price:", error);
         }
