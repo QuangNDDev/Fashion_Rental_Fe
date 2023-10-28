@@ -229,9 +229,12 @@ const ProductCard = () => {
               <div style={{ display: "flex" }}>
                 <strong>Giá sản phẩm:</strong>
                 <p style={{ marginLeft: "10px" }}>
-                  {selectedProduct && selectedProduct.price}
+                  {selectedProduct &&
+                    `${selectedProduct.price.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })} `}
                 </p>
-                <strong style={{ marginLeft: "10px" }}>vnđ</strong>
               </div>
             </Form.Item>
             {/* <Form.Item
