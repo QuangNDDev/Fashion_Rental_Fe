@@ -22,7 +22,7 @@ const MuntilImage = ({ images }) => {
     height: "auto",
     borderRadius: "20px", // Maintain the aspect ratio
   };
-
+  
   return (
     <div style={containerStyle}>
       {images.map((imgUrl, index) => (
