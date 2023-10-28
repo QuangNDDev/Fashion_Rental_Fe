@@ -2,13 +2,14 @@
 
 /* Định dạng cho phần tử chứa thông tin cá nhân */
 .profile-container {
-  background-color: #f0f0f0;
+  background-image: url("https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/03/hinh-nen-louis-vuitton-chu-nho.png?ssl=1");
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   width: 50%;
   margin: auto;
   margin-top: 20px;
+  background-size: cover;
 }
 
 /* Định dạng cho tên người dùng */

@@ -1,25 +1,19 @@
-import {
-  SearchOutlined,
-  UploadOutlined,
-  EditTwoTone,
-  DeleteOutlined,
-} from "@ant-design/icons";
-import React, { useEffect, useRef, useState } from "react";
-import Highlighter from "react-highlight-words";
+import { DeleteOutlined, EditTwoTone, SearchOutlined } from "@ant-design/icons";
 import {
   Button,
   Drawer,
   Form,
   Input,
-  message,
-  notification,
   Radio,
   Space,
   Table,
-  Upload,
+  message,
+  notification,
 } from "antd";
-import { v4 } from "uuid";
 import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
+import Highlighter from "react-highlight-words";
+import { v4 } from "uuid";
 import RenderTag from "../render/RenderTag";
 const StaffTable = () => {
   const [users, setUsers] = useState();
@@ -48,7 +42,7 @@ const StaffTable = () => {
         roleName: user.accountDTO.roleDTO.roleName,
         email: user.accountDTO.email,
         status: user.accountDTO.status,
-        accountID : user.accountDTO.accountID,
+        accountID: user.accountDTO.accountID,
       }));
       setUsers(users);
     } catch (error) {
@@ -370,11 +364,11 @@ const StaffTable = () => {
       >
         {isEdit ? (
           // Render edit form when isEdit is true
-          
+
           <Form form={form}>
-             <Form.Item name="accountID" style={{ display: 'none' }}>
-      <Input />
-    </Form.Item>
+            <Form.Item name="accountID" style={{ display: "none" }}>
+              <Input />
+            </Form.Item>
             <Form.Item
               name="status"
               label="Trạng thái hoạt động"

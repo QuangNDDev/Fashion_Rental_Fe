@@ -1,11 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { Button, Drawer, Form, Image, Input, message, Upload } from "antd";
-import { SettingOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Card,
+  Drawer,
+  Form,
+  Image,
+  Input,
+  message,
+  notification,
+  Upload,
+} from "antd";
+import {
+  SettingOutlined,
+  UploadOutlined,
+  EllipsisOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 import { storage } from "../../firebase/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 import axios from "axios";
+import Meta from "antd/es/card/Meta";
 const InformationPO = () => {
+  const [api, contextHolder] = notification.useNotification();
   const idAccount = localStorage.getItem("accountId");
   const [productowner, setProductOwner] = useState([]);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
@@ -44,13 +61,20 @@ const InformationPO = () => {
           )
           .then((response) => {
             console.log(response);
-            message.success("Chỉnh sửa thành công!");
+            api["success"]({
+              message: "Chỉnh Sửa Thành Công",
+              description: null,
+            });
             setProductOwner((prevProductOwner) => ({
               ...prevProductOwner,
               ...editData,
             }));
           });
       } catch (error) {
+        api["error"]({
+          message: "Chỉnh Sửa Không Thành Công",
+          description: null,
+        });
         console.log(error);
       }
 
@@ -97,6 +121,7 @@ const InformationPO = () => {
 
   return (
     <div style={{ justifyContent: "center" }}>
+      {contextHolder}
       <div
         style={{
           display: "flex",
@@ -185,45 +210,39 @@ const InformationPO = () => {
           </Drawer>
         </>
       </div>
-      <div style={{ display: "flex", flexDirection: "column", marginLeft: 20 }}>
-        <Image
-          width={200}
-          src={
-            productowner?.avatarUrl
-              ? productowner.avatarUrl
-              : "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg"
+      <div
+        style={{ display: "flex", justifyContent: "center", marginLeft: 20 }}
+      >
+        <Card
+          style={{ width: 300 }}
+          cover={
+            <img
+              alt="avatar"
+              src={
+                productowner?.avatarUrl
+                  ? productowner.avatarUrl
+                  : "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg"
+              }
+            />
           }
-        />
-        <span
-          style={{
-            fontWeight: "bold",
-            padding: "5px 0 5px 0",
-            fontSize: "15px",
-          }}
+          actions={[
+            <EditOutlined
+              key="edit"
+              onClick={() => showDrawer(productowner)}
+            />,
+          ]}
         >
-          Họ và tên:{" "}
-        </span>
-        {productowner?.fullName ? productowner.fullName : ""}
-        <span
-          style={{
-            fontWeight: "bold",
-            padding: "5px 0 5px 0",
-            fontSize: "15px",
-          }}
-        >
-          Địa chỉ:{" "}
-        </span>
-        {productowner?.address ? productowner.address : ""}
-        <span
-          style={{
-            fontWeight: "bold",
-            padding: "5px 0 5px 0",
-            fontSize: "15px",
-          }}
-        >
-          Số điện thoại:
-        </span>
-        {productowner?.phone ? productowner.phone : ""}
+          <Meta
+            title={productowner?.fullName ? productowner.fullName : null}
+            description={
+              <div>
+                {productowner?.phone ? productowner.phone : null}
+                <br />
+                {productowner?.address ? productowner.address : null}
+              </div>
+            }
+          />
+        </Card>
       </div>
     </div>
   );
