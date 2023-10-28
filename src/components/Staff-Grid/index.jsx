@@ -433,22 +433,19 @@ const TablePending = () => {
           <Form.Item name="status">
             <span>Trạng Thái Sản Phẩm: </span>
             <strong style={{ marginLeft: "10px" }}>
-              {selectedRecord?.status}
+            <RenderTag
+                    tagRender={selectedRecord?.status}
+                  />
             </strong>
             {/* <Input value={selectedRecord?.productName} readOnly /> */}
           </Form.Item>
 
-          <Form.Item name="forRent">
-            <span>Hình Thức Thuê: </span>
+          <Form.Item name="checkType">
+            <span>Hình Thức Sản Phẩm: </span>
             <strong style={{ marginLeft: "10px" }}>
-              {selectedRecord?.forRent ? "Có" : "Không"}
-            </strong>
-          </Form.Item>
-
-          <Form.Item name="forSale">
-            <span>Hình Thức Bán: </span>
-            <strong style={{ marginLeft: "10px" }}>
-              {selectedRecord?.forSale ? "Có" : "Không"}
+            <RenderTag
+                    tagRender={selectedRecord?.checkType}
+                  />
             </strong>
           </Form.Item>
 
