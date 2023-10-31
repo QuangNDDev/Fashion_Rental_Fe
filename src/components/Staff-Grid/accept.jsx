@@ -23,6 +23,16 @@ const TableAccept = () => {
   const idStaff = localStorage.getItem("staffId");
   const [productImage, setProductImage] = useState();
 
+  function formatDate(dateString) {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    const formattedDate = new Date(dateString).toLocaleDateString(
+      "en-US",
+      options
+    );
+    const [month, day, year] = formattedDate.split("/");
+    return `${day}/ ${month}/ ${year}`;
+  }
+
   const fetchRequests = async () => {
     try {
       const response = await axios.get(
@@ -215,9 +225,15 @@ const TableAccept = () => {
       title: "Ngày tạo",
       dataIndex: "createDate",
       key: "createDate",
-      // width: "10%",
       ...getColumnSearchProps("createDate"),
-      render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
+      render: (text) => <p style={{ textAlign: "left" }}>{formatDate(text)}</p>,
+    },
+    {
+      title: "Ngày duyệt",
+      dataIndex: "updateDate",
+      key: "updateDate",
+      ...getColumnSearchProps("updateDate"),
+      render: (text) => <p style={{ textAlign: "left" }}>{formatDate(text)}</p>,
     },
     {
       title: "Trạng thái",
@@ -235,24 +251,7 @@ const TableAccept = () => {
       key: "description",
       render: (description) => <p>{description}</p>,
     },
-    // {
-    //   title: "Ảnh chi tiết",
-    //   dataIndex: "detailImg",
-    //   key: "detailImg",
 
-    //   render: (detailImg, record) => {
-    //     if (!detailImg || !detailImg.images) {
-    //       return null;
-    //     }
-
-    //     return (
-    //       <div style={{ display: "flex" }}>
-    //         <MuntilImage images={detailImg.images} />
-    //       </div>
-    //     );
-    //   },
-    //   width: "30%",
-    // },
     {
       title: <p style={{ textAlign: "center" }}>Hành Động</p>,
       key: "action",
@@ -355,11 +354,17 @@ const TableAccept = () => {
             <Carousel autoplay>
               {productImage.map((image, index) => (
                 <div key={index}>
-                  <img
-                    style={{ width: "100%", height: "200px" }}
-                    src={image}
-                    alt={`Image ${index}`}
-                  />
+                  <Image.PreviewGroup>
+                    <Image
+                      style={{
+                        width: "100%",
+                        height: "200px",
+                        cursor: "pointer",
+                      }}
+                      src={image}
+                      alt={`Image ${index}`}
+                    />
+                  </Image.PreviewGroup>
                 </div>
               ))}
             </Carousel>
