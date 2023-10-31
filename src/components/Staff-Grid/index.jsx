@@ -35,6 +35,17 @@ const TablePending = () => {
   const [isModalVisibleNotApprove, setIsModalVisibleNotApprove] =
     useState(false);
   const [api, contextHolder] = notification.useNotification();
+
+  function formatDate(dateString) {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    const formattedDate = new Date(dateString).toLocaleDateString(
+      "en-US",
+      options
+    );
+    const [month, day, year] = formattedDate.split("/");
+    return `${day}/ ${month}/ ${year}`;
+  }
+
   const fetchRequests = async () => {
     try {
       const response = await axios.get(
@@ -271,9 +282,8 @@ const TablePending = () => {
       title: "Ngày tạo",
       dataIndex: "createdDate",
       key: "createdDate",
-      // width: "10%",
       ...getColumnSearchProps("createdDate"),
-      render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
+      render: (text) => <p style={{ textAlign: "left" }}>{formatDate(text)}</p>,
     },
     {
       title: "Trạng thái",
@@ -471,11 +481,17 @@ const TablePending = () => {
               <Carousel autoplay>
                 {productImage.map((image, index) => (
                   <div key={index}>
-                    <img
-                      style={{ width: "100%", height: "200px" }}
-                      src={image}
-                      alt={`Image ${index}`}
-                    />
+                    <Image.PreviewGroup>
+                      <Image
+                        style={{
+                          width: "100%",
+                          height: "200px",
+                          cursor: "pointer",
+                        }}
+                        src={image}
+                        alt={`Image ${index}`}
+                      />
+                    </Image.PreviewGroup>
                   </div>
                 ))}
               </Carousel>
