@@ -189,6 +189,18 @@ const ProductCard = () => {
             </Form.Item>
 
             <Form.Item
+              name="categoryName" //lấy value của cái name gán lên cái setFormValue
+              initialValue={selectedProduct && selectedProduct.categoryName}
+            >
+              <div style={{ display: "flex" }}>
+                <strong>Nghành Hàng:</strong>
+                <p style={{ marginLeft: "10px" }}>
+                  {selectedProduct && selectedProduct.categoryName}
+                </p>
+              </div>
+            </Form.Item>
+
+            <Form.Item
               name="productCondition" //lấy value của cái name gán lên cái setFormValue
               initialValue={selectedProduct && selectedProduct.productCondition}
             >
