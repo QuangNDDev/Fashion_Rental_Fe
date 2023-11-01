@@ -40,6 +40,18 @@ const CreateProduct = () => {
   const productownerId = localStorage.getItem("productownerId");
   const [form] = Form.useForm();
   const [sliderValue, setSliderValue] = useState(50);
+
+  const categoryTranslations = {
+    Watch: "Đồng Hồ",
+    Coat: "Áo Khoác",
+    Pant: "Quần",
+    Jewelry: "Trang Sức",
+    Bag: "Túi",
+    Sunglasses: "Mắt Kính",
+    Shoe: "Giày",
+
+    // Thêm các bản dịch loại sản phẩm khi cần
+  };
   // Hàm cập nhật giá trị Slider khi người dùng thay đổi nó
   const handleSliderChange = (value) => {
     setSliderValue(value);
@@ -60,6 +72,11 @@ const CreateProduct = () => {
   useEffect(() => {
     fetchCategorys();
   }, []);
+  const [category, setCategory] = useState("");
+  useEffect(() => {
+    console.log("848948951591298129");
+  }, [category]);
+
   //------------------------regex chỉ được nhập số---------------------
 
   const [inputValue, setInputValue] = useState("");
@@ -259,10 +276,59 @@ const CreateProduct = () => {
     setCheckType(value);
   };
   const selectChangeCategory = (value) => {
-    console.log(`Đã chọn giá trị ${value}`);
     setCheckCategory(value);
+    setCategory(value);
   };
   //-----------------------------------------------------------------------------------
+
+  //---------------------------SelectDetailWatch-------------------------------------
+
+  //brandName
+  const onChangeBrandNameWatch = (value) => {
+    console.log(`selected ${value}`);
+  };
+  const onSearchBrandNameWatch = (value) => {
+    console.log("search:", value);
+  };
+  const filterOptionBrandNameWatch = (input, option) =>
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  ///////////////////////////
+
+  //SelectClockFaceWatch
+  const onChangeWatch = (value) => {
+    console.log(`selected ${value}`);
+  };
+  const onSearchWatch = (value) => {
+    console.log("search:", value);
+  };
+
+  const filterOptionWatch = (input, option) =>
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  //////////////////////
+  //Chất Liệu Dây Đeo
+  const onChangeStrapMaterial = (value) => {
+    console.log(`selected ${value}`);
+  };
+  const onSearchStrapMaterial = (value) => {
+    console.log("search:", value);
+  };
+
+  const filterOptionStrapMaterial = (input, option) =>
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  /////////////////////////////
+  //Xuất Xứ
+  const onChangeOriginWatch = (value) => {
+    console.log(`selected ${value}`);
+  };
+  const onSearchOriginWatch = (value) => {
+    console.log("search:", value);
+  };
+
+  const filterOptionOriginWatch = (input, option) =>
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  //--------------------------------------------------------------------------------------
+
   const formatNumber = (value) => new Intl.NumberFormat().format(value);
   const NumericInput = (props) => {
     const { value, onChange } = props;
@@ -307,11 +373,12 @@ const CreateProduct = () => {
   };
 
   return (
-    <div style={{ backgroundColor: "#f9f9f9" }}>
+    <div style={{ backgroundColor: "#fff" }}>
       {contextHolder}
-      <div className="section-title">Thông tin sản phẩm</div>
       <Form form={form} onFinish={onFinish}>
-        <div className="product-details">
+        <div className="basic-information--step1">
+          <div className="section-title">Thông tin sản phẩm</div>
+
           <div className="name">
             <span>Tên sản phẩm:</span>
             <Form.Item
@@ -319,33 +386,6 @@ const CreateProduct = () => {
               rules={[{ required: true, message: "Không được để trống!" }]}
             >
               <Input placeholder="Nhập tên sản phẩm..." />
-            </Form.Item>
-          </div>
-          <div className="name">
-            <span>Thương hiệu:</span>
-            <Form.Item
-              name={"brandName"}
-              rules={[{ required: true, message: "Không được để trống!" }]}
-            >
-              <Input placeholder="Nhập tên thương hiệu..." />
-            </Form.Item>
-          </div>
-          <div className="name">
-            <span>Chất liệu:</span>
-            <Form.Item
-              name={"madeOf"}
-              rules={[{ required: true, message: "Không được để trống!" }]}
-            >
-              <Input placeholder="Nhập chất liệu..." />
-            </Form.Item>
-          </div>
-          <div className="description">
-            <span>Mô tả sản phẩm:</span>
-            <Form.Item
-              name={"description"}
-              rules={[{ required: true, message: "Không được để trống!" }]}
-            >
-              <TextArea rows={4} placeholder="Nhập mô tả sản phẩm..." />
             </Form.Item>
           </div>
           <div className="category">
@@ -362,12 +402,246 @@ const CreateProduct = () => {
                   categorys &&
                   categorys.map((category) => ({
                     value: category.categoryID,
-                    label: category.categoryName,
+                    label:
+                      categoryTranslations[category.categoryName] ||
+                      category.categoryName,
                   }))
                 }
               />
             </Space>
           </div>
+          <div className="description">
+            <span>Mô tả sản phẩm:</span>
+            <Form.Item
+              name={"description"}
+              rules={[{ required: true, message: "Không được để trống!" }]}
+            >
+              <TextArea rows={4} placeholder="Nhập mô tả sản phẩm..." />
+            </Form.Item>
+          </div>
+          <Form.Item name={"productCondition"} style={{ marginLeft: "16px" }}>
+            <p style={{ fontWeight: "bold" }}>Tình trạng sản phẩm:</p>
+            <Slider
+              style={{ width: "30%", track: { background: "green" } }}
+              value={sliderValue} // Sử dụng giá trị sliderValue
+              onChange={handleSliderChange}
+            />
+            <span style={{ marginLeft: "10px" }}>{sliderValue}%</span>
+          </Form.Item>
+          <Form.Item name={"productReceiptUrl"}>
+            <div className="receipt">
+              <span>Hoá đơn sản phẩm:</span>
+              <Upload
+                maxCount={1}
+                onChange={handleFileChangeReceipt}
+                onPreview={handlePreview}
+                beforeUpload={() => false}
+              >
+                <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+              </Upload>
+            </div>
+          </Form.Item>
+          <div className="image">
+            <span>Hình ảnh sản phẩm:</span>
+            <Form.Item name={"productAvt"}>
+              <Upload
+                maxCount={9}
+                onChange={handleFileChange}
+                onPreview={handlePreview}
+                beforeUpload={() => false}
+                multiple={true}
+              >
+                <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+                <span
+                  style={{
+                    marginLeft: "20px",
+                    fontStyle: "italic",
+                    fontWeight: "normal",
+                    color: "grey",
+                  }}
+                >
+                  • Tối đa 9 ảnh
+                </span>
+              </Upload>
+            </Form.Item>
+
+            <Modal
+              open={previewOpen}
+              title={previewTitle}
+              footer={null}
+              onCancel={handleCancel}
+            >
+              <img
+                alt="example"
+                style={{
+                  width: "100%",
+                }}
+                src={previewImage}
+              />
+            </Modal>
+          </div>
+        </div>
+        <div className="basic-information--watch">
+          <h1>Thông tin chi tiết</h1>
+          <div className="name">
+            <span>Thương Hiệu:</span>
+            <Form.Item
+              name={"brandName"}
+              rules={[{ required: true, message: "Không được để trống!" }]}
+            >
+              <Select
+                style={{ width: "100%" }}
+                showSearch
+                placeholder="Vui lòng chọn"
+                optionFilterProp="children"
+                onChange={onChangeBrandNameWatch}
+                onSearch={onSearchBrandNameWatch}
+                filterOption={filterOptionBrandNameWatch}
+                options={[
+                  {
+                    value: 1,
+                    label: "Rolex",
+                  },
+                  {
+                    value: 2,
+                    label: "Hublot",
+                  },
+                  {
+                    value: 3,
+                    label: "Omega",
+                  },
+                  {
+                    value: 4,
+                    label: "Richard Mille",
+                  },
+                  {
+                    value: 5,
+                    label: "Richard Mille",
+                  },
+                  {
+                    value: 6,
+                    label: "Patek Philippe",
+                  },
+                  {
+                    value: 7,
+                    label: "Cartier",
+                  },
+                ]}
+              />
+            </Form.Item>
+          </div>
+
+          <div className="name">
+            <span>Mặt Đồng Hồ:</span>
+            <Form.Item
+              name={"detailWatch"}
+              rules={[{ required: true, message: "Không được để trống!" }]}
+            >
+              <Select
+                style={{ width: "100%" }}
+                showSearch
+                placeholder="Vui lòng chọn"
+                optionFilterProp="children"
+                onChange={onChangeWatch}
+                onSearch={onSearchWatch}
+                filterOption={filterOptionWatch}
+                options={[
+                  {
+                    value: 1,
+                    label: "Kỹ Thuật Số",
+                  },
+                  {
+                    value: 2,
+                    label: "Điện Tử",
+                  },
+                  {
+                    value: 3,
+                    label: "Cơ",
+                  },
+                  {
+                    value: 4,
+                    label: "Vừa Cơ Vừa Số",
+                  },
+                ]}
+              />
+            </Form.Item>
+          </div>
+
+          <div className="name">
+            <span>Chất Liệu Dây Đeo:</span>
+            <Form.Item
+              name={"madeOf"}
+              rules={[{ required: true, message: "Không được để trống!" }]}
+            >
+              <Select
+                style={{ width: "100%" }}
+                showSearch
+                placeholder="Vui lòng chọn"
+                optionFilterProp="children"
+                onChange={onChangeStrapMaterial}
+                onSearch={onSearchStrapMaterial}
+                filterOption={filterOptionStrapMaterial}
+                options={[
+                  {
+                    value: 1,
+                    label: "Hợp Kim",
+                  },
+                  {
+                    value: 2,
+                    label: "Da",
+                  },
+                  {
+                    value: 3,
+                    label: "Thép Không Gỉ",
+                  },
+                ]}
+              />
+            </Form.Item>
+          </div>
+
+          <div className="name">
+            <span>Xuất Xứ:</span>
+            <Form.Item
+              name={"madeOf"}
+              rules={[{ required: true, message: "Không được để trống!" }]}
+            >
+              <Select
+                style={{ width: "100%" }}
+                showSearch
+                placeholder="Vui lòng chọn"
+                optionFilterProp="children"
+                onChange={onChangeOriginWatch}
+                onSearch={onSearchOriginWatch}
+                filterOption={filterOptionOriginWatch}
+                options={[
+                  {
+                    value: 1,
+                    label: "Thụy Sĩ",
+                  },
+                  {
+                    value: 2,
+                    label: "Anh",
+                  },
+                  {
+                    value: 3,
+                    label: "Đức",
+                  },
+                  {
+                    value: 4,
+                    label: "Pháp",
+                  },
+                  {
+                    value: 5,
+                    label: "Nhật Bản",
+                  },
+                ]}
+              />
+            </Form.Item>
+          </div>
+        </div>
+
+        <div className="basic-information--step3">
+          <h1>Thông Tin Bán Hàng</h1>
           <div className="rent-sale">
             <span>Cấu hình sản phẩm:</span>
 
@@ -439,191 +713,22 @@ const CreateProduct = () => {
                   />
                 </div>
               </Form.Item>
-              <Form.Item
-                name={"rentPrice4"}
-                rules={[
-                  {
-                    required: true,
-                    message: "Không được để trống!",
-                  },
-                  {
-                    pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
-                    message: "Chỉ được nhập số!",
-                  },
-                ]}
-              >
-                <div className="rent-price__day">
-                  <p style={{ fontWeight: "bold" }}>
-                    Giá thuê sản phẩm 4 ngày:
-                  </p>
-                  <Input
-                    suffix="VND"
-                    style={{ width: "70%", marginRight: "30px" }}
-                  />
-                </div>
-              </Form.Item>
-
-              <Form.Item
-                name={"rentPrice7"}
-                rules={[
-                  {
-                    required: true,
-                    message: "Không được để trống!",
-                  },
-                  {
-                    pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
-                    message: "Chỉ được nhập số!",
-                  },
-                ]}
-              >
-                <div className="rent-price__day">
-                  <p style={{ fontWeight: "bold" }}>
-                    Giá thuê sản phẩm 7 ngày:
-                  </p>
-                  <Input
-                    suffix="VND"
-                    style={{ width: "70%", marginRight: "30px" }}
-                  />
-                </div>
-              </Form.Item>
-
-              <Form.Item
-                name={"rentPrice10"}
-                rules={[
-                  {
-                    required: true,
-                    message: "Không được để trống!",
-                  },
-                  {
-                    pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
-                    message: "Chỉ được nhập số!",
-                  },
-                ]}
-              >
-                <div className="rent-price__day">
-                  <p style={{ fontWeight: "bold" }}>
-                    Giá thuê sản phẩm 10 ngày:
-                  </p>
-                  <Input
-                    suffix="VND"
-                    style={{ width: "70%", marginRight: "30px" }}
-                  />
-                </div>
-              </Form.Item>
-
-              <Form.Item
-                name={"rentPrice14"}
-                rules={[
-                  {
-                    required: true,
-                    message: "Không được để trống!",
-                  },
-                  {
-                    pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
-                    message: "Chỉ được nhập số!",
-                  },
-                ]}
-              >
-                <div
-                  className="rent-price__day"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Không được để trống!",
-                    },
-                    {
-                      pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
-                      message: "Chỉ được nhập số!",
-                    },
-                  ]}
-                >
-                  <p style={{ fontWeight: "bold" }}>
-                    Giá thuê sản phẩm 14 ngày:
-                  </p>
-                  <Input
-                    suffix="VND"
-                    style={{ width: "70%", marginRight: "30px" }}
-                  />
-                </div>
-              </Form.Item>
             </div>
           )}
-          <Form.Item name={"productCondition"} style={{ marginLeft: "16px" }}>
-            <p style={{ fontWeight: "bold" }}>Tình trạng sản phẩm:</p>
-            <Slider
-              style={{ width: "30%", track: { background: "green" } }}
-              value={sliderValue} // Sử dụng giá trị sliderValue
-              onChange={handleSliderChange}
-            />
-            <span style={{ marginLeft: "10px" }}>{sliderValue}%</span>
-          </Form.Item>
-
-          <Form.Item name={"productReceiptUrl"}>
-            <div className="receipt">
-              <span>Hoá đơn sản phẩm:</span>
-              <Upload
-                maxCount={1}
-                onChange={handleFileChangeReceipt}
-                onPreview={handlePreview}
-                beforeUpload={() => false}
-              >
-                <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
-              </Upload>
-            </div>
-          </Form.Item>
-
-          <div className="image">
-            <span>Hình ảnh sản phẩm:</span>
-            <Form.Item name={"productAvt"}>
-              <Upload
-                maxCount={9}
-                onChange={handleFileChange}
-                onPreview={handlePreview}
-                beforeUpload={() => false}
-                multiple={true}
-              >
-                <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
-                <span
-                  style={{
-                    marginLeft: "20px",
-                    fontStyle: "italic",
-                    fontWeight: "normal",
-                    color: "grey",
-                  }}
-                >
-                  • Tối đa 9 ảnh
-                </span>
-              </Upload>
-            </Form.Item>
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                style={{
-                  width: "20%",
-                  backgroundColor: "green",
-                }}
-              >
-                Thêm Sản Phẩm
-              </Button>
-            </Form.Item>
-
-            <Modal
-              open={previewOpen}
-              title={previewTitle}
-              footer={null}
-              onCancel={handleCancel}
-            >
-              <img
-                alt="example"
-                style={{
-                  width: "100%",
-                }}
-                src={previewImage}
-              />
-            </Modal>
-          </div>
         </div>
+
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            style={{
+              width: "20%",
+              backgroundColor: "green",
+            }}
+          >
+            Thêm Sản Phẩm
+          </Button>
+        </Form.Item>
       </Form>
     </div>
   );
