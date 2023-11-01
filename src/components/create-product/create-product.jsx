@@ -93,9 +93,13 @@ const CreateProduct = () => {
   //-------------------------------------------------------------------
 
   const onFinish = async (values) => {
+    if(checkCategory == 2){
     const productSpecificationData = {
       madeOf: values.madeOf,
       brandName: values.brandName,
+      detailWatch: values.detailWatch,
+      madeBy: values.madeBy,
+
     };
     const addProductData = {
       checkType: checkType,
@@ -187,6 +191,11 @@ const CreateProduct = () => {
     }
 
     console.log(addProductData);
+    console.log(productSpecificationData);
+  }else{
+   
+    console.log("hehe");
+  }
   };
 
   const handlePreview = async (file) => {
@@ -602,7 +611,7 @@ const CreateProduct = () => {
           <div className="name">
             <span>Xuất Xứ:</span>
             <Form.Item
-              name={"madeOf"}
+              name={"madeBy"}
               rules={[{ required: true, message: "Không được để trống!" }]}
             >
               <Select
