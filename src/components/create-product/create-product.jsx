@@ -801,6 +801,7 @@ const CreateProduct = () => {
             </Modal>
           </div>
         </div>
+
         {category === 2 && (
           <div className="basic-information--watch">
             <div className="section-title">Thông tin Chi Tiết</div>
@@ -1037,8 +1038,10 @@ const CreateProduct = () => {
                 />
               </Form.Item>
             </div>
+
           </div>
         )}
+
 
         {category === 6 && (
           <div className="basic-information--bag">
@@ -1219,6 +1222,7 @@ const CreateProduct = () => {
                 />
               </Form.Item>
             </div>
+
 
             <div className="name">
               <span>Xuất xứ:</span>

@@ -67,6 +67,8 @@ const ProductCard = () => {
     const specificationData = JSON.parse(productData.productSpecificationData);
     const madeOfValue = specificationData.madeOf;
     const brand = specificationData.brandName;
+    const detailWatch = specificationData.detailWatch;
+    const madeBy = specificationData.madeBy;
     form.setFieldsValue({
       avatar: productData.avatar,
       productName: productData.productName,
@@ -80,6 +82,8 @@ const ProductCard = () => {
       imgProduct: productData.imgProduct,
       madeOf: madeOfValue,
       brandName: brand,
+      detailWatch: detailWatch,
+      madeBy: madeBy,
 
       // Các trường dữ liệu khác tương tự
     });
@@ -98,6 +102,8 @@ const ProductCard = () => {
       madeOf: madeOfValue,
       brandName: brand,
       checkType: productData.checkType,
+      detailWatch: detailWatch,
+      madeBy: madeBy,
     });
   };
 
@@ -223,29 +229,57 @@ const ProductCard = () => {
                 </p>
               </div>
             </Form.Item>
-
-            <Form.Item
-              name="madeOf"
-              initialValue={selectedProduct && selectedProduct.madeOf}
-            >
-              <div style={{ display: "flex" }}>
-                <strong>Chất liệu:</strong>
-                <p style={{ marginLeft: "10px" }}>
-                  {selectedProduct && selectedProduct.madeOf}
-                </p>
-              </div>
-            </Form.Item>
-            <Form.Item
-              name="brandName"
-              initialValue={selectedProduct && selectedProduct.brandName}
-            >
-              <div style={{ display: "flex" }}>
-                <strong>Thương hiệu:</strong>
-                <p style={{ marginLeft: "10px" }}>
-                  {selectedProduct && selectedProduct.brandName}
-                </p>
-              </div>
-            </Form.Item>
+            {/* Set điều kiện để hiện thị theo category */}
+            {selectedProduct &&
+              selectedProduct.categoryName === "Watch" && (
+                <>
+                  <Form.Item
+                    name="madeOf"
+                    initialValue={selectedProduct && selectedProduct.madeOf}
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Chất liệu:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.madeOf}
+                      </p>
+                    </div>
+                  </Form.Item>
+                  <Form.Item
+                    name="brandName"
+                    initialValue={selectedProduct && selectedProduct.brandName}
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Thương hiệu:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.brandName}
+                      </p>
+                    </div>
+                  </Form.Item>
+                  <Form.Item
+                    name="madeBy"
+                    initialValue={selectedProduct && selectedProduct.madeBy}
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Xuất sứ:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.madeBy}
+                      </p>
+                    </div>
+                  </Form.Item>
+                  <Form.Item
+                    name="detailWatch"
+                    initialValue={selectedProduct && selectedProduct.detailWatch}
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Mặt đồng hồ:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.detailWatch}
+                      </p>
+                    </div>
+                  </Form.Item>
+                </>
+              )} 
+              {/* ======================================================================== */}
             <Form.Item
               name="price"
               initialValue={selectedProduct && selectedProduct.price}
