@@ -491,7 +491,7 @@ const CreateProduct = () => {
           </div>
         </div>
         <div className="basic-information--watch">
-          <h1>Thông tin chi tiết</h1>
+          <h1 className="section-title">Thông tin chi tiết</h1>
           <div className="name">
             <span>Thương Hiệu:</span>
             <Form.Item
@@ -508,31 +508,31 @@ const CreateProduct = () => {
                 filterOption={filterOptionBrandNameWatch}
                 options={[
                   {
-                    value: 1,
+                    value: "Rolex",
                     label: "Rolex",
                   },
                   {
-                    value: 2,
+                    value: "Hublot",
                     label: "Hublot",
                   },
                   {
-                    value: 3,
+                    value: "Omega",
                     label: "Omega",
                   },
                   {
-                    value: 4,
+                    value: "Richard Mille",
                     label: "Richard Mille",
                   },
                   {
-                    value: 5,
+                    value: "Richard Mille",
                     label: "Richard Mille",
                   },
                   {
-                    value: 6,
+                    value: "Patek Philippe",
                     label: "Patek Philippe",
                   },
                   {
-                    value: 7,
+                    value: "Cartier",
                     label: "Cartier",
                   },
                 ]}
@@ -556,19 +556,19 @@ const CreateProduct = () => {
                 filterOption={filterOptionWatch}
                 options={[
                   {
-                    value: 1,
+                    value: "Kỹ Thuật Số",
                     label: "Kỹ Thuật Số",
                   },
                   {
-                    value: 2,
+                    value: "Điện Tử",
                     label: "Điện Tử",
                   },
                   {
-                    value: 3,
+                    value: "Cơ",
                     label: "Cơ",
                   },
                   {
-                    value: 4,
+                    value: "Vừa Cơ Vừa Số",
                     label: "Vừa Cơ Vừa Số",
                   },
                 ]}
@@ -592,15 +592,15 @@ const CreateProduct = () => {
                 filterOption={filterOptionStrapMaterial}
                 options={[
                   {
-                    value: 1,
+                    value: "Hợp Kim",
                     label: "Hợp Kim",
                   },
                   {
-                    value: 2,
+                    value: "Da",
                     label: "Da",
                   },
                   {
-                    value: 3,
+                    value: "Thép Không Gỉ",
                     label: "Thép Không Gỉ",
                   },
                 ]}
@@ -624,23 +624,23 @@ const CreateProduct = () => {
                 filterOption={filterOptionOriginWatch}
                 options={[
                   {
-                    value: 1,
+                    value: "Thuỵ Sĩ",
                     label: "Thụy Sĩ",
                   },
                   {
-                    value: 2,
+                    value: "Anh",
                     label: "Anh",
                   },
                   {
-                    value: 3,
+                    value: "Đức",
                     label: "Đức",
                   },
                   {
-                    value: 4,
+                    value: "Pháp",
                     label: "Pháp",
                   },
                   {
-                    value: 5,
+                    value: "Nhật Bản",
                     label: "Nhật Bản",
                   },
                 ]}
@@ -650,7 +650,7 @@ const CreateProduct = () => {
         </div>
 
         <div className="basic-information--step3">
-          <h1>Thông Tin Bán Hàng</h1>
+          <h1 className="section-title">Thông Tin Bán Hàng</h1>
           <div className="rent-sale">
             <span>Cấu hình sản phẩm:</span>
 
