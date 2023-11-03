@@ -91,9 +91,35 @@
   background-color: #e7e9eb;
   margin-bottom: 20px;
 }
+
+.container-watch {
+  display: flex;
+  justify-content: space-around;
+}
+
+.field__watch--1 {
+  display: grid;
+}
+
+.field__watch--2 {
+  display: grid;
+}
 .basic-information--bag {
   background-color: #e7e9eb;
   margin-bottom: 20px;
+}
+
+.container-bag {
+  display: flex;
+  justify-content: space-around;
+}
+
+.field__bag--1 {
+  display: grid;
+}
+
+.field__bag--2 {
+  display: grid;
 }
 .basic-information--glasses {
   /* display: flex; */
@@ -155,6 +181,24 @@
 .field__earring--2 {
   display: grid;
 }
+
+.basic-information--hat {
+  background-color: #e7e9eb;
+  margin-bottom: 20px;
+}
+
+.container-hat {
+  display: flex;
+  justify-content: space-around;
+}
+.field__hat--1 {
+  display: grid;
+}
+
+.field__hat--2 {
+  display: grid;
+}
+
 .text {
   font-weight: bold;
 }
