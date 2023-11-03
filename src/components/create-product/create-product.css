@@ -103,3 +103,6 @@
 .basic-information--step3 {
   background-color: #e7e9eb;
 }
+.rent-price{
+  display: grid;
+}

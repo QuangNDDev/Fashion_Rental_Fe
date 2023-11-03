@@ -65,10 +65,18 @@ const ProductCard = () => {
     fetchProductImg();
     setIsModalVisible(true);
     const specificationData = JSON.parse(productData.productSpecificationData);
-    const madeOfValue = specificationData.madeOf;
-    const brand = specificationData.brandName;
-    const detailWatch = specificationData.detailWatch;
-    const madeBy = specificationData.madeBy;
+    const strapMaterialWatch = specificationData.strapMaterialWatch;
+    const brandNameWatch = specificationData.brandNameWatch;
+    const clockFaceWatch = specificationData.clockFaceWatch;
+    const originWatch = specificationData.originWatch;
+    const brandNameGlasses = specificationData.brandNameGlasses;
+    const typeLensGlasses = specificationData.typeLensGlasses;
+    const glassShape = specificationData.glassShape;
+    const glassMaterial = specificationData.glassMaterial;
+    const brandNameBag = specificationData.brandNameBag;
+    const skinTexture = specificationData.skinTexture;
+    const typeSkinBag = specificationData.typeSkinBag;
+    const originBag = specificationData.originBag;
     form.setFieldsValue({
       avatar: productData.avatar,
       productName: productData.productName,
@@ -80,11 +88,18 @@ const ProductCard = () => {
       forRent: productData.forRent,
       categoryName: productData.category.categoryName,
       imgProduct: productData.imgProduct,
-      madeOf: madeOfValue,
-      brandName: brand,
-      detailWatch: detailWatch,
-      madeBy: madeBy,
-
+      strapMaterialWatch: strapMaterialWatch,
+      brandNameWatch: brandNameWatch,
+      clockFaceWatch: clockFaceWatch,
+      originWatch: originWatch,
+      glassMaterial: glassMaterial,
+      brandNameGlasses: brandNameGlasses,
+      typeLensGlasses: typeLensGlasses,
+      glassShape: glassShape,
+      brandNameBag: brandNameBag,
+      skinTexture: skinTexture,
+      typeSkinBag: typeSkinBag,
+      originBag: originBag,
       // Các trường dữ liệu khác tương tự
     });
     setSelectedProduct({
@@ -99,11 +114,18 @@ const ProductCard = () => {
       forRent: productData.forRent,
       categoryName: productData.category.categoryName,
       imgProduct: productData.imgProduct,
-      madeOf: madeOfValue,
-      brandName: brand,
-      checkType: productData.checkType,
-      detailWatch: detailWatch,
-      madeBy: madeBy,
+      strapMaterialWatch: strapMaterialWatch,
+      brandNameWatch: brandNameWatch,
+      clockFaceWatch: clockFaceWatch,
+      originWatch: originWatch,
+      glassMaterial: glassMaterial,
+      brandNameGlasses: brandNameGlasses,
+      typeLensGlasses: typeLensGlasses,
+      glassShape: glassShape,
+      brandNameBag: brandNameBag,
+      skinTexture: skinTexture,
+      typeSkinBag: typeSkinBag,
+      originBag: originBag,
     });
   };
 
@@ -230,56 +252,173 @@ const ProductCard = () => {
               </div>
             </Form.Item>
             {/* Set điều kiện để hiện thị theo category */}
+            {selectedProduct && selectedProduct.categoryName === "Watch" && (
+              <>
+                <Form.Item
+                  name="brandNameWatch"
+                  initialValue={
+                    selectedProduct && selectedProduct.brandNameWatch
+                  }
+                >
+                  <div style={{ display: "flex" }}>
+                    <strong>Thương hiệu:</strong>
+                    <p style={{ marginLeft: "10px" }}>
+                      {selectedProduct && selectedProduct.brandNameWatch}
+                    </p>
+                  </div>
+                </Form.Item>
+                <Form.Item
+                  name="clockFaceWatch"
+                  initialValue={
+                    selectedProduct && selectedProduct.clockFaceWatch
+                  }
+                >
+                  <div style={{ display: "flex" }}>
+                    <strong>Mặt đồng hồ:</strong>
+                    <p style={{ marginLeft: "10px" }}>
+                      {selectedProduct && selectedProduct.clockFaceWatch}
+                    </p>
+                  </div>
+                </Form.Item>
+                <Form.Item
+                  name="strapMaterialWatch"
+                  initialValue={
+                    selectedProduct && selectedProduct.strapMaterialWatch
+                  }
+                >
+                  <div style={{ display: "flex" }}>
+                    <strong>Chất liệu dây đeo:</strong>
+                    <p style={{ marginLeft: "10px" }}>
+                      {selectedProduct && selectedProduct.strapMaterialWatch}
+                    </p>
+                  </div>
+                </Form.Item>
+                <Form.Item
+                  name="originWatch"
+                  initialValue={selectedProduct && selectedProduct.originWatch}
+                >
+                  <div style={{ display: "flex" }}>
+                    <strong>Xuất sứ:</strong>
+                    <p style={{ marginLeft: "10px" }}>
+                      {selectedProduct && selectedProduct.originWatch}
+                    </p>
+                  </div>
+                </Form.Item>
+              </>
+            )}
             {selectedProduct &&
-              selectedProduct.categoryName === "Watch" && (
+              selectedProduct.categoryName === "Sunglasses" && (
                 <>
                   <Form.Item
-                    name="madeOf"
-                    initialValue={selectedProduct && selectedProduct.madeOf}
-                  >
-                    <div style={{ display: "flex" }}>
-                      <strong>Chất liệu:</strong>
-                      <p style={{ marginLeft: "10px" }}>
-                        {selectedProduct && selectedProduct.madeOf}
-                      </p>
-                    </div>
-                  </Form.Item>
-                  <Form.Item
-                    name="brandName"
-                    initialValue={selectedProduct && selectedProduct.brandName}
+                    name="brandNameGlasses"
+                    initialValue={
+                      selectedProduct && selectedProduct.brandNameGlasses
+                    }
                   >
                     <div style={{ display: "flex" }}>
                       <strong>Thương hiệu:</strong>
                       <p style={{ marginLeft: "10px" }}>
-                        {selectedProduct && selectedProduct.brandName}
+                        {selectedProduct && selectedProduct.brandNameGlasses}
                       </p>
                     </div>
                   </Form.Item>
                   <Form.Item
-                    name="madeBy"
-                    initialValue={selectedProduct && selectedProduct.madeBy}
+                    name="glassMaterial"
+                    initialValue={
+                      selectedProduct && selectedProduct.glassMaterial
+                    }
                   >
                     <div style={{ display: "flex" }}>
-                      <strong>Xuất sứ:</strong>
+                      <strong>Chất liệu khung kính:</strong>
                       <p style={{ marginLeft: "10px" }}>
-                        {selectedProduct && selectedProduct.madeBy}
+                        {selectedProduct && selectedProduct.glassMaterial}
+                      </p>
+                    </div>
+                  </Form.Item>
+
+                  <Form.Item
+                    name="typeLensGlasses"
+                    initialValue={
+                      selectedProduct && selectedProduct.typeLensGlasses
+                    }
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Loại lens:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.typeLensGlasses}
                       </p>
                     </div>
                   </Form.Item>
                   <Form.Item
-                    name="detailWatch"
-                    initialValue={selectedProduct && selectedProduct.detailWatch}
+                    name="glassShape"
+                    initialValue={selectedProduct && selectedProduct.glassShape}
                   >
                     <div style={{ display: "flex" }}>
-                      <strong>Mặt đồng hồ:</strong>
+                      <strong>Hình dạng khung kính:</strong>
                       <p style={{ marginLeft: "10px" }}>
-                        {selectedProduct && selectedProduct.detailWatch}
+                        {selectedProduct && selectedProduct.glassShape}
                       </p>
                     </div>
                   </Form.Item>
                 </>
-              )} 
-              {/* ======================================================================== */}
+              )}
+              {selectedProduct &&
+              selectedProduct.categoryName === "Bag" && (
+                <>
+                  <Form.Item
+                    name="brandNameBag"
+                    initialValue={
+                      selectedProduct && selectedProduct.brandNameBag
+                    }
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Thương hiệu:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.brandNameBag}
+                      </p>
+                    </div>
+                  </Form.Item>
+                  <Form.Item
+                    name="skinTexture"
+                    initialValue={
+                      selectedProduct && selectedProduct.skinTexture
+                    }
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Kết cấu da:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.skinTexture}
+                      </p>
+                    </div>
+                  </Form.Item>
+
+                  <Form.Item
+                    name="typeSkinBag"
+                    initialValue={
+                      selectedProduct && selectedProduct.typeSkinBag
+                    }
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Loại da:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.typeSkinBag}
+                      </p>
+                    </div>
+                  </Form.Item>
+                  <Form.Item
+                    name="originBag"
+                    initialValue={selectedProduct && selectedProduct.originBag}
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Xuất xứ:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.originBag}
+                      </p>
+                    </div>
+                  </Form.Item>
+                </>
+              )}
+            {/* ======================================================================== */}
             <Form.Item
               name="price"
               initialValue={selectedProduct && selectedProduct.price}
@@ -295,18 +434,6 @@ const ProductCard = () => {
                 </p>
               </div>
             </Form.Item>
-            {/* <Form.Item
-              name="price"
-              initialValue={selectedProduct && selectedProduct.price}
-            >
-              <div style={{ display: "flex" }}>
-                <strong>Giá sản phẩm:</strong>
-                <p style={{ marginLeft: "10px" }}>
-                  {selectedProduct && selectedProduct.price}
-                </p>
-                <strong style={{ marginLeft: "10px" }}>vnđ</strong>
-              </div>
-            </Form.Item> */}
             <Form.Item
               name="status"
               initialValue={selectedProduct && selectedProduct.status}

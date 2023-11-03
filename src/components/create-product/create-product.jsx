@@ -12,8 +12,14 @@ import {
   notification,
   Slider,
   Divider,
+  Grid,
 } from "antd";
-import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  UploadOutlined,
+  PlusOutlined,
+  DeleteOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 import TextArea from "antd/es/input/TextArea";
@@ -219,8 +225,18 @@ const CreateProduct = () => {
   const [api, contextHolder] = notification.useNotification();
 
   //-------------------------------------------------------------------
+  const onFinish1 = (values) => {
+    // Lấy giá trị của trường mockDay và rentPrice
+    const { mockDay, rentPrice, ...additionalValues } = values;
 
+    // Tiến hành xử lý dữ liệu tùy theo yêu cầu của bạn
+    // Ví dụ: lưu vào useState hoặc gửi lên server
+    console.log('mockDay:', mockDay);
+    console.log('rentPrice:', rentPrice);
+    console.log('additionalValues:', additionalValues);
+  };
   const onFinish = async (values) => {
+    
     if (checkCategory === 2) {
       const productSpecificationData = {
         strapMaterialWatch: values.strapMaterialWatch,
@@ -320,8 +336,208 @@ const CreateProduct = () => {
 
       console.log(addProductData);
       console.log(productSpecificationData);
-    } else {
-      console.log("hehe");
+    } else if (checkCategory == 3) {
+    } else if (checkCategory == 4) {
+    } else if (checkCategory == 5) {
+    } else if (checkCategory == 6) {
+      const productSpecificationData = {
+        brandNameBag: values.brandNameBag,
+        skinTexture: values.skinTexture,
+        typeSkinBag: values.typeSkinBag,
+        originBag: values.originBag,
+      };
+
+      const addProductData = {
+        checkType: checkType,
+        description: values.description,
+        price: values.price,
+        productAvt: urlImages.length > 0 ? urlImages[0].imgUrl : "",
+        productName: values.productName,
+        productCondition: sliderValue,
+        productSpecificationData: JSON.stringify(productSpecificationData),
+        productReceiptUrl: urlReceiptImage,
+        categoryID: checkCategory,
+        status: "WAITING",
+        productownerID: productownerId,
+      };
+
+      try {
+        const response = await axios.post(
+          "http://fashionrental.online:8080/product/create",
+          addProductData
+        );
+
+        api["success"]({
+          message: "Thêm Sản Phẩm Thành Công",
+          description: `Bạn đã thêm ${values.productName} thành công`,
+        });
+        form.resetFields();
+        console.log("Registration successful", response.data);
+        if (
+          response.data.checkType === "RENT" ||
+          response.data.checkType === "SALE_RENT"
+        ) {
+          // Gọi API khi checkType là "RENT" hoặc "SALE_RENT"
+          const formRentPrice = {
+            productID: response.data.productID,
+            rentPrice1: values.rentPrice1,
+            rentPrice4: values.rentPrice4,
+            rentPrice7: values.rentPrice7,
+            rentPrice10: values.rentPrice10,
+            rentPrice14: values.rentPrice14,
+          };
+          try {
+            const rentPriceResponse = await axios.post(
+              "http://fashionrental.online:8080/rentprice/create",
+              formRentPrice
+            );
+
+            console.log("Rent price Success!!");
+            console.log(rentPriceResponse.data);
+          } catch (error) {
+            console.error("Error rent price:", error);
+          }
+        }
+        const formRequest = {
+          productID: response.data.productID,
+        };
+        try {
+          const requestResponse = await axios.post(
+            "http://fashionrental.online:8080/request",
+            formRequest
+          );
+
+          console.log("Request Success!!");
+          console.log(requestResponse.data);
+        } catch (error) {
+          console.error("Error request:", error);
+        }
+        const formData = {
+          imgUrl: urlImages.map((image) => image.imgUrl),
+          productID: response.data.productID,
+        };
+        try {
+          const imgResponse = await axios.post(
+            "http://fashionrental.online:8080/productimg",
+            formData
+          );
+
+          console.log("Img Success!!");
+          console.log(imgResponse.data);
+        } catch (error) {
+          console.error("Error uploading images:", error);
+        }
+      } catch (error) {
+        console.error("Add new product failed", error);
+        api["error"]({
+          message: "Thêm Sản Phẩm Thất Bại",
+          description: `Bạn đã thêm ${values.productName} thất bại`,
+          duration: 1000,
+        });
+      }
+
+      console.log(addProductData);
+      console.log(productSpecificationData);
+    } else if (checkCategory == 7) {
+      const productSpecificationData = {
+        glassMaterial: values.glassMaterial,
+        brandNameGlasses: values.brandNameGlasses,
+        typeLensGlasses: values.typeLensGlasses,
+        glassShape: values.glassShape,
+      };
+
+      const addProductData = {
+        checkType: checkType,
+        description: values.description,
+        price: values.price,
+        productAvt: urlImages.length > 0 ? urlImages[0].imgUrl : "",
+        productName: values.productName,
+        productCondition: sliderValue,
+        productSpecificationData: JSON.stringify(productSpecificationData),
+        productReceiptUrl: urlReceiptImage,
+        categoryID: checkCategory,
+        status: "WAITING",
+        productownerID: productownerId,
+      };
+
+      try {
+        const response = await axios.post(
+          "http://fashionrental.online:8080/product/create",
+          addProductData
+        );
+
+        api["success"]({
+          message: "Thêm Sản Phẩm Thành Công",
+          description: `Bạn đã thêm ${values.productName} thành công`,
+        });
+        form.resetFields();
+        console.log("Registration successful", response.data);
+        if (
+          response.data.checkType === "RENT" ||
+          response.data.checkType === "SALE_RENT"
+        ) {
+          // Gọi API khi checkType là "RENT" hoặc "SALE_RENT"
+          const formRentPrice = {
+            productID: response.data.productID,
+            rentPrice1: values.rentPrice1,
+            rentPrice4: values.rentPrice4,
+            rentPrice7: values.rentPrice7,
+            rentPrice10: values.rentPrice10,
+            rentPrice14: values.rentPrice14,
+          };
+          try {
+            const rentPriceResponse = await axios.post(
+              "http://fashionrental.online:8080/rentprice/create",
+              formRentPrice
+            );
+
+            console.log("Rent price Success!!");
+            console.log(rentPriceResponse.data);
+          } catch (error) {
+            console.error("Error rent price:", error);
+          }
+        }
+        const formRequest = {
+          productID: response.data.productID,
+        };
+        try {
+          const requestResponse = await axios.post(
+            "http://fashionrental.online:8080/request",
+            formRequest
+          );
+
+          console.log("Request Success!!");
+          console.log(requestResponse.data);
+        } catch (error) {
+          console.error("Error request:", error);
+        }
+        const formData = {
+          imgUrl: urlImages.map((image) => image.imgUrl),
+          productID: response.data.productID,
+        };
+        try {
+          const imgResponse = await axios.post(
+            "http://fashionrental.online:8080/productimg",
+            formData
+          );
+
+          console.log("Img Success!!");
+          console.log(imgResponse.data);
+        } catch (error) {
+          console.error("Error uploading images:", error);
+        }
+      } catch (error) {
+        console.error("Add new product failed", error);
+        api["error"]({
+          message: "Thêm Sản Phẩm Thất Bại",
+          description: `Bạn đã thêm ${values.productName} thất bại`,
+          duration: 1000,
+        });
+      }
+
+      console.log(addProductData);
+      console.log(productSpecificationData);
+    } else if (checkCategory == 8) {
     }
   };
 
@@ -691,11 +907,22 @@ const CreateProduct = () => {
       }, 0);
     }
   };
+  //  Thêm giá cho ngày thuê sản phẩm
+  const [additionalFields, setAdditionalFields] = useState([]);
 
+  const addField = () => {
+    setAdditionalFields([...additionalFields, {}]);
+  };
+
+  const removeField = (index) => {
+    const updatedFields = [...additionalFields];
+    updatedFields.splice(index, 1);
+    setAdditionalFields(updatedFields);
+  };
   return (
     <div style={{ backgroundColor: "#fff" }}>
       {contextHolder}
-      <Form form={form} onFinish={onFinish}>
+      <Form form={form} onFinish={onFinish1}>
         <div className="basic-information--step1">
           <div className="section-title">Thông tin sản phẩm</div>
 
@@ -1038,10 +1265,8 @@ const CreateProduct = () => {
                 />
               </Form.Item>
             </div>
-
           </div>
         )}
-
 
         {category === 6 && (
           <div className="basic-information--bag">
@@ -1222,7 +1447,6 @@ const CreateProduct = () => {
                 />
               </Form.Item>
             </div>
-
 
             <div className="name">
               <span>Xuất xứ:</span>
@@ -1407,7 +1631,7 @@ const CreateProduct = () => {
             <div className="name">
               <span>Hình dạng khung kính:</span>
               <Form.Item
-                name={"typeLensGlasses"}
+                name={"glassShape"}
                 rules={[{ required: true, message: "Không được để trống!" }]}
               >
                 <Select
@@ -1466,7 +1690,7 @@ const CreateProduct = () => {
             <div className="name">
               <span>Chất liệu khung kính:</span>
               <Form.Item
-                name={"typeLensGlasses"}
+                name={"glassMaterial"}
                 rules={[{ required: true, message: "Không được để trống!" }]}
               >
                 <Select
@@ -1574,8 +1798,11 @@ const CreateProduct = () => {
 
             {(checkType === "RENT" || checkType === "SALE_RENT") && (
               <div className="rent-price">
+                <div style={{display:"flex" }}>
                 <Form.Item
-                  name={"rentPrice1"}
+                  label="Số ngày"
+                  name="mockDay"
+                  style={{ width: "250px",marginRight:"10px" }}
                   rules={[
                     {
                       required: true,
@@ -1587,16 +1814,63 @@ const CreateProduct = () => {
                     },
                   ]}
                 >
-                  <div className="rent-price__day">
-                    <p style={{ fontWeight: "bold" }}>
-                      Giá thuê sản phẩm 1 ngày:
-                    </p>
-                    <Input
-                      suffix="VND"
-                      style={{ width: "70%", marginRight: "30px" }}
-                    />
-                  </div>
+                  <Input suffix="Ngày" />
                 </Form.Item>
+
+                <Form.Item
+                  label="Giá thuê"
+                  name="rentPrice"
+                  style={{ width: "250px",marginRight:"10px" }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Không được để trống!",
+                    },
+                    {
+                      pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
+                      message: "Chỉ được nhập số!",
+                    },
+                  ]}
+                >
+                  <Input suffix="VND" />
+                </Form.Item>
+                </div>
+                {additionalFields.map((field, index) => (
+                  <div key={index} className="additional-field">
+                    <Space style={{ display: "flex" }}>
+                      <Form.Item
+                        label={`Số ngày ${index + 2}`}
+                        name={`mockDay ${index + 2}`}
+                      >
+                        <Input style={{ width: "172px" }} suffix="Ngày" />
+                      </Form.Item>
+
+                      <Form.Item
+                        label={`Giá thuê ${index + 2}`}
+                        name={`rentPrice${index + 2}`}
+                      >
+                        <Input style={{ width: "172px" }} suffix="VND" />
+                      </Form.Item>
+                    </Space>
+                  </div>
+                ))}
+                <div style={{ display: "flex",marginLeft:"150px" }}>
+                  <Button
+                    type="dashed"
+                    onClick={addField}
+                    style={{ width: "195px",marginRight:"10px" }}
+                  >
+                    <PlusCircleOutlined />
+                  </Button>
+                  {additionalFields.length > 0 && (
+                    <Button
+                      type="dashed"
+                      onClick={() => removeField(additionalFields.length - 1)}
+                    >
+                      <DeleteOutlined />
+                    </Button>
+                  )}
+                </div>
               </div>
             )}
           </div>
