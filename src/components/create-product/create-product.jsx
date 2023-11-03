@@ -57,6 +57,7 @@ const CreateProduct = () => {
   const [form] = Form.useForm();
   const [sliderValue, setSliderValue] = useState(50);
   const [showSecondPart, setShowSecondPart] = useState(false);
+  const [category, setCategory] = useState();
 
   //------------------------------------------Watch-----------------------------------------
   //BrandName
@@ -212,7 +213,6 @@ const CreateProduct = () => {
   useEffect(() => {
     fetchCategorys();
   }, []);
-  const [category, setCategory] = useState();
 
   //------------------------regex chỉ được nhập số---------------------
 
@@ -1038,10 +1038,8 @@ const CreateProduct = () => {
                 />
               </Form.Item>
             </div>
-
           </div>
         )}
-
 
         {category === 6 && (
           <div className="basic-information--bag">
@@ -1222,7 +1220,6 @@ const CreateProduct = () => {
                 />
               </Form.Item>
             </div>
-
 
             <div className="name">
               <span>Xuất xứ:</span>
