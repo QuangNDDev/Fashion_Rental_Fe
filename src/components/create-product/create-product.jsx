@@ -63,6 +63,7 @@ const CreateProduct = () => {
   const [form] = Form.useForm();
   const [sliderValue, setSliderValue] = useState(50);
   const [showSecondPart, setShowSecondPart] = useState(false);
+  const [category, setCategory] = useState();
 
   //------------------------------------------Watch-----------------------------------------
   //BrandName
@@ -218,7 +219,6 @@ const CreateProduct = () => {
   useEffect(() => {
     fetchCategorys();
   }, []);
-  const [category, setCategory] = useState();
 
   //------------------------regex chỉ được nhập số---------------------
 
