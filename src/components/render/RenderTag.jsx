@@ -71,5 +71,5 @@ export default function RenderTag(props) {
     }
   }, []);
 
-  return <Tag color={colors}>{status}</Tag>;
+  return <p> <Tag color={colors}>{status}</Tag></p>;
 }
