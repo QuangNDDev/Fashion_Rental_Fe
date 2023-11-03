@@ -78,6 +78,7 @@ const ProductCard = () => {
     const typeSkinBag = specificationData.typeSkinBag;
     const originBag = specificationData.originBag;
     form.setFieldsValue({
+      checkType:productData.checkType,
       avatar: productData.avatar,
       productName: productData.productName,
       productReceiptUrl: productData.productReceiptUrl,
@@ -103,6 +104,7 @@ const ProductCard = () => {
       // Các trường dữ liệu khác tương tự
     });
     setSelectedProduct({
+      checkType:productData.checkType,
       avatar: productData.avatar,
       productName: productData.productName,
       productCondition: productData.productCondition,
