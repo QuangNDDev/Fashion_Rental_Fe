@@ -77,7 +77,31 @@ const ProductCard = () => {
     const skinTexture = specificationData.skinTexture;
     const typeSkinBag = specificationData.typeSkinBag;
     const originBag = specificationData.originBag;
+    const brandNameHat = specificationData.brandNameHat;
+    const materialHat = specificationData.materialHat;
+    const typeHat = specificationData.typeHat;
+    const originHat = specificationData.originHat;
+    const brandNameJewelry = specificationData.brandNameJewelry;
+    const typeJewelrys = specificationData.typeJewelrys;
+    const occasion = specificationData.occasion;
+    const originJewelry = specificationData.originJewelry;
+    const brandNameShoe = specificationData.brandNameShoe;
+    const typeSkinShoe = specificationData.typeSkinShoe;
+    const outsideSkin = specificationData.outsideSkin;
+    const originShoe = specificationData.originShoe;
     form.setFieldsValue({
+      brandNameHat:brandNameHat,
+      typeHat:typeHat,
+      materialHat:materialHat,
+      originHat:originHat,
+      brandNameJewelry:brandNameJewelry,
+      typeJewelrys:typeJewelrys,
+      occasion:occasion,
+      originJewelry:originJewelry,
+      brandNameShoe:brandNameShoe,
+      typeSkinShoe :typeSkinShoe ,
+      outsideSkin:outsideSkin,
+      originShoe:originShoe,
       checkType:productData.checkType,
       avatar: productData.avatar,
       productName: productData.productName,
@@ -128,6 +152,18 @@ const ProductCard = () => {
       skinTexture: skinTexture,
       typeSkinBag: typeSkinBag,
       originBag: originBag,
+      brandNameHat:brandNameHat,
+      typeHat:typeHat,
+      materialHat:materialHat,
+      originHat:originHat,
+      brandNameJewelry:brandNameJewelry,
+      typeJewelrys:typeJewelrys,
+      occasion:occasion,
+      originJewelry:originJewelry,
+      brandNameShoe:brandNameShoe,
+      typeSkinShoe :typeSkinShoe ,
+      outsideSkin:outsideSkin,
+      originShoe:originShoe,
     });
   };
 
@@ -359,6 +395,176 @@ const ProductCard = () => {
                       <strong>Hình dạng khung kính:</strong>
                       <p style={{ marginLeft: "10px" }}>
                         {selectedProduct && selectedProduct.glassShape}
+                      </p>
+                    </div>
+                  </Form.Item>
+                </>
+              )}
+              
+              {selectedProduct &&
+              selectedProduct.categoryName === "Hat" && (
+                <>
+                  <Form.Item
+                    name="brandNameHat"
+                    initialValue={
+                      selectedProduct && selectedProduct.brandNameHat
+                    }
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Thương hiệu:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.brandNameHat}
+                      </p>
+                    </div>
+                  </Form.Item>
+                  <Form.Item
+                    name="materialHat"
+                    initialValue={
+                      selectedProduct && selectedProduct.materialHat
+                    }
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Chất liệu:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.materialHat}
+                      </p>
+                    </div>
+                  </Form.Item>
+
+                  <Form.Item
+                    name="typeHat"
+                    initialValue={
+                      selectedProduct && selectedProduct.typeHat
+                    }
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Kiểu nón:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.typeHat}
+                      </p>
+                    </div>
+                  </Form.Item>
+                  <Form.Item
+                    name="originHat"
+                    initialValue={selectedProduct && selectedProduct.originHat}
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Xuất xứ:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.originHat}
+                      </p>
+                    </div>
+                  </Form.Item>
+                </>
+              )}
+              
+              {selectedProduct &&
+              selectedProduct.categoryName === "Jewelry" && (
+                <>
+                  <Form.Item
+                    name="brandNameJewelry"
+                    initialValue={
+                      selectedProduct && selectedProduct.brandNameJewelry
+                    }
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Thương hiệu:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.brandNameJewelry}
+                      </p>
+                    </div>
+                  </Form.Item>
+                  <Form.Item
+                    name="typeJewelrys"
+                    initialValue={
+                      selectedProduct && selectedProduct.typeJewelrys
+                    }
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Chất liệu khung kính:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.typeJewelrys}
+                      </p>
+                    </div>
+                  </Form.Item>
+
+                  <Form.Item
+                    name="occasion"
+                    initialValue={
+                      selectedProduct && selectedProduct.occasion
+                    }
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Dịp:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.occasion}
+                      </p>
+                    </div>
+                  </Form.Item>
+                  <Form.Item
+                    name="originJewelry"
+                    initialValue={selectedProduct && selectedProduct.originJewelry}
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Xuất xứ:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.originJewelry}
+                      </p>
+                    </div>
+                  </Form.Item>
+                </>
+              )}
+              {selectedProduct &&
+              selectedProduct.categoryName === "Shoe" && (
+                <>
+                  <Form.Item
+                    name="brandNameShoe"
+                    initialValue={
+                      selectedProduct && selectedProduct.brandNameShoe
+                    }
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Thương hiệu:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.brandNameShoe}
+                      </p>
+                    </div>
+                  </Form.Item>
+                  <Form.Item
+                    name="typeSkinShoe"
+                    initialValue={
+                      selectedProduct && selectedProduct.typeSkinShoe
+                    }
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Loại da:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.typeSkinShoe}
+                      </p>
+                    </div>
+                  </Form.Item>
+
+                  <Form.Item
+                    name="outsideSkin"
+                    initialValue={
+                      selectedProduct && selectedProduct.outsideSkin
+                    }
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Da ngoài:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.outsideSkin}
+                      </p>
+                    </div>
+                  </Form.Item>
+                  <Form.Item
+                    name="originShoe"
+                    initialValue={selectedProduct && selectedProduct.originShoe}
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>Xuất xứ:</strong>
+                      <p style={{ marginLeft: "10px" }}>
+                        {selectedProduct && selectedProduct.originShoe}
                       </p>
                     </div>
                   </Form.Item>

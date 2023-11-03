@@ -488,7 +488,219 @@ const CreateProduct = () => {
       console.log(productSpecificationData);
     } else if (checkCategory == 3) {
     } else if (checkCategory == 4) {
+      const productSpecificationData = {
+        originHat: values.originHat,
+        typeHat: values.typeHat,
+        materialHat: values.materialHat,
+        brandNameHat: values.brandNameHat,
+      };
+
+      const addProductData = {
+        checkType: checkType,
+        description: values.description,
+        price: values.price,
+        productAvt: urlImages.length > 0 ? urlImages[0].imgUrl : "",
+        productName: values.productName,
+        productCondition: sliderValue,
+        productSpecificationData: JSON.stringify(productSpecificationData),
+        productReceiptUrl: urlReceiptImage,
+        categoryID: checkCategory,
+        status: "WAITING",
+        productownerID: productownerId,
+      };
+
+      try {
+        const response = await axios.post(
+          "http://fashionrental.online:8080/product/create",
+          addProductData
+        );
+
+        api["success"]({
+          message: "Thêm Sản Phẩm Thành Công",
+          description: `Bạn đã thêm ${values.productName} thành công`,
+        });
+        form.resetFields();
+        console.log("Registration successful", response.data);
+        if (
+          response.data.checkType === "RENT" ||
+          response.data.checkType === "SALE_RENT"
+        ) {
+          // Gọi API khi checkType là "RENT" hoặc "SALE_RENT"
+          const mockDay = [];
+          const rentPrice = [];
+
+          for (const key in values) {
+            if (key.startsWith("mockDay")) {
+              mockDay.push(values[key]);
+            } else if (key.startsWith("rentPrice")) {
+              rentPrice.push(values[key]);
+            }
+          }
+          const formRentPrice = {
+            productID: response.data.productID,
+            mockDay: mockDay,
+            rentPrice: rentPrice,
+          };
+          try {
+            const rentPriceResponse = await axios.post(
+              "http://fashionrental.online:8080/rentprice",
+              formRentPrice
+            );
+
+            console.log("Rent price Success!!");
+            console.log(rentPriceResponse.data);
+          } catch (error) {
+            console.error("Error rent price:", error);
+          }
+        }
+        //api request
+        const formRequest = {
+          productID: response.data.productID,
+        };
+        try {
+          const requestResponse = await axios.post(
+            "http://fashionrental.online:8080/request",
+            formRequest
+          );
+
+          console.log("Request Success!!");
+          console.log(requestResponse.data);
+        } catch (error) {
+          console.error("Error request:", error);
+        }
+        const formData = {
+          imgUrl: urlImages.map((image) => image.imgUrl),
+          productID: response.data.productID,
+        };
+        try {
+          const imgResponse = await axios.post(
+            "http://fashionrental.online:8080/productimg",
+            formData
+          );
+
+          console.log("Img Success!!");
+          console.log(imgResponse.data);
+        } catch (error) {
+          console.error("Error uploading images:", error);
+        }
+      } catch (error) {
+        console.error("Add new product failed", error);
+        api["error"]({
+          message: "Thêm Sản Phẩm Thất Bại",
+          description: `Bạn đã thêm ${values.productName} thất bại`,
+          duration: 1000,
+        });
+      }
+
+      console.log(addProductData);
+      console.log(productSpecificationData);
     } else if (checkCategory == 5) {
+      const productSpecificationData = {
+        brandNameJewelry: values.brandNameJewelry,
+        typeJewelrys: values.typeJewelrys,
+        occasion: values.occasion,
+        originJewelry: values.originJewelry,
+      };
+
+      const addProductData = {
+        checkType: checkType,
+        description: values.description,
+        price: values.price,
+        productAvt: urlImages.length > 0 ? urlImages[0].imgUrl : "",
+        productName: values.productName,
+        productCondition: sliderValue,
+        productSpecificationData: JSON.stringify(productSpecificationData),
+        productReceiptUrl: urlReceiptImage,
+        categoryID: checkCategory,
+        status: "WAITING",
+        productownerID: productownerId,
+      };
+
+      try {
+        const response = await axios.post(
+          "http://fashionrental.online:8080/product/create",
+          addProductData
+        );
+
+        api["success"]({
+          message: "Thêm Sản Phẩm Thành Công",
+          description: `Bạn đã thêm ${values.productName} thành công`,
+        });
+        form.resetFields();
+        console.log("Registration successful", response.data);
+        if (
+          response.data.checkType === "RENT" ||
+          response.data.checkType === "SALE_RENT"
+        ) {
+          // Gọi API khi checkType là "RENT" hoặc "SALE_RENT"
+          const mockDay = [];
+          const rentPrice = [];
+
+          for (const key in values) {
+            if (key.startsWith("mockDay")) {
+              mockDay.push(values[key]);
+            } else if (key.startsWith("rentPrice")) {
+              rentPrice.push(values[key]);
+            }
+          }
+          const formRentPrice = {
+            productID: response.data.productID,
+            mockDay: mockDay,
+            rentPrice: rentPrice,
+          };
+          try {
+            const rentPriceResponse = await axios.post(
+              "http://fashionrental.online:8080/rentprice",
+              formRentPrice
+            );
+
+            console.log("Rent price Success!!");
+            console.log(rentPriceResponse.data);
+          } catch (error) {
+            console.error("Error rent price:", error);
+          }
+        }
+        //api request
+        const formRequest = {
+          productID: response.data.productID,
+        };
+        try {
+          const requestResponse = await axios.post(
+            "http://fashionrental.online:8080/request",
+            formRequest
+          );
+
+          console.log("Request Success!!");
+          console.log(requestResponse.data);
+        } catch (error) {
+          console.error("Error request:", error);
+        }
+        const formData = {
+          imgUrl: urlImages.map((image) => image.imgUrl),
+          productID: response.data.productID,
+        };
+        try {
+          const imgResponse = await axios.post(
+            "http://fashionrental.online:8080/productimg",
+            formData
+          );
+
+          console.log("Img Success!!");
+          console.log(imgResponse.data);
+        } catch (error) {
+          console.error("Error uploading images:", error);
+        }
+      } catch (error) {
+        console.error("Add new product failed", error);
+        api["error"]({
+          message: "Thêm Sản Phẩm Thất Bại",
+          description: `Bạn đã thêm ${values.productName} thất bại`,
+          duration: 1000,
+        });
+      }
+
+      console.log(addProductData);
+      console.log(productSpecificationData);
     } else if (checkCategory == 6) {
       const productSpecificationData = {
         brandNameBag: values.brandNameBag,
@@ -704,6 +916,112 @@ const CreateProduct = () => {
       console.log(addProductData);
       console.log(productSpecificationData);
     } else if (checkCategory == 8) {
+      const productSpecificationData = {
+        brandNameShoe: values.brandNameShoe,
+        typeSkinShoe: values.typeSkinShoe,
+        outsideSkin: values.outsideSkin,
+        originShoe: values.originShoe,
+      };
+
+      const addProductData = {
+        checkType: checkType,
+        description: values.description,
+        price: values.price,
+        productAvt: urlImages.length > 0 ? urlImages[0].imgUrl : "",
+        productName: values.productName,
+        productCondition: sliderValue,
+        productSpecificationData: JSON.stringify(productSpecificationData),
+        productReceiptUrl: urlReceiptImage,
+        categoryID: checkCategory,
+        status: "WAITING",
+        productownerID: productownerId,
+      };
+
+      try {
+        const response = await axios.post(
+          "http://fashionrental.online:8080/product/create",
+          addProductData
+        );
+
+        api["success"]({
+          message: "Thêm Sản Phẩm Thành Công",
+          description: `Bạn đã thêm ${values.productName} thành công`,
+        });
+        form.resetFields();
+        console.log("Registration successful", response.data);
+        if (
+          response.data.checkType === "RENT" ||
+          response.data.checkType === "SALE_RENT"
+        ) {
+          // Gọi API khi checkType là "RENT" hoặc "SALE_RENT"
+          const mockDay = [];
+          const rentPrice = [];
+
+          for (const key in values) {
+            if (key.startsWith("mockDay")) {
+              mockDay.push(values[key]);
+            } else if (key.startsWith("rentPrice")) {
+              rentPrice.push(values[key]);
+            }
+          }
+          const formRentPrice = {
+            productID: response.data.productID,
+            mockDay: mockDay,
+            rentPrice: rentPrice,
+          };
+          try {
+            const rentPriceResponse = await axios.post(
+              "http://fashionrental.online:8080/rentprice",
+              formRentPrice
+            );
+
+            console.log("Rent price Success!!");
+            console.log(rentPriceResponse.data);
+          } catch (error) {
+            console.error("Error rent price:", error);
+          }
+        }
+        //api request
+        const formRequest = {
+          productID: response.data.productID,
+        };
+        try {
+          const requestResponse = await axios.post(
+            "http://fashionrental.online:8080/request",
+            formRequest
+          );
+
+          console.log("Request Success!!");
+          console.log(requestResponse.data);
+        } catch (error) {
+          console.error("Error request:", error);
+        }
+        const formData = {
+          imgUrl: urlImages.map((image) => image.imgUrl),
+          productID: response.data.productID,
+        };
+        try {
+          const imgResponse = await axios.post(
+            "http://fashionrental.online:8080/productimg",
+            formData
+          );
+
+          console.log("Img Success!!");
+          console.log(imgResponse.data);
+        } catch (error) {
+          console.error("Error uploading images:", error);
+        }
+      } catch (error) {
+        console.error("Add new product failed", error);
+        api["error"]({
+          message: "Thêm Sản Phẩm Thất Bại",
+          description: `Bạn đã thêm ${values.productName} thất bại`,
+          duration: 1000,
+        });
+      }
+
+      console.log(addProductData);
+      console.log(productSpecificationData);
     }
   };
 
@@ -2204,7 +2522,7 @@ const CreateProduct = () => {
               <div className="field__earring--1">
                 <span className="text">Thương hiệu:</span>
                 <Form.Item
-                  name={"brandNameEarring"}
+                  name={"brandNameJewelry"}
                   rules={[{ required: true, message: "Không được để trống!" }]}
                 >
                   <Select
@@ -2262,7 +2580,7 @@ const CreateProduct = () => {
 
                 <span className="text">Kiểu khuyên tai:</span>
                 <Form.Item
-                  name={"typeEarrings"}
+                  name={"typeJewelrys"}
                   rules={[{ required: true, message: "Không được để trống!" }]}
                 >
                   <Select
@@ -2379,7 +2697,7 @@ const CreateProduct = () => {
 
                 <span className="text">Xuất xứ:</span>
                 <Form.Item
-                  name={"originEarring"}
+                  name={"originJewelry"}
                   rules={[{ required: true, message: "Không được để trống!" }]}
                 >
                   <Select
