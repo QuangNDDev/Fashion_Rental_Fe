@@ -8,61 +8,61 @@ export default function RenderTag(props) {
     if (renderTag == "1") {
       setColor("green");
       setStatus("Active");
-    } else if (renderTag === "0") {
+    } else if (renderTag == "0") {
       setColor("red");
       setStatus("Inactive");
-    } else if (renderTag === "Customer") {
+    } else if (renderTag == "Customer") {
       setColor("green");
       setStatus("Khách hàng");
-    } else if (renderTag === "ProductOwner") {
+    } else if (renderTag == "ProductOwner") {
       setColor("green");
       setStatus("Chủ sản phẩm");
-    } else if (renderTag === "Staff") {
+    } else if (renderTag == "Staff") {
       setColor("yellow");
       setStatus("Nhân viên");
-    } else if (renderTag === "Pending") {
+    } else if (renderTag == "Pending") {
       setColor("yellow");
       setStatus("Chờ duyệt");
-    } else if (renderTag === "Approve") {
+    } else if (renderTag == "Approve") {
       setColor("green");
       setStatus("Đã duyệt");
-    } else if (renderTag === "Refuse") {
+    } else if (renderTag == "Refuse") {
       setColor("red");
       setStatus("Từ chối");
-    } else if (renderTag === "Cancel") {
+    } else if (renderTag == "Cancel") {
       setColor("red");
       setStatus("Đã huỷ");
-    } else if (renderTag === "VERIFIED") {
+    } else if (renderTag == "VERIFIED") {
       setColor("green");
       setStatus("Đã xác minh");
-    } else if (renderTag === "NOT_VERIFIED") {
+    } else if (renderTag == "NOT_VERIFIED") {
       setColor("red");
       setStatus("Chưa xác minh");
-    } else if (renderTag === "NOT_APPROVED") {
+    } else if (renderTag == "NOT_APPROVED") {
       setColor("red");
       setStatus("Đã từ chối");
-    } else if (renderTag === "APPROVED") {
+    } else if (renderTag == "APPROVED") {
       setColor("green");
       setStatus("Đã duyệt");
-    } else if (renderTag === "APPROVING") {
+    } else if (renderTag == "APPROVING") {
       setColor("yellow");
       setStatus("Chờ duyệt");
-    } else if (renderTag === "WAITING") {
+    } else if (renderTag == "WAITING") {
       setColor("yellow");
       setStatus("Chờ duyệt");
     } else if (renderTag == "RENT") {
       setColor("yellow");
       setStatus("THUÊ");
-    } else if (renderTag === "SALE") {
+    } else if (renderTag == "SALE") {
       setColor("green");
       setStatus("BÁN");
-    } else if (renderTag === "SALE_RENT") {
+    } else if (renderTag == "SALE_RENT") {
       setColor("green");
       setStatus("THUÊ/BÁN");
-    } else if (renderTag === "SOLD_OUT") {
+    } else if (renderTag == "SOLD_OUT") {
       setColor("red");
       setStatus("Đã bán");
-    } else if (renderTag === "RENTING") {
+    } else if (renderTag == "RENTING") {
       setColor("yellow");
       setStatus("Đang được thuê");
     } else if (renderTag == "AVAILABLE") {
@@ -71,5 +71,5 @@ export default function RenderTag(props) {
     }
   }, []);
 
-  return <Tag color={colors}>{status}</Tag>;
+  return <p> <Tag color={colors}>{status}</Tag></p>;
 }

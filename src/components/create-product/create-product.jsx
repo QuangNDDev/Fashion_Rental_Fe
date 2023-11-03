@@ -326,16 +326,8 @@ const CreateProduct = () => {
   const [api, contextHolder] = notification.useNotification();
 
   //-------------------------------------------------------------------
-  const onFinish1 = (values) => {
-    // Lấy giá trị của trường mockDay và rentPrice
-    const { mockDay, rentPrice, ...additionalValues } = values;
 
-    // Tiến hành xử lý dữ liệu tùy theo yêu cầu của bạn
-    // Ví dụ: lưu vào useState hoặc gửi lên server
-    console.log("mockDay:", mockDay);
-    console.log("rentPrice:", rentPrice);
-    console.log("additionalValues:", additionalValues);
-  };
+
   const onFinish = async (values) => {
     if (checkCategory === 2) {
       const productSpecificationData = {
@@ -376,17 +368,24 @@ const CreateProduct = () => {
           response.data.checkType === "SALE_RENT"
         ) {
           // Gọi API khi checkType là "RENT" hoặc "SALE_RENT"
+          const mockDay = [];
+          const rentPrice = [];
+      
+          for (const key in values) {
+            if (key.startsWith("mockDay")) {
+              mockDay.push(values[key]);
+            } else if (key.startsWith("rentPrice")) {
+              rentPrice.push(values[key]);
+            }
+          }
           const formRentPrice = {
             productID: response.data.productID,
-            rentPrice1: values.rentPrice1,
-            rentPrice4: values.rentPrice4,
-            rentPrice7: values.rentPrice7,
-            rentPrice10: values.rentPrice10,
-            rentPrice14: values.rentPrice14,
+            mockDay: mockDay,
+            rentPrice:rentPrice,
           };
           try {
             const rentPriceResponse = await axios.post(
-              "http://fashionrental.online:8080/rentprice/create",
+              "http://fashionrental.online:8080/rentprice",
               formRentPrice
             );
 
@@ -396,6 +395,7 @@ const CreateProduct = () => {
             console.error("Error rent price:", error);
           }
         }
+        //api request
         const formRequest = {
           productID: response.data.productID,
         };
@@ -478,17 +478,24 @@ const CreateProduct = () => {
           response.data.checkType === "SALE_RENT"
         ) {
           // Gọi API khi checkType là "RENT" hoặc "SALE_RENT"
+          const mockDay = [];
+          const rentPrice = [];
+      
+          for (const key in values) {
+            if (key.startsWith("mockDay")) {
+              mockDay.push(values[key]);
+            } else if (key.startsWith("rentPrice")) {
+              rentPrice.push(values[key]);
+            }
+          }
           const formRentPrice = {
             productID: response.data.productID,
-            rentPrice1: values.rentPrice1,
-            rentPrice4: values.rentPrice4,
-            rentPrice7: values.rentPrice7,
-            rentPrice10: values.rentPrice10,
-            rentPrice14: values.rentPrice14,
+            mockDay: mockDay,
+            rentPrice:rentPrice,
           };
           try {
             const rentPriceResponse = await axios.post(
-              "http://fashionrental.online:8080/rentprice/create",
+              "http://fashionrental.online:8080/rentprice",
               formRentPrice
             );
 
@@ -498,6 +505,7 @@ const CreateProduct = () => {
             console.error("Error rent price:", error);
           }
         }
+        //api request
         const formRequest = {
           productID: response.data.productID,
         };
@@ -577,17 +585,24 @@ const CreateProduct = () => {
           response.data.checkType === "SALE_RENT"
         ) {
           // Gọi API khi checkType là "RENT" hoặc "SALE_RENT"
+          const mockDay = [];
+          const rentPrice = [];
+      
+          for (const key in values) {
+            if (key.startsWith("mockDay")) {
+              mockDay.push(values[key]);
+            } else if (key.startsWith("rentPrice")) {
+              rentPrice.push(values[key]);
+            }
+          }
           const formRentPrice = {
             productID: response.data.productID,
-            rentPrice1: values.rentPrice1,
-            rentPrice4: values.rentPrice4,
-            rentPrice7: values.rentPrice7,
-            rentPrice10: values.rentPrice10,
-            rentPrice14: values.rentPrice14,
+            mockDay: mockDay,
+            rentPrice:rentPrice,
           };
           try {
             const rentPriceResponse = await axios.post(
-              "http://fashionrental.online:8080/rentprice/create",
+              "http://fashionrental.online:8080/rentprice",
               formRentPrice
             );
 
@@ -597,6 +612,7 @@ const CreateProduct = () => {
             console.error("Error rent price:", error);
           }
         }
+        //api request
         const formRequest = {
           productID: response.data.productID,
         };
@@ -1191,7 +1207,8 @@ const CreateProduct = () => {
   };
   //  Thêm giá cho ngày thuê sản phẩm
   const [additionalFields, setAdditionalFields] = useState([]);
-
+  const [mockDayValues, setMockDayValues] = useState([]);
+  const [rentPriceValues, setRentPriceValues] = useState([]);
   const addField = () => {
     setAdditionalFields([...additionalFields, {}]);
   };
@@ -1204,7 +1221,9 @@ const CreateProduct = () => {
   return (
     <div style={{ backgroundColor: "#fff" }}>
       {contextHolder}
-      <Form form={form} onFinish={onFinish1} style={{ position: "relative" }}>
+
+      <Form form={form} onFinish={onFinish} style={{ position: "relative" }}>
+
         <div className="basic-information--step1">
           <div className="section-title">Thông tin sản phẩm</div>
 
@@ -2611,7 +2630,7 @@ const CreateProduct = () => {
                     <Space style={{ display: "flex" }}>
                       <Form.Item
                         label={`Số ngày ${index + 2}`}
-                        name={`mockDay ${index + 2}`}
+                        name={`mockDay${index + 2}`}
                       >
                         <Input style={{ width: "172px" }} suffix="Ngày" />
                       </Form.Item>
@@ -2629,12 +2648,14 @@ const CreateProduct = () => {
                   <Button
                     type="dashed"
                     onClick={addField}
+
                     style={{
                       width: "195px",
                       marginRight: "10px",
                       transition: "background 0.3s", // Thêm hiệu ứng chuyển đổi màu nền
                     }}
                     className="custom-button" // Để tùy chỉnh kiểu hover bằng CSS
+
                   >
                     <PlusCircleOutlined />
                   </Button>
