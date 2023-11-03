@@ -12,7 +12,6 @@ import {
   notification,
   Slider,
   Divider,
-  Grid,
 } from "antd";
 import {
   UploadOutlined,
@@ -41,6 +40,18 @@ let indexBrandNameGlasses = 0;
 let indexTypeLensGlasses = 0;
 let indexGlassShape = 0;
 let indexGlassMaterial = 0;
+//-----------------------------------------------------
+//--------------------------Earrings(Khuyên Tai)-----------------------
+let indexBrandNameEarrings = 0;
+let indexEarringStyle = 0;
+let indexOccasion = 0;
+let indexOriginEarring = 0;
+//-----------------------------------------------------
+//-------------------------Shoe------------------------
+let indexBrandNameShoe = 0;
+let indexTypeSkinShoe = 0;
+let indexTypeOutsideSkin = 0;
+let indexOriginShoe = 0;
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -187,6 +198,96 @@ const CreateProduct = () => {
   ]);
   const [nameGlassMaterial, setNameGlassMaterial] = useState("");
   const inputGlassMaterialRef = useRef(null);
+  /////////////////////
+  //--------------------------------------------Earrings-------------------
+  const [itemsBrandNameEarrings, setItemsBrandNameEarrings] = useState([
+    "Louis Vuitton",
+    "Hermes",
+    "Channel",
+    "Gucci",
+    "Balenciaga",
+    "Prada",
+    "Fendi",
+  ]);
+  const [nameBrandNameEarrings, setNameBrandNameEarrings] = useState("");
+  const inputBrandNameEarringsRef = useRef(null);
+  ////////////////////////////
+  //Earrings Type
+  const [itemsEarringsType, setItemsEarringsType] = useState([
+    "Khuyên tai gài",
+    "Khuyên tai thả",
+    "Khuyên tai móc câu",
+    "Khuyên tai tròn",
+    "Khuyên tai nam châm",
+    "Khuyên tai ghim",
+    "Khuyên tai dạng hạt",
+  ]);
+  const [nameEarringsType, setNameEarringsType] = useState("");
+  const inputEarringsTypeRef = useRef(null);
+  //////////////////////////////
+  //Occasion (Dịp)
+  const [itemsOccasion, setItemsOccasion] = useState([
+    "Ngày kỉ niệm",
+    "Kiết tường",
+    "Sinh nhật",
+    "Hôn ước",
+    "Lễ cưới",
+  ]);
+  const [nameOccasion, setNameOccasion] = useState("");
+  const inputOccasionRef = useRef(null);
+  /////////////////////////////////
+  //Origin Earring
+  const [itemsOriginEarring, setItemsOriginEarring] = useState([
+    "Thụy Sĩ",
+    "Anh",
+    "Đức",
+    "Pháp",
+  ]);
+  const [nameOriginEarring, setNameOriginEarring] = useState("");
+  const inputOriginEarringRef = useRef(null);
+  //////////////////////////////////
+  //--------------------------------------Select Shoe-------------------
+  //BrandName Shoe
+  const [itemsBrandNameShoe, setItemsBrandNameShoe] = useState([
+    "Louis Vuitton",
+    "Hermes",
+    "Channel",
+    "Gucci",
+    "Balenciaga",
+    "Prada",
+    "Fendi",
+  ]);
+  const [nameBrandNameShoe, setNameBrandNameShoe] = useState("");
+  const inputBrandNameShoeRef = useRef(null);
+  ///////////////////
+  //Type Skin Shoe
+  const [itemsTypeSkinShoe, setItemsTypeSkinShoe] = useState([
+    "Da Bò",
+    "Da Trâu",
+    "Da Cừu",
+    "Da Cá Sấu",
+  ]);
+  const [nameTypeSkinShoe, setNameTypeSkinShoe] = useState("");
+  const inputTypeSkinShoeRef = useRef(null);
+  ///////////////////
+  //Outside Skin
+  const [itemsOutsideSkin, setItemsOutsideSkin] = useState([
+    "Dập nối",
+    "Bóng",
+    "Mờ",
+  ]);
+  const [nameOutsideSkin, setNameOutsideSkin] = useState("");
+  const inputOutsideSkinRef = useRef(null);
+  ////////////////////
+  //Origin Shoe
+  const [itemsOriginShoe, setItemsOriginShoe] = useState([
+    "Thụy Sĩ",
+    "Anh",
+    "Đức",
+    "Pháp",
+  ]);
+  const [nameOriginShoe, setNameOriginShoe] = useState("");
+  const inputOriginShoeRef = useRef(null);
 
   const categoryTranslations = {
     Watch: "Đồng Hồ",
@@ -225,6 +326,8 @@ const CreateProduct = () => {
   const [api, contextHolder] = notification.useNotification();
 
   //-------------------------------------------------------------------
+
+
   const onFinish = async (values) => {
     if (checkCategory === 2) {
       const productSpecificationData = {
@@ -920,6 +1023,188 @@ const CreateProduct = () => {
       }, 0);
     }
   };
+  //----------------------------------------Earrings-----------------------------------
+  //BrandName Earrings
+  const [isInputBrandNameEarringsValid, setIsInputBrandNameEarringsValid] =
+    useState(false);
+  const onNameChangeBrandNameEarrings = (event) => {
+    const inputBrandNameEarringsText = event.target.value;
+    setNameBrandNameEarrings(inputBrandNameEarringsText);
+    setIsInputBrandNameEarringsValid(!!inputBrandNameEarringsText);
+  };
+  const addItemBrandNameEarrings = (e) => {
+    e.preventDefault();
+    if (isInputBrandNameEarringsValid) {
+      setItemsBrandNameEarrings([
+        ...itemsBrandNameEarrings,
+        nameBrandNameEarrings || `New item ${indexBrandNameEarrings++}`,
+      ]);
+      setNameBrandNameEarrings("");
+      setIsInputBrandNameEarringsValid(false); // Đặt lại trạng thái khi thêm xong
+      setTimeout(() => {
+        inputBrandNameEarringsRef.current?.focus();
+      }, 0);
+    }
+  };
+  ///////////////////////////////////
+  //Earring Type
+  const [isInputEarringsTypeValid, setIsInputEarringsTypeValid] =
+    useState(false);
+  const onNameChangeEarringsType = (event) => {
+    const inputEarringsTypeText = event.target.value;
+    setNameEarringsType(inputEarringsTypeText);
+    setIsInputEarringsTypeValid(!!inputEarringsTypeText);
+  };
+  const addItemEarringsType = (e) => {
+    e.preventDefault();
+    if (isInputEarringsTypeValid) {
+      setItemsEarringsType([
+        ...itemsEarringsType,
+        nameEarringsType || `New item ${indexEarringStyle++}`,
+      ]);
+      setNameEarringsType("");
+      setIsInputEarringsTypeValid(false); // Đặt lại trạng thái khi thêm xong
+      setTimeout(() => {
+        inputEarringsTypeRef.current?.focus();
+      }, 0);
+    }
+  };
+  //////////////////////
+  //Occasion
+  const [isInputOccasionValid, setIsInputOccasionValid] = useState(false);
+  const onNameChangeOccasion = (event) => {
+    const inputOccasionText = event.target.value;
+    setNameOccasion(inputOccasionText);
+    setIsInputOccasionValid(!!inputOccasionText);
+  };
+  const addItemOccasion = (e) => {
+    e.preventDefault();
+    if (isInputOccasionValid) {
+      setItemsOccasion([
+        ...itemsOccasion,
+        nameOccasion || `New item ${indexOccasion++}`,
+      ]);
+      setNameOccasion("");
+      setIsInputOccasionValid(false); // Đặt lại trạng thái khi thêm xong
+      setTimeout(() => {
+        inputOccasionRef.current?.focus();
+      }, 0);
+    }
+  };
+  ///////////////////////////////
+  //OriginEarring
+  const [isInputOriginEarringValid, setIsInputOriginEarringValid] =
+    useState(false);
+  const onNameChangeOriginEarring = (event) => {
+    const inputOriginEarringText = event.target.value;
+    setNameOriginEarring(inputOriginEarringText);
+    setIsInputOriginEarringValid(!!inputOriginEarringText);
+  };
+  const addItemOriginEarring = (e) => {
+    e.preventDefault();
+    if (isInputOriginEarringValid) {
+      setItemsOriginEarring([
+        ...itemsOriginEarring,
+        nameOriginEarring || `New item ${indexOriginEarring++}`,
+      ]);
+      setNameOriginEarring("");
+      setIsInputOriginEarringValid(false); // Đặt lại trạng thái khi thêm xong
+      setTimeout(() => {
+        inputOriginEarringRef.current?.focus();
+      }, 0);
+    }
+  };
+  ///////////////////
+  //-------------------------------Shoe--------------------------
+  //BrandName Shoe
+  const [isInputBrandNameShoeValid, setIsInputBrandNameShoeValid] =
+    useState(false);
+  const onNameChangeBrandNameShoe = (event) => {
+    const inputBrandNameShoeText = event.target.value;
+    setNameBrandNameShoe(inputBrandNameShoeText);
+    setIsInputBrandNameShoeValid(!!inputBrandNameShoeText);
+  };
+  const addItemBrandNameShoe = (e) => {
+    e.preventDefault();
+    if (isInputBrandNameShoeValid) {
+      setItemsBrandNameShoe([
+        ...itemsBrandNameShoe,
+        nameBrandNameShoe || `New item ${indexBrandNameShoe++}`,
+      ]);
+      setNameBrandNameShoe("");
+      setIsInputBrandNameShoeValid(false); // Đặt lại trạng thái khi thêm xong
+      setTimeout(() => {
+        inputBrandNameShoeRef.current?.focus();
+      }, 0);
+    }
+  };
+  ///////////////////////////
+  //Type Skin Shoe
+  const [isInputTypeSkinShoeValid, setIsInputTypeSkinShoeValid] =
+    useState(false);
+  const onNameChangeTypeSkinShoe = (event) => {
+    const inputTypeSkinShoeText = event.target.value;
+    setNameTypeSkinShoe(inputTypeSkinShoeText);
+    setIsInputTypeSkinShoeValid(!!inputTypeSkinShoeText);
+  };
+  const addItemTypeSkinShoe = (e) => {
+    e.preventDefault();
+    if (isInputTypeSkinShoeValid) {
+      setItemsTypeSkinShoe([
+        ...itemsTypeSkinShoe,
+        nameTypeSkinShoe || `New item ${indexTypeSkinShoe++}`,
+      ]);
+      setNameTypeSkinShoe("");
+      setIsInputTypeSkinShoeValid(false); // Đặt lại trạng thái khi thêm xong
+      setTimeout(() => {
+        inputTypeSkinShoeRef.current?.focus();
+      }, 0);
+    }
+  };
+  ///////////////////////////
+  //OutsideSkin
+  const [isInputOutsideSkinValid, setIsInputOutsideSkinValid] = useState(false);
+  const onNameChangOutsideSkin = (event) => {
+    const inputOutsideSkinText = event.target.value;
+    setNameOutsideSkin(inputOutsideSkinText);
+    setIsInputOutsideSkinValid(!!inputOutsideSkinText);
+  };
+  const addItemOutsideSkin = (e) => {
+    e.preventDefault();
+    if (isInputOutsideSkinValid) {
+      setItemsOutsideSkin([
+        ...itemsOutsideSkin,
+        nameOutsideSkin || `New item ${indexTypeOutsideSkin++}`,
+      ]);
+      setNameOutsideSkin("");
+      setIsInputOutsideSkinValid(false); // Đặt lại trạng thái khi thêm xong
+      setTimeout(() => {
+        inputOutsideSkinRef.current?.focus();
+      }, 0);
+    }
+  };
+  ///////////////////////////////////////
+  //Origin Shoe
+  const [isInputOriginShoeValid, setIsInputOriginShoeValid] = useState(false);
+  const onNameChangeOriginShoe = (event) => {
+    const inputOriginShoeText = event.target.value;
+    setNameOriginShoe(inputOriginShoeText);
+    setIsInputOriginShoeValid(!!inputOriginShoeText);
+  };
+  const addItemOriginShoe = (e) => {
+    e.preventDefault();
+    if (isInputOriginShoeValid) {
+      setItemsOriginShoe([
+        ...itemsOriginShoe,
+        nameOriginShoe || `New item ${indexOriginShoe++}`,
+      ]);
+      setNameOriginShoe("");
+      setIsInputOriginShoeValid(false); // Đặt lại trạng thái khi thêm xong
+      setTimeout(() => {
+        inputOriginShoeRef.current?.focus();
+      }, 0);
+    }
+  };
   //  Thêm giá cho ngày thuê sản phẩm
   const [additionalFields, setAdditionalFields] = useState([]);
   const [mockDayValues, setMockDayValues] = useState([]);
@@ -936,7 +1221,9 @@ const CreateProduct = () => {
   return (
     <div style={{ backgroundColor: "#fff" }}>
       {contextHolder}
-      <Form form={form} onFinish={onFinish}>
+
+      <Form form={form} onFinish={onFinish} style={{ position: "relative" }}>
+
         <div className="basic-information--step1">
           <div className="section-title">Thông tin sản phẩm</div>
 
@@ -1525,242 +1812,731 @@ const CreateProduct = () => {
         {category === 7 && (
           <div className="basic-information--glasses">
             <div className="section-title">Thông tin chi tiết</div>
-            <div className="name">
-              <span>Thương hiệu:</span>
-              <Form.Item
-                name={"brandNameGlasses"}
-                rules={[{ required: true, message: "Không được để trống!" }]}
-              >
-                <Select
-                  style={{
-                    width: 300,
-                  }}
-                  placeholder="Vui lòng chọn"
-                  showSearch // Bật tính năng tìm kiếm
-                  filterOption={(input, option) =>
-                    option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                  dropdownRender={(menu) => (
-                    <>
-                      {menu}
-                      <Divider
-                        style={{
-                          margin: "8px 0",
-                        }}
-                      />
-                      <Space
-                        style={{
-                          padding: "0 8px 4px",
-                        }}
-                      >
-                        <Input
-                          placeholder="Thêm thuộc tính mới"
-                          ref={inputBrandNameGlassesRef}
-                          value={nameBrandNameGlasses}
-                          onChange={onNameChangeBrandNameGlasses}
-                          onKeyDown={(e) => e.stopPropagation()}
-                        />
-                        <Button
+            <div className="container-glass">
+              <div className="field__glass--1">
+                <span className="text">Thương hiệu:</span>
+                <Form.Item
+                  name={"brandNameGlasses"}
+                  rules={[{ required: true, message: "Không được để trống!" }]}
+                >
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
                           style={{
-                            backgroundColor: "green",
-                            color: "white",
-                            fontWeight: "bold",
+                            margin: "8px 0",
                           }}
-                          type="text"
-                          icon={<PlusOutlined />}
-                          onClick={addItemBrandNameGlasses}
-                          disabled={!isInputBrandNameGlassesValid}
-                        >
-                          Thêm
-                        </Button>
-                      </Space>
-                    </>
-                  )}
-                  options={itemsBrandNameGlasses.map((item) => ({
-                    label: item,
-                    value: item,
-                  }))}
-                />
-              </Form.Item>
-            </div>
-            <div className="name">
-              <span>Loại lens:</span>
-              <Form.Item
-                name={"typeLensGlasses"}
-                rules={[{ required: true, message: "Không được để trống!" }]}
-              >
-                <Select
-                  style={{
-                    width: 300,
-                  }}
-                  placeholder="Vui lòng chọn"
-                  showSearch // Bật tính năng tìm kiếm
-                  filterOption={(input, option) =>
-                    option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                  dropdownRender={(menu) => (
-                    <>
-                      {menu}
-                      <Divider
-                        style={{
-                          margin: "8px 0",
-                        }}
-                      />
-                      <Space
-                        style={{
-                          padding: "0 8px 4px",
-                        }}
-                      >
-                        <Input
-                          placeholder="Thêm thuộc tính mới"
-                          ref={inputTypeLensGlassesRef}
-                          value={nameTypeLensGlasses}
-                          onChange={onNameChangeTypeLensGlasses}
-                          onKeyDown={(e) => e.stopPropagation()}
                         />
-                        <Button
+                        <Space
                           style={{
-                            backgroundColor: "green",
-                            color: "white",
-                            fontWeight: "bold",
+                            padding: "0 8px 4px",
                           }}
-                          type="text"
-                          icon={<PlusOutlined />}
-                          onClick={addItemTypeLensGlasses}
-                          disabled={!isInputTypeLensGlassesValid}
                         >
-                          Thêm
-                        </Button>
-                      </Space>
-                    </>
-                  )}
-                  options={itemsTypeLensGlasses.map((item) => ({
-                    label: item,
-                    value: item,
-                  }))}
-                />
-              </Form.Item>
-            </div>
+                          <Input
+                            placeholder="Thêm thuộc tính mới"
+                            ref={inputBrandNameGlassesRef}
+                            value={nameBrandNameGlasses}
+                            onChange={onNameChangeBrandNameGlasses}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          />
+                          <Button
+                            style={{
+                              backgroundColor: "green",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                            type="text"
+                            icon={<PlusOutlined />}
+                            onClick={addItemBrandNameGlasses}
+                            disabled={!isInputBrandNameGlassesValid}
+                          >
+                            Thêm
+                          </Button>
+                        </Space>
+                      </>
+                    )}
+                    options={itemsBrandNameGlasses.map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                  />
+                </Form.Item>
 
-            <div className="name">
-              <span>Hình dạng khung kính:</span>
-              <Form.Item
-                name={"glassShape"}
-                rules={[{ required: true, message: "Không được để trống!" }]}
-              >
-                <Select
-                  style={{
-                    width: 300,
-                  }}
-                  placeholder="Vui lòng chọn"
-                  showSearch // Bật tính năng tìm kiếm
-                  filterOption={(input, option) =>
-                    option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                  dropdownRender={(menu) => (
-                    <>
-                      {menu}
-                      <Divider
-                        style={{
-                          margin: "8px 0",
-                        }}
-                      />
-                      <Space
-                        style={{
-                          padding: "0 8px 4px",
-                        }}
-                      >
-                        <Input
-                          placeholder="Thêm thuộc tính mới"
-                          ref={inputGlassShapeRef}
-                          value={nameGlassShape}
-                          onChange={onNameChangeGlassShape}
-                          onKeyDown={(e) => e.stopPropagation()}
-                        />
-                        <Button
+                <span className="text">Loại lens:</span>
+                <Form.Item
+                  name={"typeLensGlasses"}
+                  rules={[{ required: true, message: "Không được để trống!" }]}
+                >
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
                           style={{
-                            backgroundColor: "green",
-                            color: "white",
-                            fontWeight: "bold",
+                            margin: "8px 0",
                           }}
-                          type="text"
-                          icon={<PlusOutlined />}
-                          onClick={addItemGlassShape}
-                          disabled={!isInputGlassShapeValid}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
                         >
-                          Thêm
-                        </Button>
-                      </Space>
-                    </>
-                  )}
-                  options={itemsGlassShape.map((item) => ({
-                    label: item,
-                    value: item,
-                  }))}
-                />
-              </Form.Item>
-            </div>
+                          <Input
+                            placeholder="Thêm thuộc tính mới"
+                            ref={inputTypeLensGlassesRef}
+                            value={nameTypeLensGlasses}
+                            onChange={onNameChangeTypeLensGlasses}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          />
+                          <Button
+                            style={{
+                              backgroundColor: "green",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                            type="text"
+                            icon={<PlusOutlined />}
+                            onClick={addItemTypeLensGlasses}
+                            disabled={!isInputTypeLensGlassesValid}
+                          >
+                            Thêm
+                          </Button>
+                        </Space>
+                      </>
+                    )}
+                    options={itemsTypeLensGlasses.map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                  />
+                </Form.Item>
+              </div>
 
-            <div className="name">
-              <span>Chất liệu khung kính:</span>
-              <Form.Item
-                name={"glassMaterial"}
-                rules={[{ required: true, message: "Không được để trống!" }]}
-              >
-                <Select
-                  style={{
-                    width: 300,
-                  }}
-                  placeholder="Vui lòng chọn"
-                  showSearch // Bật tính năng tìm kiếm
-                  filterOption={(input, option) =>
-                    option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                  dropdownRender={(menu) => (
-                    <>
-                      {menu}
-                      <Divider
-                        style={{
-                          margin: "8px 0",
-                        }}
-                      />
-                      <Space
-                        style={{
-                          padding: "0 8px 4px",
-                        }}
-                      >
-                        <Input
-                          placeholder="Thêm thuộc tính mới"
-                          ref={inputGlassMaterialRef}
-                          value={nameGlassMaterial}
-                          onChange={onNameChangeGlassMaterial}
-                          onKeyDown={(e) => e.stopPropagation()}
-                        />
-                        <Button
+              <div className="field__glass--2">
+                <span className="text">Hình dạng khung kính:</span>
+                <Form.Item
+                  name={"glassShape"}
+                  rules={[{ required: true, message: "Không được để trống!" }]}
+                >
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
                           style={{
-                            backgroundColor: "green",
-                            color: "white",
-                            fontWeight: "bold",
+                            margin: "8px 0",
                           }}
-                          type="text"
-                          icon={<PlusOutlined />}
-                          onClick={addItemGlassMaterial}
-                          disabled={!isInputGlassMaterialValid}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
                         >
-                          Thêm
-                        </Button>
-                      </Space>
-                    </>
-                  )}
-                  options={itemsGlassMaterial.map((item) => ({
-                    label: item,
-                    value: item,
-                  }))}
-                />
-              </Form.Item>
+                          <Input
+                            placeholder="Thêm thuộc tính mới"
+                            ref={inputGlassShapeRef}
+                            value={nameGlassShape}
+                            onChange={onNameChangeGlassShape}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          />
+                          <Button
+                            style={{
+                              backgroundColor: "green",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                            type="text"
+                            icon={<PlusOutlined />}
+                            onClick={addItemGlassShape}
+                            disabled={!isInputGlassShapeValid}
+                          >
+                            Thêm
+                          </Button>
+                        </Space>
+                      </>
+                    )}
+                    options={itemsGlassShape.map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                  />
+                </Form.Item>
+
+                <span className="text">Chất liệu khung kính:</span>
+                <Form.Item
+                  name={"glassMaterial"}
+                  rules={[{ required: true, message: "Không được để trống!" }]}
+                >
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
+                          style={{
+                            margin: "8px 0",
+                          }}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
+                        >
+                          <Input
+                            placeholder="Thêm thuộc tính mới"
+                            ref={inputGlassMaterialRef}
+                            value={nameGlassMaterial}
+                            onChange={onNameChangeGlassMaterial}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          />
+                          <Button
+                            style={{
+                              backgroundColor: "green",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                            type="text"
+                            icon={<PlusOutlined />}
+                            onClick={addItemGlassMaterial}
+                            disabled={!isInputGlassMaterialValid}
+                          >
+                            Thêm
+                          </Button>
+                        </Space>
+                      </>
+                    )}
+                    options={itemsGlassMaterial.map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                  />
+                </Form.Item>
+              </div>
             </div>
           </div>
         )}
+
+        {category === 5 && (
+          <div className="basic-information--earring">
+            <div className="section-title">Thông tin chi tiết</div>
+
+            <div className="container-erring">
+              <div className="field__earring--1">
+                <span className="text">Thương hiệu:</span>
+                <Form.Item
+                  name={"brandNameEarring"}
+                  rules={[{ required: true, message: "Không được để trống!" }]}
+                >
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
+                          style={{
+                            margin: "8px 0",
+                          }}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
+                        >
+                          <Input
+                            placeholder="Thêm thuộc tính mới"
+                            ref={inputBrandNameEarringsRef}
+                            value={nameBrandNameEarrings}
+                            onChange={onNameChangeBrandNameEarrings}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          />
+                          <Button
+                            style={{
+                              backgroundColor: "green",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                            type="text"
+                            icon={<PlusOutlined />}
+                            onClick={addItemBrandNameEarrings}
+                            disabled={!isInputBrandNameEarringsValid}
+                          >
+                            Thêm
+                          </Button>
+                        </Space>
+                      </>
+                    )}
+                    options={itemsBrandNameEarrings.map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                  />
+                </Form.Item>
+
+                <span className="text">Kiểu khuyên tai:</span>
+                <Form.Item
+                  name={"typeEarrings"}
+                  rules={[{ required: true, message: "Không được để trống!" }]}
+                >
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
+                          style={{
+                            margin: "8px 0",
+                          }}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
+                        >
+                          <Input
+                            placeholder="Thêm thuộc tính mới"
+                            ref={inputEarringsTypeRef}
+                            value={nameEarringsType}
+                            onChange={onNameChangeEarringsType}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          />
+                          <Button
+                            style={{
+                              backgroundColor: "green",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                            type="text"
+                            icon={<PlusOutlined />}
+                            onClick={addItemEarringsType}
+                            disabled={!isInputEarringsTypeValid}
+                          >
+                            Thêm
+                          </Button>
+                        </Space>
+                      </>
+                    )}
+                    options={itemsEarringsType.map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                  />
+                </Form.Item>
+              </div>
+              <div className="field__earring--2">
+                <span className="text">Dịp:</span>
+                <Form.Item
+                  name={"occasion"}
+                  rules={[{ required: true, message: "Không được để trống!" }]}
+                >
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
+                          style={{
+                            margin: "8px 0",
+                          }}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
+                        >
+                          <Input
+                            placeholder="Thêm thuộc tính mới"
+                            ref={inputOccasionRef}
+                            value={nameOccasion}
+                            onChange={onNameChangeOccasion}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          />
+                          <Button
+                            style={{
+                              backgroundColor: "green",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                            type="text"
+                            icon={<PlusOutlined />}
+                            onClick={addItemOccasion}
+                            disabled={!isInputOccasionValid}
+                          >
+                            Thêm
+                          </Button>
+                        </Space>
+                      </>
+                    )}
+                    options={itemsOccasion.map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                  />
+                </Form.Item>
+
+                <span className="text">Xuất xứ:</span>
+                <Form.Item
+                  name={"originEarring"}
+                  rules={[{ required: true, message: "Không được để trống!" }]}
+                >
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
+                          style={{
+                            margin: "8px 0",
+                          }}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
+                        >
+                          <Input
+                            placeholder="Thêm thuộc tính mới"
+                            ref={inputOriginEarringRef}
+                            value={nameOriginEarring}
+                            onChange={onNameChangeOriginEarring}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          />
+                          <Button
+                            style={{
+                              backgroundColor: "green",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                            type="text"
+                            icon={<PlusOutlined />}
+                            onClick={addItemOriginEarring}
+                            disabled={!setIsInputOriginEarringValid}
+                          >
+                            Thêm
+                          </Button>
+                        </Space>
+                      </>
+                    )}
+                    options={itemsOriginEarring.map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {category === 8 && (
+          <div className="basic-information--shoe">
+            <div className="section-title">Thông tin chi tiết</div>
+            <div className="container-shoe">
+              <div className="field__shoe--1">
+                <span className="text">Thương hiệu:</span>
+                <Form.Item
+                  name={"brandNameShoe"}
+                  rules={[{ required: true, message: "Không được để trống!" }]}
+                >
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
+                          style={{
+                            margin: "8px 0",
+                          }}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
+                        >
+                          <Input
+                            placeholder="Thêm thuộc tính mới"
+                            ref={inputBrandNameShoeRef}
+                            value={nameBrandNameShoe}
+                            onChange={onNameChangeBrandNameShoe}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          />
+                          <Button
+                            style={{
+                              backgroundColor: "green",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                            type="text"
+                            icon={<PlusOutlined />}
+                            onClick={addItemBrandNameShoe}
+                            disabled={!isInputBrandNameShoeValid}
+                          >
+                            Thêm
+                          </Button>
+                        </Space>
+                      </>
+                    )}
+                    options={itemsBrandNameShoe.map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                  />
+                </Form.Item>
+
+                <span className="text">Loại da:</span>
+                <Form.Item
+                  name={"typeSkinShoe"}
+                  rules={[{ required: true, message: "Không được để trống!" }]}
+                >
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
+                          style={{
+                            margin: "8px 0",
+                          }}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
+                        >
+                          <Input
+                            placeholder="Thêm thuộc tính mới"
+                            ref={inputTypeSkinShoeRef}
+                            value={nameTypeSkinShoe}
+                            onChange={onNameChangeTypeSkinShoe}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          />
+                          <Button
+                            style={{
+                              backgroundColor: "green",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                            type="text"
+                            icon={<PlusOutlined />}
+                            onClick={addItemTypeSkinShoe}
+                            disabled={!isInputTypeSkinShoeValid}
+                          >
+                            Thêm
+                          </Button>
+                        </Space>
+                      </>
+                    )}
+                    options={itemsTypeSkinShoe.map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                  />
+                </Form.Item>
+              </div>
+              <div className="field__shoe--2">
+                <span className="text">Da ngoài:</span>
+                <Form.Item
+                  name={"outsideSkin"}
+                  rules={[{ required: true, message: "Không được để trống!" }]}
+                >
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
+                          style={{
+                            margin: "8px 0",
+                          }}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
+                        >
+                          <Input
+                            placeholder="Thêm thuộc tính mới"
+                            ref={inputOutsideSkinRef}
+                            value={nameOutsideSkin}
+                            onChange={onNameChangOutsideSkin}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          />
+                          <Button
+                            style={{
+                              backgroundColor: "green",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                            type="text"
+                            icon={<PlusOutlined />}
+                            onClick={addItemOutsideSkin}
+                            disabled={!isInputOutsideSkinValid}
+                          >
+                            Thêm
+                          </Button>
+                        </Space>
+                      </>
+                    )}
+                    options={itemsOutsideSkin.map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                  />
+                </Form.Item>
+
+                <span className="text">Xuất xứ:</span>
+                <Form.Item
+                  name={"originShoe"}
+                  rules={[{ required: true, message: "Không được để trống!" }]}
+                >
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
+                          style={{
+                            margin: "8px 0",
+                          }}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
+                        >
+                          <Input
+                            placeholder="Thêm thuộc tính mới"
+                            ref={inputOriginShoeRef}
+                            value={nameOriginShoe}
+                            onChange={onNameChangeOriginShoe}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          />
+                          <Button
+                            style={{
+                              backgroundColor: "green",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                            type="text"
+                            icon={<PlusOutlined />}
+                            onClick={addItemOriginShoe}
+                            disabled={!setIsInputOriginShoeValid}
+                          >
+                            Thêm
+                          </Button>
+                        </Space>
+                      </>
+                    )}
+                    options={itemsOriginShoe.map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+          </div>
+        )}
+
         {showSecondPart && (
           <div className="basic-information--step3">
             <h1 className="section-title">Thông Tin Bán Hàng</h1>
@@ -1872,7 +2648,14 @@ const CreateProduct = () => {
                   <Button
                     type="dashed"
                     onClick={addField}
-                    style={{ width: "195px", marginRight: "10px" }}
+
+                    style={{
+                      width: "195px",
+                      marginRight: "10px",
+                      transition: "background 0.3s", // Thêm hiệu ứng chuyển đổi màu nền
+                    }}
+                    className="custom-button" // Để tùy chỉnh kiểu hover bằng CSS
+
                   >
                     <PlusCircleOutlined />
                   </Button>
@@ -1880,6 +2663,10 @@ const CreateProduct = () => {
                     <Button
                       type="dashed"
                       onClick={() => removeField(additionalFields.length - 1)}
+                      style={{
+                        width: "50px",
+                      }}
+                      className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
                     >
                       <DeleteOutlined />
                     </Button>
@@ -1889,19 +2676,50 @@ const CreateProduct = () => {
             )}
           </div>
         )}
-
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{
-              width: "20%",
-              backgroundColor: "green",
-            }}
-          >
-            Thêm Sản Phẩm
-          </Button>
-        </Form.Item>
+        <div
+          style={{
+            position: "fixed",
+            bottom: 0, // Đặt thẻ div ở dưới cùng của trang
+            left: "50%",
+            width: "83.4%", // Đặt chiều rộng 100% để nó kéo dài từ cạnh trái đến cạnh phải
+            backgroundColor: "white",
+            height: "50px",
+            zIndex: 999,
+            border: "1px solid green", // Thêm đường viền mỏng màu xanh lá
+            transform: "translateX(-50%)",
+            marginLeft: "105px",
+          }}
+        >
+          <Form.Item>
+            {/* Nội dung của Form.Item */}
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{
+                width: "15%",
+                backgroundColor: "green",
+                position: "fixed",
+                bottom: "45%", // Đặt nút ở dưới cùng của thẻ div
+                left: "50%",
+                transform: "translate(-50%, 50%)", // Đảm bảo nút ở giữa và ở dưới cùng
+                zIndex: 999,
+              }}
+            >
+              Thêm Sản Phẩm
+            </Button>
+            {/* <Button
+              type="default"
+              style={{
+                width: "10%",
+                backgroundColor: "red",
+                color: "white",
+              }}
+              onClick={form.resetFields()}
+            >
+              Hủy
+            </Button> */}
+          </Form.Item>
+        </div>
       </Form>
     </div>
   );

@@ -96,6 +96,17 @@
   margin-bottom: 20px;
 }
 .basic-information--glasses {
+  /* display: flex; */
+  background-color: #e7e9eb;
+  margin-bottom: 20px;
+}
+
+.basic-information--earring {
+  background-color: #e7e9eb;
+  margin-bottom: 20px;
+}
+
+.basic-information--shoe {
   background-color: #e7e9eb;
   margin-bottom: 20px;
 }
@@ -103,6 +114,80 @@
 .basic-information--step3 {
   background-color: #e7e9eb;
 }
-.rent-price{
+.rent-price {
   display: grid;
+}
+
+.container-glass {
+  display: flex;
+  justify-content: space-around;
+}
+
+.field__glass--1 {
+  display: grid;
+}
+
+.field__glass--2 {
+  display: grid;
+}
+
+.container-shoe {
+  display: flex;
+  justify-content: space-around;
+}
+
+.field__shoe--1 {
+  display: grid;
+}
+
+.field__shoe--2 {
+  display: grid;
+}
+
+.container-erring {
+  display: flex;
+  justify-content: space-around;
+}
+
+.field__earring--1 {
+  display: grid;
+}
+.field__earring--2 {
+  display: grid;
+}
+.text {
+  font-weight: bold;
+}
+.custom-button {
+  transition: background 0.3s, color 0.3s; /* Thêm hiệu ứng chuyển đổi màu nền và màu chữ */
+}
+
+.custom-button:hover {
+  background-color: green; /* Màu nền hover thành xanh lá */
+  color: white; /* Màu chữ hover thành trắng */
+}
+
+.custom-button .anticon {
+  transition: color 0.3s; /* Thêm hiệu ứng chuyển đổi màu chữ cho biểu tượng */
+}
+
+.custom-button:hover .anticon {
+  color: white; /* Màu chữ của biểu tượng hover thành trắng */
+}
+
+.custom-button--delete {
+  transition: background 0.3s, color 0.3s; /* Thêm hiệu ứng chuyển đổi màu nền và màu chữ */
+}
+
+.custom-button--delete:hover {
+  background-color: red; /* Màu nền hover thành đỏ */
+  color: white; /* Màu chữ hover thành trắng */
+}
+
+.custom-button--delete .anticon {
+  transition: color 0.3s; /* Thêm hiệu ứng chuyển đổi màu chữ cho biểu tượng */
+}
+
+.custom-button--delete:hover .anticon {
+  color: white; /* Màu chữ của biểu tượng hover thành trắng */
 }
