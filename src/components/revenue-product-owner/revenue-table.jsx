@@ -155,7 +155,7 @@ const RevenueTable = () => {
         width: "10%",
         ...getColumnSearchProps("status"),
         render: (status) => (
-          <p style={{ textAlign: "center", marginBottom: "50px" }}>
+          <p style={{  marginBottom: "50px" }}>
             <RenderTag tagRender={status} />
           </p>
         ),

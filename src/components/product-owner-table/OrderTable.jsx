@@ -13,53 +13,23 @@ const OrderTable = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  // const fetchUsers = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       "http://134.209.111.144:8080/po/get-all-po"
-  //     );
-  //     const users = response.data.map((user) => ({
-  //       ...user,
-  //       roleName: user.accountDTO.roleDTO.roleName,
-  //       email: user.accountDTO.email,
-  //     }));
-  //     setUsers(users);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   fetchUsers();
-  // }, []);
-  const [orderData, setOrderData] = useState([
-    {
-      orderID: 1,
-      productID: 2,
-      fullName: "Lê Vĩnh Thái",
-      phone: "0987706895",
-      date: "20/10/2023",
-      address: "Vinhome Grand Park s902 Thủ Đức",
-      status: "Pending",
-    },
-    {
-      orderID: 2,
-      productID: 4,
-      fullName: "Nguyễn Đăng Quang",
-      phone: "0987654322",
-      date: "19/10/2023",
-      address: "Sky9 Thủ Đức",
-      status: "Approve",
-    },
-    {
-      orderID: 3,
-      productID: 5,
-      fullName: "Nguyễn Trần Nam Long",
-      phone: "0123456788",
-      date: "24/10/2023",
-      address: "Công viên phần mềm, Quận 12",
-      status: "Refuse",
-    },
-  ]);
+  const [orderData, setOrderData] = useState([]);
+  const productownerId = localStorage.getItem("productownerId");
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/orderbuy/po/" + productownerId
+      );
+      setOrderData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -117,7 +87,7 @@ const OrderTable = () => {
             size="small"
             style={{
               width: 110,
-              backgroundColor:"#008000",
+              backgroundColor: "#008000",
             }}
           >
             Tìm kiếm
@@ -132,7 +102,6 @@ const OrderTable = () => {
             size="small"
             style={{
               width: 90,
-              
             }}
           >
             Đặt lại
@@ -178,102 +147,55 @@ const OrderTable = () => {
         text
       ),
   });
-  const editUser = async () => {
-    form.validateFields().then((values) => {
-      const editData = {
-        address: values.address,
-        avatarUrl: values.avatarUrl,
-        fullName: values.fullName,
-        phone: values.phone,
-        status: values.status,
-      };
-      console.log(editData);
-
-      try {
-        axios
-          .put(
-            `http://134.209.111.144:8080/po?productownerID=` +
-              editingUser.productownerID,
-            editData
-          )
-          .then((response) => {
-            console.log(response);
-          });
-      } catch (error) {
-        console.log(error);
-      }
-
-      const updatedUsers = users.map((user) =>
-        user === editingUser ? { ...user, ...values } : user
-      );
-      setUsers(updatedUsers);
-      onClose();
-    });
-  };
-  const addUser = () => {
-    form.validateFields().then((values) => {
-      setUsers([...users, values]);
-      onClose();
-    });
+  //format date ------------------------------------
+  function formatDate(dateString) {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    const formattedDate = new Date(dateString).toLocaleDateString(
+      "en-US",
+      options
+    );
+    const [month, day, year] = formattedDate.split("/");
+    return `${day}/ ${month}/ ${year}`;
+  }
+  //chuyen doi thanh dang tien te vnd ------------------------------------------------------
+  const formatPriceWithVND = (price) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
   };
   const columns = [
     {
       title: "Mã đơn",
-      dataIndex: "orderID",
-      key: "orderID",
+      dataIndex: "orderBuyID",
+      key: "orderBuyID",
       width: "5%",
-      ...getColumnSearchProps("productownerID"),
-      render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
-    },
-    {
-      title: "Mã sản phẩm",
-      dataIndex: "productID",
-      key: "productID",
-      width: "5%",
-      ...getColumnSearchProps("productownerID"),
-      render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
-    },
-    {
-      title: "Người mua",
-      dataIndex: "fullName",
-      key: "fullName",
-      width: "10%",
-      ...getColumnSearchProps("fullName"),
-      render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
-    },
-    {
-      title: "SĐT",
-      dataIndex: "phone",
-      key: "phone",
-      width: "10%",
-      ...getColumnSearchProps("phone"),
-      render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
+      ...getColumnSearchProps("orderBuyID"),
+      render: (number) => <p style={{ textAlign: "center" }}>{Number(number)}</p>,
     },
     {
       title: "Thời gian",
-      dataIndex: "date",
-      key: "date",
-      width: "10%",
-      ...getColumnSearchProps("phone"),
-      render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
+      dataIndex: "dateOrder",
+      key: "dateOrder",
+      width: "15%",
+      ...getColumnSearchProps("dateOrder"),
+      render: (text) => <p>{formatDate(text)}</p>,
     },
     {
-      title: "Địa chỉ",
-      dataIndex: "address",
-      key: "address",
-      width: "10%",
-      ...getColumnSearchProps("address"),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ["descend", "ascend"],
-      render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
+      title: "Tổng tiền",
+      dataIndex: "total",
+      key: "total",
+      width: "20%",
+      ...getColumnSearchProps("total"),
+      render: (text) => <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>,
     },
     {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      width: "10%",
+      width: "20%",
       render: (status) => (
-        <p style={{ textAlign: "center", marginBottom: "50px" }}>
+        <p>
           <RenderTag tagRender={status} />
         </p>
       ),

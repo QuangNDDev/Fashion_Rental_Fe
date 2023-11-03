@@ -68,6 +68,27 @@ export default function RenderTag(props) {
     } else if (renderTag == "AVAILABLE") {
       setColor("green");
       setStatus("Có Sẵn");
+    } else if (renderTag == "PENDING") {
+      setColor("yellow");
+      setStatus("Chờ xác nhận");
+    }else if (renderTag == "PREPARE") {
+      setColor("yellow");
+      setStatus("Đang được chuẩn bị");
+    }else if (renderTag == "READY_PICKUP") {
+      setColor("yellow");
+      setStatus("Chờ vận chuyển");
+    }else if (renderTag == "CONFIRMING") {
+      setColor("green");
+      setStatus("Đã xác nhận");
+    }else if (renderTag == "REJECTING") {
+      setColor("red");
+      setStatus("Từ chối");
+    }else if (renderTag == "CANCELED") {
+      setColor("red");
+      setStatus("Đã huỷ");
+    }else if (renderTag == "COMPLETED") {
+      setColor("green");
+      setStatus("Hoàn thành");
     }
   }, []);
 
