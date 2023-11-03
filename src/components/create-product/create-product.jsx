@@ -225,18 +225,7 @@ const CreateProduct = () => {
   const [api, contextHolder] = notification.useNotification();
 
   //-------------------------------------------------------------------
-  const onFinish1 = (values) => {
-    // Lấy giá trị của trường mockDay và rentPrice
-    const { mockDay, rentPrice, ...additionalValues } = values;
-
-    // Tiến hành xử lý dữ liệu tùy theo yêu cầu của bạn
-    // Ví dụ: lưu vào useState hoặc gửi lên server
-    console.log('mockDay:', mockDay);
-    console.log('rentPrice:', rentPrice);
-    console.log('additionalValues:', additionalValues);
-  };
   const onFinish = async (values) => {
-    
     if (checkCategory === 2) {
       const productSpecificationData = {
         strapMaterialWatch: values.strapMaterialWatch,
@@ -276,17 +265,24 @@ const CreateProduct = () => {
           response.data.checkType === "SALE_RENT"
         ) {
           // Gọi API khi checkType là "RENT" hoặc "SALE_RENT"
+          const mockDay = [];
+          const rentPrice = [];
+      
+          for (const key in values) {
+            if (key.startsWith("mockDay")) {
+              mockDay.push(values[key]);
+            } else if (key.startsWith("rentPrice")) {
+              rentPrice.push(values[key]);
+            }
+          }
           const formRentPrice = {
             productID: response.data.productID,
-            rentPrice1: values.rentPrice1,
-            rentPrice4: values.rentPrice4,
-            rentPrice7: values.rentPrice7,
-            rentPrice10: values.rentPrice10,
-            rentPrice14: values.rentPrice14,
+            mockDay: mockDay,
+            rentPrice:rentPrice,
           };
           try {
             const rentPriceResponse = await axios.post(
-              "http://fashionrental.online:8080/rentprice/create",
+              "http://fashionrental.online:8080/rentprice",
               formRentPrice
             );
 
@@ -296,6 +292,7 @@ const CreateProduct = () => {
             console.error("Error rent price:", error);
           }
         }
+        //api request
         const formRequest = {
           productID: response.data.productID,
         };
@@ -378,17 +375,24 @@ const CreateProduct = () => {
           response.data.checkType === "SALE_RENT"
         ) {
           // Gọi API khi checkType là "RENT" hoặc "SALE_RENT"
+          const mockDay = [];
+          const rentPrice = [];
+      
+          for (const key in values) {
+            if (key.startsWith("mockDay")) {
+              mockDay.push(values[key]);
+            } else if (key.startsWith("rentPrice")) {
+              rentPrice.push(values[key]);
+            }
+          }
           const formRentPrice = {
             productID: response.data.productID,
-            rentPrice1: values.rentPrice1,
-            rentPrice4: values.rentPrice4,
-            rentPrice7: values.rentPrice7,
-            rentPrice10: values.rentPrice10,
-            rentPrice14: values.rentPrice14,
+            mockDay: mockDay,
+            rentPrice:rentPrice,
           };
           try {
             const rentPriceResponse = await axios.post(
-              "http://fashionrental.online:8080/rentprice/create",
+              "http://fashionrental.online:8080/rentprice",
               formRentPrice
             );
 
@@ -398,6 +402,7 @@ const CreateProduct = () => {
             console.error("Error rent price:", error);
           }
         }
+        //api request
         const formRequest = {
           productID: response.data.productID,
         };
@@ -477,17 +482,24 @@ const CreateProduct = () => {
           response.data.checkType === "SALE_RENT"
         ) {
           // Gọi API khi checkType là "RENT" hoặc "SALE_RENT"
+          const mockDay = [];
+          const rentPrice = [];
+      
+          for (const key in values) {
+            if (key.startsWith("mockDay")) {
+              mockDay.push(values[key]);
+            } else if (key.startsWith("rentPrice")) {
+              rentPrice.push(values[key]);
+            }
+          }
           const formRentPrice = {
             productID: response.data.productID,
-            rentPrice1: values.rentPrice1,
-            rentPrice4: values.rentPrice4,
-            rentPrice7: values.rentPrice7,
-            rentPrice10: values.rentPrice10,
-            rentPrice14: values.rentPrice14,
+            mockDay: mockDay,
+            rentPrice:rentPrice,
           };
           try {
             const rentPriceResponse = await axios.post(
-              "http://fashionrental.online:8080/rentprice/create",
+              "http://fashionrental.online:8080/rentprice",
               formRentPrice
             );
 
@@ -497,6 +509,7 @@ const CreateProduct = () => {
             console.error("Error rent price:", error);
           }
         }
+        //api request
         const formRequest = {
           productID: response.data.productID,
         };
@@ -909,7 +922,8 @@ const CreateProduct = () => {
   };
   //  Thêm giá cho ngày thuê sản phẩm
   const [additionalFields, setAdditionalFields] = useState([]);
-
+  const [mockDayValues, setMockDayValues] = useState([]);
+  const [rentPriceValues, setRentPriceValues] = useState([]);
   const addField = () => {
     setAdditionalFields([...additionalFields, {}]);
   };
@@ -922,7 +936,7 @@ const CreateProduct = () => {
   return (
     <div style={{ backgroundColor: "#fff" }}>
       {contextHolder}
-      <Form form={form} onFinish={onFinish1}>
+      <Form form={form} onFinish={onFinish}>
         <div className="basic-information--step1">
           <div className="section-title">Thông tin sản phẩm</div>
 
@@ -1798,49 +1812,49 @@ const CreateProduct = () => {
 
             {(checkType === "RENT" || checkType === "SALE_RENT") && (
               <div className="rent-price">
-                <div style={{display:"flex" }}>
-                <Form.Item
-                  label="Số ngày"
-                  name="mockDay"
-                  style={{ width: "250px",marginRight:"10px" }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Không được để trống!",
-                    },
-                    {
-                      pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
-                      message: "Chỉ được nhập số!",
-                    },
-                  ]}
-                >
-                  <Input suffix="Ngày" />
-                </Form.Item>
+                <div style={{ display: "flex" }}>
+                  <Form.Item
+                    label="Số ngày"
+                    name="mockDay"
+                    style={{ width: "250px", marginRight: "10px" }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Không được để trống!",
+                      },
+                      {
+                        pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
+                        message: "Chỉ được nhập số!",
+                      },
+                    ]}
+                  >
+                    <Input suffix="Ngày" />
+                  </Form.Item>
 
-                <Form.Item
-                  label="Giá thuê"
-                  name="rentPrice"
-                  style={{ width: "250px",marginRight:"10px" }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Không được để trống!",
-                    },
-                    {
-                      pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
-                      message: "Chỉ được nhập số!",
-                    },
-                  ]}
-                >
-                  <Input suffix="VND" />
-                </Form.Item>
+                  <Form.Item
+                    label="Giá thuê"
+                    name="rentPrice"
+                    style={{ width: "250px", marginRight: "10px" }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Không được để trống!",
+                      },
+                      {
+                        pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
+                        message: "Chỉ được nhập số!",
+                      },
+                    ]}
+                  >
+                    <Input suffix="VND" />
+                  </Form.Item>
                 </div>
                 {additionalFields.map((field, index) => (
                   <div key={index} className="additional-field">
                     <Space style={{ display: "flex" }}>
                       <Form.Item
                         label={`Số ngày ${index + 2}`}
-                        name={`mockDay ${index + 2}`}
+                        name={`mockDay${index + 2}`}
                       >
                         <Input style={{ width: "172px" }} suffix="Ngày" />
                       </Form.Item>
@@ -1854,11 +1868,11 @@ const CreateProduct = () => {
                     </Space>
                   </div>
                 ))}
-                <div style={{ display: "flex",marginLeft:"150px" }}>
+                <div style={{ display: "flex", marginLeft: "150px" }}>
                   <Button
                     type="dashed"
                     onClick={addField}
-                    style={{ width: "195px",marginRight:"10px" }}
+                    style={{ width: "195px", marginRight: "10px" }}
                   >
                     <PlusCircleOutlined />
                   </Button>
