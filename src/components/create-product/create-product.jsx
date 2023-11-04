@@ -3383,11 +3383,11 @@ const CreateProduct = () => {
             position: "fixed",
             bottom: 0, // Đặt thẻ div ở dưới cùng của trang
             left: "50%",
-            width: "83.4%", // Đặt chiều rộng 100% để nó kéo dài từ cạnh trái đến cạnh phải
+            width: "83%", // Đặt chiều rộng 100% để nó kéo dài từ cạnh trái đến cạnh phải
             backgroundColor: "white",
             height: "50px",
             zIndex: 999,
-            border: "1px solid green", // Thêm đường viền mỏng màu xanh lá
+            borderTop: "1px solid #f0f0f0", // Thêm đường viền mỏng màu xanh lá
             transform: "translateX(-50%)",
             marginLeft: "105px",
           }}
