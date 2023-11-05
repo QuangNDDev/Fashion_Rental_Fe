@@ -24,7 +24,27 @@ function VoucherForm() {
 
   const handleDateChange = (dates) => {
     setDateRange(dates);
+    console.log(dates);
+
+    // Định dạng phạm vi ngày tháng được chọn thành chuỗi "dd/mm/yyyy HH:mm:ss" với múi giờ địa phương của Việt Nam
+    const formattedStartDate = formatDateWithTime(dates[0]);
+    const formattedEndDate = formatDateWithTime(dates[1]);
+    console.log(`Ngày bắt đầu đã định dạng: ${formattedStartDate}`);
+    console.log(`Ngày kết thúc đã định dạng: ${formattedEndDate}`);
   };
+
+  function formatDateWithTime(date) {
+    const options = {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    };
+
+    const formattedDate = date
+      ? new Intl.DateTimeFormat("vi-VN", options).format(date)
+      : "";
+    return formattedDate;
+  }
   const onFinish = (values) => {};
 
   const handleChangeVoucherType = (value) => {
