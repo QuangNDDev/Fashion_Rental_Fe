@@ -27,7 +27,11 @@ import OrderTable from "../../components/product-owner-table/OrderTable";
 import CancelOrderTable from "../../components/product-owner-table/CancelOrderTable";
 import Revenue from "../../components/revenue-product-owner/revenue";
 import CreateProduct from "../../components/create-product/create-product";
+
 import VoucherForm from "../../components/voucher-form";
+
+import Balance from "../../components/balance-productowner/balance-productowner";
+
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -193,6 +197,7 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Tài chính</Breadcrumb.Item>
               <Breadcrumb.Item>Số dư TK</Breadcrumb.Item>
             </Breadcrumb>
+            <Balance/>
           </div>
         );
       case "9":

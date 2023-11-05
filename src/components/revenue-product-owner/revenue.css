@@ -16,6 +16,7 @@
 }
 
 .unpaid {
+
   display: grid;
   align-content: space-between;
   grid-gap: 15px;
@@ -48,6 +49,7 @@
   background-color: #e0e0e0;
   padding: 10px;
   border-radius: 5px;
+
 }
 
 .money-1 {
