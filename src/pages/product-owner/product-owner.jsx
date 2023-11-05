@@ -6,6 +6,7 @@ import {
   UserOutlined,
   ShopFilled,
   WalletOutlined,
+  PercentageOutlined,
 } from "@ant-design/icons";
 import {
   Breadcrumb,
@@ -26,6 +27,7 @@ import OrderTable from "../../components/product-owner-table/OrderTable";
 import CancelOrderTable from "../../components/product-owner-table/CancelOrderTable";
 import Revenue from "../../components/revenue-product-owner/revenue";
 import CreateProduct from "../../components/create-product/create-product";
+import VoucherForm from "../../components/voucher-form";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -193,6 +195,20 @@ const ProductOwner = () => {
             </Breadcrumb>
           </div>
         );
+      case "9":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Khuyến mãi</Breadcrumb.Item>
+              <Breadcrumb.Item>Thêm mã khuyến mãi</Breadcrumb.Item>
+            </Breadcrumb>
+            <VoucherForm />
+          </div>
+        );
       default:
         return null;
     }
@@ -261,7 +277,7 @@ const ProductOwner = () => {
         </div>
       </Header>
 
-      <Layout>
+      <Layout style={{ background: "#000" }}>
         <Sider width={200} theme="dark" breakpoint="md" collapsedWidth="0">
           <Menu
             mode="inline"
@@ -302,11 +318,20 @@ const ProductOwner = () => {
               <Menu.Item key="7">Doanh thu</Menu.Item>
               <Menu.Item key="8">Số dư TK</Menu.Item>
             </SubMenu>
+            <SubMenu
+              key="sub5"
+              icon={<PercentageOutlined style={{ fontSize: "17px" }} />}
+              title="Khuyến mãi"
+            >
+              <Menu.Item key="9">Thêm mã khuyến mãi</Menu.Item>
+            </SubMenu>
           </Menu>
         </Sider>
         <Layout
           style={{
             padding: "0 24px 24px",
+
+            background: "#fff",
           }}
         >
           <Content

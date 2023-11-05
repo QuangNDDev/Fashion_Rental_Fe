@@ -34,6 +34,7 @@ import CancelOrderTable from "../../components/product-owner-table/CancelOrderTa
 import TableAccept from "./../../components/Staff-Grid/accept";
 import ProfileStaff from "../../components/information-staff";
 import TablePending from "../../components/Staff-Grid";
+import RejectTable from "../../components/Staff-Grid/reject";
 
 const { Header, Content, Sider } = Layout;
 
@@ -152,6 +153,7 @@ const Staff = () => {
                 </strong>
               </Breadcrumb.Item>
             </Breadcrumb>
+            <RejectTable />
           </div>
         );
 

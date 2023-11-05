@@ -220,13 +220,10 @@ const CreateProduct = () => {
   ////////////////////////////
   //Earrings Type
   const [itemsEarringsType, setItemsEarringsType] = useState([
-    "Khuyên tai gài",
-    "Khuyên tai thả",
-    "Khuyên tai móc câu",
-    "Khuyên tai tròn",
-    "Khuyên tai nam châm",
-    "Khuyên tai ghim",
-    "Khuyên tai dạng hạt",
+    "Nhẫn",
+    "Khuyên tai ",
+    "Vòng tay",
+    "Dây chuyền",
   ]);
   const [nameEarringsType, setNameEarringsType] = useState("");
   const inputEarringsTypeRef = useRef(null);
@@ -1696,7 +1693,6 @@ const CreateProduct = () => {
           </div>
           <div className="category">
             <span>Phân loại sản phẩm:</span>
-
             <Space wrap>
               <Select
                 defaultValue="Chọn loại sản phẩm"
@@ -2578,7 +2574,7 @@ const CreateProduct = () => {
                   />
                 </Form.Item>
 
-                <span className="text">Kiểu khuyên tai:</span>
+                <span className="text">Kiểu trang sức:</span>
                 <Form.Item
                   name={"typeJewelrys"}
                   rules={[{ required: true, message: "Không được để trống!" }]}
