@@ -94,8 +94,12 @@ const TablePending = () => {
     setIsDrawerVisible(false);
   };
   //Modal duyet
-  const showModalApprove = () => {
+  const showModalApprove = (record) => {
     setIsModalVisible(true);
+    localStorage.setItem(
+      "requestAddingProductID",
+      record.requestAddingProductID
+    );
   };
 
   const handleCancel = () => {
@@ -108,7 +112,7 @@ const TablePending = () => {
         `http://fashionrental.online:8080/request?description=` +
           descriptionRequest +
           `&requestID=` +
-          record.requestAddingProductID +
+          localStorage.getItem("requestAddingProductID") +
           `&status=APPROVED`
       );
       try {
@@ -150,11 +154,58 @@ const TablePending = () => {
   //Modal Huy
   const showModalNotApprove = (record) => {
     setIsModalVisibleNotApprove(true);
+    localStorage.setItem(
+      "requestAddingProductID",
+      record.requestAddingProductID
+    );
   };
   const handleCancelNotApprove = () => {
     setIsModalVisibleNotApprove(false);
   };
-  const handleSend = async (record) => {};
+  const handleSend = async (record) => {
+    try {
+      const response = await axios.put(
+        `http://fashionrental.online:8080/request?description=` +
+          descriptionReject +
+          `&requestID=` +
+          localStorage.getItem("requestAddingProductID") +
+          `&status=NOT_APPROVED`
+      );
+      try {
+        const staffRequest = await axios.post(
+          "http://fashionrental.online:8080/staffrequested?requestAddingProductID=" +
+            response.data.requestAddingProductID +
+            "&staffID=" +
+            staffId
+        );
+        api["success"]({
+          message: "Từ Chối Sản Phẩm Thành Công!",
+          description: null,
+        });
+        console.log("update request staff success", staffRequest.data);
+      } catch (error) {
+        api["error"]({
+          message: "Từ Chối Sản Phẩm Thất Bại!",
+          description: null,
+        });
+        console.error("Validation failed", error);
+      }
+      try {
+        const productStatus = await axios.put(
+          `http://fashionrental.online:8080/product/update/}?productID=` +
+            record.productID +
+            `&status=BLOCKED`
+        );
+        console.log("update product success", productStatus.data);
+      } catch (error) {
+        console.error("Validation failed", error);
+      }
+      setIsModalVisibleNotApprove(false);
+      fetchRequests();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -311,10 +362,13 @@ const TablePending = () => {
             <EyeTwoTone />
             Xem Đơn
           </Button>
-          <Button style={{ marginRight: "15px" }} onClick={showModalApprove}>
+          <Button
+            style={{ marginRight: "15px" }}
+            onClick={() => showModalApprove(record)}
+          >
             <CheckCircleTwoTone twoToneColor="#52c41a" />
           </Button>
-          <Button onClick={showModalNotApprove}>
+          <Button onClick={() => showModalNotApprove(record)}>
             <CloseCircleTwoTone twoToneColor="#ff4d4f" />
           </Button>
           <Modal
@@ -358,7 +412,10 @@ const TablePending = () => {
           >
             <Form form={form}>
               <p>Lý Do Từ Chối:</p>
-              <Form.Item name="description">
+              <Form.Item
+                name="descriptionNotApprove"
+                onChange={(e) => setDescriptionReject(e.target.value)}
+              >
                 <Input />
               </Form.Item>
               <Form.Item style={{ textAlign: "center" }}>
@@ -372,7 +429,7 @@ const TablePending = () => {
                 <Button
                   type="primary"
                   style={{ backgroundColor: "#008000", marginLeft: "20px" }}
-                  onClick={handleSend}
+                  onClick={() => handleSend(record)}
                 >
                   Gửi
                 </Button>

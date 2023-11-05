@@ -71,26 +71,34 @@ export default function RenderTag(props) {
     } else if (renderTag == "PENDING") {
       setColor("yellow");
       setStatus("Chờ xác nhận");
-    }else if (renderTag == "PREPARE") {
+    } else if (renderTag == "PREPARE") {
       setColor("yellow");
       setStatus("Đang được chuẩn bị");
-    }else if (renderTag == "READY_PICKUP") {
+    } else if (renderTag == "READY_PICKUP") {
       setColor("yellow");
       setStatus("Chờ vận chuyển");
-    }else if (renderTag == "CONFIRMING") {
+    } else if (renderTag == "CONFIRMING") {
       setColor("green");
       setStatus("Đã xác nhận");
-    }else if (renderTag == "REJECTING") {
+    } else if (renderTag == "REJECTING") {
       setColor("red");
       setStatus("Từ chối");
-    }else if (renderTag == "CANCELED") {
+    } else if (renderTag == "CANCELED") {
       setColor("red");
       setStatus("Đã huỷ");
-    }else if (renderTag == "COMPLETED") {
+    } else if (renderTag == "BLOCKED") {
+      setColor("red");
+      setStatus("Đã khóa");
+    } else if (renderTag == "COMPLETED") {
       setColor("green");
       setStatus("Hoàn thành");
     }
   }, []);
 
-  return <p> <Tag color={colors}>{status}</Tag></p>;
+  return (
+    <p>
+      {" "}
+      <Tag color={colors}>{status}</Tag>
+    </p>
+  );
 }

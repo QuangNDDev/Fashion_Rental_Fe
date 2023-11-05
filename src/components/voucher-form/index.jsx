@@ -45,7 +45,13 @@ function VoucherForm() {
       : "";
     return formattedDate;
   }
-  const onFinish = (values) => {};
+  const onFinish = (values) => {
+    // description: values.description;
+    // discountAmount: values.discountAmount;
+    // voucherTypeID: voucherType;
+    // voucherCode: values.voucherCode;
+    // voucherName: values.voucherName;
+  };
 
   const handleChangeVoucherType = (value) => {
     console.log(`selected ${value}`);
@@ -195,7 +201,7 @@ function VoucherForm() {
                 <Col span={12}>
                   <span style={{ fontWeight: "bold" }}>Số tiền giảm giá:</span>
                   <Form.Item
-                    name={"createDate"}
+                    name={"discountAmount"}
                     rules={[
                       { required: true, message: "Không được để trống!" },
                     ]}

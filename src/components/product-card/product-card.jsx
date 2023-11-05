@@ -200,6 +200,7 @@ const ProductCard = () => {
             style={{ paddingTop: 20 }}
           >
             <Card
+              bordered={true}
               style={{
                 width: 230,
               }}
