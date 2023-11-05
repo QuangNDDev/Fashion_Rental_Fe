@@ -10,23 +10,22 @@ const RevenueTable = () => {
   const [orderData, setOrderData] = useState([
     {
       orderID: 1,
-      productName:"Túi Gucci",
+      productName: "Túi Gucci",
       status: "Pending",
-      revenue:"1.500.000"
+      revenue: "1.500.000",
     },
     {
-        orderID: 2,
-        productName:"Quần Prada",
-        status: "Pending",
-        revenue:"4.500.000"
-      },
-      {
-        orderID: 3,
-        productName:"Áo LV",
-        status: "Pending",
-        revenue:"5.500.000"
-      },
-    
+      orderID: 2,
+      productName: "Quần Prada",
+      status: "Pending",
+      revenue: "4.500.000",
+    },
+    {
+      orderID: 3,
+      productName: "Áo LV",
+      status: "Pending",
+      revenue: "5.500.000",
+    },
   ]);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -131,7 +130,7 @@ const RevenueTable = () => {
         text
       ),
   });
-  
+
   const columns = [
     {
       title: "ID",
@@ -139,7 +138,6 @@ const RevenueTable = () => {
       key: "orderID",
       width: "1%",
       ...getColumnSearchProps("productownerID"),
-    
     },
     {
       title: "Tên sản phẩm",
@@ -149,28 +147,28 @@ const RevenueTable = () => {
       ...getColumnSearchProps("productName"),
     },
     {
-        title: "Trạng thái",
-        dataIndex: "status",
-        key: "status",
-        width: "10%",
-        ...getColumnSearchProps("status"),
-        render: (status) => (
-          <p >
-            <RenderTag tagRender={status} />
-          </p>
-        ),
-      },
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      width: "10%",
+      ...getColumnSearchProps("status"),
+      render: (status) => (
+        <p>
+          <RenderTag tagRender={status} />
+        </p>
+      ),
+    },
     {
-        title: "Số tiền thanh toán",
-        dataIndex: "revenue",
-        key: "revenue",
-        width: "10%",
-        ...getColumnSearchProps("revenue"),
-      },
+      title: "Số tiền thanh toán",
+      dataIndex: "revenue",
+      key: "revenue",
+      width: "10%",
+      ...getColumnSearchProps("revenue"),
+    },
   ];
   return (
     <div>
-      <Table columns={columns} dataSource={orderData} />
+      <Table bordered={true} columns={columns} dataSource={orderData} />
     </div>
   );
 };

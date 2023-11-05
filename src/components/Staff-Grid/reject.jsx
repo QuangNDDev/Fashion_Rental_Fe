@@ -1,9 +1,4 @@
-import {
-  CheckCircleTwoTone,
-  EyeTwoTone,
-  SearchOutlined,
-  CloseCircleTwoTone,
-} from "@ant-design/icons";
+import { EyeTwoTone, SearchOutlined } from "@ant-design/icons";
 import {
   Button,
   Carousel,
@@ -11,31 +6,22 @@ import {
   Form,
   Image,
   Input,
-  Modal,
   Space,
   Table,
-  notification,
 } from "antd";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import RenderTag from "../render/RenderTag";
 
-const TablePending = () => {
+const RejectTable = () => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [form] = Form.useForm();
-  const [requestsData, setRequestsData] = useState();
-  const [isCustomModalVisible, setIsCustomModalVisible] = useState(false);
+  const [requestsData, setRequestsData] = useState([]);
+  const idStaff = localStorage.getItem("staffId");
   const [productImage, setProductImage] = useState();
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [descriptionRequest, setDescriptionRequest] = useState("");
-  const [descriptionReject, setDescriptionReject] = useState("");
-  const staffId = localStorage.getItem("staffId");
-  const [isModalVisibleNotApprove, setIsModalVisibleNotApprove] =
-    useState(false);
-  const [api, contextHolder] = notification.useNotification();
 
   function formatDate(dateString) {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -50,8 +36,9 @@ const TablePending = () => {
   const fetchRequests = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/request/getapproving"
+        "http://fashionrental.online:8080/staffrequested/notapproved/" + idStaff
       );
+
       setRequestsData(response.data);
     } catch (error) {
       console.error(error);
@@ -61,8 +48,34 @@ const TablePending = () => {
   useEffect(() => {
     fetchRequests();
   }, []);
+  {
+    previewImage && (
+      <div className="image-preview">
+        <img
+          src={previewImage}
+          alt="Xem Trước"
+          onClick={() => setPreviewImage(null)} // Khi nhấp vào xem trước, đóng cửa sổ xem trước
+        />
+      </div>
+    );
+  }
+
   const showDrawer = (record) => {
     console.log(record);
+
+    axios
+      .get("http://fashionrental.online:8080/product/" + record.productID)
+      .then((response) => {
+        console.log(response.data);
+        form.setFieldsValue(response.data);
+        setSelectedRecord(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    setIsDrawerVisible(true);
+
     const fetchProductImg = async () => {
       try {
         const response = await axios.get(
@@ -75,86 +88,15 @@ const TablePending = () => {
       } catch (error) {
         console.error(error);
       }
+      console.log(selectedRecord?.checkType);
     };
 
     fetchProductImg();
-    axios
-      .get("http://fashionrental.online:8080/product/" + record.productID)
-      .then((response) => {
-        console.log(response.data);
-        form.setFieldsValue(response.data);
-        setSelectedRecord(response.data);
-        setIsDrawerVisible(true);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
   };
+
   const closeDrawer = () => {
     setIsDrawerVisible(false);
   };
-  //Modal duyet
-  const showModalApprove = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-  //-----------------------------
-  const handleOk = async (record) => {
-    try {
-      const response = await axios.put(
-        `http://fashionrental.online:8080/request?description=` +
-          descriptionRequest +
-          `&requestID=` +
-          record.requestAddingProductID +
-          `&status=APPROVED`
-      );
-      try {
-        const staffRequest = await axios.post(
-          "http://fashionrental.online:8080/staffrequested?requestAddingProductID=" +
-            response.data.requestAddingProductID +
-            "&staffID=" +
-            staffId
-        );
-        api["success"]({
-          message: "Duyệt Sản Phẩm Thành Công!",
-          description: null,
-        });
-        console.log("update request staff success", staffRequest.data);
-      } catch (error) {
-        api["error"]({
-          message: "Duyệt Sản Phẩm Thất Bại!",
-          description: null,
-        });
-        console.error("Validation failed", error);
-      }
-      try {
-        const productStatus = await axios.put(
-          `http://fashionrental.online:8080/product/update/}?productID=` +
-            record.productID +
-            `&status=AVAILABLE`
-        );
-        console.log("update product success", productStatus.data);
-      } catch (error) {
-        console.error("Validation failed", error);
-      }
-      setIsModalVisible(false);
-      fetchRequests();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  //Modal Huy
-  const showModalNotApprove = (record) => {
-    setIsModalVisibleNotApprove(true);
-  };
-  const handleCancelNotApprove = () => {
-    setIsModalVisibleNotApprove(false);
-  };
-  const handleSend = async (record) => {};
 
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -273,28 +215,41 @@ const TablePending = () => {
   const columns = [
     {
       title: "ID",
-      dataIndex: "requestAddingProductID",
-      key: "requestAddingProductID",
+      dataIndex: "staffRequestedID",
+      key: "staffRequestedID",
       // width: "20%",
-      ...getColumnSearchProps("requestAddingProductID"),
+      ...getColumnSearchProps("staffRequestedID"),
       render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
     },
     {
       title: "Ngày tạo",
-      dataIndex: "createdDate",
-      key: "createdDate",
-      ...getColumnSearchProps("createdDate"),
+      dataIndex: "createDate",
+      key: "createDate",
+      ...getColumnSearchProps("createDate"),
+      render: (text) => <p style={{ textAlign: "left" }}>{formatDate(text)}</p>,
+    },
+    {
+      title: "Ngày từ chối",
+      dataIndex: "updateDate",
+      key: "updateDate",
+      ...getColumnSearchProps("updateDate"),
       render: (text) => <p style={{ textAlign: "left" }}>{formatDate(text)}</p>,
     },
     {
       title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
+      dataIndex: "requestStatus",
+      key: "requestStatus",
       render: (status) => (
         <p style={{ textAlign: "left", justifyContent: "left" }}>
           <RenderTag tagRender={status} />
         </p>
       ),
+    },
+    {
+      title: "Lí do",
+      dataIndex: "description",
+      key: "description",
+      render: (description) => <p>{description}</p>,
     },
 
     {
@@ -311,74 +266,6 @@ const TablePending = () => {
             <EyeTwoTone />
             Xem Đơn
           </Button>
-          <Button style={{ marginRight: "15px" }} onClick={showModalApprove}>
-            <CheckCircleTwoTone twoToneColor="#52c41a" />
-          </Button>
-          <Button onClick={showModalNotApprove}>
-            <CloseCircleTwoTone twoToneColor="#ff4d4f" />
-          </Button>
-          <Modal
-            title="Duyệt Sản Phẩm"
-            open={isModalVisible}
-            onCancel={handleCancel}
-            footer={null}
-          >
-            <Form form={form}>
-              <p>Lý Do Duyệt:</p>
-              <Form.Item
-                name="descriptionRequest"
-                onChange={(e) => setDescriptionRequest(e.target.value)}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item style={{ textAlign: "center" }}>
-                <Button
-                  type="primary"
-                  style={{ backgroundColor: "red" }}
-                  onClick={handleCancel}
-                >
-                  Hủy
-                </Button>
-                <Button
-                  type="primary"
-                  style={{ backgroundColor: "#008000", marginLeft: "20px" }}
-                  onClick={() => handleOk(record)}
-                >
-                  Duyệt
-                </Button>
-              </Form.Item>
-            </Form>
-          </Modal>
-          <Modal
-            title="Từ Chối Sản Phẩm"
-            open={isModalVisibleNotApprove}
-            onOk={handleSend}
-            onCancel={handleCancelNotApprove}
-            footer={null}
-          >
-            <Form form={form}>
-              <p>Lý Do Từ Chối:</p>
-              <Form.Item name="description">
-                <Input />
-              </Form.Item>
-              <Form.Item style={{ textAlign: "center" }}>
-                <Button
-                  type="primary"
-                  style={{ backgroundColor: "red" }}
-                  onClick={handleCancelNotApprove}
-                >
-                  Hủy
-                </Button>
-                <Button
-                  type="primary"
-                  style={{ backgroundColor: "#008000", marginLeft: "20px" }}
-                  onClick={handleSend}
-                >
-                  Gửi
-                </Button>
-              </Form.Item>
-            </Form>
-          </Modal>
         </div>
       ),
     },
@@ -386,9 +273,8 @@ const TablePending = () => {
   return (
     <div>
       <Table columns={columns} dataSource={requestsData} />
-      {contextHolder}
       <Drawer
-        title="Thông tin đơn hàng " // Customize the title as needed
+        title="Thông tin đơn hàng" // Customize the title as needed
         width={450} // Customize the width as needed
         onClose={() => setIsDrawerVisible(false)} // Close the Drawer when the close button is clicked
         open={isDrawerVisible} // Show the Drawer when isDrawerVisible is true
@@ -399,8 +285,8 @@ const TablePending = () => {
             <strong style={{ marginLeft: "10px" }}>
               {selectedRecord?.productName}
             </strong>
-            {/* <Input value={selectedRecord?.productName} readOnly /> */}
           </Form.Item>
+
           <Form.Item name="description">
             <span>Mô Tả: </span>
             <strong style={{ marginLeft: "10px" }}>
@@ -431,7 +317,7 @@ const TablePending = () => {
           <Form.Item name="status">
             <span>Trạng Thái Sản Phẩm: </span>
             <strong style={{ marginLeft: "10px" }}>
-              <RenderTag tagRender={selectedRecord?.status} />
+              {selectedRecord?.status}
             </strong>
             {/* <Input value={selectedRecord?.productName} readOnly /> */}
           </Form.Item>
@@ -439,7 +325,7 @@ const TablePending = () => {
           <Form.Item name="checkType">
             <span>Hình Thức Sản Phẩm: </span>
             <strong style={{ marginLeft: "10px" }}>
-              <RenderTag tagRender={selectedRecord?.checkType} />
+              {selectedRecord?.checkType}
             </strong>
           </Form.Item>
 
@@ -449,46 +335,47 @@ const TablePending = () => {
               {selectedRecord?.category.categoryName}
             </strong>
           </Form.Item>
-          <p style={{ marginBottom: "10px" }}>Ảnh Hóa Đơn:</p>
+
+          <p style={{ marginBottom: "3px" }}>Ảnh Hóa Đơn:</p>
           <Form.Item name="productReceiptUrl">
             {selectedRecord?.productReceiptUrl && (
               <Image
                 style={{ borderRadius: "10px" }}
-                width={300}
+                width={200}
                 src={selectedRecord.productReceiptUrl}
               />
             )}
           </Form.Item>
-          <p style={{ marginBottom: "10px" }}>Ảnh Chi Tiết Sản Phẩm:</p>
-          <Form.Item name="detailImg">
-            {productImage && productImage.length > 0 ? (
-              <Carousel autoplay>
-                {productImage.map((image, index) => (
-                  <div key={index}>
-                    <Image.PreviewGroup>
-                      <Image
-                        style={{
-                          width: "100%",
-                          height: "200px",
-                          cursor: "pointer",
-                        }}
-                        src={image}
-                        alt={`Image ${index}`}
-                      />
-                    </Image.PreviewGroup>
-                  </div>
-                ))}
-              </Carousel>
-            ) : (
-              <div>No images available</div>
-            )}
-          </Form.Item>
         </Form>
         {/* Customize the content of the Drawer using selectedRecord */}
+        <p style={{ marginBottom: "10px" }}>Ảnh Chi Tiết Sản Phảm:</p>
+        <Form.Item name="detailImg">
+          {productImage && productImage.length > 0 ? (
+            <Carousel autoplay>
+              {productImage.map((image, index) => (
+                <div key={index}>
+                  <Image.PreviewGroup>
+                    <Image
+                      style={{
+                        width: "100%",
+                        height: "200px",
+                        cursor: "pointer",
+                      }}
+                      src={image}
+                      alt={`Image ${index}`}
+                    />
+                  </Image.PreviewGroup>
+                </div>
+              ))}
+            </Carousel>
+          ) : (
+            <div>No images available</div>
+          )}
+        </Form.Item>
 
         {/* Add more details as needed */}
       </Drawer>
     </div>
   );
 };
-export default TablePending;
+export default RejectTable;

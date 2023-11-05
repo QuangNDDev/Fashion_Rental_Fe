@@ -40,7 +40,7 @@ const CancelOrderTable = () => {
       date: "23/10/2023",
       address: "Land Mark 81",
       status: "Cancel",
-      reason:"Tôi không muốn mua hàng nữa!"
+      reason: "Tôi không muốn mua hàng nữa!",
     },
     {
       orderID: 2,
@@ -50,9 +50,8 @@ const CancelOrderTable = () => {
       date: "19/10/2023",
       address: "Vinhome Central Park",
       status: "Cancel",
-      reason:"Tôi muốn thay đổi địa chỉ!"
+      reason: "Tôi muốn thay đổi địa chỉ!",
     },
-    
   ]);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -170,7 +169,7 @@ const CancelOrderTable = () => {
         text
       ),
   });
-  
+
   const columns = [
     {
       title: "Mã đơn",
@@ -178,7 +177,9 @@ const CancelOrderTable = () => {
       key: "orderID",
       width: "5%",
       ...getColumnSearchProps("orderID"),
-      render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
+      render: (number) => (
+        <p style={{ textAlign: "center" }}>{Number(number)}</p>
+      ),
     },
     {
       title: "Mã sản phẩm",
@@ -186,7 +187,9 @@ const CancelOrderTable = () => {
       key: "productID",
       width: "5%",
       ...getColumnSearchProps("productID"),
-      render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
+      render: (number) => (
+        <p style={{ textAlign: "center" }}>{Number(number)}</p>
+      ),
     },
     {
       title: "Người mua",
@@ -194,7 +197,7 @@ const CancelOrderTable = () => {
       key: "fullName",
       width: "10%",
       ...getColumnSearchProps("fullName"),
-      render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
+      render: (text) => <p style={{ textAlign: "center" }}>{text}</p>,
     },
     {
       title: "SĐT",
@@ -202,7 +205,7 @@ const CancelOrderTable = () => {
       key: "phone",
       width: "10%",
       ...getColumnSearchProps("phone"),
-      render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
+      render: (text) => <p style={{ textAlign: "center" }}>{text}</p>,
     },
     {
       title: "Thời gian",
@@ -210,7 +213,7 @@ const CancelOrderTable = () => {
       key: "date",
       width: "10%",
       ...getColumnSearchProps("date"),
-      render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
+      render: (text) => <p style={{ textAlign: "center" }}>{text}</p>,
     },
     {
       title: "Địa chỉ",
@@ -220,7 +223,7 @@ const CancelOrderTable = () => {
       ...getColumnSearchProps("address"),
       sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ["descend", "ascend"],
-      render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
+      render: (text) => <p style={{ textAlign: "center" }}>{text}</p>,
     },
     {
       title: "Trạng thái",
@@ -229,19 +232,19 @@ const CancelOrderTable = () => {
       width: "10%",
       ...getColumnSearchProps("status"),
       render: (status) => (
-        <p style={{ textAlign: "center", marginBottom: "50px" }}>
+        <p style={{ textAlign: "center" }}>
           <RenderTag tagRender={status} />
         </p>
       ),
     },
     {
-        title: "Lí do",
-        dataIndex: "reason",
-        key: "reason",
-        width: "10%",
-        ...getColumnSearchProps("reason"),
-        render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
-      },
+      title: "Lí do",
+      dataIndex: "reason",
+      key: "reason",
+      width: "10%",
+      ...getColumnSearchProps("reason"),
+      render: (text) => <p style={{ textAlign: "center" }}>{text}</p>,
+    },
     {
       title: "",
       key: "action",

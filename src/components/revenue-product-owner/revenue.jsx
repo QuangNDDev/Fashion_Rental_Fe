@@ -2,6 +2,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import RevenueTable from "./revenue-table";
 import "./revenue.css";
+import { Card, Col, Row, Statistic } from "antd";
+import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  DollarOutlined,
+} from "@ant-design/icons";
 const Revenue = () => {
   const [orderData, setOrderData] = useState([]);
   const [orderWeekData, setOrderWeekData] = useState([]);
@@ -59,11 +65,7 @@ const Revenue = () => {
   const calculatePaid = () => {
     let total = 0;
     orderData.forEach((order) => {
-      if (
-        ["COMPLETED"].includes(
-          order.status
-        )
-      ) {
+      if (["COMPLETED"].includes(order.status)) {
         total += order.total;
       }
     });
@@ -101,8 +103,8 @@ const Revenue = () => {
 
   return (
     <div>
-      <div className="revenue-container">
-        <div className="overview">Tổng Quan</div>
+      <div style={{ marginBottom: 20 }} className="revenue-container">
+        {/* <div className="overview">Tổng Quan</div>
         <div className="payment-status">
           <div className="unpaid">
             <h3>Chưa thanh toán</h3>
@@ -124,14 +126,65 @@ const Revenue = () => {
             <span>Tổng cộng</span>
             <span className="money-2">{formatPriceWithVND(totalPaid)}</span>
           </div>
-        </div>
+        </div> */}
+        <Card title="Tổng Quan">
+          <Row gutter={16}>
+            <Col span={6}>
+              <Card bordered={true}>
+                <Statistic
+                  title="Chưa thanh toán"
+                  value={totalUnpaid}
+                  precision={0}
+                  valueStyle={{ color: "red" }}
+                  // prefix={<DollarOutlined />}
+                  suffix="VNĐ"
+                />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card bordered={true}>
+                <Statistic
+                  title="Đã thanh toán"
+                  value={totalPaidWeek}
+                  precision={0}
+                  valueStyle={{ color: "#3f8600" }}
+                  // prefix={<DollarOutlined />}
+                  suffix="VNĐ"
+                />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card bordered={true}>
+                <Statistic
+                  title="Tháng này"
+                  value={totalPaidMonth}
+                  precision={0}
+                  valueStyle={{ color: "#3f8600" }}
+                  // prefix={<DollarOutlined />}
+                  suffix="VNĐ"
+                />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card bordered={true}>
+                <Statistic
+                  title="Tổng cộng"
+                  value={totalPaid}
+                  precision={0}
+                  valueStyle={{ color: "#3f8600" }}
+                  // prefix={<DollarOutlined />}
+                  suffix="VNĐ"
+                />
+              </Card>
+            </Col>
+          </Row>
+        </Card>
       </div>
-      <div className="detail-table">
-        <div className="detail-title">Chi tiết</div>
-        <div className="table">
-          <RevenueTable />
-        </div>
-      </div>
+
+      <Card title="Chi tiết">
+        {" "}
+        <RevenueTable />
+      </Card>
     </div>
   );
 };

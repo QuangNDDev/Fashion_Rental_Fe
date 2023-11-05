@@ -171,7 +171,9 @@ const OrderTable = () => {
       key: "orderBuyID",
       width: "5%",
       ...getColumnSearchProps("orderBuyID"),
-      render: (number) => <p style={{ textAlign: "center" }}>{Number(number)}</p>,
+      render: (number) => (
+        <p style={{ textAlign: "center" }}>{Number(number)}</p>
+      ),
     },
     {
       title: "Thời gian",
@@ -187,7 +189,9 @@ const OrderTable = () => {
       key: "total",
       width: "20%",
       ...getColumnSearchProps("total"),
-      render: (text) => <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>,
+      render: (text) => (
+        <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
+      ),
     },
     {
       title: "Trạng thái",
@@ -209,7 +213,7 @@ const OrderTable = () => {
   ];
   return (
     <div>
-      <Table columns={columns} dataSource={orderData} />
+      <Table bordered={true} columns={columns} dataSource={orderData} />
       <Drawer
         title={"Đơn hàng"}
         visible={isDrawerVisible}
