@@ -317,7 +317,7 @@ const RejectTable = () => {
           <Form.Item name="status">
             <span>Trạng Thái Sản Phẩm: </span>
             <strong style={{ marginLeft: "10px" }}>
-              {selectedRecord?.status}
+              <RenderTag tagRender={selectedRecord?.status} />
             </strong>
             {/* <Input value={selectedRecord?.productName} readOnly /> */}
           </Form.Item>
@@ -325,7 +325,7 @@ const RejectTable = () => {
           <Form.Item name="checkType">
             <span>Hình Thức Sản Phẩm: </span>
             <strong style={{ marginLeft: "10px" }}>
-              {selectedRecord?.checkType}
+              <RenderTag tagRender={selectedRecord?.checkType} />
             </strong>
           </Form.Item>
 

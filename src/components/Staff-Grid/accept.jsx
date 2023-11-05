@@ -66,7 +66,6 @@ const TableAccept = () => {
     axios
       .get("http://fashionrental.online:8080/product/" + record.productID)
       .then((response) => {
-        console.log(response.data);
         form.setFieldsValue(response.data);
         setSelectedRecord(response.data);
       })
@@ -317,15 +316,14 @@ const TableAccept = () => {
           <Form.Item name="status">
             <span>Trạng Thái Sản Phẩm: </span>
             <strong style={{ marginLeft: "10px" }}>
-              {selectedRecord?.status}
+              <RenderTag tagRender={selectedRecord?.status} />
             </strong>
-            {/* <Input value={selectedRecord?.productName} readOnly /> */}
           </Form.Item>
 
           <Form.Item name="checkType">
             <span>Hình Thức Sản Phẩm: </span>
             <strong style={{ marginLeft: "10px" }}>
-              {selectedRecord?.checkType}
+              <RenderTag tagRender={selectedRecord?.checkType} />
             </strong>
           </Form.Item>
 
@@ -334,17 +332,6 @@ const TableAccept = () => {
             <strong style={{ marginLeft: "10px" }}>
               {selectedRecord?.category.categoryName}
             </strong>
-          </Form.Item>
-
-          <p style={{ marginBottom: "3px" }}>Ảnh Hóa Đơn:</p>
-          <Form.Item name="productReceiptUrl">
-            {selectedRecord?.productReceiptUrl && (
-              <Image
-                style={{ borderRadius: "10px" }}
-                width={200}
-                src={selectedRecord.productReceiptUrl}
-              />
-            )}
           </Form.Item>
         </Form>
         {/* Customize the content of the Drawer using selectedRecord */}
