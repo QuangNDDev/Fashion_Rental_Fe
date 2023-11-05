@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./balance-productowner.css";
 import TransactionTable from "./transaction-history-table";
+import { Row, Card, Statistic, Col } from "antd";
 const Balance = () => {
   const [balanceData, setBalanceData] = useState([]);
   const accountId = localStorage.getItem("accountId");
@@ -31,7 +32,7 @@ const Balance = () => {
   return (
     <div>
       <div className="balance-container">
-        <div className="overview">Tổng Quan</div>
+        {/* <div className="overview">Tổng Quan</div>
         <div className="balance-status">
           <div className="balance">
             <h3>Số dư</h3>
@@ -46,13 +47,41 @@ const Balance = () => {
               {formatPriceWithVND(balanceData.pendingMoney)}
             </span>
           </div>
-        </div>
+        </div> */}
+        <Card title="Tổng Quan">
+          <Row gutter={16}>
+            <Col span={12}>
+              <Card bordered={true}>
+                <Statistic
+                  title="Số dư"
+                  value={balanceData.balance}
+                  precision={0}
+                  valueStyle={{ color: "green" }}
+                  // prefix={<DollarOutlined />}
+                  suffix="VNĐ"
+                />
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card bordered={true}>
+                <Statistic
+                  title="Số dư đang chờ"
+                  value={balanceData.pendingMoney}
+                  precision={0}
+                  valueStyle={{ color: "#FFA500" }}
+                  // prefix={<DollarOutlined />}
+                  suffix="VNĐ"
+                />
+              </Card>
+            </Col>
+          </Row>
+        </Card>
       </div>
-      <div className="detail-table">
-        <div className="detail-title-balance">Chi tiết</div>
+
+      <Card bordered={true} title={"Chi tiết"} style={{ marginTop: "30px" }}>
         <p className="history-title">Lịch sử giao dịch</p>
-        <div className="table"><TransactionTable/></div>
-      </div>
+        <TransactionTable />
+      </Card>
     </div>
   );
 };

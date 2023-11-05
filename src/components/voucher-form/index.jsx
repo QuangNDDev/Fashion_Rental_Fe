@@ -18,6 +18,10 @@ function VoucherForm() {
   const [voucherType, setVoucherType] = useState(1);
   const [dateRange, setDateRange] = useState([null, null]);
 
+  const handleCancel = () => {
+    form.resetFields();
+  };
+
   const handleDateChange = (dates) => {
     setDateRange(dates);
   };
@@ -127,7 +131,10 @@ function VoucherForm() {
                       { required: true, message: "Không được để trống!" },
                     ]}
                   >
-                    <DatePicker.RangePicker onChange={handleDateChange} />
+                    <DatePicker.RangePicker
+                      onChange={handleDateChange}
+                      placeholder={["Từ ngày", "Đến ngày"]}
+                    />
                   </Form.Item>
                 </Col>
               </Row>
@@ -156,7 +163,14 @@ function VoucherForm() {
               >
                 <Col span={12}>
                   <p style={{ fontWeight: "bold" }}>Giảm giá tối đa:</p>
-                  <Input suffix="%" placeholder="Vui lòng nhập..." />
+                  <Form.Item
+                    name={"maxDiscount"}
+                    rules={[
+                      { required: true, message: "Không được để trống!" },
+                    ]}
+                  >
+                    <Input suffix="%" placeholder="Vui lòng nhập..." />
+                  </Form.Item>
                 </Col>
                 <Col span={12}>
                   <span style={{ fontWeight: "bold" }}>Số tiền giảm giá:</span>
@@ -175,6 +189,7 @@ function VoucherForm() {
                   type="primary"
                   htmlType="submit"
                   style={{ backgroundColor: "red" }}
+                  onClick={handleCancel}
                 >
                   Hủy
                 </Button>
