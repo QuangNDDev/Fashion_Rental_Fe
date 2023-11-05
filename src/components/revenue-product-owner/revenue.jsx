@@ -23,6 +23,10 @@ const Revenue = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
   const fetchOrdersWeek = async () => {
     try {
       const response = await axios.get(
@@ -135,8 +139,7 @@ const Revenue = () => {
                   title="Chưa thanh toán"
                   value={totalUnpaid}
                   precision={0}
-                  valueStyle={{ color: "red" }}
-                  // prefix={<DollarOutlined />}
+                  valueStyle={{ color: "#FFA500" }}
                   suffix="VNĐ"
                 />
               </Card>
@@ -148,7 +151,6 @@ const Revenue = () => {
                   value={totalPaidWeek}
                   precision={0}
                   valueStyle={{ color: "#3f8600" }}
-                  // prefix={<DollarOutlined />}
                   suffix="VNĐ"
                 />
               </Card>
@@ -160,7 +162,6 @@ const Revenue = () => {
                   value={totalPaidMonth}
                   precision={0}
                   valueStyle={{ color: "#3f8600" }}
-                  // prefix={<DollarOutlined />}
                   suffix="VNĐ"
                 />
               </Card>
@@ -172,7 +173,6 @@ const Revenue = () => {
                   value={totalPaid}
                   precision={0}
                   valueStyle={{ color: "#3f8600" }}
-                  // prefix={<DollarOutlined />}
                   suffix="VNĐ"
                 />
               </Card>

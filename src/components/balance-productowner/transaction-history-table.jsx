@@ -193,7 +193,7 @@ const TransactionTable = () => {
   ];
   return (
     <div>
-      <Table columns={columns} dataSource={transactionData} />
+      <Table bordered={true} columns={columns} dataSource={transactionData} />
     </div>
   );
 };
