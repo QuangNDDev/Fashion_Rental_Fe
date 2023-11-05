@@ -103,6 +103,7 @@ const TablePending = () => {
   };
   //-----------------------------
   const handleOk = async (record) => {
+    console.log(record.requestAddingProductID);
     try {
       const response = await axios.put(
         `http://fashionrental.online:8080/request?description=` +
@@ -111,6 +112,7 @@ const TablePending = () => {
           record.requestAddingProductID +
           `&status=APPROVED`
       );
+     if(response){
       try {
         const staffRequest = await axios.post(
           "http://fashionrental.online:8080/staffrequested?requestAddingProductID=" +
@@ -140,6 +142,7 @@ const TablePending = () => {
       } catch (error) {
         console.error("Validation failed", error);
       }
+     }
       setIsModalVisible(false);
       fetchRequests();
     } catch (error) {
@@ -322,6 +325,7 @@ const TablePending = () => {
             open={isModalVisible}
             onCancel={handleCancel}
             footer={null}
+            
           >
             <Form form={form}>
               <p>Lý Do Duyệt:</p>
