@@ -5,28 +5,28 @@ import { Button, Drawer, Form, Input, Radio, Space, Table, Tag } from "antd";
 import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
-const OrderTable = () => {
+const VoucherTable = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
   const [editingUser, setEditingUser] = useState(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [orderData, setOrderData] = useState([]);
+  const [voucherData, setVoucherData] = useState([]);
   const productownerId = localStorage.getItem("productownerId");
-  const fetchOrders = async () => {
+  const fetchVouchers = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/orderbuy/po/" + productownerId
+        "http://fashionrental.online:8080/voucher/getall/" + productownerId
       );
-      setOrderData(response.data);
+      setVoucherData(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    fetchOrders();
+    fetchVouchers();
   }, []);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -165,40 +165,71 @@ const OrderTable = () => {
   };
   const columns = [
     {
-      title: "Mã đơn",
-      dataIndex: "orderBuyID",
-      key: "orderBuyID",
+      title: "ID",
+      dataIndex: "voucherID",
+      key: "voucherID",
       width: "5%",
-      ...getColumnSearchProps("orderBuyID"),
+      ...getColumnSearchProps("voucherID"),
       render: (number) => (
-        <p style={{ textAlign: "center" }}>{Number(number)}</p>
+        <p >{Number(number)}</p>
       ),
     },
     {
-      title: "Thời gian",
-      dataIndex: "dateOrder",
-      key: "dateOrder",
+        title: "Tên khuyến mãi",
+        dataIndex: "voucherName",
+        key: "voucherName",
+        width: "15%",
+        ...getColumnSearchProps("voucherName"),
+        render: (text) => (
+          <p >{text}</p>
+        ),
+      },
+    {
+      title: "Mã khuyến mãi",
+      dataIndex: "voucherCode",
+      key: "voucherCode",
       width: "15%",
-      ...getColumnSearchProps("dateOrder"),
-      render: (text) => <p>{formatDate(text)}</p>,
+      ...getColumnSearchProps("voucherCode"),
+      render: (text) => <p>{text}</p>,
     },
+    
     {
-      title: "Tổng tiền",
-      dataIndex: "total",
-      key: "total",
-      width: "20%",
-      ...getColumnSearchProps("total"),
-      render: (text) => (
-        <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
-      ),
-    },
+        title: "Ngày tạo",
+        dataIndex: "createdDate",
+        key: "createdDate",
+        width: "10%",
+        ...getColumnSearchProps("createdDate"),
+        render: (text) => (
+          <p >{formatDate(text)}</p>
+        ),
+      },
+      {
+        title: "Ngày bắt đầu",
+        dataIndex: "startDate",
+        key: "startDate",
+        width: "10%",
+        ...getColumnSearchProps("startDate"),
+        render: (text) => (
+          <p >{formatDate(text)}</p>
+        ),
+      },
+      {
+        title: "Ngày kết thúc",
+        dataIndex: "endDate",
+        key: "endDate",
+        width: "10%",
+        ...getColumnSearchProps("endDate"),
+        render: (text) => (
+          <p >{formatDate(text)}</p>
+        ),
+      },
     {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      width: "20%",
+      width: "5%",
       render: (status) => (
-        <p>
+        <p style={{textAlign:"center"}}>
           <RenderTag tagRender={status} />
         </p>
       ),
@@ -212,7 +243,7 @@ const OrderTable = () => {
   ];
   return (
     <div>
-      <Table bordered={true} columns={columns} dataSource={orderData} />
+      <Table bordered={true} columns={columns} dataSource={voucherData} />
       <Drawer
         title={"Đơn hàng"}
         visible={isDrawerVisible}
@@ -299,4 +330,4 @@ const OrderTable = () => {
     </div>
   );
 };
-export default OrderTable;
+export default VoucherTable;
