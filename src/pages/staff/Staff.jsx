@@ -97,16 +97,8 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Duyệt sản phẩm
-                </strong>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Đơn chờ xử lý
-                </strong>
-              </Breadcrumb.Item>
+              <Breadcrumb.Item>Duyệt sản phẩm</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn chờ xử lý</Breadcrumb.Item>
             </Breadcrumb>
             <TablePending />
           </div>
@@ -119,19 +111,9 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Duyệt sản phẩm
-                </strong>
-              </Breadcrumb.Item>
-
-              <Breadcrumb.Item separator="?">
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Đơn đã duyệt
-                </strong>
-              </Breadcrumb.Item>
+              <Breadcrumb.Item>Duyệt sản phẩm</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn đã duyệt</Breadcrumb.Item>
             </Breadcrumb>
-
             <TableAccept />
           </div>
         );
@@ -143,16 +125,8 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Duyệt sản phẩm
-                </strong>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Đơn bị từ chối
-                </strong>
-              </Breadcrumb.Item>
+              <Breadcrumb.Item>Duyệt sản phẩm</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn bị từ chối</Breadcrumb.Item>
             </Breadcrumb>
             <RejectTable />
           </div>
@@ -166,16 +140,8 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Xem đơn đặt hàng
-                </strong>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Sản phẩm cho thuê
-                </strong>
-              </Breadcrumb.Item>
+              <Breadcrumb.Item>Xem đơn đặt hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Sản phẩm cho thuê</Breadcrumb.Item>
             </Breadcrumb>
           </div>
         );
@@ -188,16 +154,8 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Xem đơn đặt hàng
-                </strong>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Sản phẩm bán
-                </strong>
-              </Breadcrumb.Item>
+              <Breadcrumb.Item>Xem đơn đặt hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Sản phẩm bán</Breadcrumb.Item>
             </Breadcrumb>
             <OrdersBuyStaff />
           </div>
@@ -211,16 +169,8 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Xem đơn đặt hàng
-                </strong>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Sản phẩm bị trả về
-                </strong>
-              </Breadcrumb.Item>
+              <Breadcrumb.Item>Xem đơn đặt hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Sản phẩm bị trả về</Breadcrumb.Item>
             </Breadcrumb>
             <CancelOrderTable />
           </div>
@@ -233,16 +183,8 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Báo cáo
-                </strong>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Báo cáo sản phẩm
-                </strong>
-              </Breadcrumb.Item>
+              <Breadcrumb.Item>Báo cáo</Breadcrumb.Item>
+              <Breadcrumb.Item>Báo cáo sản phẩm</Breadcrumb.Item>
             </Breadcrumb>
           </div>
         );
@@ -254,16 +196,8 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Thông Tin
-                </strong>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <strong style={{ fontWeight: "500", fontSize: "15px" }}>
-                  Thông tin cá nhân
-                </strong>
-              </Breadcrumb.Item>
+              <Breadcrumb.Item>Thông Tin</Breadcrumb.Item>
+              <Breadcrumb.Item>Thông tin cá nhân</Breadcrumb.Item>
             </Breadcrumb>
             <ProfileStaff />
           </div>
@@ -359,109 +293,31 @@ const Staff = () => {
               key="sub1"
               icon={<CheckOutlined style={{ fontSize: "17px" }} />}
               title="Duyệt sản phẩm"
-              style={{ fontWeight: "bold", fontSize: "15px" }}
             >
-              <Menu.Item
-                key="1"
-                icon={
-                  <ClockCircleTwoTone
-                    twoToneColor="#ffcc00"
-                    style={{ fontSize: "23px" }}
-                  />
-                }
-              >
-                Đơn chờ xử lý
-              </Menu.Item>
+              <Menu.Item key="1">Đơn chờ xử lý</Menu.Item>
 
-              <Menu.Item
-                key="2"
-                icon={
-                  <CheckCircleTwoTone
-                    twoToneColor="#52c41a"
-                    style={{ fontSize: "23px" }}
-                  />
-                }
-              >
-                Đơn đã duyệt
-              </Menu.Item>
+              <Menu.Item key="2">Đơn đã duyệt</Menu.Item>
 
-              <Menu.Item
-                key="3"
-                icon={
-                  <CloseCircleTwoTone
-                    twoToneColor="#ff0000"
-                    style={{ fontSize: "23px" }}
-                  />
-                }
-              >
-                Đơn đã từ chối
-              </Menu.Item>
+              <Menu.Item key="3">Đơn đã từ chối</Menu.Item>
             </SubMenu>
 
             <SubMenu
               key="sub2"
               icon={<EyeTwoTone style={{ fontSize: "17px" }} />}
               title="Xem đơn hàng"
-              style={{ fontWeight: "bold", fontSize: "15px" }}
             >
-              <Menu.Item
-                key="4"
-                icon={
-                  <SyncOutlined
-                    spin
-                    twoToneColor="#52c41a"
-                    style={{ fontSize: "23px" }}
-                  />
-                }
-              >
-                Sản phẩm đang cho thuê
-              </Menu.Item>
-              <Menu.Item
-                key="5"
-                icon={
-                  <DollarTwoTone
-                    twoToneColor="#52c41a"
-                    style={{ fontSize: "23px" }}
-                  />
-                }
-              >
-                Sản phẩm bán
-              </Menu.Item>
+              <Menu.Item key="4">Sản phẩm đang cho thuê</Menu.Item>
+              <Menu.Item key="5">Sản phẩm bán</Menu.Item>
 
-              <Menu.Item
-                key="6"
-                icon={
-                  <QuestionCircleTwoTone
-                    twoToneColor="#ff0000"
-                    style={{ fontSize: "23px" }}
-                  />
-                }
-              >
-                Sản phẩm bị trả về
-              </Menu.Item>
+              <Menu.Item key="6">Sản phẩm bị trả về</Menu.Item>
             </SubMenu>
 
             <SubMenu
               key="sub3"
-              icon={
-                <NotificationFilled
-                  style={{ fontSize: "17px", color: "red" }}
-                />
-              }
               title="Báo cáo"
-              style={{ fontWeight: "bold", fontSize: "15px" }}
+              icon={<MailFilled twoToneColor="#ff0000" />}
             >
-              <Menu.Item
-                key="7"
-                icon={
-                  <MailFilled
-                    style={{ fontSize: "23px" }}
-                    twoToneColor="#ff0000"
-                  />
-                }
-              >
-                Báo cáo sản phẩm
-              </Menu.Item>
+              <Menu.Item key="7">Báo cáo sản phẩm</Menu.Item>
             </SubMenu>
 
             <SubMenu
@@ -472,19 +328,8 @@ const Staff = () => {
                 />
               }
               title="Thông tin"
-              style={{ fontWeight: "bold", fontSize: "15px" }}
             >
-              <Menu.Item
-                key="8"
-                icon={
-                  <MailFilled
-                    style={{ fontSize: "23px" }}
-                    twoToneColor="#ff0000"
-                  />
-                }
-              >
-                Thông tin cá nhân
-              </Menu.Item>
+              <Menu.Item key="8">Thông tin cá nhân</Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>
