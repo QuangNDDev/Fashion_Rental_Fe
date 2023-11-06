@@ -1,5 +1,5 @@
 import { EyeOutlined } from "@ant-design/icons";
-import { Card, Col, Form, Image, Modal, Row, Switch } from "antd";
+import { Card, Col, Form, Image, Modal, notification, Row, Switch } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import MuntilImage from "../Mutil-Image";
@@ -14,7 +14,7 @@ const ProductCard = () => {
   const productownerId = localStorage.getItem("productownerId");
   const idAccount = localStorage.getItem("accountId");
   const [productData, setProductData] = useState([]);
-
+  const [api, contextHolder] = notification.useNotification();
   const [productImage, setProductImage] = useState();
 
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
@@ -27,8 +27,54 @@ const ProductCard = () => {
   //-------------------------------------------------------------------------------------------------
 
   //-------------------------SWITCH-----------------------------------
-  const onChange = (checked) => {
+  const onChange = (checked, productID) => {
     console.log(`switch to ${checked}`);
+
+    if (checked == true) {
+      try {
+        axios
+          .put(
+            `http://fashionrental.online:8080/product/update/}?productID=` +
+              productID +
+              `&status=AVAILABLE`
+          )
+          .then((response) => {
+            api["success"]({
+              message: "Cập Nhật Trạng Thái Thành Công!",
+              description: null,
+            });
+            console.log("Checked true complete!!!", response);
+          });
+      } catch (error) {
+        api["error"]({
+          message: "Cập Nhật Thất Bại!",
+          description: null,
+        });
+        console.log(error);
+      }
+    } else if (checked == false) {
+      try {
+        axios
+          .put(
+            `http://fashionrental.online:8080/product/update/}?productID=` +
+              productID +
+              `&status=BLOCKED`
+          )
+          .then((response) => {
+            api["success"]({
+              message: "Cập Nhật Trạng Thái Thành Công!",
+              description: null,
+            });
+            console.log("Checked false complete!!!", response);
+          });
+      } catch (error) {
+        api["error"]({
+          message: "Cập Nhật Thất Bại!",
+          description: null,
+        });
+        console.log(error);
+      }
+    }
   };
   //----------------------------------------------------------------------
   const fetchProducts = async () => {
@@ -188,6 +234,7 @@ const ProductCard = () => {
   };
   return (
     <>
+      {contextHolder}
       <Row gutter={[16, 16]}>
         {productData.map((product) => (
           <Col
@@ -226,7 +273,7 @@ const ProductCard = () => {
               actions={[
                 <Switch
                   defaultChecked
-                  onChange={onChange}
+                  onChange={(checked) => onChange(checked, product.productID)}
                   style={{ backgroundColor: "green" }}
                   size="small"
                 />,

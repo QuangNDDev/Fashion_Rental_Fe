@@ -18,7 +18,8 @@ function VoucherForm() {
   const [form] = Form.useForm();
   const [voucherType, setVoucherType] = useState(1);
   const [dateRange, setDateRange] = useState([null, null]);
-const productownerId = localStorage.getItem("productownerId");
+
+  const productownerId = localStorage.getItem("productownerId");
   const handleCancel = () => {
     form.resetFields();
   };
@@ -59,7 +60,7 @@ const productownerId = localStorage.getItem("productownerId");
         "http://fashionrental.online:8080/voucher",
         voucherData
       );
-  
+
       // api["success"]({
       //   message: "Thêm Mã Khuyến Mãi Thành Công",
       //   description: `Bạn đã thêm ${values.discountName} thành công`,
@@ -75,7 +76,6 @@ const productownerId = localStorage.getItem("productownerId");
       // });
     }
   };
-  
 
   const handleChangeVoucherType = (value) => {
     console.log(`selected ${value}`);
