@@ -271,7 +271,7 @@ const TableAccept = () => {
   ];
   return (
     <div>
-      <Table columns={columns} dataSource={requestsData} />
+      <Table bordered={true} columns={columns} dataSource={requestsData} />
       <Drawer
         title="Thông tin đơn hàng" // Customize the title as needed
         width={450} // Customize the width as needed

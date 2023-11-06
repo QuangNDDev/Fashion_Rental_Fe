@@ -35,9 +35,9 @@ function VoucherForm() {
 
   function formatDateWithTime(date) {
     const options = {
-      day: "2-digit",
-      month: "2-digit",
       year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
     };
 
     const formattedDate = date
@@ -85,7 +85,7 @@ function VoucherForm() {
               width: 700,
               height: "max-content",
               marginTop: "50px",
-              marginLeft: "65%",
+              marginLeft: "50%",
             }}
           >
             <Form form={form} onFinish={onFinish}>
