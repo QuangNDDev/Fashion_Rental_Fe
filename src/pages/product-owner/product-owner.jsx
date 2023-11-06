@@ -100,7 +100,7 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Quản lí đơn hàng</Breadcrumb.Item>
               <Breadcrumb.Item>Tất cả</Breadcrumb.Item>
             </Breadcrumb>
-            <OrderTable data={productowner.productownerID} />
+            <OrderTable />
           </div>
         );
       case "2":
