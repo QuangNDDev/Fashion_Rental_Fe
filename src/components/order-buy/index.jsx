@@ -8,7 +8,7 @@ const OrdersBuyStaff = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
-  const [error, setError] = useState(null);
+
   const [orderBuyData, setOrderBuyData] = useState([
     {
       orderID: 1,

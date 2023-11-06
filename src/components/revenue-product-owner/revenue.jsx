@@ -108,8 +108,8 @@ const Revenue = () => {
   return (
     <div>
       <div style={{ marginBottom: 20 }} className="revenue-container">
-        {/* <div className="overview">Tổng Quan</div>
-        <div className="payment-status">
+        <div className="overview">Tổng Quan</div>
+        {/* <div className="payment-status">
           <div className="unpaid">
             <h3>Chưa thanh toán</h3>
             <span>Tổng cộng</span>
@@ -124,7 +124,9 @@ const Revenue = () => {
 
           <div className="paid-this-month">
             <span>Tháng này</span>
-            <span className="money-2">{formatPriceWithVND(totalPaidMonth)}</span>
+            <span className="money-2">
+              {formatPriceWithVND(totalPaidMonth)}
+            </span>
           </div>
           <div className="total-paid">
             <span>Tổng cộng</span>

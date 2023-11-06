@@ -3,31 +3,30 @@ import {
   Card,
   Col,
   DatePicker,
-  Flex,
   Form,
   Input,
   Row,
   Select,
   Space,
+  notification,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import React, { useState } from "react";
 import axios from "axios";
+import React, { useState } from "react";
 
 function VoucherForm() {
   const [form] = Form.useForm();
   const [voucherType, setVoucherType] = useState(1);
   const [dateRange, setDateRange] = useState([null, null]);
-
   const productownerId = localStorage.getItem("productownerId");
+  const [api, contextHolder] = notification.useNotification();
   const handleCancel = () => {
     form.resetFields();
   };
 
   const handleDateChange = (dates) => {
-    setDateRange(dates);
-
-    if (dates[0] && dates[1]) {
+    if (Array.isArray(dates) && dates.length === 2) {
+      setDateRange(dates);
       const formattedStartDate = formatDateToString(dates[0]);
       const formattedEndDate = formatDateToString(dates[1]);
 
@@ -60,20 +59,20 @@ function VoucherForm() {
         "http://fashionrental.online:8080/voucher",
         voucherData
       );
-
-      // api["success"]({
-      //   message: "Thêm Mã Khuyến Mãi Thành Công",
-      //   description: `Bạn đã thêm ${values.discountName} thành công`,
-      // });
+      const voucherName = values.voucherName;
+      api["success"]({
+        message: "Thêm Mã Khuyến Mãi Thành Công",
+        description: `Bạn đã thêm ${voucherName} thành công`,
+      });
       form.resetFields();
       console.log("Voucher successful", response.data);
     } catch (error) {
       console.error("Add new voucher failed", error);
-      // api["error"]({
-      //   message: "Thêm Mã Khuyến Mãi Thất Bại",
-      //   description: `Bạn đã thêm ${values.discountName} thất bại`,
-      //   duration: 1000,
-      // });
+      api["error"]({
+        message: "Thêm Mã Khuyến Mãi Thất Bại",
+        description: `Bạn đã thêm ${values.voucherName}vo thất bại`,
+        duration: 1000,
+      });
     }
   };
 
@@ -94,6 +93,7 @@ function VoucherForm() {
     >
       <div className="container__voucher">
         <Space direction="vertical" size={16}>
+          {contextHolder}
           <Card
             title={
               <div
