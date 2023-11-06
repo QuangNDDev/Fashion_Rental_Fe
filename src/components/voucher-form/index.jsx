@@ -12,12 +12,13 @@ import {
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import React, { useState } from "react";
+import axios from "axios";
 
 function VoucherForm() {
   const [form] = Form.useForm();
   const [voucherType, setVoucherType] = useState(1);
   const [dateRange, setDateRange] = useState([null, null]);
-
+const productownerId = localStorage.getItem("productownerId");
   const handleCancel = () => {
     form.resetFields();
   };
@@ -35,19 +36,46 @@ function VoucherForm() {
   };
 
   function formatDateToString(date) {
-    const year = date.getFullYear().toString();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Thêm '0' phía trước nếu tháng có một chữ số
-    const day = date.getDate().toString().padStart(2, "0"); // Thêm '0' phía trước nếu ngày có một chữ số
-
-    return `${year}/${month}/${day}`;
+    if (!(date instanceof Date)) {
+      return "";
+    }
   }
-  const onFinish = (values) => {
-    // description: values.description;
-    // discountAmount: values.discountAmount;
-    // voucherTypeID: voucherType;
-    // voucherCode: values.voucherCode;
-    // voucherName: values.voucherName;
+  const onFinish = async (values) => {
+    const [startDate, endDate] = dateRange;
+    const voucherData = {
+      description: values.description,
+      discountAmount: values.discountAmount,
+      voucherCode: values.voucherCode,
+      voucherName: values.voucherName,
+      status: "true",
+      startDate: startDate,
+      endDate: endDate,
+      maxDiscount: values.maxDiscount,
+      voucherTypeID: voucherType,
+      productownerID: productownerId,
+    };
+    try {
+      const response = await axios.post(
+        "http://fashionrental.online:8080/voucher",
+        voucherData
+      );
+  
+      // api["success"]({
+      //   message: "Thêm Mã Khuyến Mãi Thành Công",
+      //   description: `Bạn đã thêm ${values.discountName} thành công`,
+      // });
+      form.resetFields();
+      console.log("Voucher successful", response.data);
+    } catch (error) {
+      console.error("Add new voucher failed", error);
+      // api["error"]({
+      //   message: "Thêm Mã Khuyến Mãi Thất Bại",
+      //   description: `Bạn đã thêm ${values.discountName} thất bại`,
+      //   duration: 1000,
+      // });
+    }
   };
+  
 
   const handleChangeVoucherType = (value) => {
     console.log(`selected ${value}`);
@@ -81,7 +109,7 @@ function VoucherForm() {
               width: 700,
               height: "max-content",
               marginTop: "50px",
-              marginLeft: "50%",
+              marginLeft: "40%",
             }}
           >
             <Form form={form} onFinish={onFinish}>
