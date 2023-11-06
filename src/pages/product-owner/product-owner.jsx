@@ -31,7 +31,7 @@ import CreateProduct from "../../components/create-product/create-product";
 import VoucherForm from "../../components/voucher-form";
 
 import Balance from "../../components/balance-productowner/balance-productowner";
-
+import VoucherTable from "../../components/voucher-form/voucher-table";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -197,10 +197,26 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Tài chính</Breadcrumb.Item>
               <Breadcrumb.Item>Số dư TK</Breadcrumb.Item>
             </Breadcrumb>
-            <Balance/>
+            <Balance />
           </div>
         );
       case "9":
+        return (
+          <div>
+            <div>
+              <Breadcrumb
+                style={{
+                  padding: "0 16px",
+                }}
+              >
+                <Breadcrumb.Item>Khuyến mãi</Breadcrumb.Item>
+                <Breadcrumb.Item>Tất cả mã khuyến mãi</Breadcrumb.Item>
+              </Breadcrumb>
+              <VoucherTable />
+            </div>
+          </div>
+        );
+      case "10":
         return (
           <div>
             <Breadcrumb
@@ -328,7 +344,8 @@ const ProductOwner = () => {
               icon={<PercentageOutlined style={{ fontSize: "17px" }} />}
               title="Khuyến mãi"
             >
-              <Menu.Item key="9">Thêm mã khuyến mãi</Menu.Item>
+              <Menu.Item key="9">Tất cả mã khuyến mãi</Menu.Item>
+              <Menu.Item key="10">Thêm mã khuyến mãi</Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>

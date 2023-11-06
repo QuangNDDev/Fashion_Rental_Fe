@@ -212,9 +212,9 @@ function VoucherForm() {
                 }}
               >
                 <Col span={12}>
-                  <p style={{ fontWeight: "bold" }}>Giảm giá tối đa:</p>
+                  <p style={{ fontWeight: "bold" }}>Phần trăm giảm giá:</p>
                   <Form.Item
-                    name={"maxDiscount"}
+                    name={"discountAmount"}
                     rules={[
                       { required: true, message: "Không được để trống!" },
                     ]}
@@ -223,14 +223,14 @@ function VoucherForm() {
                   </Form.Item>
                 </Col>
                 <Col span={12}>
-                  <span style={{ fontWeight: "bold" }}>Số tiền giảm giá:</span>
+                  <span style={{ fontWeight: "bold" }}>Số tiền giảm giá tối đa:</span>
                   <Form.Item
-                    name={"discountAmount"}
+                    name={"maxDiscount"}
                     rules={[
                       { required: true, message: "Không được để trống!" },
                     ]}
                   >
-                    <Input placeholder="Vui lòng nhập..." />
+                    <Input suffix="VNĐ" placeholder="Vui lòng nhập..." />
                   </Form.Item>
                 </Col>
               </Row>
