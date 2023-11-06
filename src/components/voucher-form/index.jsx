@@ -24,26 +24,22 @@ function VoucherForm() {
 
   const handleDateChange = (dates) => {
     setDateRange(dates);
-    console.log(dates);
 
-    // Định dạng phạm vi ngày tháng được chọn thành chuỗi "dd/mm/yyyy HH:mm:ss" với múi giờ địa phương của Việt Nam
-    const formattedStartDate = formatDateWithTime(dates[0]);
-    const formattedEndDate = formatDateWithTime(dates[1]);
-    console.log(`Ngày bắt đầu đã định dạng: ${formattedStartDate}`);
-    console.log(`Ngày kết thúc đã định dạng: ${formattedEndDate}`);
+    if (dates[0] && dates[1]) {
+      const formattedStartDate = formatDateToString(dates[0]);
+      const formattedEndDate = formatDateToString(dates[1]);
+
+      console.log(`Ngày bắt đầu đã định dạng: ${formattedStartDate}`);
+      console.log(`Ngày kết thúc đã định dạng: ${formattedEndDate}`);
+    }
   };
 
-  function formatDateWithTime(date) {
-    const options = {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    };
+  function formatDateToString(date) {
+    const year = date.getFullYear().toString();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Thêm '0' phía trước nếu tháng có một chữ số
+    const day = date.getDate().toString().padStart(2, "0"); // Thêm '0' phía trước nếu ngày có một chữ số
 
-    const formattedDate = date
-      ? new Intl.DateTimeFormat("vi-VN", options).format(date)
-      : "";
-    return formattedDate;
+    return `${year}/${month}/${day}`;
   }
   const onFinish = (values) => {
     // description: values.description;
