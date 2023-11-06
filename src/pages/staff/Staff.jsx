@@ -35,6 +35,7 @@ import TableAccept from "./../../components/Staff-Grid/accept";
 import ProfileStaff from "../../components/information-staff";
 import TablePending from "../../components/Staff-Grid";
 import RejectTable from "../../components/Staff-Grid/reject";
+import OrdersBuyStaff from "../../components/order-buy";
 
 const { Header, Content, Sider } = Layout;
 
@@ -198,6 +199,7 @@ const Staff = () => {
                 </strong>
               </Breadcrumb.Item>
             </Breadcrumb>
+            <OrdersBuyStaff />
           </div>
         );
 

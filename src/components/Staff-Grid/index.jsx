@@ -442,7 +442,7 @@ const TablePending = () => {
   ];
   return (
     <div>
-      <Table columns={columns} dataSource={requestsData} />
+      <Table bordered={true} columns={columns} dataSource={requestsData} />
       {contextHolder}
       <Drawer
         title="Thông tin đơn hàng " // Customize the title as needed
