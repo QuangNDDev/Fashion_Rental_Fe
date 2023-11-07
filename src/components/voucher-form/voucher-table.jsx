@@ -1,39 +1,32 @@
-import {
-  SearchOutlined,
-  CheckCircleTwoTone,
-  CloseCircleTwoTone,
-  EyeTwoTone,
-} from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import { Button, Drawer, Form, Input, Radio, Space, Table, Tag } from "antd";
 import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
-import ProductCard from "../product-card/product-card";
-const OrderTable = () => {
+const VoucherTable = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
   const [editingUser, setEditingUser] = useState(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [orderData, setOrderData] = useState([]);
+  const [voucherData, setVoucherData] = useState([]);
   const productownerId = localStorage.getItem("productownerId");
-
-  const fetchOrders = async () => {
+  const fetchVouchers = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/orderbuy/po/" + productownerId
+        "http://fashionrental.online:8080/voucher/getall/" + productownerId
       );
-      setOrderData(response.data);
+      setVoucherData(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    fetchOrders();
+    fetchVouchers();
   }, []);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -46,10 +39,18 @@ const OrderTable = () => {
     setSearchText("");
   };
   const [form] = Form.useForm();
-  const showDrawer = (record) => {
+  const showEditDrawer = (record) => {
+    setEditingUser(record);
+    console.log(editingUser);
+    setIsEdit(true);
     setIsDrawerVisible(true);
+    form.setFieldsValue(record);
   };
-
+  const onClose = () => {
+    setIsDrawerVisible(false);
+    setIsEdit(false);
+    form.resetFields();
+  };
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -162,81 +163,92 @@ const OrderTable = () => {
       currency: "VND",
     }).format(price);
   };
-
-  const onCloseDrawer = () => {
-    setIsDrawerVisible(false);
-  };
   const columns = [
     {
-      title: "Mã đơn",
-      dataIndex: "orderBuyID",
-      key: "orderBuyID",
+      title: "ID",
+      dataIndex: "voucherID",
+      key: "voucherID",
       width: "5%",
-      ...getColumnSearchProps("orderBuyID"),
+      ...getColumnSearchProps("voucherID"),
       render: (number) => (
-        <p style={{ textAlign: "center" }}>{Number(number)}</p>
+        <p >{Number(number)}</p>
       ),
     },
     {
-      title: "Thời gian",
-      dataIndex: "dateOrder",
-      key: "dateOrder",
-      width: "10%",
-      ...getColumnSearchProps("dateOrder"),
-      render: (text) => <p>{formatDate(text)}</p>,
-    },
+        title: "Tên khuyến mãi",
+        dataIndex: "voucherName",
+        key: "voucherName",
+        width: "15%",
+        ...getColumnSearchProps("voucherName"),
+        render: (text) => (
+          <p >{text}</p>
+        ),
+      },
     {
-      title: "Tổng tiền",
-      dataIndex: "total",
-      key: "total",
+      title: "Mã khuyến mãi",
+      dataIndex: "voucherCode",
+      key: "voucherCode",
       width: "15%",
-      ...getColumnSearchProps("total"),
-      render: (text) => (
-        <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
-      ),
+      ...getColumnSearchProps("voucherCode"),
+      render: (text) => <p>{text}</p>,
     },
+    
+    {
+        title: "Ngày tạo",
+        dataIndex: "createdDate",
+        key: "createdDate",
+        width: "10%",
+        ...getColumnSearchProps("createdDate"),
+        render: (text) => (
+          <p >{formatDate(text)}</p>
+        ),
+      },
+      {
+        title: "Ngày bắt đầu",
+        dataIndex: "startDate",
+        key: "startDate",
+        width: "10%",
+        ...getColumnSearchProps("startDate"),
+        render: (text) => (
+          <p >{formatDate(text)}</p>
+        ),
+      },
+      {
+        title: "Ngày kết thúc",
+        dataIndex: "endDate",
+        key: "endDate",
+        width: "10%",
+        ...getColumnSearchProps("endDate"),
+        render: (text) => (
+          <p >{formatDate(text)}</p>
+        ),
+      },
     {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      width: "15%",
+      width: "5%",
       render: (status) => (
-        <p>
+        <p style={{textAlign:"center"}}>
           <RenderTag tagRender={status} />
         </p>
       ),
     },
     {
-      title: <p style={{ textAlign: "center" }}>Hành Động</p>,
+      title: "",
       key: "action",
       align: "left",
-      width: "15%",
-      render: (text, record) => (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Space size="middle">
-            <Button style={{ marginRight: "15px" }} onClick={showDrawer}>
-              <EyeTwoTone />
-              Xem Đơn
-            </Button>
-            <Button style={{ marginRight: "15px" }}>
-              <CheckCircleTwoTone twoToneColor="#52c41a" />
-            </Button>
-            <Button>
-              <CloseCircleTwoTone twoToneColor="#ff4d4f" />
-            </Button>
-          </Space>
-        </div>
-      ),
+      width: "5%",
     },
   ];
   return (
     <div>
-      <Table bordered={true} columns={columns} dataSource={orderData} />
+      <Table bordered={true} columns={columns} dataSource={voucherData} />
       <Drawer
         title={"Đơn hàng"}
-        open={isDrawerVisible}
-        onClose={onCloseDrawer}
-        width={900}
+        visible={isDrawerVisible}
+        onClose={onClose}
+        width={400}
       >
         <Form form={form}>
           <Form.Item
@@ -276,10 +288,46 @@ const OrderTable = () => {
           >
             <Input />
           </Form.Item>
+          {/* <Form.Item
+            name="status"
+            label="Trạng thái hoạt động"
+            rules={[
+              { required: true, message: "Cập nhật trạng thái hoạt động!" },
+            ]}
+          >
+            <Radio.Group>
+              <Radio value={true}>Đang hoạt động</Radio>
+              <Radio value={false}>Không hoạt động</Radio>
+            </Radio.Group>
+          </Form.Item> */}
+
+          <Form.Item>
+            <Button
+              type="primary"
+              style={{
+                backgroundColor: "#008000",
+                color: "#fff",
+                width: "70%",
+              }}
+            >
+              Xác nhận
+            </Button>
+            <Button
+              type="primary"
+              style={{
+                backgroundColor: "red",
+                color: "#fff",
+                width: "25%",
+                marginLeft: "10px",
+              }}
+              danger
+            >
+              Từ chối
+            </Button>
+          </Form.Item>
         </Form>
-        <ProductCard />
       </Drawer>
     </div>
   );
 };
-export default OrderTable;
+export default VoucherTable;

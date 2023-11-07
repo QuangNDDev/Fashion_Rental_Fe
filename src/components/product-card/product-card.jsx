@@ -28,22 +28,23 @@ const ProductCard = () => {
 
   //-------------------------SWITCH-----------------------------------
   const onChange = (checked, productID) => {
-    console.log(`switch to ${checked}`);
-
-    if (checked == true) {
+    console.log(`Bật/Tắt: ${checked}`);
+  
+    if (checked === true) {
       try {
         axios
           .put(
-            `http://fashionrental.online:8080/product/update/}?productID=` +
+            `http://fashionrental.online:8080/product?productID=` +
               productID +
-              `&status=AVAILABLE`
+              `&status=AVAILABLE
+              `
           )
           .then((response) => {
             api["success"]({
               message: "Cập Nhật Trạng Thái Thành Công!",
               description: null,
             });
-            console.log("Checked true complete!!!", response);
+            console.log("Bật true hoàn tất!!!", response);
           });
       } catch (error) {
         api["error"]({
@@ -52,11 +53,11 @@ const ProductCard = () => {
         });
         console.log(error);
       }
-    } else if (checked == false) {
+    } else if (checked === false) {
       try {
         axios
           .put(
-            `http://fashionrental.online:8080/product/update/}?productID=` +
+            `http://fashionrental.online:8080/product?productID=` +
               productID +
               `&status=BLOCKED`
           )
@@ -65,7 +66,7 @@ const ProductCard = () => {
               message: "Cập Nhật Trạng Thái Thành Công!",
               description: null,
             });
-            console.log("Checked false complete!!!", response);
+            console.log("Tắt false hoàn tất!!!", response);
           });
       } catch (error) {
         api["error"]({
