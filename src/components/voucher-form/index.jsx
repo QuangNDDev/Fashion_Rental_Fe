@@ -81,9 +81,6 @@ function VoucherForm() {
     setVoucherType(value);
   };
 
-  const onChangeCreateDate = (date, dateString) => {
-    console.log(date, dateString);
-  };
   return (
     <div
       style={{
@@ -109,7 +106,7 @@ function VoucherForm() {
               width: 700,
               height: "max-content",
               marginTop: "50px",
-              marginLeft: "40%",
+              marginLeft: "45%",
             }}
           >
             <Form form={form} onFinish={onFinish}>
@@ -219,7 +216,10 @@ function VoucherForm() {
                       { required: true, message: "Không được để trống!" },
                     ]}
                   >
-                    <Input suffix="%" placeholder="Vui lòng nhập..." />
+                    <Input
+                      suffix={<span style={{ fontWeight: "bold" }}>%</span>}
+                      placeholder="Vui lòng nhập..."
+                    />
                   </Form.Item>
                 </Col>
                 <Col span={12}>

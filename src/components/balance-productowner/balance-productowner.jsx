@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./balance-productowner.css";
 import TransactionTable from "./transaction-history-table";
 import { Row, Card, Statistic, Col } from "antd";
+import CountUp from "react-countup";
 const Balance = () => {
   const [balanceData, setBalanceData] = useState([]);
   const accountId = localStorage.getItem("accountId");
@@ -22,32 +23,13 @@ const Balance = () => {
   }, []);
 
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
-  const formatPriceWithVND = (price) => {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(price);
-  };
+  const formatter = (value) => (
+    <CountUp end={value} separator="," duration={1} /> // Thay duration bằng thời gian bạn muốn để con số hiển thị
+  );
 
   return (
     <div>
       <div className="balance-container">
-        {/* <div className="overview">Tổng Quan</div>
-        <div className="balance-status">
-          <div className="balance">
-            <h3>Số dư</h3>
-            <span className="money-1">
-              {formatPriceWithVND(balanceData.balance)}
-            </span>
-          </div>
-          <hr className="divider" />
-          <div className="pending">
-            <h3>Số dư đang chờ</h3>
-            <span className="money-1">
-              {formatPriceWithVND(balanceData.pendingMoney)}
-            </span>
-          </div>
-        </div> */}
         <Card title="Tổng Quan">
           <Row gutter={16}>
             <Col span={12}>
@@ -59,6 +41,7 @@ const Balance = () => {
                   valueStyle={{ color: "green" }}
                   // prefix={<DollarOutlined />}
                   suffix="VNĐ"
+                  formatter={formatter}
                 />
               </Card>
             </Col>
@@ -71,6 +54,7 @@ const Balance = () => {
                   valueStyle={{ color: "#FFA500" }}
                   // prefix={<DollarOutlined />}
                   suffix="VNĐ"
+                  formatter={formatter}
                 />
               </Card>
             </Col>
@@ -78,8 +62,11 @@ const Balance = () => {
         </Card>
       </div>
 
-      <Card bordered={true} title={"Chi tiết"} style={{ marginTop: "30px" }}>
-        <p className="history-title">Lịch sử giao dịch</p>
+      <Card
+        bordered={true}
+        title={"Lịch sử giao dịch"}
+        style={{ marginTop: "30px" }}
+      >
         <TransactionTable />
       </Card>
     </div>

@@ -31,7 +31,7 @@ import CreateProduct from "../../components/create-product/create-product";
 import VoucherForm from "../../components/voucher-form";
 
 import Balance from "../../components/balance-productowner/balance-productowner";
-
+import OrderRent from "../../components/product-owner-table/OrderRent";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -98,12 +98,26 @@ const ProductOwner = () => {
               }}
             >
               <Breadcrumb.Item>Quản lí đơn hàng</Breadcrumb.Item>
-              <Breadcrumb.Item>Tất cả</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn bán</Breadcrumb.Item>
             </Breadcrumb>
             <OrderTable />
           </div>
         );
       case "2":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Quản lí đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn thuê</Breadcrumb.Item>
+            </Breadcrumb>
+            <OrderRent />
+          </div>
+        );
+      case "3":
         return (
           <div>
             <Breadcrumb
@@ -117,7 +131,7 @@ const ProductOwner = () => {
             <CancelOrderTable />
           </div>
         );
-      case "3":
+      case "4":
         return (
           <div>
             <Breadcrumb
@@ -130,7 +144,7 @@ const ProductOwner = () => {
             </Breadcrumb>
           </div>
         );
-      case "4":
+      case "5":
         return (
           <div>
             <Breadcrumb
@@ -144,7 +158,7 @@ const ProductOwner = () => {
             <ProductCard />
           </div>
         );
-      case "5":
+      case "6":
         return (
           <div>
             <Breadcrumb
@@ -158,7 +172,7 @@ const ProductOwner = () => {
             <CreateProduct />
           </div>
         );
-      case "6":
+      case "7":
         return (
           <div>
             <Breadcrumb
@@ -172,7 +186,7 @@ const ProductOwner = () => {
             <InformationPO />
           </div>
         );
-      case "7":
+      case "8":
         return (
           <div>
             <Breadcrumb
@@ -186,7 +200,7 @@ const ProductOwner = () => {
             <Revenue />
           </div>
         );
-      case "8":
+      case "9":
         return (
           <div>
             <Breadcrumb
@@ -197,10 +211,10 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Tài chính</Breadcrumb.Item>
               <Breadcrumb.Item>Số dư TK</Breadcrumb.Item>
             </Breadcrumb>
-            <Balance/>
+            <Balance />
           </div>
         );
-      case "9":
+      case "10":
         return (
           <div>
             <Breadcrumb
@@ -296,39 +310,40 @@ const ProductOwner = () => {
               icon={<ContainerOutlined style={{ fontSize: "17px" }} />}
               title="Quản Lý Đơn Hàng"
             >
-              <Menu.Item key="1">Tất cả</Menu.Item>
-              <Menu.Item key="2">Đơn huỷ</Menu.Item>
-              <Menu.Item key="3">Trả hàng/Hoàn tiền</Menu.Item>
+              <Menu.Item key="1">Đơn bán</Menu.Item>
+              <Menu.Item key="2">Đơn thuê</Menu.Item>
+              <Menu.Item key="3">Đơn hủy</Menu.Item>
+              <Menu.Item key="4">Trả hàng/Hoàn tiền</Menu.Item>
             </SubMenu>
             <SubMenu
               key="sub2"
               icon={<ShopFilled style={{ fontSize: "17px" }} />}
               title="Quản Lí Sản Phẩm"
             >
-              <Menu.Item key="4">Tất cả sản phẩm</Menu.Item>
-              <Menu.Item key="5">Thêm sản phẩm</Menu.Item>
+              <Menu.Item key="5">Tất cả sản phẩm</Menu.Item>
+              <Menu.Item key="6">Thêm sản phẩm</Menu.Item>
             </SubMenu>
             <SubMenu
               key="sub3"
               icon={<UserOutlined style={{ fontSize: "17px" }} />}
               title="Quản Lý Tài Khoản"
             >
-              <Menu.Item key="6">Thông tin cơ bản</Menu.Item>
+              <Menu.Item key="7">Thông tin cơ bản</Menu.Item>
             </SubMenu>
             <SubMenu
               key="sub4"
               icon={<WalletOutlined style={{ fontSize: "17px" }} />}
               title="Tài chính"
             >
-              <Menu.Item key="7">Doanh thu</Menu.Item>
-              <Menu.Item key="8">Số dư TK</Menu.Item>
+              <Menu.Item key="8">Doanh thu</Menu.Item>
+              <Menu.Item key="9">Số dư TK</Menu.Item>
             </SubMenu>
             <SubMenu
               key="sub5"
               icon={<PercentageOutlined style={{ fontSize: "17px" }} />}
               title="Khuyến mãi"
             >
-              <Menu.Item key="9">Thêm mã khuyến mãi</Menu.Item>
+              <Menu.Item key="10">Thêm mã khuyến mãi</Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>
@@ -355,7 +370,7 @@ const ProductOwner = () => {
       {/* Modal for Notifications */}
       <Modal
         title="Thông báo"
-        visible={isNotificationModalVisible}
+        open={isNotificationModalVisible}
         onCancel={hideNotificationModal}
         footer={null}
         style={{ position: "absolute", bottom: "50px", right: "20px" }}

@@ -1,41 +1,31 @@
-import React, { useEffect, useState } from "react";
 import {
-  CloseCircleTwoTone,
-  LogoutOutlined,
   BellOutlined,
   CheckOutlined,
-  CheckCircleTwoTone,
-  ClockCircleTwoTone,
-  ShoppingTwoTone,
-  SyncOutlined,
-  DollarOutlined,
-  DollarTwoTone,
-  QuestionCircleTwoTone,
-  EyeTwoTone,
-  NotificationTwoTone,
-  NotificationFilled,
+  EyeFilled,
+  LogoutOutlined,
   MailFilled,
+  NotificationFilled,
 } from "@ant-design/icons";
 import {
+  Avatar,
+  Badge,
   Breadcrumb,
+  Button,
   Layout,
   Menu,
-  theme,
-  Button,
-  Avatar,
   Modal,
-  Badge,
+  theme,
 } from "antd";
 import SubMenu from "antd/es/menu/SubMenu";
-import StaffGrid from "../../components/Staff-Grid";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import CancelOrderTable from "../../components/product-owner-table/CancelOrderTable";
-import TableAccept from "./../../components/Staff-Grid/accept";
-import ProfileStaff from "../../components/information-staff";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import TablePending from "../../components/Staff-Grid";
 import RejectTable from "../../components/Staff-Grid/reject";
+import ProfileStaff from "../../components/information-staff";
 import OrdersBuyStaff from "../../components/order-buy";
+import CancelOrderTable from "../../components/product-owner-table/CancelOrderTable";
+import TableAccept from "./../../components/Staff-Grid/accept";
 
 const { Header, Content, Sider } = Layout;
 
@@ -303,7 +293,7 @@ const Staff = () => {
 
             <SubMenu
               key="sub2"
-              icon={<EyeTwoTone style={{ fontSize: "17px" }} />}
+              icon={<EyeFilled style={{ fontSize: "17px" }} />}
               title="Xem đơn hàng"
             >
               <Menu.Item key="4">Sản phẩm đang cho thuê</Menu.Item>
@@ -322,13 +312,10 @@ const Staff = () => {
 
             <SubMenu
               key="sub4"
-              icon={
-                <NotificationFilled
-                  style={{ fontSize: "17px", color: "red" }}
-                />
-              }
+              icon={<NotificationFilled style={{ fontSize: "17px" }} />}
               title="Thông tin"
             >
+              NotificationFilled
               <Menu.Item key="8">Thông tin cá nhân</Menu.Item>
             </SubMenu>
           </Menu>

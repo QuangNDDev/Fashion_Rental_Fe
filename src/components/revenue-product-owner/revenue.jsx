@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import RevenueTable from "./revenue-table";
 import "./revenue.css";
 import { Card, Col, Row, Statistic } from "antd";
+import CountUp from "react-countup";
 import {
   ArrowDownOutlined,
   ArrowUpOutlined,
@@ -98,17 +99,13 @@ const Revenue = () => {
   const totalUnpaid = calculateUnpaid();
   const totalPaid = calculatePaid();
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
-  const formatPriceWithVND = (price) => {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(price);
-  };
+  const formatter = (value) => (
+    <CountUp end={value} separator="," duration={1} /> // Thay duration bằng thời gian bạn muốn để con số hiển thị
+  );
 
   return (
     <div>
       <div style={{ marginBottom: 20 }} className="revenue-container">
-        <div className="overview">Tổng Quan</div>
         {/* <div className="payment-status">
           <div className="unpaid">
             <h3>Chưa thanh toán</h3>
@@ -136,46 +133,51 @@ const Revenue = () => {
         <Card title="Tổng Quan">
           <Row gutter={16}>
             <Col span={6}>
-              <Card bordered={true}>
+              <Card bordered={true} title="Chưa thanh toán">
                 <Statistic
-                  title="Chưa thanh toán"
+                  title="Tổng cộng"
                   value={totalUnpaid}
                   precision={0}
                   valueStyle={{ color: "#FFA500" }}
                   suffix="VNĐ"
+                  formatter={formatter}
                 />
               </Card>
             </Col>
+
             <Col span={6}>
-              <Card bordered={true}>
+              <Card bordered={true} title="Đã thanh toán">
                 <Statistic
-                  title="Đã thanh toán"
+                  title="Tuần này"
                   value={totalPaidWeek}
                   precision={0}
                   valueStyle={{ color: "#3f8600" }}
                   suffix="VNĐ"
+                  formatter={formatter}
                 />
               </Card>
             </Col>
             <Col span={6}>
-              <Card bordered={true}>
+              <Card bordered={true} title="Đã thanh toán">
                 <Statistic
                   title="Tháng này"
                   value={totalPaidMonth}
                   precision={0}
                   valueStyle={{ color: "#3f8600" }}
                   suffix="VNĐ"
+                  formatter={formatter}
                 />
               </Card>
             </Col>
             <Col span={6}>
-              <Card bordered={true}>
+              <Card bordered={true} title="Đã thanh toán">
                 <Statistic
                   title="Tổng cộng"
                   value={totalPaid}
                   precision={0}
                   valueStyle={{ color: "#3f8600" }}
                   suffix="VNĐ"
+                  formatter={formatter}
                 />
               </Card>
             </Col>
