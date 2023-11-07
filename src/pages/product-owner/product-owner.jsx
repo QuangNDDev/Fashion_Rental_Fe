@@ -32,6 +32,7 @@ import VoucherForm from "../../components/voucher-form";
 
 import Balance from "../../components/balance-productowner/balance-productowner";
 import OrderRent from "../../components/product-owner-table/OrderRent";
+import VoucherTable from "../../components/voucher-form/voucher-table";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -228,6 +229,20 @@ const ProductOwner = () => {
             <VoucherForm />
           </div>
         );
+      case "11":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Khuyến mãi</Breadcrumb.Item>
+              <Breadcrumb.Item>Xem mã khuyến mãi</Breadcrumb.Item>
+            </Breadcrumb>
+            <VoucherTable />
+          </div>
+        );
       default:
         return null;
     }
@@ -344,6 +359,7 @@ const ProductOwner = () => {
               title="Khuyến mãi"
             >
               <Menu.Item key="10">Thêm mã khuyến mãi</Menu.Item>
+              <Menu.Item key="11">Xem mã khuyến mãi</Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>

@@ -24,7 +24,7 @@ const Balance = () => {
 
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
   const formatter = (value) => (
-    <CountUp end={value} separator="," duration={1} /> // Thay duration bằng thời gian bạn muốn để con số hiển thị
+    <CountUp end={value} separator="," duration={1.5} /> // Thay duration bằng thời gian bạn muốn để con số hiển thị
   );
 
   return (

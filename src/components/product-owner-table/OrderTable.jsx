@@ -214,11 +214,11 @@ const OrderTable = () => {
       render: (text, record) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Space size="middle">
-            <Button style={{ marginRight: "15px" }} onClick={showDrawer}>
+            <Button onClick={showDrawer}>
               <EyeTwoTone />
               Xem Đơn
             </Button>
-            <Button style={{ marginRight: "15px" }}>
+            <Button>
               <CheckCircleTwoTone twoToneColor="#52c41a" />
             </Button>
             <Button>
