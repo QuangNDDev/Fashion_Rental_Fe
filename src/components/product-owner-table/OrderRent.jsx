@@ -10,8 +10,8 @@ import { Button, Drawer, Form, Input, Radio, Space, Table, Tag } from "antd";
 import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
-import ProductCard from "../product-card/product-card";
-const OrderTable = () => {
+const OrderRent = () => {
+  const [users, setUsers] = useState();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
@@ -277,9 +277,8 @@ const OrderTable = () => {
             <Input />
           </Form.Item>
         </Form>
-        <ProductCard />
       </Drawer>
     </div>
   );
 };
-export default OrderTable;
+export default OrderRent;
