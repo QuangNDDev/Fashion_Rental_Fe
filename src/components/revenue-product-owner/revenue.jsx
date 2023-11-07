@@ -4,11 +4,7 @@ import RevenueTable from "./revenue-table";
 import "./revenue.css";
 import { Card, Col, Row, Statistic } from "antd";
 import CountUp from "react-countup";
-import {
-  ArrowDownOutlined,
-  ArrowUpOutlined,
-  DollarOutlined,
-} from "@ant-design/icons";
+
 const Revenue = () => {
   const [orderData, setOrderData] = useState([]);
   const [orderWeekData, setOrderWeekData] = useState([]);
@@ -100,7 +96,7 @@ const Revenue = () => {
   const totalPaid = calculatePaid();
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
   const formatter = (value) => (
-    <CountUp end={value} separator="," duration={1} /> // Thay duration bằng thời gian bạn muốn để con số hiển thị
+    <CountUp end={value} separator="," duration={1.5} /> // Thay duration bằng thời gian bạn muốn để con số hiển thị
   );
 
   return (

@@ -8,27 +8,23 @@ const OrdersBuyStaff = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
+  const productownerId = localStorage.getItem("productownerId");
+  const [requestOrderBuyData, setRequestOrderBuyData] = useState();
 
-  const [orderBuyData, setOrderBuyData] = useState([
-    {
-      orderID: 1,
-      productName: "Túi Gucci",
-      status: "Pending",
-      revenue: "1.500.000",
-    },
-    {
-      orderID: 2,
-      productName: "Quần Prada",
-      status: "Pending",
-      revenue: "4.500.000",
-    },
-    {
-      orderID: 3,
-      productName: "Áo LV",
-      status: "Pending",
-      revenue: "5.500.000",
-    },
-  ]);
+  const fetchRequestsAllOrderBuy = async () => {
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/orderbuy/staff"
+      );
+      setRequestOrderBuyData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRequestsAllOrderBuy();
+  }, []);
 
   function formatDate(dateString) {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -39,6 +35,14 @@ const OrdersBuyStaff = () => {
     const [month, day, year] = formattedDate.split("/");
     return `${day}/ ${month}/ ${year}`;
   }
+
+  const formatPriceWithVND = (price) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+  };
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -165,6 +169,9 @@ const OrdersBuyStaff = () => {
       key: "total",
       width: "20%",
       ...getColumnSearchProps("total"),
+      render: (text) => (
+        <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
+      ),
     },
 
     {
@@ -182,22 +189,26 @@ const OrdersBuyStaff = () => {
 
     {
       title: "Khách hàng",
-      dataIndex: "customerID",
-      key: "customerID",
+      dataIndex: "customerName",
+      key: "customerName",
       width: "20%",
-      ...getColumnSearchProps("customerID"),
+      ...getColumnSearchProps("customerName"),
     },
     {
       title: "Chủ sản phẩm",
-      dataIndex: "productownerID",
-      key: "productownerID",
+      dataIndex: "productOwnerName",
+      key: "productOwnerName",
       width: "20%",
-      ...getColumnSearchProps("productownerID"),
+      ...getColumnSearchProps("productOwnerName"),
     },
   ];
   return (
     <div>
-      <Table bordered={true} columns={columns} dataSource={orderBuyData} />
+      <Table
+        bordered={true}
+        columns={columns}
+        dataSource={requestOrderBuyData}
+      />
     </div>
   );
 };

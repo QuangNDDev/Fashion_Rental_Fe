@@ -130,7 +130,7 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>Xem đơn đặt hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Xem đơn hàng</Breadcrumb.Item>
               <Breadcrumb.Item>Sản phẩm cho thuê</Breadcrumb.Item>
             </Breadcrumb>
           </div>
@@ -144,7 +144,7 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>Xem đơn đặt hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Xem đơn hàng</Breadcrumb.Item>
               <Breadcrumb.Item>Sản phẩm bán</Breadcrumb.Item>
             </Breadcrumb>
             <OrdersBuyStaff />
@@ -159,7 +159,7 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>Xem đơn đặt hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Xem đơn hàng</Breadcrumb.Item>
               <Breadcrumb.Item>Sản phẩm bị trả về</Breadcrumb.Item>
             </Breadcrumb>
             <CancelOrderTable />
@@ -315,7 +315,6 @@ const Staff = () => {
               icon={<NotificationFilled style={{ fontSize: "17px" }} />}
               title="Thông tin"
             >
-              NotificationFilled
               <Menu.Item key="8">Thông tin cá nhân</Menu.Item>
             </SubMenu>
           </Menu>
