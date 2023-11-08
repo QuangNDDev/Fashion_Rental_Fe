@@ -376,7 +376,7 @@ const CreateProduct = () => {
   //-------------------------------------------------------------------
 
   const onFinish = async (values) => {
-    if (checkCategory === 2) {
+    if (checkCategory === 1) {
       const productSpecificationData = {
         strapMaterialWatch: values.strapMaterialWatch,
         brandNameWatch: values.brandNameWatch,
@@ -483,8 +483,9 @@ const CreateProduct = () => {
 
       console.log(addProductData);
       console.log(productSpecificationData);
-    } else if (checkCategory == 3) {
-    } else if (checkCategory == 4) {
+    } else if (checkCategory == 5) {
+      //mat kinh
+    } else if (checkCategory == 2) {
       const productSpecificationData = {
         originHat: values.originHat,
         typeHat: values.typeHat,
@@ -591,7 +592,7 @@ const CreateProduct = () => {
 
       console.log(addProductData);
       console.log(productSpecificationData);
-    } else if (checkCategory == 5) {
+    } else if (checkCategory == 3) {
       const productSpecificationData = {
         brandNameJewelry: values.brandNameJewelry,
         typeJewelrys: values.typeJewelrys,
@@ -698,7 +699,7 @@ const CreateProduct = () => {
 
       console.log(addProductData);
       console.log(productSpecificationData);
-    } else if (checkCategory == 6) {
+    } else if (checkCategory == 4) {
       const productSpecificationData = {
         brandNameBag: values.brandNameBag,
         skinTexture: values.skinTexture,
@@ -912,7 +913,7 @@ const CreateProduct = () => {
 
       console.log(addProductData);
       console.log(productSpecificationData);
-    } else if (checkCategory == 8) {
+    } else if (checkCategory == 6) {
       const productSpecificationData = {
         brandNameShoe: values.brandNameShoe,
         typeSkinShoe: values.typeSkinShoe,
@@ -1784,7 +1785,7 @@ const CreateProduct = () => {
           </div>
         </div>
 
-        {category === 2 && (
+        {category === 1 && (
           <div className="basic-information--watch">
             <div className="section-title">Thông tin chi tiết</div>
             <div className="container-watch">
@@ -2026,7 +2027,7 @@ const CreateProduct = () => {
           </div>
         )}
 
-        {category === 6 && (
+        {category === 4 && (
           <div className="basic-information--bag">
             <div className="section-title">Thông tin chi tiết</div>
             <div className="container-bag">
@@ -2267,7 +2268,7 @@ const CreateProduct = () => {
             </div>
           </div>
         )}
-        {category === 7 && (
+        {category === 5 && (
           <div className="basic-information--glasses">
             <div className="section-title">Thông tin chi tiết</div>
             <div className="container-glass">
@@ -2510,7 +2511,7 @@ const CreateProduct = () => {
           </div>
         )}
 
-        {category === 5 && (
+        {category === 3 && (
           <div className="basic-information--earring">
             <div className="section-title">Thông tin chi tiết</div>
 
@@ -2753,7 +2754,7 @@ const CreateProduct = () => {
           </div>
         )}
 
-        {category === 8 && (
+        {category === 6 && (
           <div className="basic-information--shoe">
             <div className="section-title">Thông tin chi tiết</div>
             <div className="container-shoe">
@@ -2995,7 +2996,7 @@ const CreateProduct = () => {
           </div>
         )}
 
-        {category === 4 && (
+        {category === 2 && (
           <div className="basic-information--hat">
             <div className="section-title">Thông tin chi tiết</div>
             <div className="container-hat">
@@ -3379,7 +3380,7 @@ const CreateProduct = () => {
             position: "fixed",
             bottom: 0, // Đặt thẻ div ở dưới cùng của trang
             left: "50%",
-            width: "83%", // Đặt chiều rộng 100% để nó kéo dài từ cạnh trái đến cạnh phải
+            width: "84%", // Đặt chiều rộng 100% để nó kéo dài từ cạnh trái đến cạnh phải
             backgroundColor: "white",
             height: "50px",
             zIndex: 999,

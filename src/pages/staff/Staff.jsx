@@ -26,6 +26,7 @@ import ProfileStaff from "../../components/information-staff";
 import OrdersBuyStaff from "../../components/order-buy";
 import CancelOrderTable from "../../components/product-owner-table/CancelOrderTable";
 import TableAccept from "./../../components/Staff-Grid/accept";
+import StaffChat from "../../components/staff-chat";
 
 const { Header, Content, Sider } = Layout;
 
@@ -59,9 +60,9 @@ const Staff = () => {
 
   const handleLogout = () => {
     navigate("/login");
-    localStorage.removeItem("roleId");
-    localStorage.removeItem("staffId");
-    localStorage.removeItem("accountId");
+    localStorage.removeItem("roleID");
+    localStorage.removeItem("staffID");
+    localStorage.removeItem("accountID");
     console.log("Logged out");
   };
 
@@ -145,7 +146,7 @@ const Staff = () => {
               }}
             >
               <Breadcrumb.Item>Xem đơn hàng</Breadcrumb.Item>
-              <Breadcrumb.Item>Sản phẩm bán</Breadcrumb.Item>
+              <Breadcrumb.Item>Sản phẩm đã bán</Breadcrumb.Item>
             </Breadcrumb>
             <OrdersBuyStaff />
           </div>
@@ -192,6 +193,19 @@ const Staff = () => {
             <ProfileStaff />
           </div>
         );
+      // case "9":
+      //   return (
+      //     <div>
+      //       <Breadcrumb
+      //         style={{
+      //           padding: "0 16px",
+      //         }}
+      //       >
+      //         <Breadcrumb.Item>Nhắn tin</Breadcrumb.Item>
+      //       </Breadcrumb>
+      //       <StaffChat />
+      //     </div>
+      //   );
       default:
         return null;
     }
@@ -297,7 +311,7 @@ const Staff = () => {
               title="Xem đơn hàng"
             >
               <Menu.Item key="4">Sản phẩm đang cho thuê</Menu.Item>
-              <Menu.Item key="5">Sản phẩm bán</Menu.Item>
+              <Menu.Item key="5">Sản phẩm đã bán</Menu.Item>
 
               <Menu.Item key="6">Sản phẩm bị trả về</Menu.Item>
             </SubMenu>
@@ -317,6 +331,14 @@ const Staff = () => {
             >
               <Menu.Item key="8">Thông tin cá nhân</Menu.Item>
             </SubMenu>
+
+            {/* <SubMenu
+              key="sub5"
+              icon={<NotificationFilled style={{ fontSize: "17px" }} />}
+              title="Nhan tin"
+            >
+              <Menu.Item key="9">Thông tin cá nhân</Menu.Item>
+            </SubMenu> */}
           </Menu>
         </Sider>
         <Layout

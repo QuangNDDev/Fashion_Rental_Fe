@@ -181,3 +181,17 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+// const user = {
+//   accountID: response.data.accountID,
+//   email: response.data.email,
+//   status: response.data.status,
+//   role: {
+//     roleID: response.data.role.roleID,
+//     roleName: response.data.role.roleName,
+//   },
+//   staff: {
+//     staffID: response.data.staff.staffID,
+//     fullName: response.data.staff.fullName,
+//     avatarUrl: response.data.staff.avatarUrl,
+//   },
+// };
