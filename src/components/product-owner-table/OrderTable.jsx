@@ -6,21 +6,20 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { Button, Drawer, Form, Input, Radio, Space, Table, Tag } from "antd";
-import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
+import { Button, Drawer, Form, Input, notification, Space, Table } from "antd";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
-import ProductCard from "../product-card/product-card";
+import ProductOrder from "./Product-Order";
 const OrderTable = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
-  const [editingUser, setEditingUser] = useState(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
   const [orderData, setOrderData] = useState([]);
   const productownerId = localStorage.getItem("productownerId");
-
+  const [selectedOrderID, setSelectedOrderID] = useState(null);
+  const [selectedCustomer, setSelectedCustomer] = useState([]);
+  const [api, contextHolder] = notification.useNotification();
   const fetchOrders = async () => {
     try {
       const response = await axios.get(
@@ -45,9 +44,80 @@ const OrderTable = () => {
     clearFilters();
     setSearchText("");
   };
+  // ==============formatDate====================================
+  function formatDate(dateString) {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    const formattedDate = new Date(dateString).toLocaleDateString(
+      "en-US",
+      options
+    );
+    const [month, day, year] = formattedDate.split("/");
+    return `${day}/ ${month}/ ${year}`;
+  }
+  // =====================ApproveOrder============================
+  const approveOrder = async (record) => {
+    console.log("orderBuyID:",record.orderBuyID);
+    try {
+      const response = await axios.put(
+        `http://fashionrental.online:8080/orderbuy?orderBuyID=` +
+          record.orderBuyID+`&status=PREPARE` 
+      );
+      api["success"]({
+        message: "Duyệt Đơn Hàng Thành Công!",
+        description: `Đơn hàng ${response.data.orderBuyID} đã được duyệt`,
+        duration: 1000,
+      });
+      console.log("Check order success!!!", response.data);
+      fetchOrders();
+    } catch (error) {
+      api["error"]({
+        message: "Duyệt Đơn Hàng Thất Bại!",
+        description: null,
+      });
+      console.error("Check order  failed", error);
+    }
+  }
+  // =======================RejectOrder===========================
+  const rejectOrder = async (record) => {
+    console.log("orderBuyID:",record.orderBuyID);
+    try {
+      const response = await axios.put(
+        `http://fashionrental.online:8080/orderbuy?orderBuyID=` +
+          record.orderBuyID+`&status=REJECTING` 
+      );
+      api["success"]({
+        message: "Từ Chối Hàng Thành Công!",
+        description: `Đơn hàng ${response.data.orderBuyID} đã bị từ chối`,
+        duration: 1000,
+      });
+      console.log("Check order success!!!", response.data);
+      fetchOrders();
+    } catch (error) {
+      api["error"]({
+        message: "Duyệt Đơn Hàng Thất Bại!",
+        description: null,
+      });
+      console.error("Check order  failed", error);
+    }
+  }
+  
+  // =============================================================
   const [form] = Form.useForm();
-  const showDrawer = (record) => {
+  const showDrawer = async (record) => {
+    form.setFieldValue(record);
+    form.setFieldsValue({ dateOrder: record.dateOrder });
+    setSelectedOrderID(record.orderBuyID);
     setIsDrawerVisible(true);
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/customer/" + record.customerID
+      );
+
+      setSelectedCustomer(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -214,14 +284,14 @@ const OrderTable = () => {
       render: (text, record) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Space size="middle">
-            <Button onClick={showDrawer}>
+            <Button onClick={() => showDrawer(record)}>
               <EyeTwoTone />
               Xem Đơn
             </Button>
-            <Button>
+            <Button onClick={() => approveOrder(record)}>
               <CheckCircleTwoTone twoToneColor="#52c41a" />
             </Button>
-            <Button>
+            <Button onClick={() => rejectOrder(record)}>
               <CloseCircleTwoTone twoToneColor="#ff4d4f" />
             </Button>
           </Space>
@@ -232,6 +302,7 @@ const OrderTable = () => {
   return (
     <div>
       <Table bordered={true} columns={columns} dataSource={orderData} />
+      {contextHolder}
       <Drawer
         title={"Đơn hàng"}
         open={isDrawerVisible}
@@ -241,43 +312,39 @@ const OrderTable = () => {
         <Form form={form}>
           <Form.Item
             name="fullName"
-            label="Người mua"
-            rules={[
-              { required: true, message: "Xin vui lòng nhập Họ và Tên!" },
-              {
-                pattern: /^[^\d]+$/,
-                message: "Không được nhập số!",
-              },
-            ]}
+            initialValue={selectedCustomer && selectedCustomer.fullName}
           >
-            <Input />
+            <div style={{ display: "flex" }}>
+              <strong>Tên người mua:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {selectedCustomer && selectedCustomer.fullName}
+              </p>
+            </div>
           </Form.Item>
           <Form.Item
             name="phone"
-            label="SĐT"
-            rules={[
-              { required: true, message: "Xin vui lòng nhập số điện thoại!" },
-            ]}
+            initialValue={selectedCustomer && selectedCustomer.phone}
           >
-            <Input />
+            <div style={{ display: "flex" }}>
+              <strong>SĐT người mua:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {selectedCustomer && selectedCustomer.phone}
+              </p>
+            </div>
           </Form.Item>
           <Form.Item
-            name="date"
-            label="Thời gian"
-            rules={[{ required: true, message: "Xin vui lòng nhập email!" }]}
+            name="dateOrder"
           >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name="address"
-            label="Địa chỉ"
-            rules={[{ required: true, message: "Xin vui lòng nhập địa chỉ!" }]}
-          >
-            <Input />
+            <div style={{ display: "flex" }}>
+              <strong>Ngày đặt hàng:</strong>
+              <p style={{ marginLeft: "10px" }}>
+              <p>{formatDate(form.getFieldValue('dateOrder'))}</p>
+              </p>
+            </div>
           </Form.Item>
         </Form>
-        <ProductCard />
+        <h3>Danh sách sản phẩm:</h3>
+        <ProductOrder key={selectedOrderID} orderID={selectedOrderID} />
       </Drawer>
     </div>
   );
