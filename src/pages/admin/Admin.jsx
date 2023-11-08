@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  UserOutlined,
-  LogoutOutlined,
-  BellOutlined,
-} from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined, BellOutlined } from "@ant-design/icons";
 import {
   Breadcrumb,
   Layout,
@@ -36,6 +32,7 @@ const Admin = () => {
   const handleLogout = () => {
     navigate("/login");
     localStorage.removeItem("roleId");
+
     console.log("Logged out");
   };
 
@@ -70,36 +67,28 @@ const Admin = () => {
         return (
           <div>
             <Breadcrumb
-
-            style={{
-              padding: "0 16px",
-            }}
-          >
-            <Breadcrumb.Item>Quản lí</Breadcrumb.Item>
-            <Breadcrumb.Item>Chủ sở hữu sản phẩm</Breadcrumb.Item>
-          </Breadcrumb>
-          <ProductOwnerTable/>
-            
-            
-
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Quản lí</Breadcrumb.Item>
+              <Breadcrumb.Item>Chủ sở hữu sản phẩm</Breadcrumb.Item>
+            </Breadcrumb>
+            <ProductOwnerTable />
           </div>
         );
       case "3":
         return (
           <div>
             <Breadcrumb
-
-            style={{
-              padding: "0 16px",
-            }}
-          >
-            <Breadcrumb.Item>Quản lí</Breadcrumb.Item>
-            <Breadcrumb.Item>Nhân viên</Breadcrumb.Item>
-          </Breadcrumb>
-          <StaffTable/>
-            
-            
-
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Quản lí</Breadcrumb.Item>
+              <Breadcrumb.Item>Nhân viên</Breadcrumb.Item>
+            </Breadcrumb>
+            <StaffTable />
           </div>
         );
       default:
@@ -108,25 +97,26 @@ const Admin = () => {
   };
 
   return (
-    
     <Layout>
       <Header
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          backgroundColor:"#008000" // Căn chỉnh các phần tử theo chiều ngang và cách đều nhau
+          backgroundColor: "#008000", // Căn chỉnh các phần tử theo chiều ngang và cách đều nhau
         }}
       >
         {/* Display a placeholder logo */}
-        <div style={{color :"#fff" , display:"flex",alignItems:"center"}}>
-        <img
-          src="https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.15752-9/386474503_267425062928341_6987759511620074342_n.png?_nc_cat=106&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=sCYtopH2K4kAX-Ordr1&_nc_ht=scontent.fsgn2-5.fna&oh=03_AdRCrANYpogO50o9LUSIzscNAVPVMn2v3OMN1BmYx1MAAA&oe=654E9D9F"
-          alt="Brand Logo"
-          width={70}
-          height={50}
-        />
-        <h2 style={{color :"#fff",fontWeight: "normal"}}>Kênh người quản lý</h2>
+        <div style={{ color: "#fff", display: "flex", alignItems: "center" }}>
+          <img
+            src="https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.15752-9/386474503_267425062928341_6987759511620074342_n.png?_nc_cat=106&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=sCYtopH2K4kAX-Ordr1&_nc_ht=scontent.fsgn2-5.fna&oh=03_AdRCrANYpogO50o9LUSIzscNAVPVMn2v3OMN1BmYx1MAAA&oe=654E9D9F"
+            alt="Brand Logo"
+            width={70}
+            height={50}
+          />
+          <h2 style={{ color: "#fff", fontWeight: "normal" }}>
+            Kênh người quản lý
+          </h2>
         </div>
         {/* Notification bell icon and avatar */}
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -176,7 +166,11 @@ const Admin = () => {
             style={{ height: "100%", borderRight: 0 }}
             onClick={handleMenuClick}
           >
-            <SubMenu key="sub1" icon={<UserOutlined />} title="Quản lí người dùng">
+            <SubMenu
+              key="sub1"
+              icon={<UserOutlined />}
+              title="Quản lí người dùng"
+            >
               <Menu.Item key="1">Khách hàng</Menu.Item>
               <Menu.Item key="2">Chủ sở hữu sản phẩm</Menu.Item>
               <Menu.Item key="3">Nhân viên</Menu.Item>
@@ -205,13 +199,11 @@ const Admin = () => {
           </Content>
         </Layout>
       </Layout>
-    
+
       {/* Modal for Notifications */}
       <Modal
-
         title="Thông báo"
         visible={isNotificationModalVisible}
-
         onCancel={hideNotificationModal}
         footer={null}
         style={{ position: "absolute", bottom: "50px", right: "20px" }}
@@ -219,7 +211,6 @@ const Admin = () => {
         <Notification />
         {/* Nội dung thông báo ở đây */}
       </Modal>
-      
     </Layout>
   );
 };
