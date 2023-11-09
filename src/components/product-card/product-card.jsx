@@ -687,7 +687,7 @@ const ProductCard = () => {
                 <strong>Trạng thái:</strong>
 
                 <p style={{ marginLeft: "10px" }}>
-                  <RenderTag
+                  <RenderTag key={selectedProduct && selectedProduct.productName}
                     tagRender={selectedProduct && selectedProduct.status}
                   />
                 </p>
@@ -701,7 +701,7 @@ const ProductCard = () => {
                 <strong>Hình thức sản phẩm:</strong>
 
                 <p style={{ marginLeft: "10px" }}>
-                  <RenderTag
+                  <RenderTag key={selectedProduct && selectedProduct.productName}
                     tagRender={selectedProduct && selectedProduct.checkType}
                   />
                 </p>
