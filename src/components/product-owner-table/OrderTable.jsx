@@ -146,6 +146,7 @@ const OrderTable = () => {
   const showDrawer = async (record) => {
     form.setFieldValue(record);
     form.setFieldsValue({ dateOrder: record.dateOrder });
+    form.setFieldsValue({customerAddress: record.customerAddress});
     setSelectedOrderID(record.orderBuyID);
     setIsDrawerVisible(true);
     try {
@@ -387,6 +388,16 @@ const OrderTable = () => {
               <strong>Ngày đặt hàng:</strong>
               <p style={{ marginLeft: "10px" }}>
                 <p>{formatDate(form.getFieldValue("dateOrder"))}</p>
+              </p>
+            </div>
+          </Form.Item>
+          <Form.Item
+            name="customerAddress"
+          >
+            <div style={{ display: "flex" }}>
+              <strong>Địa chỉ:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {form.getFieldValue("customerAddress")}
               </p>
             </div>
           </Form.Item>
