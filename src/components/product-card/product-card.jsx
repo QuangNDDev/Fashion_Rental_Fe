@@ -42,8 +42,9 @@ const ProductCard = () => {
           .then((response) => {
             api["success"]({
               message: "Cập Nhật Trạng Thái Thành Công!",
-              description: null,
+              description: `Bật sản phẩm ${response.data.productName}thành công!!!`,
             });
+            fetchProducts();
             console.log("Bật true hoàn tất!!!", response);
           });
       } catch (error) {
@@ -64,8 +65,9 @@ const ProductCard = () => {
           .then((response) => {
             api["success"]({
               message: "Cập Nhật Trạng Thái Thành Công!",
-              description: null,
+              description: `Tắt sản phẩm ${response.data.productName}thành công!!!`,
             });
+            fetchProducts();
             console.log("Tắt false hoàn tất!!!", response);
           });
       } catch (error) {
@@ -687,7 +689,7 @@ const ProductCard = () => {
                 <strong>Trạng thái:</strong>
 
                 <p style={{ marginLeft: "10px" }}>
-                  <RenderTag
+                  <RenderTag key={selectedProduct && selectedProduct.productName}
                     tagRender={selectedProduct && selectedProduct.status}
                   />
                 </p>
@@ -701,7 +703,7 @@ const ProductCard = () => {
                 <strong>Hình thức sản phẩm:</strong>
 
                 <p style={{ marginLeft: "10px" }}>
-                  <RenderTag
+                  <RenderTag key={selectedProduct && selectedProduct.productName}
                     tagRender={selectedProduct && selectedProduct.checkType}
                   />
                 </p>

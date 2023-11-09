@@ -212,7 +212,8 @@ const TablePending = () => {
     console.log(record.requestAddingProductID);
     try {
       const response = await axios.put(
-        `http://fashionrental.online:8080/request?description=` +
+        `
+        http://fashionrental.online:8080/request?description=` +
           descriptionRequest +
           `&requestID=` +
           localStorage.getItem("requestAddingProductID") +
@@ -242,7 +243,9 @@ const TablePending = () => {
           const productID = record.productID;
           const newStatus = "AVAILABLE";
           const productStatus = await axios.put(
+
             `http://fashionrental.online:8080/product/updatebystaff?productID=${productID}&status=${newStatus}`
+
           );
           console.log("update product success", productStatus.data);
         } catch (error) {
