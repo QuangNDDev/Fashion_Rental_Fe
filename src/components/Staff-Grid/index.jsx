@@ -239,10 +239,10 @@ const TablePending = () => {
           console.error("Validation failed", error);
         }
         try {
+          const productID = record.productID;
+          const newStatus = "AVAILABLE";
           const productStatus = await axios.put(
-            `http://fashionrental.online:8080/product/update/}?productID=` +
-              record.productID +
-              `&status=AVAILABLE`
+            `http://fashionrental.online:8080/product/updatebystaff?productID=${productID}&status=${newStatus}`
           );
           console.log("update product success", productStatus.data);
         } catch (error) {

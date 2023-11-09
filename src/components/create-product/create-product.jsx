@@ -483,8 +483,6 @@ const CreateProduct = () => {
 
       console.log(addProductData);
       console.log(productSpecificationData);
-    } else if (checkCategory == 5) {
-      //mat kinh
     } else if (checkCategory == 2) {
       const productSpecificationData = {
         originHat: values.originHat,
@@ -806,7 +804,7 @@ const CreateProduct = () => {
 
       console.log(addProductData);
       console.log(productSpecificationData);
-    } else if (checkCategory == 7) {
+    } else if (checkCategory == 5) {
       const productSpecificationData = {
         glassMaterial: values.glassMaterial,
         brandNameGlasses: values.brandNameGlasses,
