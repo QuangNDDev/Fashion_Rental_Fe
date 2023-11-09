@@ -277,7 +277,7 @@ const TablePending = () => {
           descriptionReject +
           `&requestID=` +
           localStorage.getItem("requestAddingProductID") +
-          `&status=NOT_APPROVED`
+          `&status=NOT_APPROVE`
       );
       try {
         const staffRequest = await axios.post(
@@ -300,7 +300,7 @@ const TablePending = () => {
       }
       try {
         const productStatus = await axios.put(
-          `http://fashionrental.online:8080/product/update/}?productID=` +
+          `http://fashionrental.online:8080/product/updatebystaff?productID=` +
             record.productID +
             `&status=BLOCKED`
         );
