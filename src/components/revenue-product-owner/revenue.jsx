@@ -141,8 +141,9 @@ const Revenue = () => {
               </Card>
             </Col>
 
-            <Col span={6}>
-              <Card bordered={true} title="Đã thanh toán">
+            <Col span={18}>
+              <Card bordered={true} title="Đã thanh toán" >
+                <div style={{display:"flex",justifyContent:"space-between"}}>
                 <Statistic
                   title="Tuần này"
                   value={totalPaidWeek}
@@ -151,10 +152,6 @@ const Revenue = () => {
                   suffix="VNĐ"
                   formatter={formatter}
                 />
-              </Card>
-            </Col>
-            <Col span={6}>
-              <Card bordered={true} title="Đã thanh toán">
                 <Statistic
                   title="Tháng này"
                   value={totalPaidMonth}
@@ -163,10 +160,6 @@ const Revenue = () => {
                   suffix="VNĐ"
                   formatter={formatter}
                 />
-              </Card>
-            </Col>
-            <Col span={6}>
-              <Card bordered={true} title="Đã thanh toán">
                 <Statistic
                   title="Tổng cộng"
                   value={totalPaid}
@@ -175,8 +168,19 @@ const Revenue = () => {
                   suffix="VNĐ"
                   formatter={formatter}
                 />
+                </div>
               </Card>
             </Col>
+            {/* <Col span={6}>
+              <Card bordered={true} title="Đã thanh toán">
+                
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card bordered={true} title="Đã thanh toán">
+                
+              </Card>
+            </Col> */}
           </Row>
         </Card>
       </div>
