@@ -6,7 +6,16 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { Button, Drawer, Form, Input, notification, Space, Table } from "antd";
+import {
+  Button,
+  Drawer,
+  Form,
+  Input,
+  notification,
+  Space,
+  Table,
+  Modal,
+} from "antd";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
 import ProductOrder from "./Product-Order";
@@ -20,6 +29,8 @@ const OrderTable = () => {
   const [selectedOrderID, setSelectedOrderID] = useState(null);
   const [selectedCustomer, setSelectedCustomer] = useState([]);
   const [api, contextHolder] = notification.useNotification();
+  const [isRejectConfirmModalVisible, setIsRejectConfirmModalVisible] =
+    useState(false);
   const fetchOrders = async () => {
     try {
       const response = await axios.get(
@@ -34,6 +45,32 @@ const OrderTable = () => {
   useEffect(() => {
     fetchOrders();
   }, []);
+
+  const showRejectConfirmModal = () => {
+    setIsRejectConfirmModalVisible(true);
+  };
+
+  const handleRejectConfirmModalCancel = () => {
+    setIsRejectConfirmModalVisible(false);
+  };
+
+  // Hàm xử lý từ chối đơn hàng
+  const rejectOrder = () => {
+    Modal.confirm({
+      title: "Xác nhận từ chối đơn hàng",
+      content: "Bạn có chắc chắn muốn từ chối đơn hàng này không?",
+      okText: "Đồng ý",
+      cancelText: "Hủy",
+      okButtonProps: {
+        style: {
+          backgroundColor: "green", // Màu xanh lá
+          borderColor: "#52c41a", // Màu viền xung quanh
+        },
+      },
+      onOk: handleRejectConfirmModalOk,
+      onCancel: handleRejectConfirmModalCancel,
+    });
+  };
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -56,11 +93,12 @@ const OrderTable = () => {
   }
   // =====================ApproveOrder============================
   const approveOrder = async (record) => {
-    console.log("orderBuyID:",record.orderBuyID);
+    console.log("orderBuyID:", record.orderBuyID);
     try {
       const response = await axios.put(
         `http://fashionrental.online:8080/orderbuy?orderBuyID=` +
-          record.orderBuyID+`&status=PREPARE` 
+          record.orderBuyID +
+          `&status=PREPARE`
       );
       api["success"]({
         message: "Duyệt Đơn Hàng Thành Công!",
@@ -76,31 +114,33 @@ const OrderTable = () => {
       });
       console.error("Check order  failed", error);
     }
-  }
+  };
   // =======================RejectOrder===========================
-  const rejectOrder = async (record) => {
-    console.log("orderBuyID:",record.orderBuyID);
+  const handleRejectConfirmModalOk = async () => {
     try {
       const response = await axios.put(
         `http://fashionrental.online:8080/orderbuy?orderBuyID=` +
-          record.orderBuyID+`&status=REJECTING` 
+          selectedOrderID +
+          `&status=CANCELED`
       );
+
       api["success"]({
         message: "Từ Chối Hàng Thành Công!",
         description: `Đơn hàng ${response.data.orderBuyID} đã bị từ chối`,
-        duration: 1000,
       });
-      console.log("Check order success!!!", response.data);
+
+      setIsRejectConfirmModalVisible(false);
+
       fetchOrders();
     } catch (error) {
       api["error"]({
-        message: "Duyệt Đơn Hàng Thất Bại!",
+        message: "Từ Chối Đơn Hàng Thất Bại!",
         description: null,
       });
-      console.error("Check order  failed", error);
+      console.error("Check order failed", error);
     }
-  }
-  
+  };
+
   // =============================================================
   const [form] = Form.useForm();
   const showDrawer = async (record) => {
@@ -291,9 +331,19 @@ const OrderTable = () => {
             <Button onClick={() => approveOrder(record)}>
               <CheckCircleTwoTone twoToneColor="#52c41a" />
             </Button>
-            <Button onClick={() => rejectOrder(record)}>
+            <Button onClick={rejectOrder}>
               <CloseCircleTwoTone twoToneColor="#ff4d4f" />
             </Button>
+            <Modal
+              title="Xác nhận từ chối đơn hàng"
+              open={isRejectConfirmModalVisible}
+              onOk={handleRejectConfirmModalOk}
+              onCancel={handleRejectConfirmModalCancel}
+              okText="Đồng ý"
+              cancelText="Hủy"
+            >
+              Bạn có chắc chắn muốn từ chối đơn hàng này không?
+            </Modal>
           </Space>
         </div>
       ),
@@ -332,13 +382,11 @@ const OrderTable = () => {
               </p>
             </div>
           </Form.Item>
-          <Form.Item
-            name="dateOrder"
-          >
+          <Form.Item name="dateOrder">
             <div style={{ display: "flex" }}>
               <strong>Ngày đặt hàng:</strong>
               <p style={{ marginLeft: "10px" }}>
-              <p>{formatDate(form.getFieldValue('dateOrder'))}</p>
+                <p>{formatDate(form.getFieldValue("dateOrder"))}</p>
               </p>
             </div>
           </Form.Item>
