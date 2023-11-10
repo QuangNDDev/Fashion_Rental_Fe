@@ -17,7 +17,7 @@ const ProductOrder = ({ orderID }) => {
   const [productOrderData, setProductOrderData] = useState([]);
   const [api, contextHolder] = notification.useNotification();
   const [productImage, setProductImage] = useState();
-  
+
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
   const formatPriceWithVND = (price) => {
     return new Intl.NumberFormat("vi-VN", {
@@ -33,8 +33,8 @@ const ProductOrder = ({ orderID }) => {
       );
 
       const productIDs = response.data.map((item) => item.productID);
-      console.log("abc",orderID)
-    try {
+      console.log("abc", orderID);
+      try {
         const products = [];
         for (const productID of productIDs) {
           const response = await axios.get(
@@ -299,7 +299,15 @@ const ProductOrder = ({ orderID }) => {
             >
               <div style={{ display: "flex" }}>
                 <strong>Mô tả:</strong>
-                <p style={{ marginLeft: "10px" }}>
+                <p
+                  style={{
+                    marginLeft: "10px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    maxWidth: "300px",
+                  }}
+                >
                   {selectedProduct && selectedProduct.description}
                 </p>
               </div>
@@ -632,34 +640,6 @@ const ProductOrder = ({ orderID }) => {
                       style: "currency",
                       currency: "VND",
                     })} `}
-                </p>
-              </div>
-            </Form.Item>
-            <Form.Item
-              name="status"
-              initialValue={selectedProduct && selectedProduct.status}
-            >
-              <div style={{ display: "flex" }}>
-                <strong>Trạng thái:</strong>
-
-                <p style={{ marginLeft: "10px" }}>
-                  <RenderTag
-                    tagRender={selectedProduct && selectedProduct.status}
-                  />
-                </p>
-              </div>
-            </Form.Item>
-            <Form.Item
-              name="checkType"
-              initialValue={selectedProduct && selectedProduct.checkType}
-            >
-              <div style={{ display: "flex" }}>
-                <strong>Hình thức sản phẩm:</strong>
-
-                <p style={{ marginLeft: "10px" }}>
-                  <RenderTag
-                    tagRender={selectedProduct && selectedProduct.checkType}
-                  />
                 </p>
               </div>
             </Form.Item>

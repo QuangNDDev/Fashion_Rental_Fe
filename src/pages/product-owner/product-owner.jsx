@@ -7,6 +7,7 @@ import {
   ShopFilled,
   WalletOutlined,
   PercentageOutlined,
+  CarOutlined,
 } from "@ant-design/icons";
 import {
   Breadcrumb,
@@ -33,6 +34,7 @@ import VoucherForm from "../../components/voucher-form";
 import Balance from "../../components/balance-productowner/balance-productowner";
 import OrderRent from "../../components/product-owner-table/OrderRent";
 import VoucherTable from "../../components/voucher-form/voucher-table";
+import OrderDeliveryTable from "../../components/order-delivery/order-delivery-table";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -243,6 +245,20 @@ const ProductOwner = () => {
             <VoucherTable />
           </div>
         );
+        case "12":
+          return (
+            <div>
+              <Breadcrumb
+                style={{
+                  padding: "0 16px",
+                }}
+              >
+                <Breadcrumb.Item>Giao hàng</Breadcrumb.Item>
+                <Breadcrumb.Item>Đơn hàng chưa giao</Breadcrumb.Item>
+              </Breadcrumb>
+              <OrderDeliveryTable />
+            </div>
+          );
       default:
         return null;
     }
@@ -360,6 +376,14 @@ const ProductOwner = () => {
             >
               <Menu.Item key="10">Thêm mã khuyến mãi</Menu.Item>
               <Menu.Item key="11">Xem mã khuyến mãi</Menu.Item>
+            </SubMenu>
+            <SubMenu
+              key="sub6"
+              icon={<CarOutlined style={{ fontSize: "17px" }} />}
+              title="Giao hàng"
+            >
+              <Menu.Item key="12">Đơn hàng chưa giao</Menu.Item>
+             
             </SubMenu>
           </Menu>
         </Sider>
