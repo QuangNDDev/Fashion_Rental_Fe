@@ -168,7 +168,7 @@ const OrderDeliveryTable = () => {
       console.log(response.data.data);
     } catch (error) {
       console.error("Error calling API:", error);
-      throw error; // Đưa ra ngoại lệ (throw) để có thể xử lý ở nơi gọi hàm này
+      throw error; 
     }
   };
   // ===================================================================================================================
