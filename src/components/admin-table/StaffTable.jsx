@@ -300,7 +300,7 @@ const StaffTable = () => {
       key: "roleName",
       width: "15%",
       render: (roleName) => (
-        <p style={{ textAlign: "center" }}>
+        <p style={{ textAlign: "left" }}>
           <RenderTag tagRender={roleName} />
         </p>
       ),
@@ -312,7 +312,7 @@ const StaffTable = () => {
       width: "10%",
       ...getColumnSearchProps("status"),
       render: (status) => (
-        <p style={{ textAlign: "center" }}>
+        <p style={{ textAlign: "left" }}>
           <RenderTag key={status} tagRender={status} />
         </p>
       ),
@@ -503,7 +503,7 @@ const StaffTable = () => {
         )}
       </Drawer>
 
-      <Table columns={columns} dataSource={users} />
+      <Table bordered={true} columns={columns} dataSource={users} />
     </>
   );
 };

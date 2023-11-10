@@ -106,7 +106,7 @@ function VoucherForm() {
               width: 700,
               height: "max-content",
               marginTop: "50px",
-              marginLeft: "45%",
+              marginLeft: "60%",
             }}
           >
             <Form form={form} onFinish={onFinish}>
@@ -223,7 +223,9 @@ function VoucherForm() {
                   </Form.Item>
                 </Col>
                 <Col span={12}>
-                  <span style={{ fontWeight: "bold" }}>Số tiền giảm giá tối đa:</span>
+                  <span style={{ fontWeight: "bold" }}>
+                    Số tiền giảm giá tối đa:
+                  </span>
                   <Form.Item
                     name={"maxDiscount"}
                     rules={[

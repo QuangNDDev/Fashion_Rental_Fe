@@ -235,7 +235,7 @@ const CustomerTable = () => {
       width: "15%",
       ...getColumnSearchProps("roleName"),
       render: (roleName) => (
-        <p style={{ textAlign: "center", justifyContent: "center" }}>
+        <p style={{ textAlign: "left", justifyContent: "left" }}>
           <RenderTag tagRender={roleName} />
         </p>
       ),
@@ -247,7 +247,7 @@ const CustomerTable = () => {
       width: "10%",
       ...getColumnSearchProps("status"),
       render: (status) => (
-        <p style={{ textAlign: "center" }}>
+        <p style={{ textAlign: "left" }}>
           <RenderTag tagRender={status} />
         </p>
       ),
@@ -290,11 +290,11 @@ const CustomerTable = () => {
 
   return (
     <div>
-      <Table columns={columns} dataSource={users} />
+      <Table bordered={true} columns={columns} dataSource={users} />
       {contextHolder}
       <Drawer
         title={isEdit ? "Cập Nhật Thông Tin Khách Hàng" : "Add User"}
-        visible={isDrawerVisible}
+        open={isDrawerVisible}
         onClose={onClose}
         width={400}
       >
