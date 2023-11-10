@@ -243,9 +243,7 @@ const TablePending = () => {
           const productID = record.productID;
           const newStatus = "AVAILABLE";
           const productStatus = await axios.put(
-
             `http://fashionrental.online:8080/product/updatebystaff?productID=${productID}&status=${newStatus}`
-
           );
           console.log("update product success", productStatus.data);
         } catch (error) {
@@ -277,7 +275,7 @@ const TablePending = () => {
           descriptionReject +
           `&requestID=` +
           localStorage.getItem("requestAddingProductID") +
-          `&status=NOT_APPROVE`
+          `&status=NOT_APPROVED`
       );
       try {
         const staffRequest = await axios.post(

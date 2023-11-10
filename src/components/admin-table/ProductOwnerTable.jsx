@@ -227,7 +227,7 @@ const ProductOwnerTable = () => {
       key: "roleName",
       width: "10%",
       render: (roleName) => (
-        <p style={{ textAlign: "center", marginBottom: "20px" }}>
+        <p style={{ textAlign: "left", marginBottom: "20px" }}>
           <RenderTag tagRender={roleName} />
         </p>
       ),
@@ -239,7 +239,7 @@ const ProductOwnerTable = () => {
       width: "10%",
       ...getColumnSearchProps("status"),
       render: (status) => (
-        <p style={{ textAlign: "center", marginBottom: "20px" }}>
+        <p style={{ textAlign: "left", marginBottom: "20px" }}>
           <RenderTag tagRender={status} />
         </p>
       ),
@@ -292,11 +292,11 @@ const ProductOwnerTable = () => {
   ];
   return (
     <div>
-      <Table columns={columns} dataSource={users} />
+      <Table bordered={true} columns={columns} dataSource={users} />
       {contextHolder}
       <Drawer
         title={isEdit ? "Cập Nhật" : "Add User"}
-        visible={isDrawerVisible}
+        open={isDrawerVisible}
         onClose={onClose}
         width={400}
       >

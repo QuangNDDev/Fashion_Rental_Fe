@@ -1,5 +1,15 @@
 import { EyeOutlined } from "@ant-design/icons";
-import { Card, Col, Form, Image, Modal, notification, Row, Switch } from "antd";
+import {
+  Card,
+  Col,
+  Form,
+  Image,
+  Modal,
+  notification,
+  Row,
+  Switch,
+  Badge,
+} from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import MuntilImage from "../Mutil-Image";
@@ -27,55 +37,70 @@ const ProductCard = () => {
   //-------------------------------------------------------------------------------------------------
 
   //-------------------------SWITCH-----------------------------------
-  const onChange = (checked, productID) => {
+  const onChange = async (checked, productID) => {
     console.log(`Bật/Tắt: ${checked}`);
-  
+
     if (checked === true) {
       try {
-        axios
-          .put(
-            `http://fashionrental.online:8080/product?productID=` +
-              productID +
-              `&status=AVAILABLE
-              `
-          )
-          .then((response) => {
-            api["success"]({
-              message: "Cập Nhật Trạng Thái Thành Công!",
-              description: `Bật sản phẩm ${response.data.productName}thành công!!!`,
-            });
-            fetchProducts();
-            console.log("Bật true hoàn tất!!!", response);
-          });
-      } catch (error) {
-        api["error"]({
-          message: "Cập Nhật Thất Bại!",
-          description: null,
+        const response = await axios.put(
+          `http://fashionrental.online:8080/product?productID=${productID}&status=AVAILABLE`
+        );
+
+        api["success"]({
+          message: "Cập Nhật Trạng Thái Thành Công!",
+          description: `Bật sản phẩm ${response.data.productName} thành công!!!`,
         });
-        console.log(error);
+
+        fetchProducts();
+        console.log("Bật true hoàn tất!!!", response);
+      } catch (error) {
+        if (error.response && error.response.data) {
+          const errorMessage = error.response.data.message;
+
+          if (errorMessage === "This Product is Not Approved") {
+            api["error"]({
+              message: "Cập Nhật Thất Bại!",
+              description: "Sản phẩm chưa được phê duyệt!",
+            });
+          } else if (errorMessage === "Product Is SoldOut!") {
+            api["error"]({
+              message: "Không Thể Cập Nhật!",
+              description: "Sản phẩm đang được bán!",
+            });
+          } else if (
+            errorMessage === "Product is Renting you cannot updated status"
+          ) {
+            api["error"]({
+              message: "Không Thể Cập Nhật",
+              description: "Sản phẩm đang được thuê!",
+            });
+          } else {
+            api["error"]({
+              message: "Cập Nhật Thất Bại!",
+              description: null,
+            });
+          }
+
+          console.log(error);
+        }
       }
     } else if (checked === false) {
       try {
-        axios
-          .put(
-            `http://fashionrental.online:8080/product?productID=` +
-              productID +
-              `&status=BLOCKED`
-          )
-          .then((response) => {
-            api["success"]({
-              message: "Cập Nhật Trạng Thái Thành Công!",
-              description: `Tắt sản phẩm ${response.data.productName}thành công!!!`,
-            });
-            fetchProducts();
-            console.log("Tắt false hoàn tất!!!", response);
-          });
-      } catch (error) {
-        api["error"]({
-          message: "Cập Nhật Thất Bại!",
-          description: null,
+        const response = await axios.put(
+          `http://fashionrental.online:8080/product?productID=${productID}&status=BLOCKED`
+        );
+
+        api["success"]({
+          message: "Cập Nhật Trạng Thái Thành Công!",
+          description: `Tắt sản phẩm ${response.data.productName} thành công!!!`,
         });
-        console.log(error);
+
+        fetchProducts();
+        console.log("Tắt false hoàn tất!!!", response);
+      } catch (error) {
+        if (error.response && error.response.data) {
+          console.log(error);
+        }
       }
     }
   };
@@ -232,9 +257,7 @@ const ProductCard = () => {
   const hide = () => {
     setOpen(false);
   };
-  const handleOpenChange = (newOpen) => {
-    setOpen(newOpen);
-  };
+
   return (
     <>
       {contextHolder}
@@ -253,6 +276,7 @@ const ProductCard = () => {
               bordered={true}
               style={{
                 width: 230,
+                position: "relative", // Để Badge.Ribbon có thể sử dụng position: absolute
               }}
               cover={
                 <div
@@ -275,14 +299,44 @@ const ProductCard = () => {
               }
               actions={[
                 <Switch
-                  defaultChecked
+                  checked={product.status === "AVAILABLE"}
                   onChange={(checked) => onChange(checked, product.productID)}
-                  style={{ backgroundColor: "green" }}
                   size="small"
+                  style={{
+                    backgroundColor:
+                      product.status === "AVAILABLE" ? "#4CAF50" : "#F5F5F5",
+                    borderColor:
+                      product.status === "AVAILABLE" ? "#4CAF50" : "#D3D3D3",
+                  }}
                 />,
                 <EyeOutlined key="edit" onClick={() => showModal(product)} />,
               ]}
             >
+              <div
+                style={{
+                  position: "absolute",
+                  top: "0",
+                  right: "0",
+                }}
+              >
+                {product.status === "SOLD_OUT" && (
+                  <Badge.Ribbon text="Đã bán" color="red" placement="end" />
+                )}
+                {product.status === "AVAILABLE" && (
+                  <Badge.Ribbon text="Có sẵn" color="green" placement="end" />
+                )}
+                {product.status === "BLOCKED" && (
+                  <Badge.Ribbon text="Đã khóa" color="black" placement="end" />
+                )}
+                {product.status === "RENTING" && (
+                  <Badge.Ribbon
+                    text="Đang cho thuê"
+                    color="rgb(45, 183, 245)"
+                    placement="end"
+                  />
+                )}
+              </div>
+
               <Meta
                 title={product.productName}
                 description={formatPriceWithVND(product.price)}
@@ -689,7 +743,8 @@ const ProductCard = () => {
                 <strong>Trạng thái:</strong>
 
                 <p style={{ marginLeft: "10px" }}>
-                  <RenderTag key={selectedProduct && selectedProduct.productName}
+                  <RenderTag
+                    key={selectedProduct && selectedProduct.productName}
                     tagRender={selectedProduct && selectedProduct.status}
                   />
                 </p>
@@ -703,7 +758,8 @@ const ProductCard = () => {
                 <strong>Hình thức sản phẩm:</strong>
 
                 <p style={{ marginLeft: "10px" }}>
-                  <RenderTag key={selectedProduct && selectedProduct.productName}
+                  <RenderTag
+                    key={selectedProduct && selectedProduct.productName}
                     tagRender={selectedProduct && selectedProduct.checkType}
                   />
                 </p>
