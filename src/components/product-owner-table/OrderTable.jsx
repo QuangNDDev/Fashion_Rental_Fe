@@ -34,7 +34,7 @@ const OrderTable = () => {
   const fetchOrders = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/orderbuy/po/" + productownerId
+        "http://fashionrental.online:8080/orderbuy/po/pending/" + productownerId
       );
       setOrderData(response.data);
     } catch (error) {
