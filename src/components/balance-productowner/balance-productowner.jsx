@@ -1,12 +1,27 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { PlusCircleOutlined } from "@ant-design/icons";
 import "./balance-productowner.css";
 import TransactionTable from "./transaction-history-table";
-import { Row, Card, Statistic, Col } from "antd";
+import {
+  Row,
+  Card,
+  Statistic,
+  Col,
+  Space,
+  Button,
+  Modal,
+  Form,
+  Input,
+} from "antd";
 import CountUp from "react-countup";
+import { async } from "@firebase/util";
+import { useNavigate } from "react-router-dom";
 const Balance = () => {
   const [balanceData, setBalanceData] = useState([]);
   const accountId = localStorage.getItem("accountId");
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
   const fetchBalance = async () => {
     try {
       const response = await axios.get(
@@ -26,11 +41,58 @@ const Balance = () => {
   const formatter = (value) => (
     <CountUp end={value} separator="," duration={1.5} /> // Thay duration bằng thời gian bạn muốn để con số hiển thị
   );
+  // ----------------------modal nạp tiền--------------------------------
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = async (values) => {
+    setIsModalOpen(false);
+    console.log(values);
+    try {
+      const response = await axios.post(
+        "http://fashionrental.online:8080/VNPaycontroller/submitOrder?accountID=" +
+          accountId +
+          "&amount=" +
+          values.amount +
+          "&orderInfo=Nap tien vao tai khoan " +
+          accountId +
+          " so tien: " +
+          values.amount + "vnd"
+      );
+
+      console.log("VN-Pay successful!!!", response.data);
+      if (response.data) {
+        window.open(response.data, "_blank");
+       
+      }
+    } catch (error) {
+      console.error("Error calling API:", error);
+      throw error;
+    }
+  };
+  const handleCancel = () => {
+    form.resetFields();
+    setIsModalOpen(false);
+  };
 
   return (
     <div>
       <div className="balance-container">
-        <Card title="Tổng Quan">
+        <Card
+          title="Tổng Quan"
+          extra={
+            <Space>
+              <Button
+                style={{ backgroundColor: "#008000", color: "#fff" }}
+                onClick={showModal}
+                icon={<PlusCircleOutlined />}
+              >
+                Nạp tiền
+              </Button>
+            </Space>
+          }
+        >
           <Row gutter={16}>
             <Col span={12}>
               <Card bordered={true}>
@@ -69,6 +131,34 @@ const Balance = () => {
       >
         <TransactionTable />
       </Card>
+      <Modal
+        title="Thanh toán VN-Pay"
+        open={isModalOpen}
+        onCancel={handleCancel}
+        footer={false}
+      >
+        <Form form={form} onFinish={handleOk}>
+          <span style={{ marginBottom: "5px" }}>Nhập số tiền muốn nạp:</span>
+          <Form.Item name="amount">
+            <Input placeholder="Nhập số tiền" suffix="VND" />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              style={{
+                float: "right",
+                backgroundColor: "#008000",
+                color: "#fff",
+              }}
+              htmlType="submit"
+            >
+              Thanh toán
+            </Button>
+            <Button style={{ float: "right", marginRight: "10px" }} danger onClick={handleCancel}>
+              Huỷ
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };

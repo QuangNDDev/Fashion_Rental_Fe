@@ -13,7 +13,7 @@ const Revenue = () => {
   const fetchOrders = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/orderbuy/po/" + productownerId
+        "http://fashionrental.online:8080/orderbuy/po/getall/" + productownerId
       );
       setOrderData(response.data);
     } catch (error) {
@@ -58,7 +58,7 @@ const Revenue = () => {
           order.status
         )
       ) {
-        total += order.total;
+        total += order.totalBuyPriceProduct;
       }
     });
     return total;
@@ -67,7 +67,7 @@ const Revenue = () => {
     let total = 0;
     orderData.forEach((order) => {
       if (["COMPLETED"].includes(order.status)) {
-        total += order.total;
+        total += order.totalBuyPriceProduct;
       }
     });
     return total;
@@ -76,7 +76,7 @@ const Revenue = () => {
     let total = 0;
     orderWeekData.forEach((order) => {
       if (["COMPLETED"].includes(order.status)) {
-        total += order.total;
+        total += order.totalBuyPriceProduct;
       }
     });
     return total;
@@ -85,7 +85,7 @@ const Revenue = () => {
     let total = 0;
     orderMonthData.forEach((order) => {
       if (["COMPLETED"].includes(order.status)) {
-        total += order.total;
+        total += order.totalBuyPriceProduct;
       }
     });
     return total;
