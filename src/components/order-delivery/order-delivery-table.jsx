@@ -237,15 +237,24 @@ const OrderDeliveryTable = () => {
         });
        
         console.log("Create Delivery Success:", responseData);
-        // try {
-        //   const updateResponse = await axios.put(
-        //     `http://fashionrental.online:8080/orderbuy?orderBuyID=${form.getFieldValue("orderBuyID")}&status=READY_PICKUP`
-        //   );
-        //   console.log("Ready pickup order success!!!", updateResponse.data);
-        //   fetchOrders();
-        // } catch (error) {
-        //   console.error("Ready pickup order failed!!!", error);
-        // }
+        try {
+          const updateResponse = await axios.put(
+            `http://fashionrental.online:8080/orderbuy?orderBuyID=${form.getFieldValue("orderBuyID")}&status=READY_PICKUP`
+          );
+          console.log("Ready pickup order success!!!", updateResponse.data);
+          fetchOrders();
+        } catch (error) {
+          console.error("Ready pickup order failed!!!", error);
+        }
+        try {
+          const orderCodeUpdateResponse = await axios.put(
+            `http://fashionrental.online:8080/orderbuy/updateorderbuycode?orderBuyID=${form.getFieldValue("orderBuyID")}&orderCode=${responseData.data.order_code}`
+          );
+          console.log("Order code update success!!!", orderCodeUpdateResponse.data);
+        } catch (error) {
+          console.error("Order code update failed!!!", error);
+        }
+
       } catch (error) {
         console.error("Create Delivery Failed:", error);
         api["error"]({
@@ -526,7 +535,7 @@ const OrderDeliveryTable = () => {
               {" "}
               <h3>Chọn địa chỉ giao hàng:</h3>
               <Form.Item>
-                <span>Chọn tỉnh/thành phố:</span>
+                <span style={{marginRight:"10px"}}>Chọn tỉnh/thành phố:</span>
                 <Select
                   style={{
                     width: 300,
@@ -559,7 +568,7 @@ const OrderDeliveryTable = () => {
                 />
               </Form.Item>
               <Form.Item>
-                <span>Chọn quận/huyện:</span>
+                <span style={{marginRight:"10px"}}>Chọn quận/huyện:</span>
                 <Select
                   style={{
                     width: 300,
@@ -592,7 +601,7 @@ const OrderDeliveryTable = () => {
                 />
               </Form.Item>
               <Form.Item>
-                <span>Chọn phường/xã:</span>
+                <span style={{marginRight:"10px"}}>Chọn phường/xã:</span>
                 <Select
                   style={{
                     width: 300,
@@ -626,23 +635,23 @@ const OrderDeliveryTable = () => {
               </Form.Item>
               <h3>Thông tin đơn hàng:</h3>
               <Form.Item>
-                <span>Nhập cân nặng đơn hàng:</span>
+                <span style={{marginBottom:"10px"}}>Nhập cân nặng đơn hàng:</span>
                 <Input placeholder="Cân nặng đơn hàng" suffix="gram" />
               </Form.Item>
               <Form.Item>
-                <span>Nhập chiều dài đơn hàng:</span>
+                <span style={{marginBottom:"10px"}}>Nhập chiều dài đơn hàng:</span>
                 <Input placeholder="Chiều dài đơn hàng" suffix="cm" />
               </Form.Item>
               <Form.Item>
-                <span>Nhập chiều rộng đơn hàng:</span>
+                <span style={{marginBottom:"10px"}}>Nhập chiều rộng đơn hàng:</span>
                 <Input placeholder="Chiều rộng đơn hàng" suffix="cm" />
               </Form.Item>
               <Form.Item>
-                <span>Nhập chiều cao đơn hàng:</span>
+                <span style={{marginBottom:"10px"}}>Nhập chiều cao đơn hàng:</span>
                 <Input placeholder="Chiều cao đơn hàng" suffix="cm" />
               </Form.Item>
               <Form.Item>
-                <span>Ghi chú đơn hàng: </span>
+                <span style={{marginRight:"10px"}}>Ghi chú đơn hàng: </span>
                 <Select
                   style={{
                     width: 300,
