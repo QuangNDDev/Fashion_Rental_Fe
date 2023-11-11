@@ -168,7 +168,7 @@ const OrderDeliveryTable = () => {
       console.log(response.data.data);
     } catch (error) {
       console.error("Error calling API:", error);
-      throw error; 
+      throw error;
     }
   };
   // ===================================================================================================================
@@ -216,46 +216,52 @@ const OrderDeliveryTable = () => {
     };
     console.log(data);
     try {
-        const response = await fetch(
-          "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              ShopId: "190296",
-              Token: "8ffa5c52-7f16-11ee-a6e6-e60958111f48",
-            },
-            body: JSON.stringify(data),
-          }
-        );
-    
-        const responseData = await response.json();
-        api["success"]({
-          message: "Tạo đơn hàng thành công!",
-          description: `Bạn đã tạo đơn hàng cho ${selectedCustomer.fullName} thành công. Mã đơn hàng của bạn là ${responseData.data.order_code}. Thời gian giao hàng dự kiến: ${formatDate(responseData.data.expected_delivery_time)}`,
-          duration: 1000,
-        });
-       
-        console.log("Create Delivery Success:", responseData);
-        // try {
-        //   const updateResponse = await axios.put(
-        //     `http://fashionrental.online:8080/orderbuy?orderBuyID=${form.getFieldValue("orderBuyID")}&status=READY_PICKUP`
-        //   );
-        //   console.log("Ready pickup order success!!!", updateResponse.data);
-        //   fetchOrders();
-        // } catch (error) {
-        //   console.error("Ready pickup order failed!!!", error);
-        // }
-      } catch (error) {
-        console.error("Create Delivery Failed:", error);
-        api["error"]({
-          message: "Tạo đơn hàng thất bại!",
-          description: `Bạn đã thêm ${selectedCustomer.fullName} thất bại`,
-          duration: 1000,
-        });
-      }
-    };
-  
+      const response = await fetch(
+        "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ShopId: "190296",
+            Token: "8ffa5c52-7f16-11ee-a6e6-e60958111f48",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const responseData = await response.json();
+      api["success"]({
+        message: "Tạo đơn hàng thành công!",
+        description: `Bạn đã tạo đơn hàng cho ${
+          selectedCustomer.fullName
+        } thành công. Mã đơn hàng của bạn là ${
+          responseData.data.order_code
+        }. Thời gian giao hàng dự kiến: ${formatDate(
+          responseData.data.expected_delivery_time
+        )}`,
+        duration: 1000,
+      });
+
+      console.log("Create Delivery Success:", responseData);
+      // try {
+      //   const updateResponse = await axios.put(
+      //     `http://fashionrental.online:8080/orderbuy?orderBuyID=${form.getFieldValue("orderBuyID")}&status=READY_PICKUP`
+      //   );
+      //   console.log("Ready pickup order success!!!", updateResponse.data);
+      //   fetchOrders();
+      // } catch (error) {
+      //   console.error("Ready pickup order failed!!!", error);
+      // }
+    } catch (error) {
+      console.error("Create Delivery Failed:", error);
+      api["error"]({
+        message: "Tạo đơn hàng thất bại!",
+        description: `Bạn đã thêm ${selectedCustomer.fullName} thất bại`,
+        duration: 1000,
+      });
+    }
+  };
+
   // =============================================================
   const [form] = Form.useForm();
   const showDrawer = async (record) => {
@@ -625,21 +631,125 @@ const OrderDeliveryTable = () => {
                 />
               </Form.Item>
               <h3>Thông tin đơn hàng:</h3>
-              <Form.Item>
-                <span>Nhập cân nặng đơn hàng:</span>
-                <Input placeholder="Cân nặng đơn hàng" suffix="gram" />
+              <span>Nhập cân nặng đơn hàng:</span>
+              <Form.Item
+                name={"weigh"}
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập cân nặng đơn hàng!",
+                  },
+                  {
+                    pattern: /^(0|[1-9][0-9]*)$/,
+                    message: "Vui lòng chỉ nhập số nguyên dương!",
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (value <= 30000) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        "Cân nặng không được vượt quá 30000 gram!"
+                      );
+                    },
+                  },
+                ]}
+              >
+                <Input
+                  type="number"
+                  placeholder="Cân nặng đơn hàng"
+                  suffix="gram"
+                />
               </Form.Item>
-              <Form.Item>
-                <span>Nhập chiều dài đơn hàng:</span>
-                <Input placeholder="Chiều dài đơn hàng" suffix="cm" />
+              <span>Nhập chiều dài đơn hàng:</span>
+              <Form.Item
+                name={"length"}
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập chiều dài đơn hàng!",
+                  },
+                  {
+                    pattern: /^(0|[1-9][0-9]*)$/,
+                    message: "Vui lòng chỉ nhập số nguyên dương!",
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (value <= 150) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        "Chiều dài không được vượt quá 150 cm!"
+                      );
+                    },
+                  },
+                ]}
+              >
+                <Input
+                  type="number"
+                  placeholder="Chiều dài đơn hàng"
+                  suffix="cm"
+                />
               </Form.Item>
-              <Form.Item>
-                <span>Nhập chiều rộng đơn hàng:</span>
-                <Input placeholder="Chiều rộng đơn hàng" suffix="cm" />
+              <span>Nhập chiều rộng đơn hàng:</span>
+              <Form.Item
+                name={"width"}
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập chiều rộng đơn hàng!",
+                  },
+                  {
+                    pattern: /^(0|[1-9][0-9]*)$/,
+                    message: "Vui lòng chỉ nhập số nguyên dương!",
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (value <= 150) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        "Chiều rộng không được vượt quá 150 cm!"
+                      );
+                    },
+                  },
+                ]}
+              >
+                <Input
+                  type="number"
+                  placeholder="Chiều rộng đơn hàng"
+                  suffix="cm"
+                />
               </Form.Item>
-              <Form.Item>
-                <span>Nhập chiều cao đơn hàng:</span>
-                <Input placeholder="Chiều cao đơn hàng" suffix="cm" />
+              <span>Nhập chiều cao đơn hàng:</span>
+              <Form.Item
+                name={"height"}
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập chiều rộng đơn hàng!",
+                  },
+                  {
+                    pattern: /^(0|[1-9][0-9]*)$/,
+                    message: "Vui lòng chỉ nhập số nguyên dương!",
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (value <= 150) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        "Chiều cao không được vượt quá 150 cm!"
+                      );
+                    },
+                  },
+                ]}
+              >
+                <Input
+                  type="number"
+                  placeholder="Chiều cao đơn hàng"
+                  suffix="cm"
+                />
               </Form.Item>
               <Form.Item>
                 <span>Ghi chú đơn hàng: </span>
