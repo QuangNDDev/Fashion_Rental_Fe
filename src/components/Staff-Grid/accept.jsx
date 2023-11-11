@@ -421,7 +421,15 @@ const TableAccept = () => {
           >
             <div style={{ display: "flex" }}>
               <strong>Mô tả:</strong>
-              <p style={{ marginLeft: "10px" }}>
+              <p
+                style={{
+                  marginLeft: "10px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  maxWidth: "300px",
+                }}
+              >
                 {selectedProduct && selectedProduct.description}
               </p>
             </div>
@@ -746,7 +754,7 @@ const TableAccept = () => {
               </p>
             </div>
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             name="status"
             initialValue={selectedProduct && selectedProduct.status}
           >
@@ -759,7 +767,7 @@ const TableAccept = () => {
                 />
               </p>
             </div>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             name="checkType"
             initialValue={selectedProduct && selectedProduct.checkType}
