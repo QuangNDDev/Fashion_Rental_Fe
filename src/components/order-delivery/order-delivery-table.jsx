@@ -168,7 +168,7 @@ const OrderDeliveryTable = () => {
       console.log(response.data.data);
     } catch (error) {
       console.error("Error calling API:", error);
-      throw error; 
+      throw error;
     }
   };
   // ===================================================================================================================
@@ -216,6 +216,10 @@ const OrderDeliveryTable = () => {
     };
     console.log(data);
     try {
+
+     
+
+
         const response = await fetch(
           "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create",
           {
@@ -265,6 +269,7 @@ const OrderDeliveryTable = () => {
       }
     };
   
+
   // =============================================================
   const [form] = Form.useForm();
   const showDrawer = async (record) => {
@@ -634,21 +639,127 @@ const OrderDeliveryTable = () => {
                 />
               </Form.Item>
               <h3>Thông tin đơn hàng:</h3>
-              <Form.Item>
-                <span style={{marginBottom:"10px"}}>Nhập cân nặng đơn hàng:</span>
-                <Input placeholder="Cân nặng đơn hàng" suffix="gram" />
+
+              <span>Nhập cân nặng đơn hàng:</span>
+              <Form.Item
+                name={"weigh"}
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập cân nặng đơn hàng!",
+                  },
+                  {
+                    pattern: /^(0|[1-9][0-9]*)$/,
+                    message: "Vui lòng chỉ nhập số nguyên dương!",
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (value <= 30000) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        "Cân nặng không được vượt quá 30000 gram!"
+                      );
+                    },
+                  },
+                ]}
+              >
+                <Input
+                  type="number"
+                  placeholder="Cân nặng đơn hàng"
+                  suffix="gram"
+                />
               </Form.Item>
-              <Form.Item>
-                <span style={{marginBottom:"10px"}}>Nhập chiều dài đơn hàng:</span>
-                <Input placeholder="Chiều dài đơn hàng" suffix="cm" />
+              <span>Nhập chiều dài đơn hàng:</span>
+              <Form.Item
+                name={"length"}
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập chiều dài đơn hàng!",
+                  },
+                  {
+                    pattern: /^(0|[1-9][0-9]*)$/,
+                    message: "Vui lòng chỉ nhập số nguyên dương!",
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (value <= 150) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        "Chiều dài không được vượt quá 150 cm!"
+                      );
+                    },
+                  },
+                ]}
+              >
+                <Input
+                  type="number"
+                  placeholder="Chiều dài đơn hàng"
+                  suffix="cm"
+                />
               </Form.Item>
-              <Form.Item>
-                <span style={{marginBottom:"10px"}}>Nhập chiều rộng đơn hàng:</span>
-                <Input placeholder="Chiều rộng đơn hàng" suffix="cm" />
+              <span>Nhập chiều rộng đơn hàng:</span>
+              <Form.Item
+                name={"width"}
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập chiều rộng đơn hàng!",
+                  },
+                  {
+                    pattern: /^(0|[1-9][0-9]*)$/,
+                    message: "Vui lòng chỉ nhập số nguyên dương!",
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (value <= 150) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        "Chiều rộng không được vượt quá 150 cm!"
+                      );
+                    },
+                  },
+                ]}
+              >
+                <Input
+                  type="number"
+                  placeholder="Chiều rộng đơn hàng"
+                  suffix="cm"
+                />
               </Form.Item>
-              <Form.Item>
-                <span style={{marginBottom:"10px"}}>Nhập chiều cao đơn hàng:</span>
-                <Input placeholder="Chiều cao đơn hàng" suffix="cm" />
+              <span>Nhập chiều cao đơn hàng:</span>
+              <Form.Item
+                name={"height"}
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập chiều rộng đơn hàng!",
+                  },
+                  {
+                    pattern: /^(0|[1-9][0-9]*)$/,
+                    message: "Vui lòng chỉ nhập số nguyên dương!",
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (value <= 150) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        "Chiều cao không được vượt quá 150 cm!"
+                      );
+                    },
+                  },
+                ]}
+              >
+                <Input
+                  type="number"
+                  placeholder="Chiều cao đơn hàng"
+                  suffix="cm"
+                />
+
               </Form.Item>
               <Form.Item>
                 <span style={{marginRight:"10px"}}>Ghi chú đơn hàng: </span>
