@@ -58,13 +58,13 @@ const Balance = () => {
           "&orderInfo=Nap tien vao tai khoan " +
           accountId +
           " so tien: " +
-          values.amount + "vnd"
+          values.amount +
+          "vnd"
       );
 
       console.log("VN-Pay successful!!!", response.data);
       if (response.data) {
         window.open(response.data, "_blank");
-       
       }
     } catch (error) {
       console.error("Error calling API:", error);
@@ -139,8 +139,29 @@ const Balance = () => {
       >
         <Form form={form} onFinish={handleOk}>
           <span style={{ marginBottom: "5px" }}>Nhập số tiền muốn nạp:</span>
-          <Form.Item name="amount">
-            <Input placeholder="Nhập số tiền" suffix="VND" />
+          <Form.Item
+            name="amount"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập số tiền!",
+              },
+
+              {
+                validator: async (_, value) => {
+                  if (value >= 100000 && value < 1000000000) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      "Số tiền phải lớn hơn 100,000 VND và nhỏ hơn 1,000,000,000 VND!"
+                    )
+                  );
+                },
+              },
+            ]}
+          >
+            <Input type="number" placeholder="Nhập số tiền" suffix="VND" />
           </Form.Item>
           <Form.Item>
             <Button
@@ -153,7 +174,11 @@ const Balance = () => {
             >
               Thanh toán
             </Button>
-            <Button style={{ float: "right", marginRight: "10px" }} danger onClick={handleCancel}>
+            <Button
+              style={{ float: "right", marginRight: "10px" }}
+              danger
+              onClick={handleCancel}
+            >
               Huỷ
             </Button>
           </Form.Item>
