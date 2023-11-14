@@ -27,12 +27,14 @@ import OrdersBuyStaff from "../../components/order-buy";
 import CancelOrderTable from "../../components/product-owner-table/CancelOrderTable";
 import TableAccept from "./../../components/Staff-Grid/accept";
 import StaffChat from "../../components/staff-chat";
+import VerificationSuccess from "../../components/verifyPO/verified";
 
 const { Header, Content, Sider } = Layout;
 
 const Staff = () => {
   const idAccount = localStorage.getItem("accountId");
   const [staff, setStaff] = useState([]);
+  const [accountID, setAccountID] = useState([]);
   const fetchStaff = async () => {
     try {
       const response = await axios.get(
@@ -47,7 +49,18 @@ const Staff = () => {
 
   useEffect(() => {
     fetchStaff();
+    fetchAccountID();
   }, []);
+  const fetchAccountID = async () => {
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/account/" + idAccount
+      );
+      setAccountID(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const navigate = useNavigate();
   const {
@@ -79,6 +92,23 @@ const Staff = () => {
     setSelectedMenuKey(key);
   };
   const renderContent = () => {
+    const status = accountID.status;
+    console.log(status);
+    if (status === "NOT_VERIFIED") {
+      return (
+        <div>
+          <Breadcrumb
+            style={{
+              padding: "0 16px",
+            }}
+          >
+            <Breadcrumb.Item>Thông Tin</Breadcrumb.Item>
+            <Breadcrumb.Item>Thông tin cá nhân</Breadcrumb.Item>
+          </Breadcrumb>
+          <ProfileStaff />
+        </div>
+      );
+    }
     switch (selectedMenuKey) {
       case "1":
         return (
@@ -180,19 +210,36 @@ const Staff = () => {
           </div>
         );
       case "8":
-        return (
-          <div>
-            <Breadcrumb
-              style={{
-                padding: "0 16px",
-              }}
-            >
-              <Breadcrumb.Item>Thông Tin</Breadcrumb.Item>
-              <Breadcrumb.Item>Thông tin cá nhân</Breadcrumb.Item>
-            </Breadcrumb>
-            <ProfileStaff />
-          </div>
-        );
+        if (status === "VERIFIED") {
+          return (
+            <div>
+              <Breadcrumb
+                style={{
+                  padding: "0 16px",
+                }}
+              >
+                <Breadcrumb.Item>Thông Tin</Breadcrumb.Item>
+                <Breadcrumb.Item>Thông tin cá nhân</Breadcrumb.Item>
+              </Breadcrumb>
+              <VerificationSuccess />
+            </div>
+          );
+        } else {
+          return (
+            <div>
+              <Breadcrumb
+                style={{
+                  padding: "0 16px",
+                }}
+              >
+                <Breadcrumb.Item>Thông Tin</Breadcrumb.Item>
+                <Breadcrumb.Item>Thông tin cá nhân</Breadcrumb.Item>
+              </Breadcrumb>
+              <ProfileStaff />
+            </div>
+          );
+        }
+
       // case "9":
       //   return (
       //     <div>
@@ -341,11 +388,7 @@ const Staff = () => {
             </SubMenu> */}
           </Menu>
         </Sider>
-        <Layout
-          style={{
-            padding: "0 24px 24px",
-          }}
-        >
+        <Layout>
           <Content
             style={{
               padding: 24,
@@ -361,7 +404,7 @@ const Staff = () => {
       {/* Modal cho Thông báo */}
       <Modal
         title="Thông báo"
-        visible={isNotificationModalVisible}
+        open={isNotificationModalVisible}
         onCancel={hideNotificationModal}
         footer={null}
         style={{ position: "absolute", bottom: "50px", right: "20px" }}

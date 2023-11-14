@@ -23,12 +23,7 @@ const ProfileStaff = () => {
   const [urlImage, setUrlImage] = useState("");
   const [api, contextHolder] = notification.useNotification();
   const [userInfo, setUserInfo] = useState(null);
-  const openNotificationWithIcon = (type) => {
-    api[type]({
-      message: "Notification Title",
-      description: "Xác Thực Thành Công",
-    });
-  };
+
   const handleFileChange = (event) => {
     if (event.file) {
       const imageRef = ref(storage, `images/${event.file.name + v4()}`);

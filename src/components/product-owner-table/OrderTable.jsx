@@ -146,7 +146,7 @@ const OrderTable = () => {
   const showDrawer = async (record) => {
     form.setFieldValue(record);
     form.setFieldsValue({ dateOrder: record.dateOrder });
-    form.setFieldsValue({customerAddress: record.customerAddress});
+    form.setFieldsValue({ customerAddress: record.customerAddress });
     setSelectedOrderID(record.orderBuyID);
     setIsDrawerVisible(true);
     try {
@@ -186,6 +186,7 @@ const OrderTable = () => {
           style={{
             marginBottom: 8,
             display: "block",
+            borderColor: "green",
           }}
         />
         <Space>
@@ -221,8 +222,9 @@ const OrderTable = () => {
             onClick={() => {
               close();
             }}
+            style={{ color: "green" }}
           >
-            close
+            Đóng
           </Button>
         </Space>
       </div>
@@ -391,9 +393,7 @@ const OrderTable = () => {
               </p>
             </div>
           </Form.Item>
-          <Form.Item
-            name="customerAddress"
-          >
+          <Form.Item name="customerAddress">
             <div style={{ display: "flex" }}>
               <strong>Địa chỉ:</strong>
               <p style={{ marginLeft: "10px" }}>

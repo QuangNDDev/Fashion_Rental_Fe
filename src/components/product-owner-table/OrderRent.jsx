@@ -75,6 +75,7 @@ const OrderRent = () => {
           style={{
             marginBottom: 8,
             display: "block",
+            borderColor: "green",
           }}
         />
         <Space>
@@ -110,8 +111,9 @@ const OrderRent = () => {
             onClick={() => {
               close();
             }}
+            style={{ color: "green" }}
           >
-            close
+            Đóng
           </Button>
         </Space>
       </div>

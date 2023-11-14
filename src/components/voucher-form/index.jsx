@@ -20,6 +20,7 @@ function VoucherForm() {
   const [dateRange, setDateRange] = useState([null, null]);
   const productownerId = localStorage.getItem("productownerId");
   const [api, contextHolder] = notification.useNotification();
+
   const handleCancel = () => {
     form.resetFields();
   };
@@ -217,6 +218,7 @@ function VoucherForm() {
                     ]}
                   >
                     <Input
+                      type="number"
                       suffix={<span style={{ fontWeight: "bold" }}>%</span>}
                       placeholder="Vui lòng nhập..."
                     />
@@ -232,7 +234,11 @@ function VoucherForm() {
                       { required: true, message: "Không được để trống!" },
                     ]}
                   >
-                    <Input suffix="VNĐ" placeholder="Vui lòng nhập..." />
+                    <Input
+                      type="number"
+                      suffix="VNĐ"
+                      placeholder="Vui lòng nhập..."
+                    />
                   </Form.Item>
                 </Col>
               </Row>
