@@ -1,8 +1,7 @@
 import { SearchOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { Button, Drawer, Form, Input, Radio, Space, Table, Tag } from "antd";
-import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
+import { Button, Drawer, Form, Input, Space, Table } from "antd";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
 const VoucherTable = () => {
@@ -112,7 +111,7 @@ const VoucherTable = () => {
               close();
             }}
           >
-            close
+            Đóng
           </Button>
         </Space>
       </div>
@@ -170,20 +169,16 @@ const VoucherTable = () => {
       key: "voucherID",
       width: "5%",
       ...getColumnSearchProps("voucherID"),
-      render: (number) => (
-        <p >{Number(number)}</p>
-      ),
+      render: (number) => <p>{Number(number)}</p>,
     },
     {
-        title: "Tên khuyến mãi",
-        dataIndex: "voucherName",
-        key: "voucherName",
-        width: "15%",
-        ...getColumnSearchProps("voucherName"),
-        render: (text) => (
-          <p >{text}</p>
-        ),
-      },
+      title: "Tên khuyến mãi",
+      dataIndex: "voucherName",
+      key: "voucherName",
+      width: "15%",
+      ...getColumnSearchProps("voucherName"),
+      render: (text) => <p>{text}</p>,
+    },
     {
       title: "Mã khuyến mãi",
       dataIndex: "voucherCode",
@@ -192,44 +187,38 @@ const VoucherTable = () => {
       ...getColumnSearchProps("voucherCode"),
       render: (text) => <p>{text}</p>,
     },
-    
+
     {
-        title: "Ngày tạo",
-        dataIndex: "createdDate",
-        key: "createdDate",
-        width: "10%",
-        ...getColumnSearchProps("createdDate"),
-        render: (text) => (
-          <p >{formatDate(text)}</p>
-        ),
-      },
-      {
-        title: "Ngày bắt đầu",
-        dataIndex: "startDate",
-        key: "startDate",
-        width: "10%",
-        ...getColumnSearchProps("startDate"),
-        render: (text) => (
-          <p >{formatDate(text)}</p>
-        ),
-      },
-      {
-        title: "Ngày kết thúc",
-        dataIndex: "endDate",
-        key: "endDate",
-        width: "10%",
-        ...getColumnSearchProps("endDate"),
-        render: (text) => (
-          <p >{formatDate(text)}</p>
-        ),
-      },
+      title: "Ngày tạo",
+      dataIndex: "createdDate",
+      key: "createdDate",
+      width: "10%",
+      ...getColumnSearchProps("createdDate"),
+      render: (text) => <p>{formatDate(text)}</p>,
+    },
+    {
+      title: "Ngày bắt đầu",
+      dataIndex: "startDate",
+      key: "startDate",
+      width: "10%",
+      ...getColumnSearchProps("startDate"),
+      render: (text) => <p>{formatDate(text)}</p>,
+    },
+    {
+      title: "Ngày kết thúc",
+      dataIndex: "endDate",
+      key: "endDate",
+      width: "10%",
+      ...getColumnSearchProps("endDate"),
+      render: (text) => <p>{formatDate(text)}</p>,
+    },
     {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
       width: "5%",
       render: (status) => (
-        <p style={{textAlign:"center"}}>
+        <p style={{ textAlign: "center" }}>
           <RenderTag tagRender={status} />
         </p>
       ),

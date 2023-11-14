@@ -360,7 +360,7 @@ const OrderDeliveryTable = () => {
               close();
             }}
           >
-            close
+            Đóng
           </Button>
         </Space>
       </div>

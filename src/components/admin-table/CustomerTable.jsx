@@ -73,7 +73,7 @@ const CustomerTable = () => {
       >
         <Input
           ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`Tìm kiếm...`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -82,6 +82,7 @@ const CustomerTable = () => {
           style={{
             marginBottom: 8,
             display: "block",
+            borderColor: "green",
           }}
         />
         <Space>
@@ -91,10 +92,11 @@ const CustomerTable = () => {
             icon={<SearchOutlined />}
             size="small"
             style={{
-              width: 90,
+              width: 110,
+              backgroundColor: "#008000",
             }}
           >
-            Search
+            Tìm kiếm
           </Button>
           <Button
             onClick={() =>
@@ -108,7 +110,7 @@ const CustomerTable = () => {
               width: 90,
             }}
           >
-            Reset
+            Đặt lại
           </Button>
           <Button
             type="link"
@@ -116,8 +118,9 @@ const CustomerTable = () => {
             onClick={() => {
               close();
             }}
+            style={{ color: "green" }}
           >
-            close
+            Đóng
           </Button>
         </Space>
       </div>

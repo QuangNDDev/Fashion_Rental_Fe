@@ -17,11 +17,13 @@ import {
 import CountUp from "react-countup";
 import { async } from "@firebase/util";
 import { useNavigate } from "react-router-dom";
+
 const Balance = () => {
   const [balanceData, setBalanceData] = useState([]);
   const accountId = localStorage.getItem("accountId");
   const [form] = Form.useForm();
   const navigate = useNavigate();
+
   const fetchBalance = async () => {
     try {
       const response = await axios.get(

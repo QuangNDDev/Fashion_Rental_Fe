@@ -398,87 +398,111 @@ const CreateProduct = () => {
         productownerID: productownerId,
       };
 
-      try {
-        const response = await axios.post(
-          "http://fashionrental.online:8080/product/create",
-          addProductData
-        );
+      // Check if productownerId is not null before making the API call
+      if (productownerId !== null) {
+        try {
+          // Make the API call to create a new product
+          const response = await axios.post(
+            "http://fashionrental.online:8080/product/create",
+            addProductData
+          );
 
-        api["success"]({
-          message: "Thêm Sản Phẩm Thành Công",
-          description: `Bạn đã thêm ${values.productName} thành công`,
-        });
-        form.resetFields();
-        console.log("Registration successful", response.data);
-        if (
-          response.data.checkType === "RENT" ||
-          response.data.checkType === "SALE_RENT"
-        ) {
-          // Gọi API khi checkType là "RENT" hoặc "SALE_RENT"
-          const mockDay = [];
-          const rentPrice = [];
+          // Handle success
+          api["success"]({
+            message: "Thêm Sản Phẩm Thành Công",
+            description: `Bạn đã thêm ${values.productName} thành công`,
+          });
 
-          for (const key in values) {
-            if (key.startsWith("mockDay")) {
-              mockDay.push(values[key]);
-            } else if (key.startsWith("rentPrice")) {
-              rentPrice.push(values[key]);
+          // Reset form fields
+          form.resetFields();
+
+          console.log("Registration successful", response.data);
+
+          if (
+            response.data.checkType === "RENT" ||
+            response.data.checkType === "SALE_RENT"
+          ) {
+            // Additional logic for "RENT" or "SALE_RENT" checkType
+            const mockDay = [];
+            const rentPrice = [];
+
+            // Extract values for mockDay and rentPrice
+            for (const key in values) {
+              if (key.startsWith("mockDay")) {
+                mockDay.push(values[key]);
+              } else if (key.startsWith("rentPrice")) {
+                rentPrice.push(values[key]);
+              }
+            }
+
+            // Prepare data for rent price API call
+            const formRentPrice = {
+              productID: response.data.productID,
+              mockDay: mockDay,
+              rentPrice: rentPrice,
+            };
+
+            try {
+              // Make the API call to set rent prices
+              const rentPriceResponse = await axios.post(
+                "http://fashionrental.online:8080/rentprice",
+                formRentPrice
+              );
+
+              console.log("Rent price Success!!");
+              console.log(rentPriceResponse.data);
+            } catch (error) {
+              console.error("Error rent price:", error);
             }
           }
-          const formRentPrice = {
+
+          // API call to create a request
+          const formRequest = {
             productID: response.data.productID,
-            mockDay: mockDay,
-            rentPrice: rentPrice,
           };
+
           try {
-            const rentPriceResponse = await axios.post(
-              "http://fashionrental.online:8080/rentprice",
-              formRentPrice
+            const requestResponse = await axios.post(
+              "http://fashionrental.online:8080/request",
+              formRequest
             );
 
-            console.log("Rent price Success!!");
-            console.log(rentPriceResponse.data);
+            console.log("Request Success!!");
+            console.log(requestResponse.data);
           } catch (error) {
-            console.error("Error rent price:", error);
+            console.error("Error request:", error);
           }
-        }
-        //api request
-        const formRequest = {
-          productID: response.data.productID,
-        };
-        try {
-          const requestResponse = await axios.post(
-            "http://fashionrental.online:8080/request",
-            formRequest
-          );
 
-          console.log("Request Success!!");
-          console.log(requestResponse.data);
-        } catch (error) {
-          console.error("Error request:", error);
-        }
-        const formData = {
-          imgUrl: urlImages.map((image) => image.imgUrl),
-          productID: response.data.productID,
-        };
-        try {
-          const imgResponse = await axios.post(
-            "http://fashionrental.online:8080/productimg",
-            formData
-          );
+          // API call to upload images
+          const formData = {
+            imgUrl: urlImages.map((image) => image.imgUrl),
+            productID: response.data.productID,
+          };
 
-          console.log("Img Success!!");
-          console.log(imgResponse.data);
+          try {
+            const imgResponse = await axios.post(
+              "http://fashionrental.online:8080/productimg",
+              formData
+            );
+
+            console.log("Img Success!!");
+            console.log(imgResponse.data);
+          } catch (error) {
+            console.error("Error uploading images:", error);
+          }
         } catch (error) {
-          console.error("Error uploading images:", error);
+          // Handle API call failure
+          console.error("Add new product failed", error);
+          api["error"]({
+            message: "Thêm Sản Phẩm Thất Bại",
+            description: `Bạn đã thêm ${values.productName} thất bại`,
+            duration: 1000,
+          });
         }
-      } catch (error) {
-        console.error("Add new product failed", error);
-        api["error"]({
-          message: "Thêm Sản Phẩm Thất Bại",
-          description: `Bạn đã thêm ${values.productName} thất bại`,
-          duration: 1000,
-        });
+      } else {
+        // Handle the case where productownerId is null
+        console.warn("productownerId is null. API call not made.");
+        // Optionally handle this case as needed.
       }
 
       console.log(addProductData);
@@ -719,87 +743,111 @@ const CreateProduct = () => {
         productownerID: productownerId,
       };
 
-      try {
-        const response = await axios.post(
-          "http://fashionrental.online:8080/product/create",
-          addProductData
-        );
+      // Check if productownerId is not null before making the API call
+      if (productownerId !== null) {
+        try {
+          // Make the API call to create a new product
+          const response = await axios.post(
+            "http://fashionrental.online:8080/product/create",
+            addProductData
+          );
 
-        api["success"]({
-          message: "Thêm Sản Phẩm Thành Công",
-          description: `Bạn đã thêm ${values.productName} thành công`,
-        });
-        form.resetFields();
-        console.log("Registration successful", response.data);
-        if (
-          response.data.checkType === "RENT" ||
-          response.data.checkType === "SALE_RENT"
-        ) {
-          // Gọi API khi checkType là "RENT" hoặc "SALE_RENT"
-          const mockDay = [];
-          const rentPrice = [];
+          // Handle success
+          api["success"]({
+            message: "Thêm Sản Phẩm Thành Công",
+            description: `Bạn đã thêm ${values.productName} thành công`,
+          });
 
-          for (const key in values) {
-            if (key.startsWith("mockDay")) {
-              mockDay.push(values[key]);
-            } else if (key.startsWith("rentPrice")) {
-              rentPrice.push(values[key]);
+          // Reset form fields
+          form.resetFields();
+
+          console.log("Registration successful", response.data);
+
+          if (
+            response.data.checkType === "RENT" ||
+            response.data.checkType === "SALE_RENT"
+          ) {
+            // Additional logic for "RENT" or "SALE_RENT" checkType
+            const mockDay = [];
+            const rentPrice = [];
+
+            // Extract values for mockDay and rentPrice
+            for (const key in values) {
+              if (key.startsWith("mockDay")) {
+                mockDay.push(values[key]);
+              } else if (key.startsWith("rentPrice")) {
+                rentPrice.push(values[key]);
+              }
+            }
+
+            // Prepare data for rent price API call
+            const formRentPrice = {
+              productID: response.data.productID,
+              mockDay: mockDay,
+              rentPrice: rentPrice,
+            };
+
+            try {
+              // Make the API call to set rent prices
+              const rentPriceResponse = await axios.post(
+                "http://fashionrental.online:8080/rentprice",
+                formRentPrice
+              );
+
+              console.log("Rent price Success!!");
+              console.log(rentPriceResponse.data);
+            } catch (error) {
+              console.error("Error rent price:", error);
             }
           }
-          const formRentPrice = {
+
+          // API call to create a request
+          const formRequest = {
             productID: response.data.productID,
-            mockDay: mockDay,
-            rentPrice: rentPrice,
           };
+
           try {
-            const rentPriceResponse = await axios.post(
-              "http://fashionrental.online:8080/rentprice",
-              formRentPrice
+            const requestResponse = await axios.post(
+              "http://fashionrental.online:8080/request",
+              formRequest
             );
 
-            console.log("Rent price Success!!");
-            console.log(rentPriceResponse.data);
+            console.log("Request Success!!");
+            console.log(requestResponse.data);
           } catch (error) {
-            console.error("Error rent price:", error);
+            console.error("Error request:", error);
           }
-        }
-        //api request
-        const formRequest = {
-          productID: response.data.productID,
-        };
-        try {
-          const requestResponse = await axios.post(
-            "http://fashionrental.online:8080/request",
-            formRequest
-          );
 
-          console.log("Request Success!!");
-          console.log(requestResponse.data);
-        } catch (error) {
-          console.error("Error request:", error);
-        }
-        const formData = {
-          imgUrl: urlImages.map((image) => image.imgUrl),
-          productID: response.data.productID,
-        };
-        try {
-          const imgResponse = await axios.post(
-            "http://fashionrental.online:8080/productimg",
-            formData
-          );
+          // API call to upload images
+          const formData = {
+            imgUrl: urlImages.map((image) => image.imgUrl),
+            productID: response.data.productID,
+          };
 
-          console.log("Img Success!!");
-          console.log(imgResponse.data);
+          try {
+            const imgResponse = await axios.post(
+              "http://fashionrental.online:8080/productimg",
+              formData
+            );
+
+            console.log("Img Success!!");
+            console.log(imgResponse.data);
+          } catch (error) {
+            console.error("Error uploading images:", error);
+          }
         } catch (error) {
-          console.error("Error uploading images:", error);
+          // Handle API call failure
+          console.error("Add new product failed", error);
+          api["error"]({
+            message: "Thêm Sản Phẩm Thất Bại",
+            description: `Bạn đã thêm ${values.productName} thất bại`,
+            duration: 1000,
+          });
         }
-      } catch (error) {
-        console.error("Add new product failed", error);
-        api["error"]({
-          message: "Thêm Sản Phẩm Thất Bại",
-          description: `Bạn đã thêm ${values.productName} thất bại`,
-          duration: 1000,
-        });
+      } else {
+        // Handle the case where productownerId is null
+        console.warn("productownerId is null. API call not made.");
+        // Optionally handle this case as needed.
       }
 
       console.log(addProductData);
@@ -3281,7 +3329,7 @@ const CreateProduct = () => {
             >
               <div className="price">
                 <span>Giá sản phẩm:</span>
-                <Input suffix="VND" style={{ width: "11.6%" }} />
+                <Input type="number" suffix="VND" style={{ width: "11.6%" }} />
               </div>
             </Form.Item>
 
@@ -3303,7 +3351,7 @@ const CreateProduct = () => {
                       },
                     ]}
                   >
-                    <Input suffix="Ngày" />
+                    <Input type="number" suffix="Ngày" />
                   </Form.Item>
 
                   <Form.Item
@@ -3321,7 +3369,7 @@ const CreateProduct = () => {
                       },
                     ]}
                   >
-                    <Input suffix="VND" />
+                    <Input type="number" suffix="VND" />
                   </Form.Item>
                 </div>
                 {additionalFields.map((field, index) => (
@@ -3331,14 +3379,22 @@ const CreateProduct = () => {
                         label={`Số ngày ${index + 2}`}
                         name={`mockDay${index + 2}`}
                       >
-                        <Input style={{ width: "172px" }} suffix="Ngày" />
+                        <Input
+                          type="number"
+                          style={{ width: "172px" }}
+                          suffix="Ngày"
+                        />
                       </Form.Item>
 
                       <Form.Item
                         label={`Giá thuê ${index + 2}`}
                         name={`rentPrice${index + 2}`}
                       >
-                        <Input style={{ width: "172px" }} suffix="VND" />
+                        <Input
+                          type="number"
+                          style={{ width: "172px" }}
+                          suffix="VND"
+                        />
                       </Form.Item>
                     </Space>
                   </div>

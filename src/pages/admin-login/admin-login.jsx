@@ -3,13 +3,14 @@ import {
   Input,
   Button,
   Card,
-  message,
   Checkbox,
   notification,
+  Divider,
 } from "antd";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import "./admin-login.css";
 const LoginForm = () => {
   const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
@@ -136,7 +137,10 @@ const LoginForm = () => {
               rules={[{ required: true, message: "Vui lòng nhập email!" }]}
             >
               <Input
-                style={{ fontSize: "15px", padding: "10px" }}
+                style={{
+                  fontSize: "15px",
+                  padding: "10px",
+                }}
                 prefix={<UserOutlined />}
                 placeholder="Email"
               />
@@ -147,23 +151,29 @@ const LoginForm = () => {
               rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
             >
               <Input.Password
-                style={{ fontSize: "15px", padding: "10px" }}
+                style={{
+                  fontSize: "15px",
+                  padding: "10px",
+                }}
                 prefix={<LockOutlined />}
                 placeholder="Mật Khẩu"
               />
             </Form.Item>
-            <Form.Item>
-              <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>Ghi Nhớ</Checkbox>
-              </Form.Item>
-              <div style={{ marginTop: "20px" }}>
-                Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link>
-              </div>
+
+            <Form.Item name="remember" valuePropName="checked">
+              <Checkbox>Ghi Nhớ</Checkbox>
             </Form.Item>
+
             <div style={{ display: "flex", justifyContent: "center" }}>
               <Form.Item style={{ width: "100%" }}>
                 <Button
-                  style={{ width: "100%", height: "43px" }}
+                  style={{
+                    width: "100%",
+                    height: "43px",
+                    backgroundColor: "#008000",
+                    fontWeight: "bold",
+                    borderColor: "#008000",
+                  }}
                   type="primary"
                   htmlType="submit"
                   // loading={loadings[0]}
@@ -174,6 +184,23 @@ const LoginForm = () => {
               </Form.Item>
             </div>
           </Form>
+          <Divider style={{ fontSize: "14px", fontWeight: "400" }}>
+            Hoặc
+          </Divider>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "25px 0px",
+            }}
+          >
+            <button className="login-with-google-btn">
+              Đăng nhập với Google
+            </button>
+          </div>
+          <div style={{ marginTop: "20px" }}>
+            Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link>
+          </div>
         </Card>
       </div>
     </div>

@@ -1,14 +1,5 @@
 import { EyeTwoTone, SearchOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Carousel,
-  Drawer,
-  Form,
-  Image,
-  Input,
-  Space,
-  Table,
-} from "antd";
+import { Button, Drawer, Form, Image, Input, Space, Table } from "antd";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";

@@ -319,6 +319,13 @@ const ProductCard = () => {
                   right: "0",
                 }}
               >
+                {product.status === "WAITING" && (
+                  <Badge.Ribbon
+                    text="Chờ duyệt"
+                    color="yellow"
+                    placement="end"
+                  />
+                )}
                 {product.status === "SOLD_OUT" && (
                   <Badge.Ribbon text="Đã bán" color="red" placement="end" />
                 )}

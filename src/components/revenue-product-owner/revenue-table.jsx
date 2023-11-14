@@ -52,7 +52,7 @@ const RevenueTable = () => {
       >
         <Input
           ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`Tìm kiếm...`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -61,6 +61,7 @@ const RevenueTable = () => {
           style={{
             marginBottom: 8,
             display: "block",
+            borderColor: "green",
           }}
         />
         <Space>
@@ -70,10 +71,11 @@ const RevenueTable = () => {
             icon={<SearchOutlined />}
             size="small"
             style={{
-              width: 90,
+              width: 110,
+              backgroundColor: "#008000",
             }}
           >
-            Search
+            Tìm kiếm
           </Button>
           <Button
             onClick={() =>
@@ -87,7 +89,7 @@ const RevenueTable = () => {
               width: 90,
             }}
           >
-            Reset
+            Đặt lại
           </Button>
           <Button
             type="link"
@@ -95,8 +97,9 @@ const RevenueTable = () => {
             onClick={() => {
               close();
             }}
+            style={{ color: "green" }}
           >
-            close
+            Đóng
           </Button>
         </Space>
       </div>
@@ -151,7 +154,7 @@ const RevenueTable = () => {
       dataIndex: "status",
       key: "status",
       width: "10%",
-      ...getColumnSearchProps("status"),
+
       render: (status) => (
         <p>
           <RenderTag tagRender={status} />

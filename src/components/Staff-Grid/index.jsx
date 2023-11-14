@@ -196,20 +196,22 @@ const TablePending = () => {
     setIsDrawerVisible(false);
   };
   //Modal duyet
-  const showModalApprove = (record) => {
+  const showModalApprove = (record, productID) => {
     setIsModalVisible(true);
     localStorage.setItem(
       "requestAddingProductID",
       record.requestAddingProductID
     );
+    localStorage.setItem("approvedProductID", productID);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    localStorage.removeItem("requestAddingProductID");
+    localStorage.removeItem("approvedProductID");
   };
   //-----------------------------
-  const handleOk = async (record) => {
-    console.log(record.requestAddingProductID);
+  const handleOk = async () => {
     try {
       const response = await axios.put(
         `
@@ -240,12 +242,14 @@ const TablePending = () => {
           console.error("Validation failed", error);
         }
         try {
-          const productID = record.productID;
+          const productID = localStorage.getItem("approvedProductID");
           const newStatus = "AVAILABLE";
           const productStatus = await axios.put(
             `http://fashionrental.online:8080/product/updatebystaff?productID=${productID}&status=${newStatus}`
           );
           console.log("update product success", productStatus.data);
+          localStorage.removeItem("requestAddingProductID");
+          localStorage.removeItem("approvedProductID");
         } catch (error) {
           console.error("Validation failed", error);
         }
@@ -258,17 +262,21 @@ const TablePending = () => {
   };
 
   //Modal Huy
-  const showModalNotApprove = (record) => {
+  const showModalNotApprove = (record, productID) => {
     setIsModalVisibleNotApprove(true);
+    // setIsModalVisible(true);
     localStorage.setItem(
       "requestAddingProductID",
       record.requestAddingProductID
     );
+    localStorage.setItem("approvedProductID", productID);
   };
   const handleCancelNotApprove = () => {
     setIsModalVisibleNotApprove(false);
+    localStorage.removeItem("requestAddingProductID");
+    localStorage.removeItem("approvedProductID");
   };
-  const handleSend = async (record) => {
+  const handleSend = async () => {
     try {
       const response = await axios.put(
         `http://fashionrental.online:8080/request?description=` +
@@ -299,7 +307,7 @@ const TablePending = () => {
       try {
         const productStatus = await axios.put(
           `http://fashionrental.online:8080/product/updatebystaff?productID=` +
-            record.productID +
+            localStorage.getItem("approvedProductID") +
             `&status=BLOCKED`
         );
         console.log("update product success", productStatus.data);
@@ -308,6 +316,8 @@ const TablePending = () => {
       }
       setIsModalVisibleNotApprove(false);
       fetchRequests();
+      localStorage.removeItem("requestAddingProductID");
+      localStorage.removeItem("approvedProductID");
     } catch (error) {
       console.log(error);
     }
@@ -429,14 +439,6 @@ const TablePending = () => {
   });
   const columns = [
     {
-      title: "ID",
-      dataIndex: "requestAddingProductID",
-      key: "requestAddingProductID",
-      // width: "20%",
-      ...getColumnSearchProps("requestAddingProductID"),
-      render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
-    },
-    {
       title: "Ngày tạo",
       dataIndex: "createdDate",
       key: "createdDate",
@@ -470,11 +472,11 @@ const TablePending = () => {
           </Button>
           <Button
             style={{ marginRight: "15px" }}
-            onClick={() => showModalApprove(record)}
+            onClick={() => showModalApprove(record, record.productID)}
           >
             <CheckCircleTwoTone twoToneColor="#52c41a" />
           </Button>
-          <Button onClick={() => showModalNotApprove(record)}>
+          <Button onClick={() => showModalNotApprove(record, record.productID)}>
             <CloseCircleTwoTone twoToneColor="#ff4d4f" />
           </Button>
           <Modal
@@ -502,7 +504,7 @@ const TablePending = () => {
                 <Button
                   type="primary"
                   style={{ backgroundColor: "#008000", marginLeft: "20px" }}
-                  onClick={() => handleOk(record)}
+                  onClick={handleOk}
                 >
                   Duyệt
                 </Button>
@@ -535,7 +537,7 @@ const TablePending = () => {
                 <Button
                   type="primary"
                   style={{ backgroundColor: "#008000", marginLeft: "20px" }}
-                  onClick={() => handleSend(record)}
+                  onClick={handleSend}
                 >
                   Gửi
                 </Button>

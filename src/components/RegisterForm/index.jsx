@@ -163,7 +163,7 @@ const RegisterForm = () => {
                             return Promise.resolve();
                           }
                           return Promise.reject(
-                            new Error("The two passwords do not match")
+                            new Error("Mật khẩu không trùng khớp!")
                           );
                         },
                       }),
@@ -198,6 +198,7 @@ const RegisterForm = () => {
                   className="registerForm__button"
                   type="primary"
                   htmlType="submit"
+                  style={{ backgroundColor: "#008000" }}
                 >
                   Đăng Ký
                 </Button>
