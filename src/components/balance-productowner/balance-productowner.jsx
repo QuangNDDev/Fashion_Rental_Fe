@@ -151,12 +151,12 @@ const Balance = () => {
 
               {
                 validator: async (_, value) => {
-                  if (value >= 100000 && value < 1000000000) {
+                  if (value >= 10000 && value < 1000000000) {
                     return Promise.resolve();
                   }
                   return Promise.reject(
                     new Error(
-                      "Số tiền phải lớn hơn 100,000 VND và nhỏ hơn 1,000,000,000 VND!"
+                      "Số tiền phải lớn hơn 10,000 VND và nhỏ hơn 1,000,000,000 VND!"
                     )
                   );
                 },

@@ -121,13 +121,17 @@ const RenderTag = ({ tagRender }) => {
       color = "green";
       text = "Hoàn thành";
       break;
-    case "true":
+    case "ACTIVE":
       color = "green";
       text = "Đang hoạt động";
       break;
-    case "false":
+    case "INACTIVE":
       color = "red";
       text = "Không hoạt động";
+      break;
+    case "OUTDATE":
+      color = "red";
+      text = "Hết hạn";
       break;
     default:
       color = "default";

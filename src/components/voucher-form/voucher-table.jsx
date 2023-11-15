@@ -1,7 +1,16 @@
 import { SearchOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { Button, Drawer, Form, Input, Space, Table } from "antd";
+import {
+  Button,
+  Drawer,
+  Form,
+  Input,
+  Space,
+  Switch,
+  Table,
+  notification,
+} from "antd";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
 const VoucherTable = () => {
@@ -13,6 +22,7 @@ const VoucherTable = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [voucherData, setVoucherData] = useState([]);
   const productownerId = localStorage.getItem("productownerId");
+  const [api, contextHolder] = notification.useNotification();
   const fetchVouchers = async () => {
     try {
       const response = await axios.get(
@@ -156,18 +166,31 @@ const VoucherTable = () => {
     return `${day}/ ${month}/ ${year}`;
   }
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
-  const formatPriceWithVND = (price) => {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(price);
+  const onChangeSwitchStatus = async (checked, voucherID) => {
+    console.log(`switch to ${checked}`);
+    console.log(voucherID);
+
+    try {
+      const response = await axios.put(
+        `http://fashionrental.online:8080/voucher?voucherID=${voucherID}`
+      );
+
+      api["success"]({
+        message: "Cập Nhật Trạng Thái Thành Công!",
+        description: `Bật voucher thành công!!!`,
+      });
+
+      fetchVouchers();
+      console.log("Bật true hoàn tất!!!", response);
+    } catch (error) {}
   };
+
   const columns = [
     {
       title: "ID",
       dataIndex: "voucherID",
       key: "voucherID",
-      width: "5%",
+
       ...getColumnSearchProps("voucherID"),
       render: (number) => <p>{Number(number)}</p>,
     },
@@ -175,7 +198,7 @@ const VoucherTable = () => {
       title: "Tên khuyến mãi",
       dataIndex: "voucherName",
       key: "voucherName",
-      width: "15%",
+
       ...getColumnSearchProps("voucherName"),
       render: (text) => <p>{text}</p>,
     },
@@ -183,7 +206,7 @@ const VoucherTable = () => {
       title: "Mã khuyến mãi",
       dataIndex: "voucherCode",
       key: "voucherCode",
-      width: "15%",
+
       ...getColumnSearchProps("voucherCode"),
       render: (text) => <p>{text}</p>,
     },
@@ -192,7 +215,7 @@ const VoucherTable = () => {
       title: "Ngày tạo",
       dataIndex: "createdDate",
       key: "createdDate",
-      width: "10%",
+
       ...getColumnSearchProps("createdDate"),
       render: (text) => <p>{formatDate(text)}</p>,
     },
@@ -200,7 +223,7 @@ const VoucherTable = () => {
       title: "Ngày bắt đầu",
       dataIndex: "startDate",
       key: "startDate",
-      width: "10%",
+
       ...getColumnSearchProps("startDate"),
       render: (text) => <p>{formatDate(text)}</p>,
     },
@@ -208,7 +231,7 @@ const VoucherTable = () => {
       title: "Ngày kết thúc",
       dataIndex: "endDate",
       key: "endDate",
-      width: "10%",
+
       ...getColumnSearchProps("endDate"),
       render: (text) => <p>{formatDate(text)}</p>,
     },
@@ -216,26 +239,48 @@ const VoucherTable = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      width: "5%",
+
       render: (status) => (
-        <p style={{ textAlign: "center" }}>
+        <p style={{ textAlign: "left" }}>
           <RenderTag tagRender={status} />
         </p>
       ),
     },
     {
-      title: "",
+      title: "Hành động",
       key: "action",
-      align: "left",
-      width: "5%",
+      align: "center",
+
+      render: (text, record) => (
+        <div>
+          <Space size={"middle"}>
+            <Switch
+              checked={record.status === "ACTIVE"}
+              size="large"
+              defaultChecked
+              onChange={(checked) =>
+                onChangeSwitchStatus(checked, record.voucherID)
+              }
+              style={{
+                backgroundColor:
+                  record.status === "ACTIVE" ? "#4CAF50" : "#F5F5F5",
+                borderColor:
+                  record.status === "INACTIVE" ? "#4CAF50" : "#D3D3D3",
+              }}
+              disabled={record.status === "OUTDATE"}
+            />
+          </Space>
+        </div>
+      ),
     },
   ];
   return (
     <div>
       <Table bordered={true} columns={columns} dataSource={voucherData} />
+      {contextHolder}
       <Drawer
         title={"Đơn hàng"}
-        visible={isDrawerVisible}
+        open={isDrawerVisible}
         onClose={onClose}
         width={400}
       >

@@ -299,14 +299,25 @@ const ProductCard = () => {
               }
               actions={[
                 <Switch
-                  checked={product.status === "AVAILABLE"}
+                  checked={
+                    product.status == "AVAILABLE" || product.status == "WAITING"
+                  }
                   onChange={(checked) => onChange(checked, product.productID)}
                   size="small"
                   style={{
                     backgroundColor:
-                      product.status === "AVAILABLE" ? "#4CAF50" : "#F5F5F5",
+                      product.status === "AVAILABLE"
+                        ? "#4CAF50"
+                        : product.status === "WAITING"
+                        ? "#4CAF50"
+                        : "#F5F5F5",
+
                     borderColor:
-                      product.status === "AVAILABLE" ? "#4CAF50" : "#D3D3D3",
+                      product.status === "AVAILABLE"
+                        ? "#4CAF50"
+                        : product.status === "WAITING"
+                        ? "#4CAF50"
+                        : "#D3D3D3",
                   }}
                 />,
                 <EyeOutlined key="edit" onClick={() => showModal(product)} />,
