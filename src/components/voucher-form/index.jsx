@@ -14,6 +14,7 @@ import {
 import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
 import React, { useState } from "react";
+import moment from "moment";
 
 function VoucherForm() {
   const [form] = Form.useForm();
@@ -34,6 +35,7 @@ function VoucherForm() {
 
       console.log(`Ngày bắt đầu đã định dạng: ${formattedStartDate}`);
       console.log(`Ngày kết thúc đã định dạng: ${formattedEndDate}`);
+      console.log(dates);
     }
   };
 
@@ -41,9 +43,18 @@ function VoucherForm() {
     if (!(date instanceof Date)) {
       return "";
     }
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
   }
+
   const onFinish = async (values) => {
-    const [startDate, endDate] = dateRange;
+    const startDate = formatDateToString(dateRange[0].$d);
+    const endDate = formatDateToString(dateRange[1].$d);
+
     const voucherData = {
       description: values.description,
       discountAmount: values.discountAmount,
@@ -56,6 +67,7 @@ function VoucherForm() {
       voucherTypeID: voucherType,
       productownerID: productownerId,
     };
+    console.log("voucher data: ", voucherData);
     try {
       const response = await axios.post(
         "http://fashionrental.online:8080/voucher",
@@ -81,6 +93,13 @@ function VoucherForm() {
   const handleChangeVoucherType = (value) => {
     console.log(`selected ${value}`);
     setVoucherType(value);
+  };
+
+  const disabledDate = (current) => {
+    const ngayHienTai = new Date();
+    ngayHienTai.setHours(0, 0, 0, 0);
+
+    return current && current < ngayHienTai;
   };
 
   return (
@@ -205,6 +224,7 @@ function VoucherForm() {
                       <DatePicker.RangePicker
                         onChange={handleDateChange}
                         placeholder={["Từ ngày", "Đến ngày"]}
+                        disabledDate={disabledDate}
                       />
                     </Form.Item>
                   </Col>

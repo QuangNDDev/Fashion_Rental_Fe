@@ -1,5 +1,13 @@
 import React from "react";
-import { Button, Card, Form, Input, Space, notification } from "antd";
+import {
+  Button,
+  Card,
+  ConfigProvider,
+  Form,
+  Input,
+  Space,
+  notification,
+} from "antd";
 import axios from "axios";
 
 function RegisterDelivery() {
@@ -25,6 +33,7 @@ function RegisterDelivery() {
           description: "Chúc mừng bạn đã đăng ký GHN thành công",
           duration: 1500,
         });
+        window.location.reload();
       })
       .catch((error) => {
         api["error"]({
@@ -47,48 +56,59 @@ function RegisterDelivery() {
       <Space direction="vertical" size={16}>
         {contextHolder}
         <Card
-          title={<div style={{ textAlign: "center" }}>Đăng kí GHN</div>}
+          title={<div style={{ textAlign: "center" }}>Đăng ký GHN</div>}
           style={{
             width: 500,
             marginBottom: "100px ",
           }}
         >
-          <Form form={form} onFinish={onFinish}>
-            <p>Bạn hãy đăng kí tài khoản giao hàng nhanh:</p>
-            <a
-              href="https://5sao.ghn.dev"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Đăng kí tài khoản GHN
-            </a>
-            <p>Mã cửa hàng:</p>
-            <Form.Item
-              name={"shopId"}
-              rules={[{ required: true, message: "Không được để trống!" }]}
-            >
-              <Input placeholder="Vui lòng nhập..." />
-            </Form.Item>
-
-            <p>Token:</p>
-            <Form.Item
-              name={"token"}
-              rules={[{ required: true, message: "Không được để trống!" }]}
-            >
-              <Input placeholder="Vui lòng nhập..." />
-            </Form.Item>
-            <Form.Item style={{ textAlign: "center" }}>
-              <Button
-                style={{
-                  backgroundColor: "green",
-                  color: "white",
-                }}
-                htmlType="submit"
+          <ConfigProvider
+            theme={{
+              token: {
+                Input: {
+                  activeBorderColor: "#008000",
+                  hoverBorderColor: "#008000",
+                },
+              },
+            }}
+          >
+            <Form form={form} onFinish={onFinish}>
+              <p>Bạn hãy đăng ký tài khoản giao hàng nhanh:</p>
+              <a
+                href="https://5sao.ghn.dev"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Đăng kí
-              </Button>
-            </Form.Item>
-          </Form>
+                Đăng ký tài khoản GHN
+              </a>
+              <p>Mã cửa hàng:</p>
+              <Form.Item
+                name={"shopId"}
+                rules={[{ required: true, message: "Không được để trống!" }]}
+              >
+                <Input placeholder="Vui lòng nhập..." />
+              </Form.Item>
+
+              <p>Token:</p>
+              <Form.Item
+                name={"token"}
+                rules={[{ required: true, message: "Không được để trống!" }]}
+              >
+                <Input placeholder="Vui lòng nhập..." />
+              </Form.Item>
+              <Form.Item style={{ textAlign: "center" }}>
+                <Button
+                  style={{
+                    backgroundColor: "green",
+                    color: "white",
+                  }}
+                  htmlType="submit"
+                >
+                  Đăng ký
+                </Button>
+              </Form.Item>
+            </Form>
+          </ConfigProvider>
         </Card>
       </Space>
     </div>
