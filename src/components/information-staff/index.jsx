@@ -8,6 +8,7 @@ import {
   Form,
   Spin,
   notification,
+  ConfigProvider,
 } from "antd";
 import "./style.css";
 import { UploadOutlined } from "@ant-design/icons";
@@ -96,69 +97,95 @@ const ProfileStaff = () => {
         });
       });
   };
-  return (
-    <Card
-      className="profile-container"
-      title={
-        <p
-          style={{
-            textAlign: "center",
-            fontWeight: "bold",
-            fontSize: "30px",
-            fontStyle: "italic",
-            marginTop: "70px",
-          }}
-        >
-          Xác Thực Tài Khoản
-        </p>
-      }
-    >
-      {contextHolder}
-      <Form onFinish={onFinish}>
-        <Form.Item
-          name="fullName"
-          rules={[{ required: true, message: "Vui lòng nhập Họ và Tên!" }]}
-          style={{ textAlign: "center" }}
-        >
-          <div className="input-container">
-            <Input style={{ width: "55%" }} placeholder="Họ và Tên" />
-          </div>
-        </Form.Item>
-        <Form.Item
-          name="avatarUrl"
-          rules={[{ required: true, message: "Vui lòng chọn ảnh đại diện!" }]}
-          style={{ textAlign: "center" }}
-        >
-          <div className="select-image">
-            <Upload
-              label="Hình đại diện"
-              name="avatarUrl"
-              maxCount={1}
-              onChange={handleFileChange}
-              beforeUpload={() => false}
-            >
-              <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
-            </Upload>
-          </div>
-        </Form.Item>
 
-        <Form.Item style={{ textAlign: "center" }}>
-          {loading ? ( // Nếu đang loading, hiển thị trạng thái loading
-            <Spin />
-          ) : (
-            <div className="update-button">
-              <Button
-                style={{ backgroundColor: "green" }}
-                type="primary"
-                htmlType="submit"
+  return (
+    <div
+      style={{
+        backgroundColor: "#e7e9eb",
+        height: "800px",
+        display: "grid",
+        placeItems: "center",
+      }}
+    >
+      <Card
+        className="profile-container"
+        title={
+          <div style={{ textAlign: "center", fontSize: "20px" }}>
+            Xác Thực Tài Khoản
+          </div>
+        }
+      >
+        {contextHolder}
+        <Form onFinish={onFinish}>
+          <span>Họ và Tên:</span>
+          <Form.Item
+            name="fullName"
+            rules={[{ required: true, message: "Vui lòng nhập Họ và Tên!" }]}
+            style={{ textAlign: "center" }}
+          >
+            <div className="input-container">
+              <ConfigProvider
+                theme={{
+                  token: {
+                    Input: {
+                      activeBorderColor: "#008000",
+                      hoverBorderColor: "#008000",
+                    },
+                  },
+                }}
               >
-                Xác Thực
-              </Button>
+                <Input placeholder="Họ và Tên" />
+              </ConfigProvider>
             </div>
-          )}
-        </Form.Item>
-      </Form>
-    </Card>
+          </Form.Item>
+          <span>Chọn ảnh đại diện:</span>
+          <Form.Item
+            name="avatarUrl"
+            rules={[{ required: true, message: "Vui lòng chọn ảnh đại diện!" }]}
+          >
+            <div className="select-image">
+              <ConfigProvider
+                theme={{
+                  token: {
+                    Button: {
+                      // action: null, // hoặc action: undefined
+                      // colorPrimary: "#008000",
+                      colorPrimaryHover: "#008000",
+                    },
+                  },
+                }}
+              >
+                <Upload
+                  label="Hình đại diện"
+                  name="avatarUrl"
+                  maxCount={1}
+                  onChange={handleFileChange}
+                  beforeUpload={() => false}
+                >
+                  <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+                </Upload>
+              </ConfigProvider>
+            </div>
+          </Form.Item>
+
+          <Form.Item style={{ textAlign: "center" }}>
+            {loading ? ( // Nếu đang loading, hiển thị trạng thái loading
+              <Spin />
+            ) : (
+              <div className="update-button">
+                <Button
+                  style={{ backgroundColor: "#008000" }}
+                  type="primary"
+                  htmlType="submit"
+                >
+                  Xác Thực
+                </Button>
+              </div>
+            )}
+          </Form.Item>
+        </Form>
+      </Card>
+    </div>
   );
 };
 

@@ -21,15 +21,15 @@ function RegisterDelivery() {
         // Xử lý trường hợp tài khoản đã đăng ký thành công
         console.log("Register GHN success:", response.data);
         api["success"]({
-          message: "Đăng Kí GHN Thành Công!",
+          message: "Đăng Ký GHN Thành Công!",
           description: "Chúc mừng bạn đã đăng ký GHN thành công",
           duration: 1500,
         });
       })
       .catch((error) => {
         api["error"]({
-          message: "Đăng Kí GHN Thất Bại!",
-          description: "Bạn đã đăng kí GHN thất bại",
+          message: "Đăng Ký GHN Thất Bại!",
+          description: "Bạn đã đăng ký GHN thất bại",
           duration: 1500,
         });
       });
