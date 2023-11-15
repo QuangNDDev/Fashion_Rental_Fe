@@ -2,6 +2,7 @@ import {
   Button,
   Card,
   Col,
+  ConfigProvider,
   DatePicker,
   Form,
   Input,
@@ -110,156 +111,184 @@ function VoucherForm() {
               marginLeft: "60%",
             }}
           >
-            <Form form={form} onFinish={onFinish}>
-              <Row
-                gutter={24}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: 10,
-                }}
-              >
-                <span style={{ fontWeight: "bold" }}>Mã khuyến mãi:</span>
-
-                <Form.Item
-                  name={"voucherCode"}
-                  rules={[{ required: true, message: "Không được để trống!" }]}
+            <ConfigProvider
+              theme={{
+                token: {
+                  Input: {
+                    activeBorderColor: "#008000",
+                    hoverBorderColor: "#008000",
+                  },
+                  Select: {
+                    colorPrimary: "#008000",
+                    colorPrimaryHover: "#008000",
+                  },
+                  DatePicker: {
+                    activeBorderColor: "#008000",
+                    hoverBorderColor: "#008000",
+                  },
+                },
+              }}
+            >
+              <Form form={form} onFinish={onFinish}>
+                <Row
+                  gutter={24}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    padding: 10,
+                  }}
                 >
-                  <Input placeholder="Nhập mã giảm giá..." />
-                </Form.Item>
-              </Row>
-              <Row
-                gutter={24}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: 10,
-                }}
-              >
-                <span style={{ fontWeight: "bold" }}>Tên mã khuyến mãi:</span>
-                <Form.Item
-                  name={"voucherName"}
-                  rules={[{ required: true, message: "Không được để trống!" }]}
-                >
-                  <Input placeholder="Nhập tên mã giảm giá..." />
-                </Form.Item>
-              </Row>
-              <Row
-                gutter={24}
-                style={{
-                  display: "flex",
-                }}
-              >
-                <Col span={12}>
-                  <p style={{ fontWeight: "bold" }}>Hình thức giảm giá:</p>
+                  <span style={{ fontWeight: "bold" }}>Mã khuyến mãi:</span>
 
-                  <Select
-                    placeholder="Vui lòng chọn"
-                    style={{
-                      width: 130,
-                    }}
-                    onChange={handleChangeVoucherType}
-                    options={[
-                      {
-                        value: 1,
-                        label: "Bán",
-                      },
-                      {
-                        value: 2,
-                        label: "Thuê",
-                      },
-                    ]}
-                  />
-                </Col>
-                <Col span={12}>
-                  <span style={{ fontWeight: "bold" }}>Nhập thời hạn:</span>
                   <Form.Item
-                    name={"startDate"}
+                    name={"voucherCode"}
                     rules={[
                       { required: true, message: "Không được để trống!" },
                     ]}
                   >
-                    <DatePicker.RangePicker
-                      onChange={handleDateChange}
-                      placeholder={["Từ ngày", "Đến ngày"]}
-                    />
+                    <Input placeholder="Nhập mã giảm giá..." />
                   </Form.Item>
-                </Col>
-              </Row>
-              <Row
-                gutter={24}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: 10,
-                }}
-              >
-                <span style={{ fontWeight: "bold" }}>Tên mã khuyến mãi:</span>
-                <Form.Item
-                  name={"description"}
-                  rules={[{ required: true, message: "Không được để trống!" }]}
+                </Row>
+                <Row
+                  gutter={24}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    padding: 10,
+                  }}
                 >
-                  <TextArea rows={4} placeholder="Nhập mô tả của voucher..." />
-                </Form.Item>
-              </Row>
+                  <span style={{ fontWeight: "bold" }}>Tên mã khuyến mãi:</span>
+                  <Form.Item
+                    name={"voucherName"}
+                    rules={[
+                      { required: true, message: "Không được để trống!" },
+                    ]}
+                  >
+                    <Input placeholder="Nhập tên mã giảm giá..." />
+                  </Form.Item>
+                </Row>
+                <Row
+                  gutter={24}
+                  style={{
+                    display: "flex",
+                  }}
+                >
+                  <Col span={12}>
+                    <p style={{ fontWeight: "bold" }}>Hình thức giảm giá:</p>
 
-              <Row
-                gutter={24}
-                style={{
-                  display: "flex",
-                }}
-              >
-                <Col span={12}>
-                  <p style={{ fontWeight: "bold" }}>Phần trăm giảm giá:</p>
+                    <Select
+                      placeholder="Vui lòng chọn"
+                      style={{
+                        width: 130,
+                      }}
+                      onChange={handleChangeVoucherType}
+                      options={[
+                        {
+                          value: 1,
+                          label: "Bán",
+                        },
+                        {
+                          value: 2,
+                          label: "Thuê",
+                        },
+                      ]}
+                    />
+                  </Col>
+                  <Col span={12}>
+                    <span style={{ fontWeight: "bold" }}>Nhập thời hạn:</span>
+                    <Form.Item
+                      name={"startDate"}
+                      rules={[
+                        { required: true, message: "Không được để trống!" },
+                      ]}
+                    >
+                      <DatePicker.RangePicker
+                        onChange={handleDateChange}
+                        placeholder={["Từ ngày", "Đến ngày"]}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row
+                  gutter={24}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    padding: 10,
+                  }}
+                >
+                  <span style={{ fontWeight: "bold" }}>Tên mã khuyến mãi:</span>
                   <Form.Item
-                    name={"discountAmount"}
+                    name={"description"}
                     rules={[
                       { required: true, message: "Không được để trống!" },
                     ]}
                   >
-                    <Input
-                      type="number"
-                      suffix={<span style={{ fontWeight: "bold" }}>%</span>}
-                      placeholder="Vui lòng nhập..."
+                    <TextArea
+                      rows={4}
+                      placeholder="Nhập mô tả của voucher..."
                     />
                   </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <span style={{ fontWeight: "bold" }}>
-                    Số tiền giảm giá tối đa:
-                  </span>
-                  <Form.Item
-                    name={"maxDiscount"}
-                    rules={[
-                      { required: true, message: "Không được để trống!" },
-                    ]}
+                </Row>
+
+                <Row
+                  gutter={24}
+                  style={{
+                    display: "flex",
+                  }}
+                >
+                  <Col span={12}>
+                    <p style={{ fontWeight: "bold" }}>Phần trăm giảm giá:</p>
+                    <Form.Item
+                      name={"discountAmount"}
+                      rules={[
+                        { required: true, message: "Không được để trống!" },
+                      ]}
+                    >
+                      <Input
+                        type="number"
+                        suffix={<span style={{ fontWeight: "bold" }}>%</span>}
+                        placeholder="Vui lòng nhập..."
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <span style={{ fontWeight: "bold" }}>
+                      Số tiền giảm giá tối đa:
+                    </span>
+                    <Form.Item
+                      name={"maxDiscount"}
+                      rules={[
+                        { required: true, message: "Không được để trống!" },
+                      ]}
+                    >
+                      <Input
+                        type="number"
+                        suffix="VNĐ"
+                        placeholder="Vui lòng nhập..."
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Form.Item style={{ marginLeft: "40%", marginTop: "35px" }}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    style={{ backgroundColor: "red" }}
+                    onClick={handleCancel}
                   >
-                    <Input
-                      type="number"
-                      suffix="VNĐ"
-                      placeholder="Vui lòng nhập..."
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Form.Item style={{ marginLeft: "40%", marginTop: "35px" }}>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  style={{ backgroundColor: "red" }}
-                  onClick={handleCancel}
-                >
-                  Hủy
-                </Button>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  style={{ marginLeft: "20px", backgroundColor: "green" }}
-                >
-                  Thêm
-                </Button>
-              </Form.Item>
-            </Form>
+                    Hủy
+                  </Button>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    style={{ marginLeft: "20px", backgroundColor: "green" }}
+                  >
+                    Thêm
+                  </Button>
+                </Form.Item>
+              </Form>
+            </ConfigProvider>
           </Card>
         </Space>
       </div>

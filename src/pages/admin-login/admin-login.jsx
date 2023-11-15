@@ -6,6 +6,7 @@ import {
   Checkbox,
   notification,
   Divider,
+  ConfigProvider,
 } from "antd";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -125,65 +126,80 @@ const LoginForm = () => {
         <Card style={{ width: 400 }}>
           {contextHolder}
           <h2 style={{ textAlign: "center", marginBottom: 24 }}>ĐĂNG NHẬP</h2>
-          <Form
-            name="loginForm"
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            // onFinishFailed={onFinishFailed}
-            style={{ marginTop: "10px" }}
+          <ConfigProvider
+            theme={{
+              token: {
+                Input: {
+                  activeBorderColor: "#008000",
+                  hoverBorderColor: "#008000",
+                },
+                Checkbox: {
+                  colorPrimary: "#008000",
+                },
+              },
+            }}
           >
-            <Form.Item
-              name="email"
-              rules={[{ required: true, message: "Vui lòng nhập email!" }]}
+            <Form
+              name="loginForm"
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              // onFinishFailed={onFinishFailed}
+              style={{ marginTop: "10px" }}
             >
-              <Input
-                style={{
-                  fontSize: "15px",
-                  padding: "10px",
-                }}
-                prefix={<UserOutlined />}
-                placeholder="Email"
-              />
-            </Form.Item>
-
-            <Form.Item
-              name="password"
-              rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
-            >
-              <Input.Password
-                style={{
-                  fontSize: "15px",
-                  padding: "10px",
-                }}
-                prefix={<LockOutlined />}
-                placeholder="Mật Khẩu"
-              />
-            </Form.Item>
-
-            <Form.Item name="remember" valuePropName="checked">
-              <Checkbox>Ghi Nhớ</Checkbox>
-            </Form.Item>
-
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <Form.Item style={{ width: "100%" }}>
-                <Button
+              <Form.Item
+                name="email"
+                rules={[{ required: true, message: "Vui lòng nhập email!" }]}
+              >
+                <Input
                   style={{
-                    width: "100%",
-                    height: "43px",
-                    backgroundColor: "#008000",
-                    fontWeight: "bold",
-                    borderColor: "#008000",
+                    fontSize: "15px",
+                    padding: "10px",
                   }}
-                  type="primary"
-                  htmlType="submit"
-                  // loading={loadings[0]}
-                  // onClick={() => enterLoading(0)}
-                >
-                  Đăng Nhập
-                </Button>
+                  prefix={<UserOutlined />}
+                  placeholder="Email"
+                />
               </Form.Item>
-            </div>
-          </Form>
+
+              <Form.Item
+                name="password"
+                rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
+              >
+                <Input.Password
+                  style={{
+                    fontSize: "15px",
+                    padding: "10px",
+                  }}
+                  prefix={<LockOutlined />}
+                  placeholder="Mật Khẩu"
+                />
+              </Form.Item>
+
+              <Form.Item name="remember" valuePropName="checked">
+                <Checkbox>Ghi Nhớ</Checkbox>
+              </Form.Item>
+
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <Form.Item style={{ width: "100%" }}>
+                  <Button
+                    style={{
+                      width: "100%",
+                      height: "43px",
+                      backgroundColor: "#008000",
+                      fontWeight: "bold",
+                      borderColor: "#008000",
+                    }}
+                    type="primary"
+                    htmlType="submit"
+                    // loading={loadings[0]}
+                    // onClick={() => enterLoading(0)}
+                  >
+                    Đăng Nhập
+                  </Button>
+                </Form.Item>
+              </div>
+            </Form>
+          </ConfigProvider>
+
           <Divider style={{ fontSize: "14px", fontWeight: "400" }}>
             Hoặc
           </Divider>
