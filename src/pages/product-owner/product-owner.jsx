@@ -28,9 +28,7 @@ import OrderTable from "../../components/product-owner-table/OrderTable";
 import CancelOrderTable from "../../components/product-owner-table/CancelOrderTable";
 import Revenue from "../../components/revenue-product-owner/revenue";
 import CreateProduct from "../../components/create-product/create-product";
-
 import VoucherForm from "../../components/voucher-form";
-
 import Balance from "../../components/balance-productowner/balance-productowner";
 import OrderRent from "../../components/product-owner-table/OrderRent";
 import VoucherTable from "../../components/voucher-form/voucher-table";

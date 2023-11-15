@@ -247,12 +247,12 @@ const OrderDeliveryTable = () => {
       //   const updateResponse = await axios.put(
       //     `http://fashionrental.online:8080/orderbuy?orderBuyID=${form.getFieldValue(
       //       "orderBuyID"
-      //     )}&status=READY_PICKUP`
+      //     )}&status=DELIVERY`
       //   );
-      //   console.log("Ready pickup order success!!!", updateResponse.data);
+      //   console.log("Delivery order success!!!", updateResponse.data);
       //   fetchOrders();
       // } catch (error) {
-      //   console.error("Ready pickup order failed!!!", error);
+      //   console.error("Delivery order failed!!!", error);
       // }
       // try {
       //   const orderCodeUpdateResponse = await axios.put(
