@@ -32,21 +32,9 @@ const ProductOrder = ({ orderID }) => {
         "http://fashionrental.online:8080/orderbuydetail/" + orderID
       );
 
-      const productIDs = response.data.map((item) => item.productID);
-      console.log("abc", orderID);
-      try {
-        const products = [];
-        for (const productID of productIDs) {
-          const response = await axios.get(
-            "http://fashionrental.online:8080/product/" + productID
-          );
-          products.push(response.data);
-        }
-        setProductData(products);
-        console.log(products);
-      } catch (error) {
-        console.error(error);
-      }
+      const productDTO = response.data.map((item) => item.productDTO);
+      setProductData(productDTO);
+      console.log("productDTO:",productDTO);
     } catch (error) {
       console.error(error);
     }
@@ -199,6 +187,7 @@ const ProductOrder = ({ orderID }) => {
     <>
       {contextHolder}
       <Row gutter={[16, 16]}>
+        
         {productData.map((product) => (
           <Col
             xs={24}

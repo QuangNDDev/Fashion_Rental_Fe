@@ -37,6 +37,7 @@ import VoucherTable from "../../components/voucher-form/voucher-table";
 import OrderDeliveryTable from "../../components/order-delivery/order-delivery-table";
 import VerifyProductOwner from "../../components/verifyPO";
 import VerificationSuccess from "../../components/verifyPO/verified";
+import RegisterDelivery from "../../components/order-delivery/register-delivery";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -56,6 +57,15 @@ const ProductOwner = () => {
         "productownerId",
         response.data.data.productowner.productownerID
       );
+      localStorage.setItem(
+        "poshopID",
+        response.data.data.productowner.poshopID
+      );
+      localStorage.setItem(
+        "potoken",
+        response.data.data.productowner.potoken
+      );
+
     } catch (error) {
       console.error(error);
     }
@@ -89,6 +99,8 @@ const ProductOwner = () => {
     localStorage.removeItem("roleId");
     localStorage.removeItem("accountId");
     localStorage.removeItem("productownerId");
+    localStorage.removeItem("poshopID");
+    localStorage.removeItem("potoken");
     console.log("Logged out");
   };
 
@@ -319,11 +331,25 @@ const ProductOwner = () => {
               }}
             >
               <Breadcrumb.Item>Giao hàng</Breadcrumb.Item>
-              <Breadcrumb.Item>Đơn hàng chưa giao</Breadcrumb.Item>
+              <Breadcrumb.Item>Đăng ký GHN</Breadcrumb.Item>
             </Breadcrumb>
-            <OrderDeliveryTable />
+            <RegisterDelivery/>
           </div>
         );
+        case "14":
+          return (
+            <div>
+              <Breadcrumb
+                style={{
+                  padding: "0 16px",
+                }}
+              >
+                <Breadcrumb.Item>Giao hàng</Breadcrumb.Item>
+                <Breadcrumb.Item>Đơn hàng chưa giao</Breadcrumb.Item>
+              </Breadcrumb>
+              <OrderDeliveryTable />
+            </div>
+          );
       default:
         return null;
     }
@@ -449,7 +475,8 @@ const ProductOwner = () => {
               icon={<CarOutlined style={{ fontSize: "17px" }} />}
               title="Giao hàng"
             >
-              <Menu.Item key="13">Đơn hàng chưa giao</Menu.Item>
+               <Menu.Item key="13">Đăng ký GHN</Menu.Item>
+              <Menu.Item key="14">Đơn hàng chưa giao</Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>
