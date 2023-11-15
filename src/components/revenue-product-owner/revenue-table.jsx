@@ -1,32 +1,87 @@
 import { SearchOutlined } from "@ant-design/icons";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import { Button, Input, Space, Table } from "antd";
-import RenderTag from "../render/RenderTag";
+import axios from "axios";
 const RevenueTable = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
-  const [orderData, setOrderData] = useState([
-    {
-      orderID: 1,
-      productName: "Túi Gucci",
-      status: "Pending",
-      revenue: "1.500.000",
-    },
-    {
-      orderID: 2,
-      productName: "Quần Prada",
-      status: "Pending",
-      revenue: "4.500.000",
-    },
-    {
-      orderID: 3,
-      productName: "Áo LV",
-      status: "Pending",
-      revenue: "5.500.000",
-    },
-  ]);
+  const [revenueProductData, setRevenueProductData] = useState([]);
+
+  const productownerId = localStorage.getItem("productownerId");
+  const fetchRevenueProduct = async () => {
+    try {
+      const responseProductId = await axios.get(
+        "http://fashionrental.online:8080/product/getproducts/" + productownerId
+      );
+      const responseOrderCompleted = await axios.get(
+        "http://fashionrental.online:8080/orderbuy/po/completed/" + productownerId
+      );
+      const productList = responseProductId.data.map(
+        (product) => product.productID
+      );
+      console.log("Product ID List:", productList);
+      const orderBuyList = responseOrderCompleted.data.map(
+        (orderDetail) => orderDetail.orderBuyID
+      );
+      console.log("Order Buy List:", orderBuyList);
+      const orderDetailList = [];
+      for (const orderBuyId of orderBuyList) {
+        try {
+          const orderDetailResponse = await axios.get(
+            `http://fashionrental.online:8080/orderbuydetail/${orderBuyId}`
+          );
+          orderDetailList.push(orderDetailResponse.data);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      console.log("Order Detail List:", orderDetailList);
+      const productOrderDetails = orderDetailList.map((orderDetail) => {
+        return {
+          price: orderDetail[0].price,
+          productName: orderDetail[0].productDTO.productName,
+          productID: orderDetail[0].productDTO.productID,
+        };
+      });
+
+      console.log("Product Order Details: ", productOrderDetails);
+      const productDetailsMap = new Map();
+
+      for (const orderDetail of orderDetailList) {
+        const {
+          price,
+          productDTO: { productID, productName },
+        } = orderDetail[0];
+
+        if (productDetailsMap.has(productID)) {
+          const currentData = productDetailsMap.get(productID);
+          const updatedPrice = currentData.totalPrice + price;
+          productDetailsMap.set(productID, {
+            productID,
+            productName,
+            totalPrice: updatedPrice,
+          });
+        } else {
+          productDetailsMap.set(productID, {
+            productID,
+            productName,
+            totalPrice: price,
+          });
+        }
+      }
+
+      const aggregatedProductDetails = Array.from(productDetailsMap.values());
+      setRevenueProductData(aggregatedProductDetails);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRevenueProduct();
+  }, []);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -133,13 +188,19 @@ const RevenueTable = () => {
         text
       ),
   });
-
+  //chuyen doi thanh dang tien te vnd ------------------------------------------------------
+  const formatPriceWithVND = (price) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+  };
   const columns = [
     {
-      title: "ID",
-      dataIndex: "orderID",
+      title: "Mã sản phẩm",
+      dataIndex: "productID",
       key: "orderID",
-      width: "1%",
+      width: "2%",
       ...getColumnSearchProps("productownerID"),
     },
     {
@@ -149,29 +210,36 @@ const RevenueTable = () => {
       width: "10%",
       ...getColumnSearchProps("productName"),
     },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
-      width: "10%",
+    // {
+    //   title: "Trạng thái",
+    //   dataIndex: "status",
+    //   key: "status",
+    //   width: "10%",
 
-      render: (status) => (
-        <p>
-          <RenderTag tagRender={status} />
-        </p>
-      ),
-    },
+    //   render: (status) => (
+    //     <p>
+    //       <RenderTag tagRender={status} />
+    //     </p>
+    //   ),
+    // },
     {
-      title: "Số tiền thanh toán",
-      dataIndex: "revenue",
-      key: "revenue",
+      title: "Doanh thu sản phẩm",
+      dataIndex: "totalPrice",
+      key: "totalPrice",
       width: "10%",
-      ...getColumnSearchProps("revenue"),
+      ...getColumnSearchProps("totalPrice"),
+      render: (text) => (
+        <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
+      ),
     },
   ];
   return (
     <div>
-      <Table bordered={true} columns={columns} dataSource={orderData} />
+      <Table
+        bordered={true}
+        columns={columns}
+        dataSource={revenueProductData}
+      />
     </div>
   );
 };
