@@ -6,88 +6,156 @@ import { Card, Col, Row, Statistic } from "antd";
 import CountUp from "react-countup";
 
 const Revenue = () => {
-  const [orderData, setOrderData] = useState([]);
-  const [orderWeekData, setOrderWeekData] = useState([]);
-  const [orderMonthData, setOrderMonthData] = useState([]);
+  const [orderRentData, setOrderRentData] = useState([]);
+  const [orderRentWeekData, setOrderRentWeekData] = useState([]);
+  const [orderRentMonthData, setOrderRentMonthData] = useState([]);
+  const [orderSaleData, setOrderSaleData] = useState([]);
+  const [orderSaleWeekData, setOrderSaleWeekData] = useState([]);
+  const [orderSaleMonthData, setOrderSaleMonthData] = useState([]);
   const productownerId = localStorage.getItem("productownerId");
-  const fetchOrders = async () => {
+  const fetchOrderSales = async () => {
     try {
       const response = await axios.get(
         "http://fashionrental.online:8080/orderbuy/po/getall/" + productownerId
       );
-      setOrderData(response.data);
+      setOrderSaleData(response.data);
     } catch (error) {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    fetchOrders();
-  }, []);
-  const fetchOrdersWeek = async () => {
+  const fetchOrderSalesWeek = async () => {
     try {
       const response = await axios.get(
         "http://fashionrental.online:8080/orderbuy/1week/" + productownerId
       );
-      setOrderWeekData(response.data);
+      setOrderSaleWeekData(response.data);
     } catch (error) {
       console.error(error);
     }
   };
-  const fetchOrdersMonth = async () => {
+  const fetchOrderSalesMonth = async () => {
     try {
       const response = await axios.get(
         "http://fashionrental.online:8080/orderbuy/1month/" + productownerId
       );
-      setOrderMonthData(response.data);
+      setOrderSaleMonthData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchOrderRents = async () => {
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/orderrent/po/" + productownerId
+      );
+      setOrderRentData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchOrderRentsWeek = async () => {
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/orderrent/1week/" + productownerId
+      );
+      setOrderRentWeekData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchOrderRentsMonth = async () => {
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/orderrent/1month/" + productownerId
+      );
+      setOrderRentMonthData(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    fetchOrders();
-    fetchOrdersWeek();
-    fetchOrdersMonth();
+    fetchOrderSales();
+    fetchOrderSalesWeek();
+    fetchOrderSalesMonth();
+    fetchOrderRents();
+    fetchOrderRentsWeek();
+    fetchOrderRentsMonth();
   }, []);
   const calculateUnpaid = () => {
     let total = 0;
-    orderData.forEach((order) => {
+    let totalSale = 0;
+    let totalRent = 0;
+    orderSaleData.forEach((order) => {
       if (
         ["PENDING", "PREPARE", "READY_PICKUP", "CONFIRMING"].includes(
           order.status
         )
       ) {
-        total += order.totalBuyPriceProduct;
+        totalSale += order.totalBuyPriceProduct;
       }
     });
+    orderRentData.forEach((order) => {
+      if (
+        ["PENDING", "PREPARE", "READY_PICKUP", "CONFIRMING"].includes(
+          order.status
+        )
+      ) {
+        totalRent += order.totalRentPriceProduct;
+      }
+    });
+    total = totalSale + totalRent;
     return total;
   };
   const calculatePaid = () => {
     let total = 0;
-    orderData.forEach((order) => {
+    let totalSale = 0;
+    let totalRent = 0;
+    orderSaleData.forEach((order) => {
       if (["COMPLETED"].includes(order.status)) {
-        total += order.totalBuyPriceProduct;
+        totalSale += order.totalBuyPriceProduct;
       }
     });
+    orderRentData.forEach((order) => {
+      if (["COMPLETED"].includes(order.status)) {
+        totalRent += order.totalRentPriceProduct;
+      }
+    });
+    total = totalSale + totalRent;
     return total;
   };
   const calculatePaidWeek = () => {
     let total = 0;
-    orderWeekData.forEach((order) => {
+    let totalSale = 0;
+    let totalRent = 0;
+    orderSaleWeekData.forEach((order) => {
       if (["COMPLETED"].includes(order.status)) {
-        total += order.totalBuyPriceProduct;
+        totalSale += order.totalBuyPriceProduct;
       }
     });
+    orderRentWeekData.forEach((order) => {
+      if (["COMPLETED"].includes(order.status)) {
+        totalRent += order.totalRentPriceProduct;
+      }
+    });
+    total = totalSale + totalRent;
     return total;
   };
   const calculatePaidMonth = () => {
     let total = 0;
-    orderMonthData.forEach((order) => {
+    let totalSale = 0;
+    let totalRent = 0;
+    orderSaleMonthData.forEach((order) => {
       if (["COMPLETED"].includes(order.status)) {
-        total += order.totalBuyPriceProduct;
+        totalSale += order.totalBuyPriceProduct;
       }
     });
+    orderRentMonthData.forEach((order) => {
+      if (["COMPLETED"].includes(order.status)) {
+        totalRent += order.totalRentPriceProduct;
+      }
+    });
+    total = totalSale + totalRent;
     return total;
   };
   const totalPaidWeek = calculatePaidWeek();
@@ -102,30 +170,6 @@ const Revenue = () => {
   return (
     <div>
       <div style={{ marginBottom: 20 }} className="revenue-container">
-        {/* <div className="payment-status">
-          <div className="unpaid">
-            <h3>Chưa thanh toán</h3>
-            <span>Tổng cộng</span>
-            <span className="money-1">{formatPriceWithVND(totalUnpaid)}</span>
-          </div>
-          <hr className="divider" />
-          <div className="paid-this-week">
-            <h3>Đã thanh toán</h3>
-            <span>Tuần này</span>
-            <span className="money-1">{formatPriceWithVND(totalPaidWeek)}</span>
-          </div>
-
-          <div className="paid-this-month">
-            <span>Tháng này</span>
-            <span className="money-2">
-              {formatPriceWithVND(totalPaidMonth)}
-            </span>
-          </div>
-          <div className="total-paid">
-            <span>Tổng cộng</span>
-            <span className="money-2">{formatPriceWithVND(totalPaid)}</span>
-          </div>
-        </div> */}
         <Card title="Tổng Quan">
           <Row gutter={16}>
             <Col span={6}>
@@ -142,45 +186,37 @@ const Revenue = () => {
             </Col>
 
             <Col span={18}>
-              <Card bordered={true} title="Đã thanh toán" >
-                <div style={{display:"flex",justifyContent:"space-between"}}>
-                <Statistic
-                  title="Tuần này"
-                  value={totalPaidWeek}
-                  precision={0}
-                  valueStyle={{ color: "#3f8600" }}
-                  suffix="VNĐ"
-                  formatter={formatter}
-                />
-                <Statistic
-                  title="Tháng này"
-                  value={totalPaidMonth}
-                  precision={0}
-                  valueStyle={{ color: "#3f8600" }}
-                  suffix="VNĐ"
-                  formatter={formatter}
-                />
-                <Statistic
-                  title="Tổng cộng"
-                  value={totalPaid}
-                  precision={0}
-                  valueStyle={{ color: "#3f8600" }}
-                  suffix="VNĐ"
-                  formatter={formatter}
-                />
+              <Card bordered={true} title="Đã thanh toán">
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Statistic
+                    title="Tuần này"
+                    value={totalPaidWeek}
+                    precision={0}
+                    valueStyle={{ color: "#3f8600" }}
+                    suffix="VNĐ"
+                    formatter={formatter}
+                  />
+                  <Statistic
+                    title="Tháng này"
+                    value={totalPaidMonth}
+                    precision={0}
+                    valueStyle={{ color: "#3f8600" }}
+                    suffix="VNĐ"
+                    formatter={formatter}
+                  />
+                  <Statistic
+                    title="Tổng cộng"
+                    value={totalPaid}
+                    precision={0}
+                    valueStyle={{ color: "#3f8600" }}
+                    suffix="VNĐ"
+                    formatter={formatter}
+                  />
                 </div>
               </Card>
             </Col>
-            {/* <Col span={6}>
-              <Card bordered={true} title="Đã thanh toán">
-                
-              </Card>
-            </Col>
-            <Col span={6}>
-              <Card bordered={true} title="Đã thanh toán">
-                
-              </Card>
-            </Col> */}
           </Row>
         </Card>
       </div>

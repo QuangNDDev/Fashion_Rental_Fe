@@ -42,6 +42,7 @@ import CancelOrderRent from "../../components/product-owner-table/CancelOrderRen
 import CancelOrderSaleTable from "../../components/product-owner-table/CancelOrderTable";
 import ReturnOrderSale from "../../components/product-owner-table/ReturnOrderSale";
 import ReturnOrderRent from "../../components/product-owner-table/ReturnOrderRent";
+import OrderRentDeliveryTable from "../../components/order-delivery/order-rent-delivery";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -381,6 +382,7 @@ const ProductOwner = () => {
             >
               <Breadcrumb.Item>Giao hàng</Breadcrumb.Item>
               <Breadcrumb.Item>Đơn hàng chưa giao</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn bán</Breadcrumb.Item>
             </Breadcrumb>
             <OrderDeliveryTable />
           </div>
@@ -412,6 +414,21 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Trả hàng/Hoàn tiền</Breadcrumb.Item>
             </Breadcrumb>
             <ReturnOrderRent />
+          </div>
+        );
+      case "19":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Giao hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn hàng chưa giao</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn thuê</Breadcrumb.Item>
+            </Breadcrumb>
+            <OrderRentDeliveryTable />
           </div>
         );
       default:
@@ -587,7 +604,10 @@ const ProductOwner = () => {
                 title="Giao hàng"
               >
                 <Menu.Item key="15">Đăng ký GHN</Menu.Item>
-                <Menu.Item key="16">Đơn hàng chưa giao</Menu.Item>
+                <SubMenu key={"sub6-1"} title="Đơn hàng chưa giao">
+                  <Menu.Item key="16">Đơn bán</Menu.Item>
+                  <Menu.Item key="19">Đơn thuê</Menu.Item>
+                </SubMenu>
               </SubMenu>
             </Menu>
           </ConfigProvider>
