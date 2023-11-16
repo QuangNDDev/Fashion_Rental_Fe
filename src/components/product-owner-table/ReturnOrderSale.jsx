@@ -1,29 +1,30 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { Button, Input, Space, Table } from "antd";
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
+import { Button, Drawer, Form, Input, Radio, Space, Table, Tag } from "antd";
+import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
 import RenderTag from "../render/RenderTag";
-const CancelOrderSaleTable = () => {
+import axios from "axios";
+const ReturnOrderSale = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
 
-  const fetchCancelOrders = async () => {
-    try {
-      const response = await axios.get(
-        "http://fashionrental.online:8080/orderbuy/po/canceled/" +
-          localStorage.getItem("productownerId")
-      );
+  //   const fetchCancelOrders = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "http://fashionrental.online:8080/orderbuy/po/canceled/" +
+  //           localStorage.getItem("productownerId")
+  //       );
 
-      setOrderCancelData(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    fetchCancelOrders();
-  }, []);
+  //       setOrderCancelData(response.data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   useEffect(() => {
+  //     fetchCancelOrders();
+  //   }, []);
   const [orderCancelData, setOrderCancelData] = useState([]);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -157,7 +158,9 @@ const CancelOrderSaleTable = () => {
       key: "orderBuyID",
 
       ...getColumnSearchProps("orderBuyID"),
-      render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
+      render: (number) => (
+        <p style={{ textAlign: "center" }}>{Number(number)}</p>
+      ),
     },
     {
       title: "Thời gian",
@@ -195,4 +198,4 @@ const CancelOrderSaleTable = () => {
     </div>
   );
 };
-export default CancelOrderSaleTable;
+export default ReturnOrderSale;

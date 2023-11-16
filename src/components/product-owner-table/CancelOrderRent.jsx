@@ -4,7 +4,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import RenderTag from "../render/RenderTag";
-const CancelOrderSaleTable = () => {
+const CancelOrderRent = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
@@ -16,7 +16,7 @@ const CancelOrderSaleTable = () => {
           localStorage.getItem("productownerId")
       );
 
-      setOrderCancelData(response.data);
+      setCancelOrderRentData(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -24,7 +24,7 @@ const CancelOrderSaleTable = () => {
   useEffect(() => {
     fetchCancelOrders();
   }, []);
-  const [orderCancelData, setOrderCancelData] = useState([]);
+  const [cancelOrderRentData, setCancelOrderRentData] = useState([]);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -191,8 +191,8 @@ const CancelOrderSaleTable = () => {
   ];
   return (
     <div>
-      <Table bordered columns={columns} dataSource={orderCancelData} />
+      <Table bordered columns={columns} dataSource={cancelOrderRentData} />
     </div>
   );
 };
-export default CancelOrderSaleTable;
+export default CancelOrderRent;
