@@ -151,7 +151,7 @@ const Balance = () => {
 
               {
                 validator: async (_, value) => {
-                  if (value >= 10000 && value < 1000000000) {
+                  if (value >= 10000 && value <= 1000000000) {
                     return Promise.resolve();
                   }
                   return Promise.reject(

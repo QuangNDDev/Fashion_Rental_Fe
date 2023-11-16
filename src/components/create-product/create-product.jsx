@@ -1088,15 +1088,6 @@ const CreateProduct = () => {
       if (event.file.status !== "removed") {
         console.log("handleFileChange called");
         console.log("File selected:", event.file);
-        // const file = event.file;
-        // const imageRef = ref(storage, `images/${file.name + v4()}`);
-        // const snapshot = await uploadBytes(imageRef, file.originFileObj);
-        // const url = await getDownloadURL(snapshot.ref);
-
-        // setUrlImages((prevUrls) => [
-        //   ...prevUrls,
-        //   { imgUrl: url, fileName: event.file.name },
-        // ]);
         const imageRef = ref(storage, `images/${event.file.name + v4()}`);
 
         uploadBytes(imageRef, event.file)
