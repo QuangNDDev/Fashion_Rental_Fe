@@ -1,30 +1,31 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { Button, Input, Space, Table } from "antd";
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
+import { Button, Drawer, Form, Input, Radio, Space, Table, Tag } from "antd";
+import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
 import RenderTag from "../render/RenderTag";
-const CancelOrderSaleTable = () => {
+import axios from "axios";
+const ReturnOrderRent = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
 
-  const fetchCancelOrders = async () => {
-    try {
-      const response = await axios.get(
-        "http://fashionrental.online:8080/orderbuy/po/canceled/" +
-          localStorage.getItem("productownerId")
-      );
+  //   const fetchCancelOrders = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "http://fashionrental.online:8080/orderbuy/po/canceled/" +
+  //           localStorage.getItem("productownerId")
+  //       );
 
-      setOrderCancelData(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    fetchCancelOrders();
-  }, []);
-  const [orderCancelData, setOrderCancelData] = useState([]);
+  //       setOrderCancelData(response.data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   useEffect(() => {
+  //     fetchCancelOrders();
+  //   }, []);
+  const [returnOrderRent, setReturnOrderRent] = useState([]);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -155,15 +156,17 @@ const CancelOrderSaleTable = () => {
       title: "Mã đơn",
       dataIndex: "orderBuyID",
       key: "orderBuyID",
-
+      width: "5%",
       ...getColumnSearchProps("orderBuyID"),
-      render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
+      render: (number) => (
+        <p style={{ textAlign: "center" }}>{Number(number)}</p>
+      ),
     },
     {
       title: "Thời gian",
       dataIndex: "dateOrder",
       key: "dateOrder",
-
+      width: "10%",
       ...getColumnSearchProps("dateOrder"),
       render: (text) => <p>{formatDate(text)}</p>,
     },
@@ -171,7 +174,7 @@ const CancelOrderSaleTable = () => {
       title: "Tổng tiền",
       dataIndex: "total",
       key: "total",
-
+      width: "15%",
       ...getColumnSearchProps("total"),
       render: (text) => (
         <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
@@ -181,18 +184,37 @@ const CancelOrderSaleTable = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-
+      width: "15%",
       render: (status) => (
         <p>
           <RenderTag tagRender={status} />
         </p>
       ),
     },
+    {
+      title: "",
+      key: "action",
+      align: "left",
+      width: "5%",
+      render: (_, record) => (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          {/* <Button
+            style={{ marginRight: "15px" }}
+            onClick={() => showEditDrawer(record)}
+          >
+            <EditTwoTone />
+          </Button> */}
+          <Button danger>
+            <DeleteFilled />
+          </Button>
+        </div>
+      ),
+    },
   ];
   return (
     <div>
-      <Table bordered columns={columns} dataSource={orderCancelData} />
+      <Table bordered columns={columns} dataSource={returnOrderRent} />
     </div>
   );
 };
-export default CancelOrderSaleTable;
+export default ReturnOrderRent;

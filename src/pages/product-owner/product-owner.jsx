@@ -18,6 +18,7 @@ import {
   Avatar,
   Modal,
   Badge,
+  ConfigProvider,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import Notification from "../../components/notification/Notification";
@@ -38,6 +39,11 @@ import OrderDeliveryTable from "../../components/order-delivery/order-delivery-t
 import VerifyProductOwner from "../../components/verifyPO";
 import VerificationSuccess from "../../components/verifyPO/verified";
 import RegisterDelivery from "../../components/order-delivery/register-delivery";
+import CancelOrderBuyTable from "../../components/product-owner-table/CancelOrderTable";
+import CancelOrderRent from "../../components/product-owner-table/CancelOrderRent";
+import CancelOrderSaleTable from "../../components/product-owner-table/CancelOrderTable";
+import ReturnOrderSale from "../../components/product-owner-table/ReturnOrderSale";
+import ReturnOrderRent from "../../components/product-owner-table/ReturnOrderRent";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -47,6 +53,7 @@ const ProductOwner = () => {
   const idAccount = localStorage.getItem("accountId");
   const [productowner, setProductOwner] = useState([]);
   const [accountID, setAccountID] = useState([]);
+
   const fetchProductOwner = async () => {
     try {
       const response = await axios.get(
@@ -61,11 +68,7 @@ const ProductOwner = () => {
         "poshopID",
         response.data.data.productowner.poshopID
       );
-      localStorage.setItem(
-        "potoken",
-        response.data.data.productowner.potoken
-      );
-
+      localStorage.setItem("potoken", response.data.data.productowner.potoken);
     } catch (error) {
       console.error(error);
     }
@@ -144,7 +147,8 @@ const ProductOwner = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>Quản lí đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn bán</Breadcrumb.Item>
               <Breadcrumb.Item>Đơn bán</Breadcrumb.Item>
             </Breadcrumb>
             <OrderTable />
@@ -158,7 +162,8 @@ const ProductOwner = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>Quản lí đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn thuê</Breadcrumb.Item>
               <Breadcrumb.Item>Đơn thuê</Breadcrumb.Item>
             </Breadcrumb>
             <OrderRent />
@@ -173,9 +178,10 @@ const ProductOwner = () => {
               }}
             >
               <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
-              <Breadcrumb.Item>Đơn huỷ</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn bán </Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn hủy </Breadcrumb.Item>
             </Breadcrumb>
-            <CancelOrderTable />
+            <CancelOrderSaleTable />
           </div>
         );
       case "4":
@@ -187,11 +193,42 @@ const ProductOwner = () => {
               }}
             >
               <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn bán </Breadcrumb.Item>
+              <Breadcrumb.Item>Trả hàng,hoàn tiền </Breadcrumb.Item>
+            </Breadcrumb>
+            <ReturnOrderSale />
+          </div>
+        );
+      case "17":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn thuê</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn huỷ</Breadcrumb.Item>
+            </Breadcrumb>
+            <CancelOrderRent />
+          </div>
+        );
+      case "6":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn thuê</Breadcrumb.Item>
               <Breadcrumb.Item>Trả hàng,hoàn tiền</Breadcrumb.Item>
             </Breadcrumb>
           </div>
         );
-      case "5":
+      case "7":
         return (
           <div>
             <Breadcrumb
@@ -205,7 +242,7 @@ const ProductOwner = () => {
             <ProductCard />
           </div>
         );
-      case "6":
+      case "8":
         return (
           <div>
             <Breadcrumb
@@ -219,7 +256,7 @@ const ProductOwner = () => {
             <CreateProduct />
           </div>
         );
-      case "7":
+      case "9":
         return (
           <div>
             <Breadcrumb
@@ -234,7 +271,7 @@ const ProductOwner = () => {
             <InformationPO />
           </div>
         );
-      case "8":
+      case "10":
         if (status === "VERIFIED") {
           return (
             <div>
@@ -266,7 +303,7 @@ const ProductOwner = () => {
           );
         }
 
-      case "9":
+      case "11":
         return (
           <div>
             <Breadcrumb
@@ -280,7 +317,7 @@ const ProductOwner = () => {
             <Revenue />
           </div>
         );
-      case "10":
+      case "12":
         return (
           <div>
             <Breadcrumb
@@ -294,7 +331,7 @@ const ProductOwner = () => {
             <Balance />
           </div>
         );
-      case "11":
+      case "13":
         return (
           <div>
             <Breadcrumb
@@ -308,7 +345,7 @@ const ProductOwner = () => {
             <VoucherForm />
           </div>
         );
-      case "12":
+      case "14":
         return (
           <div>
             <Breadcrumb
@@ -322,7 +359,7 @@ const ProductOwner = () => {
             <VoucherTable />
           </div>
         );
-      case "13":
+      case "15":
         return (
           <div>
             <Breadcrumb
@@ -333,23 +370,52 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Giao hàng</Breadcrumb.Item>
               <Breadcrumb.Item>Đăng ký GHN</Breadcrumb.Item>
             </Breadcrumb>
-            <RegisterDelivery/>
+            <RegisterDelivery />
           </div>
         );
-        case "14":
-          return (
-            <div>
-              <Breadcrumb
-                style={{
-                  padding: "0 16px",
-                }}
-              >
-                <Breadcrumb.Item>Giao hàng</Breadcrumb.Item>
-                <Breadcrumb.Item>Đơn hàng chưa giao</Breadcrumb.Item>
-              </Breadcrumb>
-              <OrderDeliveryTable />
-            </div>
-          );
+      case "16":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Giao hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn hàng chưa giao</Breadcrumb.Item>
+            </Breadcrumb>
+            <OrderDeliveryTable />
+          </div>
+        );
+      case "17":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn thuê</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn hủy</Breadcrumb.Item>
+            </Breadcrumb>
+          </div>
+        );
+      case "18":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn thuê</Breadcrumb.Item>
+              <Breadcrumb.Item>Trả hàng/Hoàn tiền</Breadcrumb.Item>
+            </Breadcrumb>
+            <ReturnOrderRent />
+          </div>
+        );
       default:
         return null;
     }
@@ -358,22 +424,35 @@ const ProductOwner = () => {
   return (
     <Layout>
       <Header
+        // style={{
+        //   display: "flex",
+        //   alignItems: "center",
+        //
+        //   backgroundColor: "#008000", // Căn chỉnh các phần tử theo chiều ngang và cách đều nhau
+        // }}
         style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1,
+          width: "100%",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          backgroundColor: "#008000", // Căn chỉnh các phần tử theo chiều ngang và cách đều nhau
+          // backgroundColor: "#008000",
+          backgroundColor: "RGB(32, 30, 42)",
         }}
       >
         {/* Display a placeholder logo */}
         <div style={{ color: "#fff", display: "flex", alignItems: "center" }}>
-          <img
-            src="https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.15752-9/386474503_267425062928341_6987759511620074342_n.png?_nc_cat=106&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=sCYtopH2K4kAX-Ordr1&_nc_ht=scontent.fsgn2-5.fna&oh=03_AdRCrANYpogO50o9LUSIzscNAVPVMn2v3OMN1BmYx1MAAA&oe=654E9D9F"
-            alt="Brand Logo"
-            width={70}
-            height={50}
-          />
-          <h2 style={{ color: "#fff", fontWeight: "normal" }}>Chủ sản phẩm</h2>
+          <img src="/brand_logo.png" alt="Brand Logo" width={70} height={50} />
+          <h2
+            style={{
+              color: "#fff",
+              fontWeight: "normal",
+            }}
+          >
+            Chủ sản phẩm
+          </h2>
         </div>
         {/* Notification bell icon and avatar */}
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -418,67 +497,102 @@ const ProductOwner = () => {
         </div>
       </Header>
 
-      <Layout style={{ background: "#000" }}>
-        <Sider width={200} theme="dark" breakpoint="md" collapsedWidth="0">
-          <Menu
-            mode="inline"
-            selectedKeys={[selectedMenuKey]}
-            defaultOpenKeys={["sub1"]}
-            style={{ height: "100%", borderRight: 0, width: "120%" }}
-            onClick={handleMenuClick}
+      <Layout style={{ background: "#000", marginLeft: 200 }}>
+        <Sider
+          width={200}
+          theme="dark"
+          breakpoint="md"
+          collapsedWidth="0"
+          trigger
+          style={{
+            position: "fixed",
+            left: 0,
+            top: 65,
+            bottom: 60,
+            height: "100%",
+          }}
+        >
+          <ConfigProvider
+            theme={{
+              components: {
+                Menu: {
+                  itemActiveBg: "#008000",
+                  itemSelectedBg: "#008000",
+                  itemSelectedColor: "orange",
+                },
+              },
+            }}
           >
-            <SubMenu
-              key="sub1"
-              icon={<ContainerOutlined style={{ fontSize: "17px" }} />}
-              title="Quản Lý Đơn Hàng"
+            <Menu
+              mode="inline"
+              selectedKeys={[selectedMenuKey]}
+              defaultOpenKeys={["sub1"]}
+              style={{
+                height: "100%",
+                borderRight: 0,
+                width: "120%",
+              }}
+              onClick={handleMenuClick}
             >
-              <Menu.Item key="1">Đơn bán</Menu.Item>
-              <Menu.Item key="2">Đơn thuê</Menu.Item>
-              <Menu.Item key="3">Đơn hủy</Menu.Item>
-              <Menu.Item key="4">Trả hàng/Hoàn tiền</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub2"
-              icon={<ShopFilled style={{ fontSize: "17px" }} />}
-              title="Quản Lí Sản Phẩm"
-            >
-              <Menu.Item key="5">Tất cả sản phẩm</Menu.Item>
-              <Menu.Item key="6">Thêm sản phẩm</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub3"
-              icon={<UserOutlined style={{ fontSize: "17px" }} />}
-              title="Quản Lý Tài Khoản"
-            >
-              {" "}
-              <Menu.Item key="8">Xác thực tài khoản</Menu.Item>
-              <Menu.Item key="7">Thông tin cơ bản</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub4"
-              icon={<WalletOutlined style={{ fontSize: "17px" }} />}
-              title="Tài chính"
-            >
-              <Menu.Item key="9">Doanh thu</Menu.Item>
-              <Menu.Item key="10">Số dư TK</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub5"
-              icon={<PercentageOutlined style={{ fontSize: "17px" }} />}
-              title="Khuyến mãi"
-            >
-              <Menu.Item key="11">Thêm mã khuyến mãi</Menu.Item>
-              <Menu.Item key="12">Xem mã khuyến mãi</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub6"
-              icon={<CarOutlined style={{ fontSize: "17px" }} />}
-              title="Giao hàng"
-            >
-               <Menu.Item key="13">Đăng ký GHN</Menu.Item>
-              <Menu.Item key="14">Đơn hàng chưa giao</Menu.Item>
-            </SubMenu>
-          </Menu>
+              <SubMenu
+                key="sub1"
+                icon={<ContainerOutlined style={{ fontSize: "17px" }} />}
+                title="Quản Lý Đơn Hàng"
+              >
+                <SubMenu key={"sub1-1"} title="Quản lý đơn bán">
+                  <Menu.Item key="1">Đơn bán</Menu.Item>
+                  <Menu.Item key="3">Đơn hủy</Menu.Item>
+                  <Menu.Item key="4">Trả hàng/Hoàn tiền</Menu.Item>
+                </SubMenu>
+                <SubMenu key={"sub1-2"} title="Quản lý đơn thuê">
+                  <Menu.Item key="2">Đơn thuê</Menu.Item>
+                  <Menu.Item key="17">Đơn hủy</Menu.Item>
+                  <Menu.Item key="18">Trả hàng/Hoàn tiền</Menu.Item>
+                </SubMenu>
+              </SubMenu>
+              <SubMenu
+                key="sub2"
+                icon={<ShopFilled style={{ fontSize: "17px" }} />}
+                title="Quản Lí Sản Phẩm"
+              >
+                <Menu.Item key="7">Tất cả sản phẩm</Menu.Item>
+                <Menu.Item key="8">Thêm sản phẩm</Menu.Item>
+              </SubMenu>
+              <SubMenu
+                key="sub3"
+                icon={<UserOutlined style={{ fontSize: "17px" }} />}
+                title="Quản Lý Tài Khoản"
+              >
+                {" "}
+                <Menu.Item key="10">Xác thực tài khoản</Menu.Item>
+                <Menu.Item key="9">Thông tin cơ bản</Menu.Item>
+              </SubMenu>
+              <SubMenu
+                key="sub4"
+                icon={<WalletOutlined style={{ fontSize: "17px" }} />}
+                title="Tài chính"
+              >
+                <Menu.Item key="11">Doanh thu</Menu.Item>
+                <Menu.Item key="12">Số dư TK</Menu.Item>
+              </SubMenu>
+              <SubMenu
+                key="sub5"
+                icon={<PercentageOutlined style={{ fontSize: "17px" }} />}
+                title="Khuyến mãi"
+              >
+                <Menu.Item key="13">Thêm mã khuyến mãi</Menu.Item>
+                <Menu.Item key="14">Xem mã khuyến mãi</Menu.Item>
+              </SubMenu>
+              <SubMenu
+                key="sub6"
+                icon={<CarOutlined style={{ fontSize: "17px" }} />}
+                title="Giao hàng"
+              >
+                <Menu.Item key="15">Đăng ký GHN</Menu.Item>
+                <Menu.Item key="16">Đơn hàng chưa giao</Menu.Item>
+              </SubMenu>
+            </Menu>
+          </ConfigProvider>
         </Sider>
         <Layout
           style={{

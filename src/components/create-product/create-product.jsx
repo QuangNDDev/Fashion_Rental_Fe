@@ -1711,8 +1711,7 @@ const CreateProduct = () => {
 
   //  Thêm giá cho ngày thuê sản phẩm
   const [additionalFields, setAdditionalFields] = useState([]);
-  const [mockDayValues, setMockDayValues] = useState([]);
-  const [rentPriceValues, setRentPriceValues] = useState([]);
+
   const addField = () => {
     setAdditionalFields([...additionalFields, {}]);
   };
@@ -1738,7 +1737,8 @@ const CreateProduct = () => {
             Select: {
               colorPrimaryHover: "#008000",
               colorPrimary: "#008000",
-              controlItemBgActive: "RGBA( 152, 251, 152, 1 )",
+              controlItemBgActive: "#008000",
+              optionSelectedColor: "orange",
             },
             Slider: {
               colorPrimary: "#008000",
