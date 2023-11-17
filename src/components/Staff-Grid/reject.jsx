@@ -363,7 +363,12 @@ const RejectTable = () => {
   ];
   return (
     <div>
-      <Table bordered={true} columns={columns} dataSource={requestsData} />
+      <Table
+        responsive
+        bordered={true}
+        columns={columns}
+        dataSource={requestsData}
+      />
       <Drawer
         title="Thông tin đơn hàng" // Customize the title as needed
         width={450} // Customize the width as needed

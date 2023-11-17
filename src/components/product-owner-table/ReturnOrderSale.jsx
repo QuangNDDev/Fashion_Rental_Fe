@@ -25,7 +25,7 @@ const ReturnOrderSale = () => {
   //   useEffect(() => {
   //     fetchCancelOrders();
   //   }, []);
-  const [orderCancelData, setOrderCancelData] = useState([]);
+  const [returnOrderSaleData, setReturnOrderSaleData] = useState([]);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -194,7 +194,7 @@ const ReturnOrderSale = () => {
   ];
   return (
     <div>
-      <Table bordered columns={columns} dataSource={orderCancelData} />
+      <Table bordered columns={columns} dataSource={returnOrderSaleData} />
     </div>
   );
 };

@@ -501,7 +501,6 @@ const ProductOwner = () => {
       <Layout style={{ background: "#000", marginLeft: 200 }}>
         <Sider
           width={200}
-          theme="dark"
           breakpoint="md"
           collapsedWidth="0"
           trigger
@@ -517,8 +516,8 @@ const ProductOwner = () => {
             theme={{
               components: {
                 Menu: {
-                  itemActiveBg: "#008000",
-                  itemSelectedBg: "#008000",
+                  itemActiveBg: "grey",
+                  itemSelectedBg: "rgb(32, 30, 42)",
                   itemSelectedColor: "orange",
                 },
               },
