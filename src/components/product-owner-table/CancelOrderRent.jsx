@@ -191,7 +191,12 @@ const CancelOrderRent = () => {
   ];
   return (
     <div>
-      <Table bordered columns={columns} dataSource={cancelOrderRentData} />
+      <Table
+        bordered
+        responsive
+        columns={columns}
+        dataSource={cancelOrderRentData}
+      />
     </div>
   );
 };

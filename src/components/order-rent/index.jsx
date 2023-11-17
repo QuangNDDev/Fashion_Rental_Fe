@@ -1,31 +1,47 @@
 import { SearchOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { Button, Drawer, Form, Input, Radio, Space, Table, Tag } from "antd";
-import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
+import { Button, Input, Space, Table } from "antd";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
-const ReturnOrderRent = () => {
+const OrdersRentStaff = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
+  const [requestOrderRentData, setRequestOrderRentData] = useState();
 
-  //   const fetchCancelOrders = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         "http://fashionrental.online:8080/orderbuy/po/canceled/" +
-  //           localStorage.getItem("productownerId")
-  //       );
+  const fetchRequestsAllOrderRent = async () => {
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/orderrent/staff"
+      );
+      setRequestOrderRentData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  //       setOrderCancelData(response.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   useEffect(() => {
-  //     fetchCancelOrders();
-  //   }, []);
-  const [returnOrderRent, setReturnOrderRent] = useState([]);
+  useEffect(() => {
+    fetchRequestsAllOrderRent();
+  }, []);
+
+  function formatDate(dateString) {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    const formattedDate = new Date(dateString).toLocaleDateString(
+      "en-US",
+      options
+    );
+    const [month, day, year] = formattedDate.split("/");
+    return `${day}/ ${month}/ ${year}`;
+  }
+
+  const formatPriceWithVND = (price) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+  };
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -35,7 +51,6 @@ const ReturnOrderRent = () => {
     clearFilters();
     setSearchText("");
   };
-
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -52,7 +67,7 @@ const ReturnOrderRent = () => {
       >
         <Input
           ref={searchInput}
-          placeholder={`Tìm kiếm...`}
+          placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -61,7 +76,6 @@ const ReturnOrderRent = () => {
           style={{
             marginBottom: 8,
             display: "block",
-            borderColor: "green",
           }}
         />
         <Space>
@@ -71,11 +85,10 @@ const ReturnOrderRent = () => {
             icon={<SearchOutlined />}
             size="small"
             style={{
-              width: 110,
-              backgroundColor: "#008000",
+              width: 90,
             }}
           >
-            Tìm kiếm
+            Search
           </Button>
           <Button
             onClick={() =>
@@ -89,7 +102,7 @@ const ReturnOrderRent = () => {
               width: 90,
             }}
           >
-            Đặt lại
+            Reset
           </Button>
           <Button
             type="link"
@@ -97,9 +110,8 @@ const ReturnOrderRent = () => {
             onClick={() => {
               close();
             }}
-            style={{ color: "green" }}
           >
-            Đóng
+            close
           </Button>
         </Space>
       </div>
@@ -133,81 +145,87 @@ const ReturnOrderRent = () => {
         text
       ),
   });
-  //format date ------------------------------------
-  function formatDate(dateString) {
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    const formattedDate = new Date(dateString).toLocaleDateString(
-      "en-US",
-      options
-    );
-    const [month, day, year] = formattedDate.split("/");
-    return `${day}/ ${month}/ ${year}`;
-  }
-  //chuyen doi thanh dang tien te vnd ------------------------------------------------------
-  const formatPriceWithVND = (price) => {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(price);
-  };
 
   const columns = [
+    // {
+    //   title: "ID",
+    //   dataIndex: "orderRentID",
+    //   key: "orderRentID",
+
+    //   ...getColumnSearchProps("orderRentID"),
+    // },
     {
-      title: "Mã đơn",
-      dataIndex: "orderBuyID",
-      key: "orderBuyID",
-      width: "5%",
-      ...getColumnSearchProps("orderBuyID"),
-      render: (number) => (
-        <p style={{ textAlign: "center" }}>{Number(number)}</p>
+      title: "Ngày mua",
+      dataIndex: "dateOrder",
+      key: "dateOrder",
+
+      ...getColumnSearchProps("dateOrder"),
+      render: (text) => <p style={{ textAlign: "left" }}>{formatDate(text)}</p>,
+    },
+    {
+      title: "Giá thuê",
+      dataIndex: "totalRentPriceProduct",
+      key: "totalRentPriceProduct",
+
+      ...getColumnSearchProps("totalRentPriceProduct"),
+      render: (text) => (
+        <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
       ),
     },
     {
-      title: "Thời gian",
-      dataIndex: "dateOrder",
-      key: "dateOrder",
-      width: "10%",
-      ...getColumnSearchProps("dateOrder"),
-      render: (text) => <p>{formatDate(text)}</p>,
+      title: "Giá cọc",
+      dataIndex: "cocMoneyTotal",
+      key: "cocMoneyTotal",
+
+      ...getColumnSearchProps("cocMoneyTotal"),
+      render: (text) => (
+        <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
+      ),
     },
     {
-      title: "Tổng tiền",
+      title: "Phí vận chuyển",
+      dataIndex: "shippingFee",
+      key: "shippingFee",
+
+      ...getColumnSearchProps("shippingFee"),
+      render: (text) => (
+        <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
+      ),
+    },
+    {
+      title: "Tổng cộng",
       dataIndex: "total",
       key: "total",
-      width: "15%",
+
       ...getColumnSearchProps("total"),
       render: (text) => (
         <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
       ),
     },
     {
+      title: "Khách hàng",
+      dataIndex: "customerName",
+      key: "customerName",
+
+      ...getColumnSearchProps("customerName"),
+    },
+    {
+      title: "Chủ sản phẩm",
+      dataIndex: "productownerName",
+      key: "productownerName",
+
+      ...getColumnSearchProps("productownerName"),
+    },
+    {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      width: "15%",
+
+      ...getColumnSearchProps("status"),
       render: (status) => (
         <p>
           <RenderTag tagRender={status} />
         </p>
-      ),
-    },
-    {
-      title: "",
-      key: "action",
-      align: "left",
-      width: "5%",
-      render: (_, record) => (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          {/* <Button
-            style={{ marginRight: "15px" }}
-            onClick={() => showEditDrawer(record)}
-          >
-            <EditTwoTone />
-          </Button> */}
-          <Button danger>
-            <DeleteFilled />
-          </Button>
-        </div>
       ),
     },
   ];
@@ -215,11 +233,11 @@ const ReturnOrderRent = () => {
     <div>
       <Table
         responsive
-        bordered
+        bordered={true}
         columns={columns}
-        dataSource={returnOrderRent}
+        dataSource={requestOrderRentData}
       />
     </div>
   );
 };
-export default ReturnOrderRent;
+export default OrdersRentStaff;

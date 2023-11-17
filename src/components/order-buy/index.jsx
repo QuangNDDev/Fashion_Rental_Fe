@@ -89,7 +89,7 @@ const OrdersBuyStaff = () => {
               width: 90,
             }}
           >
-            Search
+            Tìm kiếm
           </Button>
           <Button
             onClick={() =>
@@ -103,7 +103,7 @@ const OrdersBuyStaff = () => {
               width: 90,
             }}
           >
-            Reset
+            Đặt lại
           </Button>
           <Button
             type="link"
@@ -112,7 +112,7 @@ const OrdersBuyStaff = () => {
               close();
             }}
           >
-            close
+            Đóng
           </Button>
         </Space>
       </div>
@@ -148,37 +148,71 @@ const OrdersBuyStaff = () => {
   });
 
   const columns = [
-    {
-      title: "ID",
-      dataIndex: "orderBuyID",
-      key: "orderBuyID",
-      width: "1%",
-      ...getColumnSearchProps("orderBuyID"),
-    },
+    // {
+    //   title: "ID",
+    //   dataIndex: "orderBuyID",
+    //   key: "orderBuyID",
+    //   width: "1%",
+    //   ...getColumnSearchProps("orderBuyID"),
+    // },
     {
       title: "Ngày mua",
       dataIndex: "dateOrder",
       key: "dateOrder",
-      width: "20%",
+
       ...getColumnSearchProps("dateOrder"),
       render: (text) => <p style={{ textAlign: "left" }}>{formatDate(text)}</p>,
+    },
+    {
+      title: "Giá bán",
+      dataIndex: "totalBuyPriceProduct",
+      key: "totalBuyPriceProduct",
+
+      ...getColumnSearchProps("totalBuyPriceProduct"),
+      render: (text) => (
+        <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
+      ),
+    },
+    {
+      title: "Phí vận chuyển",
+      dataIndex: "shippingFee",
+      key: "shippingFee",
+
+      ...getColumnSearchProps("shippingFee"),
+      render: (text) => (
+        <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
+      ),
     },
     {
       title: "Tổng cộng",
       dataIndex: "total",
       key: "total",
-      width: "20%",
+
       ...getColumnSearchProps("total"),
       render: (text) => (
         <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
       ),
+    },
+    {
+      title: "Khách hàng",
+      dataIndex: "customerName",
+      key: "customerName",
+
+      ...getColumnSearchProps("customerName"),
+    },
+    {
+      title: "Chủ sản phẩm",
+      dataIndex: "productOwnerName",
+      key: "productOwnerName",
+
+      ...getColumnSearchProps("productOwnerName"),
     },
 
     {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      width: "20%",
+
       ...getColumnSearchProps("status"),
       render: (status) => (
         <p>
@@ -186,25 +220,11 @@ const OrdersBuyStaff = () => {
         </p>
       ),
     },
-
-    {
-      title: "Khách hàng",
-      dataIndex: "customerName",
-      key: "customerName",
-      width: "20%",
-      ...getColumnSearchProps("customerName"),
-    },
-    {
-      title: "Chủ sản phẩm",
-      dataIndex: "productOwnerName",
-      key: "productOwnerName",
-      width: "20%",
-      ...getColumnSearchProps("productOwnerName"),
-    },
   ];
   return (
     <div>
       <Table
+        responsive
         bordered={true}
         columns={columns}
         dataSource={requestOrderBuyData}
