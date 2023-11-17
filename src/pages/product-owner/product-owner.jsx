@@ -193,7 +193,7 @@ const ProductOwner = () => {
             >
               <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
               <Breadcrumb.Item>Quản lý đơn bán </Breadcrumb.Item>
-              <Breadcrumb.Item>Trả hàng,hoàn tiền </Breadcrumb.Item>
+              <Breadcrumb.Item>Trả hàng/Hoàn tiền </Breadcrumb.Item>
             </Breadcrumb>
             <ReturnOrderSale />
           </div>
@@ -211,20 +211,6 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Đơn huỷ</Breadcrumb.Item>
             </Breadcrumb>
             <CancelOrderRent />
-          </div>
-        );
-      case "6":
-        return (
-          <div>
-            <Breadcrumb
-              style={{
-                padding: "0 16px",
-              }}
-            >
-              <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
-              <Breadcrumb.Item>Quản lý đơn thuê</Breadcrumb.Item>
-              <Breadcrumb.Item>Trả hàng,hoàn tiền</Breadcrumb.Item>
-            </Breadcrumb>
           </div>
         );
       case "7":

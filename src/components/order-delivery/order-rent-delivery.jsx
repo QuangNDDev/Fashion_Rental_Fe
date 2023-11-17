@@ -1,9 +1,7 @@
 import {
   SearchOutlined,
-  CheckCircleTwoTone,
-  CloseCircleTwoTone,
   UploadOutlined,
-  EyeTwoTone,
+  CarFilled
 } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
@@ -23,16 +21,17 @@ import {
 import { storage } from "../../firebase/firebase";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
-import ProductOrder from "../product-owner-table/Product-Order";
 import NotRegisterGHN from "./not_registerGHN";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
+import ProductRentOrder from "../product-owner-table/Product-Rent-Order";
 const OrderRentDeliveryTable = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [orderData, setOrderData] = useState([]);
+  const [orderDetailData, setOrderDetailData] = useState([]);
   const productownerId = localStorage.getItem("productownerId");
   const poshopId = localStorage.getItem("poshopID");
   const potoken = localStorage.getItem("potoken");
@@ -48,10 +47,10 @@ const OrderRentDeliveryTable = () => {
 
   const [api, contextHolder] = notification.useNotification();
 
-  const fetchProducts = async (orderID) => {
+  const fetchProducts = async (orderRentID) => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/orderbuydetail/" + orderID
+        "http://fashionrental.online:8080/orderrentdetail/" + orderRentID
       );
 
       const productDTO = response.data.map((item) => item.productDTO);
@@ -67,9 +66,6 @@ const OrderRentDeliveryTable = () => {
       }
       setSelectedProduct(products);
       console.log(products);
-      // } catch (error) {
-      //   console.error(error);
-      // }
     } catch (error) {
       console.error(error);
     }
@@ -78,9 +74,24 @@ const OrderRentDeliveryTable = () => {
   const fetchOrders = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/orderbuy/po/prepare/" + productownerId
+        "http://fashionrental.online:8080/orderrent/po/prepare/" +
+          productownerId
       );
       setOrderData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchOrderDetails = async (orderRentId) => {
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/orderrent/po/prepare/" + orderRentId
+      );
+      const orderRentDetailIDs = response.data.map(
+        (item) => item.orderRentDetailID
+      );
+      setOrderDetailData(orderRentDetailIDs);
+      console.log("order detail id:", orderRentDetailIDs);
     } catch (error) {
       console.error(error);
     }
@@ -253,6 +264,7 @@ const OrderRentDeliveryTable = () => {
   ]);
   const createDelivery = async () => {
     setIsDrawerVisible(false);
+    const formValues = await form.validateFields();
     const data = {
       payment_type_id: 2,
       required_note: selectedrequiredNote,
@@ -262,18 +274,18 @@ const OrderRentDeliveryTable = () => {
       to_ward_name: selectedWard,
       to_district_name: selectedDistrict,
       to_province_name: selectedProvince,
-      weight: 200,
-      length: 1,
-      width: 19,
-      height: 10,
+      weight: parseInt(formValues.weight),
+      length: parseInt(formValues.length),
+      width: parseInt(formValues.width),
+      height: parseInt(formValues.height),
       service_type_id: 2,
       items: selectedProduct,
     };
-    const imgData = {
-      accountID: localStorage.getItem("accountId"),
-      img: urlImages,
-      orderRentDetailID: 0,
-    };
+    // const imgData = {
+    //   accountID: localStorage.getItem("accountId"),
+    //   img: urlImages,
+    //   orderRentDetailID: 0,
+    // };
     console.log(data);
     try {
       const response = await fetch(
@@ -315,11 +327,11 @@ const OrderRentDeliveryTable = () => {
       //   console.error("Delivery order failed!!!", error);
       // }
       // try {
-      //   const orderCodeUpdateResponse = await axios.put(
-      //     `http://fashionrental.online:8080/orderbuy/updateorderbuycode?orderBuyID=${form.getFieldValue(
-      //       "orderBuyID"
-      //     )}&orderCode=${responseData.data.order_code}`
-      //   );
+        // const orderCodeUpdateResponse = await axios.put(
+        //   `http://fashionrental.online:8080/orderrent/updateorderrentcode?orderCode=${form.getFieldValue(
+        //     "orderRentBuyID"
+        //   )}&orderRentID=${responseData.data.order_code}`
+        //  );
       //   console.log(
       //     "Order code update success!!!",
       //     orderCodeUpdateResponse.data
@@ -340,12 +352,13 @@ const OrderRentDeliveryTable = () => {
   // =============================================================
   const [form] = Form.useForm();
   const showDrawer = async (record) => {
-    fetchProducts(record.orderBuyID);
+    fetchProducts(record.orderRentID);
+    fetchOrderDetails(record.orderRentID);
     form.setFieldValue(record);
     form.setFieldsValue({ dateOrder: record.dateOrder });
     form.setFieldsValue({ customerAddress: record.customerAddress });
-    form.setFieldsValue({ orderBuyID: record.orderBuyID });
-    setSelectedOrderID(record.orderBuyID);
+    form.setFieldsValue({ orderRentID: record.orderRentID });
+    setSelectedOrderID(record.orderRentID);
     setIsDrawerVisible(true);
     try {
       const response = await axios.get(
@@ -478,10 +491,10 @@ const OrderRentDeliveryTable = () => {
   const columns = [
     {
       title: "Mã đơn",
-      dataIndex: "orderBuyID",
-      key: "orderBuyID",
+      dataIndex: "orderRentID",
+      key: "orderRentID",
       width: "5%",
-      ...getColumnSearchProps("orderBuyID"),
+      ...getColumnSearchProps("orderRentID"),
       render: (number) => (
         <p style={{ textAlign: "center" }}>{Number(number)}</p>
       ),
@@ -524,8 +537,8 @@ const OrderRentDeliveryTable = () => {
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Space size="middle">
             <Button onClick={() => showDrawer(record)}>
-              <EyeTwoTone />
-              Xem Đơn
+            <CarFilled />
+              Giao hàng
             </Button>
             {/* <Button onClick={() => deliveryOrder(record)}>
                 <CheckCircleTwoTone twoToneColor="#52c41a" />
@@ -545,7 +558,7 @@ const OrderRentDeliveryTable = () => {
           title={"Đơn hàng"}
           open={isDrawerVisible}
           onClose={onCloseDrawer}
-          width={1000}
+          width={1100}
           extra={
             <Space>
               <Button
@@ -600,7 +613,10 @@ const OrderRentDeliveryTable = () => {
                   </div>
                 </Form.Item>
                 <h3>Danh sách sản phẩm:</h3>
-                <ProductOrder key={selectedOrderID} orderID={selectedOrderID} />
+                <ProductRentOrder
+                  key={selectedOrderID}
+                  orderID={selectedOrderID}
+                />
               </div>
               <hr></hr>
 
@@ -714,7 +730,7 @@ const OrderRentDeliveryTable = () => {
                 <h3>Thông tin đơn hàng:</h3>
                 <span>Nhập cân nặng đơn hàng:</span>
                 <Form.Item
-                  name={"weigh"}
+                  name={"weight"}
                   rules={[
                     {
                       required: true,

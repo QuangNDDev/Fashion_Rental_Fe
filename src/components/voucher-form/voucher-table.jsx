@@ -1,15 +1,15 @@
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, EyeTwoTone, MinusOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import {
   Button,
-  Drawer,
   Form,
   Input,
   Space,
   Switch,
   Table,
   notification,
+  Drawer,
 } from "antd";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
@@ -17,12 +17,18 @@ const VoucherTable = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
-  const [editingUser, setEditingUser] = useState(null);
-  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
   const [voucherData, setVoucherData] = useState([]);
   const productownerId = localStorage.getItem("productownerId");
   const [api, contextHolder] = notification.useNotification();
+  const [selectedRecord, setSelectedRecord] = useState([]);
+  const [open, setOpen] = useState(false);
+  const showDrawer = (record) => {
+    setOpen(true);
+    setSelectedRecord(record);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
   const fetchVouchers = async () => {
     try {
       const response = await axios.get(
@@ -48,18 +54,6 @@ const VoucherTable = () => {
     setSearchText("");
   };
   const [form] = Form.useForm();
-  const showEditDrawer = (record) => {
-    setEditingUser(record);
-    console.log(editingUser);
-    setIsEdit(true);
-    setIsDrawerVisible(true);
-    form.setFieldsValue(record);
-  };
-  const onClose = () => {
-    setIsDrawerVisible(false);
-    setIsEdit(false);
-    form.resetFields();
-  };
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -166,6 +160,20 @@ const VoucherTable = () => {
     return `${day}/ ${month}/ ${year}`;
   }
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
+  const formatPriceWithVND = (price) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+  };
+  const renderVoucherType = (voucherTypeID) => {
+    if (voucherTypeID === 1) {
+      return "Bán";
+    } else if (voucherTypeID === 2) {
+      return "Thuê";
+    }
+    return "";
+  };
   const onChangeSwitchStatus = async (checked, voucherID) => {
     console.log(`switch to ${checked}`);
     console.log(voucherID);
@@ -177,7 +185,7 @@ const VoucherTable = () => {
 
       api["success"]({
         message: "Cập Nhật Trạng Thái Thành Công!",
-        description: `Bật voucher thành công!!!`,
+        description: `Cập nhật mã giảm giá thành công!!!`,
       });
 
       fetchVouchers();
@@ -254,6 +262,11 @@ const VoucherTable = () => {
       render: (text, record) => (
         <div>
           <Space size={"middle"}>
+            <Button onClick={() => showDrawer(record)}>
+              <EyeTwoTone />
+              Chi tiết
+            </Button>
+            <MinusOutlined />
             <Switch
               checked={record.status === "ACTIVE"}
               size="large"
@@ -279,85 +292,111 @@ const VoucherTable = () => {
       <Table bordered={true} columns={columns} dataSource={voucherData} />
       {contextHolder}
       <Drawer
-        title={"Đơn hàng"}
-        open={isDrawerVisible}
+        title="Chi tiết mã giảm giá"
+        placement="right"
         onClose={onClose}
         width={400}
+        open={open}
       >
         <Form form={form}>
           <Form.Item
-            name="fullName"
-            label="Người mua"
-            rules={[
-              { required: true, message: "Xin vui lòng nhập Họ và Tên!" },
-              {
-                pattern: /^[^\d]+$/,
-                message: "Không được nhập số!",
-              },
-            ]}
+            name="voucherName"
+            initialValue={selectedRecord && selectedRecord.voucherName}
           >
-            <Input />
+            <div style={{ display: "flex" }}>
+              <strong>Tên mã giảm giá:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {selectedRecord && selectedRecord.voucherName}
+              </p>
+            </div>
           </Form.Item>
           <Form.Item
-            name="phone"
-            label="SĐT"
-            rules={[
-              { required: true, message: "Xin vui lòng nhập số điện thoại!" },
-            ]}
+            name="voucherCode"
+            initialValue={selectedRecord && selectedRecord.voucherCode}
           >
-            <Input />
+            <div style={{ display: "flex" }}>
+              <strong>Mã giảm giá:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {selectedRecord && selectedRecord.voucherCode}
+              </p>
+            </div>
           </Form.Item>
           <Form.Item
-            name="date"
-            label="Thời gian"
-            rules={[{ required: true, message: "Xin vui lòng nhập email!" }]}
+            name="createdDate"
+            initialValue={selectedRecord && selectedRecord.createdDate}
           >
-            <Input />
+            <div style={{ display: "flex" }}>
+              <strong>Ngày tạo:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {formatDate(selectedRecord && selectedRecord.createdDate)}
+              </p>
+            </div>
           </Form.Item>
-
           <Form.Item
-            name="address"
-            label="Địa chỉ"
-            rules={[{ required: true, message: "Xin vui lòng nhập địa chỉ!" }]}
+            name="startDate"
+            initialValue={selectedRecord && selectedRecord.startDate}
           >
-            <Input />
+            <div style={{ display: "flex" }}>
+              <strong>Ngày bắt đầu:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {formatDate(selectedRecord && selectedRecord.startDate)}
+              </p>
+            </div>
           </Form.Item>
-          {/* <Form.Item
-            name="status"
-            label="Trạng thái hoạt động"
-            rules={[
-              { required: true, message: "Cập nhật trạng thái hoạt động!" },
-            ]}
+          <Form.Item
+            name="endDate"
+            initialValue={selectedRecord && selectedRecord.endDate}
           >
-            <Radio.Group>
-              <Radio value={true}>Đang hoạt động</Radio>
-              <Radio value={false}>Không hoạt động</Radio>
-            </Radio.Group>
-          </Form.Item> */}
-
-          <Form.Item>
-            <Button
-              type="primary"
-              style={{
-                backgroundColor: "#008000",
-                color: "#fff",
-                width: "70%",
-              }}
-            >
-              Xác nhận
-            </Button>
-            <Button
-              type="primary"
-              style={{
-                backgroundColor: "red",
-                color: "#fff",
-                width: "25%",
-                marginLeft: "10px",
-              }}
-              danger
-            >
-              Từ chối
-            </Button>
+            <div style={{ display: "flex" }}>
+              <strong>Ngày kết thúc:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {formatDate(selectedRecord && selectedRecord.endDate)}
+              </p>
+            </div>
+          </Form.Item>
+          <Form.Item
+            name="description"
+            initialValue={selectedRecord && selectedRecord.description}
+          >
+            <div style={{ display: "flex" }}>
+              <strong>Mô tả:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {selectedRecord && selectedRecord.description}
+              </p>
+            </div>
+          </Form.Item>
+          <Form.Item
+            name="discountAmount"
+            initialValue={selectedRecord && selectedRecord.discountAmount}
+          >
+            <div style={{ display: "flex" }}>
+              <strong>Phần trăm giảm:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {selectedRecord && selectedRecord.discountAmount}%
+              </p>
+            </div>
+          </Form.Item>
+          <Form.Item
+            name="maxDiscount"
+            initialValue={selectedRecord && selectedRecord.maxDiscount}
+          >
+            <div style={{ display: "flex" }}>
+              <strong>Số tiền giảm tối đa:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {formatPriceWithVND(selectedRecord && selectedRecord.maxDiscount)}
+              </p>
+            </div>
+          </Form.Item>
+          <Form.Item
+            name="voucherTypeID"
+            initialValue={selectedRecord && selectedRecord.voucherTypeID}
+          >
+            <div style={{ display: "flex" }}>
+              <strong>Giảm giá cho sản phẩm:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {renderVoucherType(selectedRecord && selectedRecord.voucherTypeID)}
+              </p>
+            </div>
           </Form.Item>
         </Form>
       </Drawer>
