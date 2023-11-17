@@ -1,8 +1,6 @@
 import {
   SearchOutlined,
-  CheckCircleTwoTone,
-  CloseCircleTwoTone,
-  EyeTwoTone,
+  CarFilled
 } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
@@ -14,7 +12,6 @@ import {
   notification,
   Space,
   Table,
-  Modal,
   Select,
   Divider,
 } from "antd";
@@ -198,6 +195,7 @@ const OrderDeliveryTable = () => {
   const createDelivery = async () => {
 
     setIsDrawerVisible(false);
+    const formValues = await form.validateFields();
     const data = {
       payment_type_id: 2,
       required_note: selectedrequiredNote,
@@ -207,10 +205,10 @@ const OrderDeliveryTable = () => {
       to_ward_name: selectedWard,
       to_district_name: selectedDistrict,
       to_province_name: selectedProvince,
-      weight: 200,
-      length: 1,
-      width: 19,
-      height: 10,
+      weight: parseInt(formValues.weight),
+      length: parseInt(formValues.length),
+      width: parseInt(formValues.width),
+      height: parseInt(formValues.height),
       service_type_id: 2,
       items: selectedProduct,
     };
@@ -464,8 +462,8 @@ const OrderDeliveryTable = () => {
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Space size="middle">
             <Button onClick={() => showDrawer(record)}>
-              <EyeTwoTone />
-              Xem Đơn
+            <CarFilled />
+              Giao hàng
             </Button>
             {/* <Button onClick={() => deliveryOrder(record)}>
               <CheckCircleTwoTone twoToneColor="#52c41a" />
@@ -652,7 +650,7 @@ const OrderDeliveryTable = () => {
               <h3>Thông tin đơn hàng:</h3>
               <span>Nhập cân nặng đơn hàng:</span>
               <Form.Item
-                name={"weigh"}
+                name={"weight"}
                 rules={[
                   {
                     required: true,
