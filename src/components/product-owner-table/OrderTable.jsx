@@ -354,7 +354,12 @@ const OrderTable = () => {
   ];
   return (
     <div>
-      <Table bordered={true} columns={columns} dataSource={orderData} />
+      <Table
+        responsive
+        bordered={true}
+        columns={columns}
+        dataSource={orderData}
+      />
       {contextHolder}
       <Drawer
         title={"Đơn hàng"}

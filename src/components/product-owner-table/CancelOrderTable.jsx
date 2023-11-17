@@ -191,7 +191,12 @@ const CancelOrderSaleTable = () => {
   ];
   return (
     <div>
-      <Table bordered columns={columns} dataSource={orderCancelData} />
+      <Table
+        responsive
+        bordered
+        columns={columns}
+        dataSource={orderCancelData}
+      />
     </div>
   );
 };

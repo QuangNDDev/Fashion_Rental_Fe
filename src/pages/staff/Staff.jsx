@@ -29,6 +29,7 @@ import CancelOrderTable from "../../components/product-owner-table/CancelOrderTa
 import TableAccept from "./../../components/Staff-Grid/accept";
 import StaffChat from "../../components/staff-chat";
 import VerificationSuccess from "../../components/verifyPO/verified";
+import OrdersRentStaff from "../../components/order-rent";
 
 const { Header, Content, Sider } = Layout;
 
@@ -74,9 +75,9 @@ const Staff = () => {
 
   const handleLogout = () => {
     navigate("/login");
-    localStorage.removeItem("roleID");
-    localStorage.removeItem("staffID");
-    localStorage.removeItem("accountID");
+    localStorage.removeItem("roleId");
+    localStorage.removeItem("staffId");
+    localStorage.removeItem("accountId");
     console.log("Logged out");
   };
 
@@ -163,8 +164,10 @@ const Staff = () => {
               }}
             >
               <Breadcrumb.Item>Xem đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn hàng cho thuê</Breadcrumb.Item>
               <Breadcrumb.Item>Sản phẩm cho thuê</Breadcrumb.Item>
             </Breadcrumb>
+            <OrdersRentStaff />
           </div>
         );
 
@@ -177,6 +180,7 @@ const Staff = () => {
               }}
             >
               <Breadcrumb.Item>Xem đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn hàng bán</Breadcrumb.Item>
               <Breadcrumb.Item>Sản phẩm đã bán</Breadcrumb.Item>
             </Breadcrumb>
             <OrdersBuyStaff />
@@ -192,6 +196,7 @@ const Staff = () => {
               }}
             >
               <Breadcrumb.Item>Xem đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn hàng cho thuê</Breadcrumb.Item>
               <Breadcrumb.Item>Sản phẩm bị trả về</Breadcrumb.Item>
             </Breadcrumb>
             <CancelOrderTable />
@@ -240,6 +245,21 @@ const Staff = () => {
             </div>
           );
         }
+
+      case "9":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Xem đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn hàng bán</Breadcrumb.Item>
+              <Breadcrumb.Item>Sản phẩm bị trả về</Breadcrumb.Item>
+            </Breadcrumb>
+          </div>
+        );
 
       // case "9":
       //   return (
@@ -324,9 +344,9 @@ const Staff = () => {
         </div>
       </Header>
 
-      <Layout style={{ background: "#000", marginLeft: 220 }}>
+      <Layout style={{ background: "#000", marginLeft: 230 }}>
         <Sider
-          width={200}
+          width={205}
           style={{
             position: "fixed",
             left: 0,
@@ -376,10 +396,14 @@ const Staff = () => {
                 icon={<EyeFilled style={{ fontSize: "17px" }} />}
                 title="Xem đơn hàng"
               >
-                <Menu.Item key="4">Sản phẩm đang cho thuê</Menu.Item>
-                <Menu.Item key="5">Sản phẩm đã bán</Menu.Item>
-
-                <Menu.Item key="6">Sản phẩm bị trả về</Menu.Item>
+                <SubMenu key="sub2-1" title="Đơn hàng cho thuê">
+                  <Menu.Item key="4">Sản phẩm đang cho thuê</Menu.Item>
+                  <Menu.Item key="6">Sản phẩm bị trả về</Menu.Item>
+                </SubMenu>
+                <SubMenu key="sub2-2" title="Đơn hàng bán">
+                  <Menu.Item key="5">Sản phẩm đã bán</Menu.Item>
+                  <Menu.Item key="9">Sản phẩm bị trả về</Menu.Item>
+                </SubMenu>
               </SubMenu>
 
               <SubMenu

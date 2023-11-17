@@ -194,7 +194,12 @@ const ReturnOrderSale = () => {
   ];
   return (
     <div>
-      <Table bordered columns={columns} dataSource={returnOrderSaleData} />
+      <Table
+        responsive
+        bordered
+        columns={columns}
+        dataSource={returnOrderSaleData}
+      />
     </div>
   );
 };

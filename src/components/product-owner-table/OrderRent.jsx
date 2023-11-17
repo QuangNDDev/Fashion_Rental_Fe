@@ -233,7 +233,12 @@ const OrderRent = () => {
   ];
   return (
     <div>
-      <Table bordered={true} columns={columns} dataSource={orderData} />
+      <Table
+        responsive
+        bordered={true}
+        columns={columns}
+        dataSource={orderData}
+      />
       <Drawer
         title={"Đơn hàng"}
         open={isDrawerVisible}

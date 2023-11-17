@@ -34,7 +34,7 @@ const ProductOrder = ({ orderID }) => {
 
       const productDTO = response.data.map((item) => item.productDTO);
       setProductData(productDTO);
-      console.log("productDTO:",productDTO);
+      console.log("productDTO:", productDTO);
     } catch (error) {
       console.error(error);
     }
@@ -187,7 +187,6 @@ const ProductOrder = ({ orderID }) => {
     <>
       {contextHolder}
       <Row gutter={[16, 16]}>
-        
         {productData.map((product) => (
           <Col
             xs={24}
