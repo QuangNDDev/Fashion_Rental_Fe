@@ -1728,24 +1728,24 @@ const CreateProduct = () => {
         theme={{
           token: {
             Button: {
-              colorPrimaryHover: "#008000",
+              colorPrimaryHover: "rgb(32, 30, 42)",
             },
             Input: {
-              activeBorderColor: "#008000",
-              hoverBorderColor: "#008000",
+              activeBorderColor: "rgb(32, 30, 42)",
+              hoverBorderColor: "rgb(32, 30, 42)",
             },
             Select: {
-              colorPrimaryHover: "#008000",
-              colorPrimary: "#008000",
-              controlItemBgActive: "#008000",
+              colorPrimaryHover: "rgb(32, 30, 42)",
+              colorPrimary: "rgb(32, 30, 42)",
+              controlItemBgActive: "rgb(32, 30, 42)",
               optionSelectedColor: "orange",
             },
             Slider: {
-              colorPrimary: "#008000",
-              handleActiveColor: "#008000",
-              handleColor: "#008000",
-              trackHoverBg: "orange",
-              trackBg: "#008000",
+              colorPrimary: "rgb(32, 30, 42)",
+              handleActiveColor: "rgb(32, 30, 42)",
+              handleColor: "rgb(32, 30, 42)",
+              trackHoverBg: "rgb(32, 30, 42)",
+              trackBg: "rgb(32, 30, 42)",
             },
           },
         }}
@@ -1765,24 +1765,26 @@ const CreateProduct = () => {
             </div>
             <div className="category">
               <span>Phân loại sản phẩm:</span>
-              <Space wrap>
-                <Select
-                  defaultValue="Chọn loại sản phẩm"
-                  style={{
-                    width: 150,
-                  }}
-                  onChange={selectChangeCategory}
-                  options={
-                    categorys &&
-                    categorys.map((category) => ({
-                      value: category.categoryID,
-                      label:
-                        categoryTranslations[category.categoryName] ||
-                        category.categoryName,
-                    }))
-                  }
-                />
-              </Space>
+              <Form.Item name="category">
+                <Space wrap>
+                  <Select
+                    defaultValue="Chọn loại sản phẩm"
+                    style={{
+                      width: 150,
+                    }}
+                    onChange={selectChangeCategory}
+                    options={
+                      categorys &&
+                      categorys.map((category) => ({
+                        value: category.categoryID,
+                        label:
+                          categoryTranslations[category.categoryName] ||
+                          category.categoryName,
+                      }))
+                    }
+                  />
+                </Space>
+              </Form.Item>
             </div>
             <div className="description">
               <span>Mô tả sản phẩm:</span>
@@ -1800,7 +1802,15 @@ const CreateProduct = () => {
                 value={sliderValue} // Sử dụng giá trị sliderValue
                 onChange={handleSliderChange}
               />
-              <span style={{ marginLeft: "10px" }}>{sliderValue}%</span>
+              <span
+                style={{
+                  marginLeft: "10px",
+                  fontWeight: "bold",
+                  color: "rgb(32, 30, 42)",
+                }}
+              >
+                {sliderValue}%
+              </span>
             </Form.Item>
             <Form.Item name={"productReceiptUrl"}>
               <div className="receipt">
@@ -3550,8 +3560,9 @@ const CreateProduct = () => {
                 type="primary"
                 htmlType="submit"
                 style={{
+                  fontWeight: "bold",
                   width: "15%",
-                  backgroundColor: "green",
+                  backgroundColor: "rgb(32, 30, 42)",
                   position: "fixed",
                   bottom: "45%", // Đặt nút ở dưới cùng của thẻ div
                   left: "50%",

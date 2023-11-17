@@ -293,7 +293,7 @@ const CustomerTable = () => {
 
   return (
     <div>
-      <Table bordered={true} columns={columns} dataSource={users} />
+      <Table responsive bordered={true} columns={columns} dataSource={users} />
       {contextHolder}
       <Drawer
         title={isEdit ? "Cập Nhật Thông Tin Khách Hàng" : "Add User"}

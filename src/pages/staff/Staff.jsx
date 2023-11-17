@@ -11,6 +11,7 @@ import {
   Badge,
   Breadcrumb,
   Button,
+  ConfigProvider,
   Layout,
   Menu,
   Modal,
@@ -261,20 +262,21 @@ const Staff = () => {
     <Layout>
       <Header
         style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1,
+          width: "100%",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          backgroundColor: "#008000", // Căn chỉnh các phần tử theo chiều ngang và cách đều nhau
+
+          backgroundColor: "RGB(32, 30, 42)",
         }}
+        responsive
       >
         {/* Hiển thị logo tạm thời */}
         <div style={{ color: "#fff", display: "flex", alignItems: "center" }}>
-          <img
-            src="https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.15752-9/386474503_267425062928341_6987759511620074342_n.png?_nc_cat=106&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=sCYtopH2K4kAX-Ordr1&_nc_ht=scontent.fsgn2-5.fna&oh=03_AdRCrANYpogO50o9LUSIzscNAVPVMn2v3OMN1BmYx1MAAA&oe=654E9D9F"
-            alt="Brand Logo"
-            width={70}
-            height={50}
-          />
+          <img src="/brand_logo.png" alt="Brand Logo" width={70} height={50} />
           <h2 style={{ color: "#fff", fontWeight: "normal" }}>
             Kênh nhân viên
           </h2>
@@ -322,74 +324,93 @@ const Staff = () => {
         </div>
       </Header>
 
-      <Layout>
+      <Layout style={{ background: "#000", marginLeft: 220 }}>
         <Sider
           width={200}
           style={{
-            background: colorBgContainer,
+            position: "fixed",
+            left: 0,
+            top: 65,
+            bottom: 60,
+            height: "100%",
           }}
+          breakpoint="md"
+          collapsedWidth="0"
         >
-          <Menu
-            mode="inline"
-            selectedKeys={[selectedMenuKey]}
-            defaultOpenKeys={["sub1"]}
-            style={{
-              height: "100%",
-              borderRight: 0,
-              width: "124%",
+          <ConfigProvider
+            theme={{
+              components: {
+                Menu: {
+                  itemActiveBg: "rgb (220,220,220)",
+                  itemSelectedBg: "rgb(32, 30, 42)",
+                  itemSelectedColor: "orange",
+                },
+              },
             }}
-            onClick={handleMenuClick}
           >
-            <SubMenu
-              key="sub1"
-              icon={<CheckOutlined style={{ fontSize: "17px" }} />}
-              title="Duyệt sản phẩm"
+            <Menu
+              mode="inline"
+              selectedKeys={[selectedMenuKey]}
+              defaultOpenKeys={["sub1"]}
+              style={{
+                height: "100%",
+                borderRight: 0,
+                width: "124%",
+              }}
+              onClick={handleMenuClick}
             >
-              <Menu.Item key="1">Đơn chờ xử lý</Menu.Item>
+              <SubMenu
+                key="sub1"
+                icon={<CheckOutlined style={{ fontSize: "17px" }} />}
+                title="Duyệt sản phẩm"
+              >
+                <Menu.Item key="1">Đơn chờ xử lý</Menu.Item>
 
-              <Menu.Item key="2">Đơn đã duyệt</Menu.Item>
+                <Menu.Item key="2">Đơn đã duyệt</Menu.Item>
 
-              <Menu.Item key="3">Đơn đã từ chối</Menu.Item>
-            </SubMenu>
+                <Menu.Item key="3">Đơn đã từ chối</Menu.Item>
+              </SubMenu>
 
-            <SubMenu
-              key="sub2"
-              icon={<EyeFilled style={{ fontSize: "17px" }} />}
-              title="Xem đơn hàng"
-            >
-              <Menu.Item key="4">Sản phẩm đang cho thuê</Menu.Item>
-              <Menu.Item key="5">Sản phẩm đã bán</Menu.Item>
+              <SubMenu
+                key="sub2"
+                icon={<EyeFilled style={{ fontSize: "17px" }} />}
+                title="Xem đơn hàng"
+              >
+                <Menu.Item key="4">Sản phẩm đang cho thuê</Menu.Item>
+                <Menu.Item key="5">Sản phẩm đã bán</Menu.Item>
 
-              <Menu.Item key="6">Sản phẩm bị trả về</Menu.Item>
-            </SubMenu>
+                <Menu.Item key="6">Sản phẩm bị trả về</Menu.Item>
+              </SubMenu>
 
-            <SubMenu
-              key="sub3"
-              title="Báo cáo"
-              icon={<MailFilled twoToneColor="#ff0000" />}
-            >
-              <Menu.Item key="7">Báo cáo sản phẩm</Menu.Item>
-            </SubMenu>
+              <SubMenu
+                key="sub3"
+                title="Báo cáo"
+                icon={<MailFilled twoToneColor="#ff0000" />}
+              >
+                <Menu.Item key="7">Báo cáo sản phẩm</Menu.Item>
+              </SubMenu>
 
-            <SubMenu
-              key="sub4"
-              icon={<NotificationFilled style={{ fontSize: "17px" }} />}
-              title="Thông tin"
-            >
-              <Menu.Item key="8">Thông tin cá nhân</Menu.Item>
-            </SubMenu>
+              <SubMenu
+                key="sub4"
+                icon={<NotificationFilled style={{ fontSize: "17px" }} />}
+                title="Thông tin"
+              >
+                <Menu.Item key="8">Thông tin cá nhân</Menu.Item>
+              </SubMenu>
 
-            {/* <SubMenu
+              {/* <SubMenu
               key="sub5"
               icon={<NotificationFilled style={{ fontSize: "17px" }} />}
               title="Nhan tin"
             >
               <Menu.Item key="9">Thông tin cá nhân</Menu.Item>
             </SubMenu> */}
-          </Menu>
+            </Menu>
+          </ConfigProvider>
         </Sider>
         <Layout>
           <Content
+            responsive
             style={{
               padding: 24,
               marginLeft: 15,

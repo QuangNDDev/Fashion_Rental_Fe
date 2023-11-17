@@ -10,11 +10,16 @@ import {
 } from "antd";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { UserOutlined, LockOutlined, LoadingOutlined } from "@ant-design/icons";
+import { auth, provider } from "../../firebase/firebase.js";
+import React, { useEffect, useState } from "react";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import "./admin-login.css";
 const LoginForm = () => {
+  const [loadingIcon, setLoadingIcon] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
+
   const handleNavigationAdmin = () => {
     navigate(`/admin`);
   };
@@ -25,17 +30,49 @@ const LoginForm = () => {
     // const paramValue = idPo;
     navigate(`/productOwner`);
   };
-
+  const handleGoogleLogin = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        console.log(credential);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        console.log(error);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
+  useEffect(() => {
+    localStorage.getItem("email");
+  });
   const onFinish = async (values) => {
-    const email = values.email;
-    const password = values.password;
+    const email = values.email.trim();
+    const password = values.password.trim();
     console.log("Received values:", values);
+
+    if (!email || !password) {
+      api["warning"]({
+        message: "Đăng Nhập Thất Bại",
+        description: "Email và Mật Khẩu không được chứa khoảng trắng",
+      });
+      return;
+    }
+
     try {
+      setLoadingIcon(true);
       const response = await axios.post(
-        `http://fashionrental.online:8080/account/login?email=` +
-          email +
-          `&password=` +
-          password
+        `http://fashionrental.online:8080/account/login?email=${email}&password=${password}`
       );
       console.log(response);
 
@@ -65,7 +102,6 @@ const LoginForm = () => {
           api["success"]({
             message: "Đăng Nhập Thành Công",
             description: null,
-
             duration: 1000,
           });
           setTimeout(() => {
@@ -87,15 +123,16 @@ const LoginForm = () => {
       ) {
         api["error"]({
           message: "Đăng Nhập Thất Bại",
-          description: " Vui lòng kiểm tra lại email và mật khẩu.",
+          description: "Vui lòng kiểm tra lại email và mật khẩu.",
         });
       } else {
         api["error"]({
           message: "Đăng Nhập Thất Bại",
-          description: " Đã xảy ra lỗi trong quá trình đăng nhập.",
+          description: "Đã xảy ra lỗi trong quá trình đăng nhập.",
         });
       }
     }
+    setLoadingIcon(false);
   };
 
   return (
@@ -130,11 +167,11 @@ const LoginForm = () => {
             theme={{
               token: {
                 Input: {
-                  activeBorderColor: "#008000",
-                  hoverBorderColor: "#008000",
+                  activeBorderColor: "rgb(32, 30, 42)",
+                  hoverBorderColor: "rgb(32, 30, 42)",
                 },
                 Checkbox: {
-                  colorPrimary: "#008000",
+                  colorPrimary: "rgb(32, 30, 42)",
                 },
               },
             }}
@@ -184,16 +221,20 @@ const LoginForm = () => {
                     style={{
                       width: "100%",
                       height: "43px",
-                      backgroundColor: "#008000",
+                      backgroundColor: "rgb(32, 30, 42)",
                       fontWeight: "bold",
-                      borderColor: "#008000",
+                      borderColor: "rgb(32, 30, 42)",
                     }}
                     type="primary"
                     htmlType="submit"
+
                     // loading={loadings[0]}
                     // onClick={() => enterLoading(0)}
                   >
-                    Đăng Nhập
+                    {loadingIcon && (
+                      <LoadingOutlined style={{ fontSize: "20px" }} />
+                    )}
+                    &nbsp;Đăng Nhập
                   </Button>
                 </Form.Item>
               </div>
@@ -210,7 +251,10 @@ const LoginForm = () => {
               margin: "25px 0px",
             }}
           >
-            <button className="login-with-google-btn">
+            <button
+              className="login-with-google-btn"
+              onClick={handleGoogleLogin}
+            >
               Đăng nhập với Google
             </button>
           </div>
