@@ -185,7 +185,7 @@ const VoucherTable = () => {
 
       api["success"]({
         message: "Cập Nhật Trạng Thái Thành Công!",
-        description: `Cập nhật mã giảm giá thành công!!!`,
+        description: `Cập nhật mã giảm giá ${voucherID} thành công!!!`,
       });
 
       fetchVouchers();
@@ -210,14 +210,14 @@ const VoucherTable = () => {
       ...getColumnSearchProps("voucherName"),
       render: (text) => <p>{text}</p>,
     },
-    {
-      title: "Mã khuyến mãi",
-      dataIndex: "voucherCode",
-      key: "voucherCode",
+    // {
+    //   title: "Mã khuyến mãi",
+    //   dataIndex: "voucherCode",
+    //   key: "voucherCode",
 
-      ...getColumnSearchProps("voucherCode"),
-      render: (text) => <p>{text}</p>,
-    },
+    //   ...getColumnSearchProps("voucherCode"),
+    //   render: (text) => <p>{text}</p>,
+    // },
 
     {
       title: "Ngày tạo",
@@ -227,30 +227,30 @@ const VoucherTable = () => {
       ...getColumnSearchProps("createdDate"),
       render: (text) => <p>{formatDate(text)}</p>,
     },
-    {
-      title: "Ngày bắt đầu",
-      dataIndex: "startDate",
-      key: "startDate",
+    // {
+    //   title: "Ngày bắt đầu",
+    //   dataIndex: "startDate",
+    //   key: "startDate",
 
-      ...getColumnSearchProps("startDate"),
-      render: (text) => <p>{formatDate(text)}</p>,
-    },
-    {
-      title: "Ngày kết thúc",
-      dataIndex: "endDate",
-      key: "endDate",
+    //   ...getColumnSearchProps("startDate"),
+    //   render: (text) => <p>{formatDate(text)}</p>,
+    // },
+    // {
+    //   title: "Ngày kết thúc",
+    //   dataIndex: "endDate",
+    //   key: "endDate",
 
-      ...getColumnSearchProps("endDate"),
-      render: (text) => <p>{formatDate(text)}</p>,
-    },
-    {
-      title: "Mô tả",
-      dataIndex: "description",
-      key: "description",
+    //   ...getColumnSearchProps("endDate"),
+    //   render: (text) => <p>{formatDate(text)}</p>,
+    // },
+    // {
+    //   title: "Mô tả",
+    //   dataIndex: "description",
+    //   key: "description",
 
-      ...getColumnSearchProps("description"),
-      render: (text) => <p>{text}</p>,
-    },
+    //   ...getColumnSearchProps("description"),
+    //   render: (text) => <p>{text}</p>,
+    // },
     {
       title: "Trạng thái",
       dataIndex: "status",

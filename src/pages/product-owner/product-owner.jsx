@@ -19,7 +19,6 @@ import {
   Modal,
   Badge,
   ConfigProvider,
-  Flex,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import Notification from "../../components/notification/Notification";
@@ -27,7 +26,6 @@ import axios from "axios";
 import ProductCard from "../../components/product-card/product-card";
 import InformationPO from "../../components/infomation-productonwer/information-productowner";
 import OrderTable from "../../components/product-owner-table/OrderTable";
-import CancelOrderTable from "../../components/product-owner-table/CancelOrderTable";
 import Revenue from "../../components/revenue-product-owner/revenue";
 import CreateProduct from "../../components/create-product/create-product";
 import VoucherForm from "../../components/voucher-form";
@@ -38,7 +36,6 @@ import OrderDeliveryTable from "../../components/order-delivery/order-delivery-t
 import VerifyProductOwner from "../../components/verifyPO";
 import VerificationSuccess from "../../components/verifyPO/verified";
 import RegisterDelivery from "../../components/order-delivery/register-delivery";
-import CancelOrderBuyTable from "../../components/product-owner-table/CancelOrderTable";
 import CancelOrderRent from "../../components/product-owner-table/CancelOrderRent";
 import CancelOrderSaleTable from "../../components/product-owner-table/CancelOrderTable";
 import ReturnOrderSale from "../../components/product-owner-table/ReturnOrderSale";

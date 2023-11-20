@@ -8,24 +8,22 @@ import axios from "axios";
 const ReturnOrderRent = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [orderRecjectingCompleted, setorderRecjectingCompleted] = useState([]);
   const searchInput = useRef(null);
-
-  //   const fetchCancelOrders = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         "http://fashionrental.online:8080/orderbuy/po/canceled/" +
-  //           localStorage.getItem("productownerId")
-  //       );
-
-  //       setOrderCancelData(response.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   useEffect(() => {
-  //     fetchCancelOrders();
-  //   }, []);
-  const [returnOrderRent, setReturnOrderRent] = useState([]);
+  const fetchRejectingCompletedOrders = async () => {
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/orderrent/po/rejectcompleted/" +
+          localStorage.getItem("productownerId")
+      );
+      setorderRecjectingCompleted(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchRejectingCompletedOrders();
+  }, []);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -154,9 +152,9 @@ const ReturnOrderRent = () => {
   const columns = [
     {
       title: "Mã đơn",
-      dataIndex: "orderBuyID",
+      dataIndex: "orderRentID",
       key: "orderBuyID",
-      width: "5%",
+
       ...getColumnSearchProps("orderBuyID"),
       render: (number) => (
         <p style={{ textAlign: "center" }}>{Number(number)}</p>
@@ -166,7 +164,7 @@ const ReturnOrderRent = () => {
       title: "Thời gian",
       dataIndex: "dateOrder",
       key: "dateOrder",
-      width: "10%",
+
       ...getColumnSearchProps("dateOrder"),
       render: (text) => <p>{formatDate(text)}</p>,
     },
@@ -174,7 +172,7 @@ const ReturnOrderRent = () => {
       title: "Tổng tiền",
       dataIndex: "total",
       key: "total",
-      width: "15%",
+
       ...getColumnSearchProps("total"),
       render: (text) => (
         <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
@@ -184,30 +182,11 @@ const ReturnOrderRent = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      width: "15%",
+
       render: (status) => (
         <p>
           <RenderTag tagRender={status} />
         </p>
-      ),
-    },
-    {
-      title: "",
-      key: "action",
-      align: "left",
-      width: "5%",
-      render: (_, record) => (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          {/* <Button
-            style={{ marginRight: "15px" }}
-            onClick={() => showEditDrawer(record)}
-          >
-            <EditTwoTone />
-          </Button> */}
-          <Button danger>
-            <DeleteFilled />
-          </Button>
-        </div>
       ),
     },
   ];
@@ -217,7 +196,7 @@ const ReturnOrderRent = () => {
         responsive
         bordered
         columns={columns}
-        dataSource={returnOrderRent}
+        dataSource={orderRecjectingCompleted}
       />
     </div>
   );
