@@ -9,6 +9,7 @@ import {
   Avatar,
   Modal,
   Badge,
+  ConfigProvider,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import Notification from "../../components/notification/Notification";
@@ -100,20 +101,20 @@ const Admin = () => {
     <Layout>
       <Header
         style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1,
+          width: "100%",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          backgroundColor: "#008000", // Căn chỉnh các phần tử theo chiều ngang và cách đều nhau
+          // backgroundColor: "#008000",
+          backgroundColor: "RGB(32, 30, 42)",
         }}
       >
         {/* Display a placeholder logo */}
         <div style={{ color: "#fff", display: "flex", alignItems: "center" }}>
-          <img
-            src="https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.15752-9/386474503_267425062928341_6987759511620074342_n.png?_nc_cat=106&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=sCYtopH2K4kAX-Ordr1&_nc_ht=scontent.fsgn2-5.fna&oh=03_AdRCrANYpogO50o9LUSIzscNAVPVMn2v3OMN1BmYx1MAAA&oe=654E9D9F"
-            alt="Brand Logo"
-            width={70}
-            height={50}
-          />
+          <img src="/brand_logo.png" alt="Brand Logo" width={70} height={50} />
           <h2 style={{ color: "#fff", fontWeight: "normal" }}>
             Kênh người quản lý
           </h2>
@@ -157,30 +158,55 @@ const Admin = () => {
         </div>
       </Header>
 
-      <Layout>
-        <Sider width={200} theme="dark" breakpoint="md" collapsedWidth="0">
-          <Menu
-            mode="inline"
-            selectedKeys={[selectedMenuKey]}
-            defaultOpenKeys={["sub1"]}
-            style={{ height: "100%", borderRight: 0 }}
-            onClick={handleMenuClick}
+      <Layout style={{ marginLeft: 200 }}>
+        <Sider
+          width={200}
+          theme="dark"
+          breakpoint="md"
+          collapsedWidth="0"
+          trigger
+          style={{
+            position: "fixed",
+            left: 0,
+            top: 65,
+            bottom: 60,
+            height: "100%",
+          }}
+        >
+          <ConfigProvider
+            theme={{
+              components: {
+                Menu: {
+                  itemActiveBg: "grey",
+                  itemSelectedBg: "rgb(32, 30, 42)",
+                  itemSelectedColor: "orange",
+                },
+              },
+            }}
           >
-            <SubMenu
-              key="sub1"
-              icon={<UserOutlined />}
-              title="Quản lí người dùng"
+            <Menu
+              mode="inline"
+              selectedKeys={[selectedMenuKey]}
+              defaultOpenKeys={["sub1"]}
+              style={{ height: "100%", borderRight: 0 }}
+              onClick={handleMenuClick}
             >
-              <Menu.Item key="1">Khách hàng</Menu.Item>
-              <Menu.Item key="2">Chủ sở hữu sản phẩm</Menu.Item>
-              <Menu.Item key="3">Nhân viên</Menu.Item>
-            </SubMenu>
-            {/* <SubMenu key="sub2" icon={<UserOutlined />} title="Quản lí 1">
+              <SubMenu
+                key="sub1"
+                icon={<UserOutlined />}
+                title="Quản lí người dùng"
+              >
+                <Menu.Item key="1">Khách hàng</Menu.Item>
+                <Menu.Item key="2">Chủ sở hữu sản phẩm</Menu.Item>
+                <Menu.Item key="3">Nhân viên</Menu.Item>
+              </SubMenu>
+              {/* <SubMenu key="sub2" icon={<UserOutlined />} title="Quản lí 1">
               <Menu.Item key="1">Khách hàng</Menu.Item>
               <Menu.Item key="2">Chủ sở hữu sản phẩm</Menu.Item>
               <Menu.Item key="3">Nhân viên</Menu.Item>
             </SubMenu> */}
-          </Menu>
+            </Menu>
+          </ConfigProvider>
         </Sider>
         <Layout
           style={{
@@ -203,7 +229,7 @@ const Admin = () => {
       {/* Modal for Notifications */}
       <Modal
         title="Thông báo"
-        visible={isNotificationModalVisible}
+        open={isNotificationModalVisible}
         onCancel={hideNotificationModal}
         footer={null}
         style={{ position: "absolute", bottom: "50px", right: "20px" }}

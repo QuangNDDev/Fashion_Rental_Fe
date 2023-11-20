@@ -54,6 +54,17 @@ function VoucherForm() {
   const onFinish = async (values) => {
     const startDate = formatDateToString(dateRange[0].$d);
     const endDate = formatDateToString(dateRange[1].$d);
+    const spaceDescription = values.description.trim();
+    const spaceVoucherCode = values.voucherCode.trim();
+    const spaceVoucherName = values.voucherName.trim();
+
+    if (!spaceDescription || !spaceVoucherCode || !spaceVoucherName) {
+      notification.error({
+        message: "Thêm Mã Khuyến Mãi Thất Bại",
+        description: "Không được để trống hoặc chỉ chứa khoảng trắng!",
+      });
+      return;
+    }
 
     const voucherData = {
       description: values.description,
@@ -134,16 +145,18 @@ function VoucherForm() {
               theme={{
                 token: {
                   Input: {
-                    activeBorderColor: "#008000",
-                    hoverBorderColor: "#008000",
+                    activeBorderColor: "rgb(32, 30, 42)",
+                    hoverBorderColor: "rgb(32, 30, 42)",
                   },
                   Select: {
-                    colorPrimary: "#008000",
-                    colorPrimaryHover: "#008000",
+                    colorPrimaryHover: "rgb(32, 30, 42)",
+                    colorPrimary: "rgb(32, 30, 42)",
+                    controlItemBgActive: "rgb(32, 30, 42)",
+                    optionSelectedColor: "orange",
                   },
                   DatePicker: {
-                    activeBorderColor: "#008000",
-                    hoverBorderColor: "#008000",
+                    activeBorderColor: "rgb(32, 30, 42)",
+                    hoverBorderColor: "rgb(32, 30, 42)",
                   },
                 },
               }}
@@ -186,6 +199,7 @@ function VoucherForm() {
                     <Input placeholder="Nhập tên mã giảm giá..." />
                   </Form.Item>
                 </Row>
+
                 <Row
                   gutter={24}
                   style={{
@@ -194,24 +208,25 @@ function VoucherForm() {
                 >
                   <Col span={12}>
                     <p style={{ fontWeight: "bold" }}>Hình thức giảm giá:</p>
-
-                    <Select
-                      placeholder="Vui lòng chọn"
-                      style={{
-                        width: 130,
-                      }}
-                      onChange={handleChangeVoucherType}
-                      options={[
-                        {
-                          value: 1,
-                          label: "Bán",
-                        },
-                        {
-                          value: 2,
-                          label: "Thuê",
-                        },
-                      ]}
-                    />
+                    <Form.Item name="voucherType">
+                      <Select
+                        placeholder="Vui lòng chọn"
+                        style={{
+                          width: 130,
+                        }}
+                        onChange={handleChangeVoucherType}
+                        options={[
+                          {
+                            value: 1,
+                            label: "Bán",
+                          },
+                          {
+                            value: 2,
+                            label: "Thuê",
+                          },
+                        ]}
+                      />
+                    </Form.Item>
                   </Col>
                   <Col span={12}>
                     <span style={{ fontWeight: "bold" }}>Nhập thời hạn:</span>
