@@ -9,6 +9,7 @@ import {
   Row,
   Switch,
   Badge,
+  Table,
 } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -26,6 +27,7 @@ const ProductCard = () => {
   const [productData, setProductData] = useState([]);
   const [api, contextHolder] = notification.useNotification();
   const [productImage, setProductImage] = useState();
+  const [productRentPrice, setProductRentPrice] = useState([]);
 
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
   const formatPriceWithVND = (price) => {
@@ -135,7 +137,23 @@ const ProductCard = () => {
         console.error(error);
       }
     };
+    const fetchProductRentPrice = async () => {
+      try {
+        const response = await axios.get(
+          "http://fashionrental.online:8080/rentprice/" + productData.productID
+        );
+        const filteredData = response.data.map((item) => ({
+          mockDay: item.mockDay,
+          rentPrice: item.rentPrice,
+        }));
 
+        setProductRentPrice(filteredData);
+        console.log(filteredData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProductRentPrice();
     fetchProductImg();
     setIsModalVisible(true);
     const specificationData = JSON.parse(productData.productSpecificationData);
@@ -257,6 +275,24 @@ const ProductCard = () => {
   const hide = () => {
     setOpen(false);
   };
+  const columns = [
+    {
+      title: "Số ngày thuê",
+      dataIndex: "mockDay",
+      key: "mockDay",
+      width:"30%",
+      render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
+    },
+    {
+      title: "Giá thuê",
+      dataIndex: "rentPrice",
+      key: "rentPrice",
+      width:"50%",
+      render: (text) => <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>,
+    },
+   
+    
+  ];
 
   return (
     <>
@@ -777,6 +813,12 @@ const ProductCard = () => {
                 </p>
               </div>
             </Form.Item>
+            {selectedProduct && selectedProduct.checkType === "RENT" && (
+              <>
+              <strong>Giá thuê:</strong>
+              <Table pagination={false} responsive bordered={true} columns={columns} dataSource={productRentPrice} />
+            </>
+            )}
             <Form.Item
               name="checkType"
               initialValue={selectedProduct && selectedProduct.checkType}

@@ -37,6 +37,7 @@ const TablePending = () => {
   const [isModalVisibleNotApprove, setIsModalVisibleNotApprove] =
     useState(false);
   const [api, contextHolder] = notification.useNotification();
+  const [productRentPrice, setProductRentPrice] = useState([]);
 
   function formatDate(dateString) {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -77,6 +78,23 @@ const TablePending = () => {
         console.error(error);
       }
     };
+    const fetchProductRentPrice = async () => {
+      try {
+        const response = await axios.get(
+          "http://fashionrental.online:8080/rentprice/" + record.productID
+        );
+        const filteredData = response.data.map((item) => ({
+          mockDay: item.mockDay,
+          rentPrice: item.rentPrice,
+        }));
+
+        setProductRentPrice(filteredData);
+        console.log(filteredData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProductRentPrice();
 
     fetchProductImg();
     axios
@@ -967,6 +985,12 @@ const TablePending = () => {
               </p>
             </div>
           </Form.Item>
+          {selectedProduct && selectedProduct.checkType === "RENT" && (
+              <>
+              <strong>Giá thuê:</strong>
+              <Table responsive bordered={true} columns={columns} dataSource={productRentPrice} />
+            </>
+            )}
           <Form.Item
             name="productReceiptUrl"
             initialValue={selectedProduct && selectedProduct.productReceiptUrl}
