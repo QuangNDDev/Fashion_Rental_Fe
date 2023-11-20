@@ -1756,26 +1756,24 @@ const CreateProduct = () => {
             </div>
             <div className="category">
               <span>Phân loại sản phẩm:</span>
-              <Form.Item name="category">
-                <Space wrap>
-                  <Select
-                    defaultValue="Chọn loại sản phẩm"
-                    style={{
-                      width: 150,
-                    }}
-                    onChange={selectChangeCategory}
-                    options={
-                      categorys &&
-                      categorys.map((category) => ({
-                        value: category.categoryID,
-                        label:
-                          categoryTranslations[category.categoryName] ||
-                          category.categoryName,
-                      }))
-                    }
-                  />
-                </Space>
-              </Form.Item>
+              <Space wrap>
+                <Select
+                  defaultValue="Chọn loại sản phẩm"
+                  style={{
+                    width: 150,
+                  }}
+                  onChange={selectChangeCategory}
+                  options={
+                    categorys &&
+                    categorys.map((category) => ({
+                      value: category.categoryID,
+                      label:
+                        categoryTranslations[category.categoryName] ||
+                        category.categoryName,
+                    }))
+                  }
+                />
+              </Space>
             </div>
             <div className="description">
               <span>Mô tả sản phẩm:</span>
@@ -1793,13 +1791,7 @@ const CreateProduct = () => {
                 value={sliderValue} // Sử dụng giá trị sliderValue
                 onChange={handleSliderChange}
               />
-              <span
-                style={{
-                  marginLeft: "10px",
-                  fontWeight: "bold",
-                  color: "rgb(32, 30, 42)",
-                }}
-              >
+              <span style={{ marginLeft: "10px", fontWeight: "bold" }}>
                 {sliderValue}%
               </span>
             </Form.Item>
@@ -2279,7 +2271,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -2340,7 +2332,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -2409,7 +2401,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -2470,7 +2462,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -2533,7 +2525,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -2594,7 +2586,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -2665,7 +2657,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -2726,7 +2718,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -2788,7 +2780,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -2849,7 +2841,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -2919,7 +2911,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -2980,7 +2972,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -3042,7 +3034,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -3103,7 +3095,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -3173,7 +3165,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -3234,7 +3226,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -3296,7 +3288,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -3357,7 +3349,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -3551,7 +3543,6 @@ const CreateProduct = () => {
                 type="primary"
                 htmlType="submit"
                 style={{
-                  fontWeight: "bold",
                   width: "15%",
                   backgroundColor: "rgb(32, 30, 42)",
                   position: "fixed",

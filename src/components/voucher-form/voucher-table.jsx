@@ -244,6 +244,14 @@ const VoucherTable = () => {
       render: (text) => <p>{formatDate(text)}</p>,
     },
     {
+      title: "Mô tả",
+      dataIndex: "description",
+      key: "description",
+
+      ...getColumnSearchProps("description"),
+      render: (text) => <p>{text}</p>,
+    },
+    {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
@@ -383,7 +391,9 @@ const VoucherTable = () => {
             <div style={{ display: "flex" }}>
               <strong>Số tiền giảm tối đa:</strong>
               <p style={{ marginLeft: "10px" }}>
-                {formatPriceWithVND(selectedRecord && selectedRecord.maxDiscount)}
+                {formatPriceWithVND(
+                  selectedRecord && selectedRecord.maxDiscount
+                )}
               </p>
             </div>
           </Form.Item>
@@ -394,7 +404,9 @@ const VoucherTable = () => {
             <div style={{ display: "flex" }}>
               <strong>Giảm giá cho sản phẩm:</strong>
               <p style={{ marginLeft: "10px" }}>
-                {renderVoucherType(selectedRecord && selectedRecord.voucherTypeID)}
+                {renderVoucherType(
+                  selectedRecord && selectedRecord.voucherTypeID
+                )}
               </p>
             </div>
           </Form.Item>

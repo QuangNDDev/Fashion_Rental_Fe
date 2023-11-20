@@ -19,6 +19,7 @@ import {
   Modal,
   Badge,
   ConfigProvider,
+  Flex,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import Notification from "../../components/notification/Notification";
@@ -498,7 +499,12 @@ const ProductOwner = () => {
         </div>
       </Header>
 
-      <Layout style={{ background: "#000", marginLeft: 200 }}>
+      <Layout
+        style={{
+          background: "#000",
+          marginLeft: 200,
+        }}
+      >
         <Sider
           width={200}
           breakpoint="md"

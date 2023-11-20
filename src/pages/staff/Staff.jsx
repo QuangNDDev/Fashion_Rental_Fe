@@ -30,6 +30,8 @@ import TableAccept from "./../../components/Staff-Grid/accept";
 import StaffChat from "../../components/staff-chat";
 import VerificationSuccess from "../../components/verifyPO/verified";
 import OrdersRentStaff from "../../components/order-rent";
+import CancelRentStaff from "../../components/order-rent/cancel-rent-staff";
+import CancelBuyStaff from "../../components/order-buy/cancel-buy-staff";
 
 const { Header, Content, Sider } = Layout;
 
@@ -199,7 +201,7 @@ const Staff = () => {
               <Breadcrumb.Item>Đơn hàng cho thuê</Breadcrumb.Item>
               <Breadcrumb.Item>Sản phẩm bị trả về</Breadcrumb.Item>
             </Breadcrumb>
-            <CancelOrderTable />
+            <CancelRentStaff />
           </div>
         );
       case "7":
@@ -258,6 +260,7 @@ const Staff = () => {
               <Breadcrumb.Item>Đơn hàng bán</Breadcrumb.Item>
               <Breadcrumb.Item>Sản phẩm bị trả về</Breadcrumb.Item>
             </Breadcrumb>
+            <CancelBuyStaff />
           </div>
         );
 
