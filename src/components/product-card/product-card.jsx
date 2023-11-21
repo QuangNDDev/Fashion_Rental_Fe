@@ -280,18 +280,18 @@ const ProductCard = () => {
       title: "Số ngày thuê",
       dataIndex: "mockDay",
       key: "mockDay",
-      width:"30%",
+      width: "30%",
       render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
     },
     {
       title: "Giá thuê",
       dataIndex: "rentPrice",
       key: "rentPrice",
-      width:"50%",
-      render: (text) => <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>,
+      width: "50%",
+      render: (text) => (
+        <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
+      ),
     },
-   
-    
   ];
 
   return (
@@ -815,9 +815,15 @@ const ProductCard = () => {
             </Form.Item>
             {selectedProduct && selectedProduct.checkType === "RENT" && (
               <>
-              <strong>Giá thuê:</strong>
-              <Table pagination={false} responsive bordered={true} columns={columns} dataSource={productRentPrice} />
-            </>
+                <strong>Giá thuê:</strong>
+                <Table
+                  responsive
+                  pagination={false}
+                  bordered={true}
+                  columns={columns}
+                  dataSource={productRentPrice}
+                />
+              </>
             )}
             <Form.Item
               name="checkType"
