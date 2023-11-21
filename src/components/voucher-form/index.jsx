@@ -144,6 +144,11 @@ function VoucherForm() {
             <ConfigProvider
               theme={{
                 token: {
+                  Button: {
+                    colorPrimary: "rgb(32, 30, 42)",
+                    colorPrimaryHover: "orange",
+                    colorPrimaryActive: "orange",
+                  },
                   Input: {
                     activeBorderColor: "rgb(32, 30, 42)",
                     hoverBorderColor: "rgb(32, 30, 42)",
@@ -317,7 +322,7 @@ function VoucherForm() {
                   <Button
                     type="primary"
                     htmlType="submit"
-                    style={{ marginLeft: "20px", backgroundColor: "green" }}
+                    style={{ marginLeft: "20px" }}
                   >
                     Thêm
                   </Button>

@@ -1719,7 +1719,9 @@ const CreateProduct = () => {
         theme={{
           token: {
             Button: {
-              colorPrimaryHover: "rgb(32, 30, 42)",
+              colorPrimary: "rgb(32, 30, 42)",
+              colorPrimaryHover: "orange",
+              colorPrimaryActive: "orange",
             },
             Input: {
               activeBorderColor: "rgb(32, 30, 42)",
@@ -1787,7 +1789,10 @@ const CreateProduct = () => {
             <Form.Item name={"productCondition"} style={{ marginLeft: "16px" }}>
               <p style={{ fontWeight: "bold" }}>Tình trạng sản phẩm:</p>
               <Slider
-                style={{ width: "30%", track: { background: "green" } }}
+                style={{
+                  width: "30%",
+                  track: { background: "rgb(32, 30, 42)" },
+                }}
                 value={sliderValue} // Sử dụng giá trị sliderValue
                 onChange={handleSliderChange}
               />
@@ -1894,7 +1899,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -1955,7 +1960,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -2017,7 +2022,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -2078,7 +2083,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -2148,7 +2153,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -2209,7 +2214,7 @@ const CreateProduct = () => {
                             />
                             <Button
                               style={{
-                                backgroundColor: "green",
+                                backgroundColor: "rgb(32, 30, 42)",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -3431,7 +3436,7 @@ const CreateProduct = () => {
                 <div className="rent-price">
                   <div style={{ display: "flex" }}>
                     <Form.Item
-                      label="Số ngày"
+                      label="Số ngày 1"
                       name="mockDay"
                       style={{ width: "250px", marginRight: "10px" }}
                       rules={[
@@ -3544,7 +3549,7 @@ const CreateProduct = () => {
                 htmlType="submit"
                 style={{
                   width: "15%",
-                  backgroundColor: "rgb(32, 30, 42)",
+
                   position: "fixed",
                   bottom: "45%", // Đặt nút ở dưới cùng của thẻ div
                   left: "50%",
