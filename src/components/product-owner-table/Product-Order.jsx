@@ -198,6 +198,7 @@ const ProductOrder = ({ orderID }) => {
             style={{ paddingTop: 20 }}
           >
             <Card
+              hoverable
               bordered={true}
               style={{
                 width: 230,

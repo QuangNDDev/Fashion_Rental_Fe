@@ -21,10 +21,10 @@ const OrderRent = () => {
   const [orderData, setOrderData] = useState([]);
   const productownerId = localStorage.getItem("productownerId");
 
-  const fetchOrders = async () => {
+  const fetchOrdersRent = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/orderbuy/po/" + productownerId
+        "http://fashionrental.online:8080/orderrent/po/" + productownerId
       );
       setOrderData(response.data);
     } catch (error) {
@@ -33,7 +33,7 @@ const OrderRent = () => {
   };
 
   useEffect(() => {
-    fetchOrders();
+    fetchOrdersRent();
   }, []);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -171,19 +171,17 @@ const OrderRent = () => {
   const columns = [
     {
       title: "Mã đơn",
-      dataIndex: "orderBuyID",
-      key: "orderBuyID",
-      width: "5%",
-      ...getColumnSearchProps("orderBuyID"),
-      render: (number) => (
-        <p style={{ textAlign: "center" }}>{Number(number)}</p>
-      ),
+      dataIndex: "orderRentID",
+      key: "orderRentID",
+
+      ...getColumnSearchProps("orderRentID"),
+      render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
     },
     {
       title: "Thời gian",
       dataIndex: "dateOrder",
       key: "dateOrder",
-      width: "10%",
+
       ...getColumnSearchProps("dateOrder"),
       render: (text) => <p>{formatDate(text)}</p>,
     },
@@ -191,7 +189,7 @@ const OrderRent = () => {
       title: "Tổng tiền",
       dataIndex: "total",
       key: "total",
-      width: "15%",
+
       ...getColumnSearchProps("total"),
       render: (text) => (
         <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
@@ -201,7 +199,7 @@ const OrderRent = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      width: "15%",
+
       render: (status) => (
         <p>
           <RenderTag tagRender={status} />
@@ -212,7 +210,7 @@ const OrderRent = () => {
       title: <p style={{ textAlign: "center" }}>Hành Động</p>,
       key: "action",
       align: "left",
-      width: "15%",
+
       render: (text, record) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Space size="middle">

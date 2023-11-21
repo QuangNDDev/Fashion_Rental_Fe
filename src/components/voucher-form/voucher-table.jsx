@@ -367,6 +367,17 @@ const VoucherTable = () => {
             initialValue={selectedRecord && selectedRecord.description}
           >
             <div style={{ display: "flex" }}>
+              <strong>Số lượng:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {selectedRecord && selectedRecord.quantity}
+              </p>
+            </div>
+          </Form.Item>
+          <Form.Item
+            name="description"
+            initialValue={selectedRecord && selectedRecord.description}
+          >
+            <div style={{ display: "flex" }}>
               <strong>Mô tả:</strong>
               <p style={{ marginLeft: "10px" }}>
                 {selectedRecord && selectedRecord.description}

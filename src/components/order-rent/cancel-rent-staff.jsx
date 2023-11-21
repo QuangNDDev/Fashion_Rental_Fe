@@ -88,7 +88,7 @@ const CancelRentStaff = () => {
               width: 90,
             }}
           >
-            Search
+            Tìm kiếm
           </Button>
           <Button
             onClick={() =>
@@ -102,7 +102,7 @@ const CancelRentStaff = () => {
               width: 90,
             }}
           >
-            Reset
+            Đặt lại
           </Button>
           <Button
             type="link"
@@ -111,7 +111,7 @@ const CancelRentStaff = () => {
               close();
             }}
           >
-            close
+            Đóng
           </Button>
         </Space>
       </div>
