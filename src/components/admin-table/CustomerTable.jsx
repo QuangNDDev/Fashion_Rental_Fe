@@ -1,6 +1,7 @@
 import { DeleteFilled, EditTwoTone, SearchOutlined } from "@ant-design/icons";
 import {
   Button,
+  ConfigProvider,
   Drawer,
   Form,
   Input,
@@ -24,6 +25,19 @@ const CustomerTable = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const [form] = Form.useForm();
+
+  const emailValidator = (rule, value, callback) => {
+    const trimmedValue = value.trim(); // Cắt giảm giá trị đầu vào
+    if (!trimmedValue) {
+      callback("Vui lòng nhập địa chỉ email!");
+    } else if (
+      !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(trimmedValue)
+    ) {
+      callback("Vui lòng nhập địa chỉ email phù hợp!");
+    } else {
+      callback();
+    }
+  };
 
   const fetchUsers = async () => {
     try {
@@ -82,7 +96,7 @@ const CustomerTable = () => {
           style={{
             marginBottom: 8,
             display: "block",
-            borderColor: "green",
+            borderColor: "rgb(32, 30, 42)",
           }}
         />
         <Space>
@@ -93,7 +107,7 @@ const CustomerTable = () => {
             size="small"
             style={{
               width: 110,
-              backgroundColor: "#008000",
+              backgroundColor: "rgb(32, 30, 42)",
             }}
           >
             Tìm kiếm
@@ -108,6 +122,7 @@ const CustomerTable = () => {
             size="small"
             style={{
               width: 90,
+              borderColor: "rgb(32, 30, 42)",
             }}
           >
             Đặt lại
@@ -118,7 +133,7 @@ const CustomerTable = () => {
             onClick={() => {
               close();
             }}
-            style={{ color: "green" }}
+            style={{ color: "rgb(32, 30, 42)" }}
           >
             Đóng
           </Button>
@@ -169,42 +184,52 @@ const CustomerTable = () => {
   };
 
   const editUser = async () => {
-    form.validateFields().then((values) => {
+    try {
+      const values = await form.validateFields();
+      const spacefullName = values.fullName.trim();
+      const spaceEmail = values.email.trim();
+      const spacePhone = values.phone.trim();
+
+      if (!spacefullName || !spaceEmail || !spacePhone) {
+        notification.error({
+          message: "Cập Nhật Thất Bại",
+          description:
+            "Tên, Email và Số điện thoại không được để trống hoặc chỉ chứa khoảng trắng!",
+        });
+        return;
+      }
+
       const editData = {
         avatarUrl: values.avatarUrl,
         fullName: values.fullName,
         phone: values.phone,
         status: values.status,
+        email: values.email,
       };
 
-      try {
-        axios
-          .put(
-            `http://134.209.111.144:8080/customer?customerID=` +
-              editingUser.customerID,
-            editData
-          )
-          .then((response) => {
-            api["success"]({
-              message: "Cập Nhật Thành Công!",
-              description: null,
-            });
-            console.log(response);
-          });
-      } catch (error) {
-        api["error"]({
-          message: "Cập Nhật Thất Bại!",
-          description: null,
-        });
-        console.log(error);
-      }
+      const response = await axios.put(
+        `http://134.209.111.144:8080/customer?customerID=${editingUser.customerID}`,
+        editData
+      );
+
+      api["success"]({
+        message: "Cập Nhật Thành Công!",
+        description: null,
+      });
 
       const updatedUsers = users.map((user) =>
         user === editingUser ? { ...user, ...values } : user
       );
       setUsers(updatedUsers);
       onClose();
-    });
+    } catch (error) {
+      api["error"]({
+        message: "Cập Nhật Thất Bại!",
+        description:
+          "Tên, Email và Số điện thoại không được để trống hoặc chỉ chứa khoảng trắng!",
+      });
+      console.log(error);
+    }
   };
 
   const addUser = () => {
@@ -277,15 +302,25 @@ const CustomerTable = () => {
       width: "10%",
       render: (_, record) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <Button
-            style={{ marginRight: "15px" }}
-            onClick={() => showEditDrawer(record)}
+          <ConfigProvider
+            theme={{
+              token: {
+                Button: {
+                  colorPrimaryHover: "rgb(32, 30, 42)",
+                },
+              },
+            }}
           >
-            <EditTwoTone />
-          </Button>
-          <Button danger>
-            <DeleteFilled />
-          </Button>
+            <Button
+              style={{ marginRight: "15px" }}
+              onClick={() => showEditDrawer(record)}
+            >
+              <EditTwoTone twoToneColor={"rgb(32, 30, 42)"} />
+            </Button>
+            <Button danger>
+              <DeleteFilled />
+            </Button>
+          </ConfigProvider>
         </div>
       ),
     },
@@ -301,72 +336,89 @@ const CustomerTable = () => {
         onClose={onClose}
         width={400}
       >
-        <Form form={form}>
-          <p style={{ fontWeight: "bold" }}>Họ và Tên:</p>
-          <Form.Item
-            name="fullName"
-            rules={[
-              { required: true, message: "Xin vui lòng nhập Họ và Tên!" },
-              {
-                pattern: /^[^\d]+$/,
-                message: "Không được nhập số!",
+        <ConfigProvider
+          theme={{
+            token: {
+              Input: {
+                activeBorderColor: "rgb(32, 30, 42)",
+                hoverBorderColor: "rgb(32, 30, 42)",
               },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <p style={{ fontWeight: "bold" }}>Số Điện Thoại:</p>
-          <Form.Item
-            name="phone"
-            rules={[
-              { required: true, message: "Xin vui lòng nhập số điện thoại!" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <p style={{ fontWeight: "bold" }}>Email:</p>
-          <Form.Item
-            name="email"
-            rules={[{ required: true, message: "Xin vui lòng nhập email!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
-            Trạng Thái Hoạt Động:
-          </p>
-          <Form.Item
-            name="status"
-            rules={[
-              { required: true, message: "Cập nhật trạng thái hoạt động!" },
-            ]}
-          >
-            <Radio.Group>
-              <Radio style={{ marginLeft: "50px" }} value={true}>
-                Đang hoạt động
-              </Radio>
-              <Radio value={false}>Không hoạt động</Radio>
-            </Radio.Group>
-          </Form.Item>
-          <br />
-
-          <Form.Item>
-            <Button
-              type="primary"
-              onClick={isEdit ? editUser : addUser}
-              style={{
-                backgroundColor: "#008000",
-                color: "#fff",
-                width: "100%",
-              }}
+              Radio: {
+                colorPrimary: "rgb(32, 30, 42)",
+              },
+            },
+          }}
+        >
+          <Form form={form}>
+            <p style={{ fontWeight: "bold" }}>Họ và Tên:</p>
+            <Form.Item
+              name="fullName"
+              rules={[
+                { required: true, message: "Xin vui lòng nhập Họ và Tên!" },
+                {
+                  pattern: /^[^\d]+$/,
+                  message: "Không được nhập số!",
+                },
+              ]}
             >
-              {isEdit ? "Cập Nhật" : "Add"}
-            </Button>
-          </Form.Item>
-          <Form.Item name="roleID">
-            <Input style={{ display: "none" }} />
-          </Form.Item>
-          <br />
-        </Form>
+              <Input />
+            </Form.Item>
+            <p style={{ fontWeight: "bold" }}>Số Điện Thoại:</p>
+            <Form.Item
+              name="phone"
+              rules={[
+                { required: true, message: "Xin vui lòng nhập số điện thoại!" },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <p style={{ fontWeight: "bold" }}>Email:</p>
+            <Form.Item
+              name="email"
+              rules={[
+                { required: true, message: "Xin vui lòng nhập email!" },
+                { validator: emailValidator },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+              Trạng Thái Hoạt Động:
+            </p>
+            <Form.Item
+              name="status"
+              rules={[
+                { required: true, message: "Cập nhật trạng thái hoạt động!" },
+              ]}
+            >
+              <Radio.Group>
+                <Radio style={{ marginLeft: "50px" }} value={true}>
+                  Đang hoạt động
+                </Radio>
+                <Radio value={false}>Không hoạt động</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <br />
+
+            <Form.Item>
+              <Button
+                type="primary"
+                onClick={isEdit ? editUser : addUser}
+                style={{
+                  backgroundColor: "rgb(32, 30, 42)",
+                  color: "#fff",
+                  width: "100%",
+                }}
+              >
+                {isEdit ? "Cập Nhật" : "Add"}
+              </Button>
+            </Form.Item>
+            <Form.Item name="roleID">
+              <Input style={{ display: "none" }} />
+            </Form.Item>
+            <br />
+          </Form>
+        </ConfigProvider>
       </Drawer>
     </div>
   );
