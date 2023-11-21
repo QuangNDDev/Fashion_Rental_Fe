@@ -14,6 +14,7 @@ const RejectTable = () => {
   const [requestsData, setRequestsData] = useState([]);
   const idStaff = localStorage.getItem("staffId");
   const [productImage, setProductImage] = useState();
+  const [productRentPrice, setProductRentPrice] = useState([]);
 
   function formatDate(dateString) {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -24,6 +25,31 @@ const RejectTable = () => {
     const [month, day, year] = formattedDate.split("/");
     return `${day}/ ${month}/ ${year}`;
   }
+  const formatPriceWithVND = (price) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+  };
+
+  const columnsRentPrice = [
+    {
+      title: "Số ngày thuê",
+      dataIndex: "mockDay",
+      key: "mockDay",
+      width: "30%",
+      render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
+    },
+    {
+      title: "Giá thuê",
+      dataIndex: "rentPrice",
+      key: "rentPrice",
+      width: "50%",
+      render: (text) => (
+        <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
+      ),
+    },
+  ];
 
   const fetchRequests = async () => {
     try {
@@ -54,6 +80,23 @@ const RejectTable = () => {
 
   const showDrawer = (record) => {
     console.log(record);
+    const fetchProductRentPrice = async () => {
+      try {
+        const response = await axios.get(
+          "http://fashionrental.online:8080/rentprice/" + record.productID
+        );
+        const filteredData = response.data.map((item) => ({
+          mockDay: item.mockDay,
+          rentPrice: item.rentPrice,
+        }));
+
+        setProductRentPrice(filteredData);
+        console.log(filteredData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProductRentPrice();
 
     axios
       .get("http://fashionrental.online:8080/product/" + record.productID)
@@ -736,6 +779,36 @@ const RejectTable = () => {
             </>
           )}
           {/* ======================================================================== */}
+
+          {/* <Form.Item
+            name="status"
+            initialValue={selectedProduct && selectedProduct.status}
+          >
+            <div style={{ display: "flex" }}>
+              <strong>Trạng thái:</strong>
+
+              <p style={{ marginLeft: "10px" }}>
+                <RenderTag
+                  tagRender={selectedProduct && selectedProduct.status}
+                />
+              </p>
+            </div>
+          </Form.Item> */}
+
+          <Form.Item
+            name="checkType"
+            initialValue={selectedProduct && selectedProduct.checkType}
+          >
+            <div style={{ display: "flex" }}>
+              <strong>Hình thức sản phẩm:</strong>
+
+              <p style={{ marginLeft: "10px" }}>
+                <RenderTag
+                  tagRender={selectedProduct && selectedProduct.checkType}
+                />
+              </p>
+            </div>
+          </Form.Item>
           <Form.Item
             name="price"
             initialValue={selectedProduct && selectedProduct.price}
@@ -751,34 +824,19 @@ const RejectTable = () => {
               </p>
             </div>
           </Form.Item>
-          {/* <Form.Item
-            name="status"
-            initialValue={selectedProduct && selectedProduct.status}
-          >
-            <div style={{ display: "flex" }}>
-              <strong>Trạng thái:</strong>
-
-              <p style={{ marginLeft: "10px" }}>
-                <RenderTag
-                  tagRender={selectedProduct && selectedProduct.status}
-                />
-              </p>
-            </div>
-          </Form.Item> */}
-          <Form.Item
-            name="checkType"
-            initialValue={selectedProduct && selectedProduct.checkType}
-          >
-            <div style={{ display: "flex" }}>
-              <strong>Hình thức sản phẩm:</strong>
-
-              <p style={{ marginLeft: "10px" }}>
-                <RenderTag
-                  tagRender={selectedProduct && selectedProduct.checkType}
-                />
-              </p>
-            </div>
-          </Form.Item>
+          {selectedProduct && selectedProduct.checkType === "RENT" && (
+            <>
+              <strong>Giá thuê:</strong>
+              <Table
+                responsive
+                bordered={true}
+                columns={columnsRentPrice}
+                dataSource={productRentPrice}
+                pagination={false}
+                style={{ marginBottom: "20px" }}
+              />
+            </>
+          )}
           <Form.Item
             name="productReceiptUrl"
             initialValue={selectedProduct && selectedProduct.productReceiptUrl}

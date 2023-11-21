@@ -282,28 +282,28 @@ const StaffTable = () => {
       title: "Mã tài khoản",
       dataIndex: "accountID",
       key: "accountID",
-      width: "5%",
+
       ...getColumnSearchProps("accountID"),
     },
     {
       title: "Mã nhân viên",
       dataIndex: "staffID",
       key: "staffID",
-      width: "5%",
+
       ...getColumnSearchProps("staffID"),
     },
     {
       title: "Họ và tên",
       dataIndex: "fullName",
       key: "fullName",
-      width: "10%",
+
       ...getColumnSearchProps("fullName"),
     },
     {
       title: "Vai trò",
       dataIndex: "roleName",
       key: "roleName",
-      width: "15%",
+
       render: (roleName) => (
         <p style={{ textAlign: "left" }}>
           <RenderTag tagRender={roleName} />
@@ -314,7 +314,7 @@ const StaffTable = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      width: "10%",
+
       ...getColumnSearchProps("status"),
       render: (status) => (
         <p style={{ textAlign: "left" }}>
@@ -326,7 +326,7 @@ const StaffTable = () => {
       title: "",
       key: "action",
       align: "left",
-      width: "10%",
+
       render: (_, record) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Button

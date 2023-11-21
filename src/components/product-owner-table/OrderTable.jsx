@@ -284,7 +284,7 @@ const OrderTable = () => {
       title: "Mã đơn",
       dataIndex: "orderBuyID",
       key: "orderBuyID",
-      width: "5%",
+
       ...getColumnSearchProps("orderBuyID"),
       render: (number) => (
         <p style={{ textAlign: "center" }}>{Number(number)}</p>
@@ -294,7 +294,7 @@ const OrderTable = () => {
       title: "Thời gian",
       dataIndex: "dateOrder",
       key: "dateOrder",
-      width: "10%",
+
       ...getColumnSearchProps("dateOrder"),
       render: (text) => <p>{formatDate(text)}</p>,
     },
@@ -302,7 +302,7 @@ const OrderTable = () => {
       title: "Tổng tiền",
       dataIndex: "total",
       key: "total",
-      width: "15%",
+
       ...getColumnSearchProps("total"),
       render: (text) => (
         <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
@@ -312,7 +312,7 @@ const OrderTable = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      width: "15%",
+
       render: (status) => (
         <p>
           <RenderTag tagRender={status} />
@@ -323,7 +323,7 @@ const OrderTable = () => {
       title: <p style={{ textAlign: "center" }}>Hành Động</p>,
       key: "action",
       align: "left",
-      width: "15%",
+
       render: (text, record) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Space size="middle">

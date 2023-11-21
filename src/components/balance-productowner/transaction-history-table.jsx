@@ -153,17 +153,15 @@ const TransactionTable = () => {
       title: "Mã giao dịch",
       dataIndex: "transactionHistoryID",
       key: "transactionHistoryID",
-      width: "9%",
+
       ...getColumnSearchProps("transactionHistoryID"),
-      render: (number) => (
-        <p style={{ textAlign: "center" }}>{Number(number)}</p>
-      ),
+      render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
     },
     {
       title: "Loại giao dịch",
       dataIndex: "transactionType",
       key: "transactionType",
-      width: "10%",
+
       ...getColumnSearchProps("transactionType"),
       render: (text) => <p>{text}</p>,
     },
@@ -171,7 +169,7 @@ const TransactionTable = () => {
       title: "Biến động",
       dataIndex: "amount",
       key: "amount",
-      width: "10%",
+
       ...getColumnSearchProps("amount"),
       render: (text) => (
         <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
@@ -181,7 +179,7 @@ const TransactionTable = () => {
       title: "Ngày giao dịch",
       dataIndex: "transactionDate",
       key: "transactionDate",
-      width: "15%",
+
       ...getColumnSearchProps("transactionDate"),
       render: (text) => <p>{formatDate(text)}</p>,
     },
@@ -189,7 +187,7 @@ const TransactionTable = () => {
       title: "Thông tin giao dịch",
       dataIndex: "description",
       key: "description",
-      width: "30%",
+
       ...getColumnSearchProps("description"),
       render: (text) => <p>{text}</p>,
     },

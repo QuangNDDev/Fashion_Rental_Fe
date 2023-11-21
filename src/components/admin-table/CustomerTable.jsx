@@ -244,7 +244,7 @@ const CustomerTable = () => {
       title: "ID",
       dataIndex: "customerID",
       key: "customerID",
-      width: "1%",
+
       ...getColumnSearchProps("customerID"),
       render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
     },
@@ -252,7 +252,7 @@ const CustomerTable = () => {
       title: "Họ và tên",
       dataIndex: "fullName",
       key: "fullName",
-      width: "20%",
+
       ...getColumnSearchProps("fullName"),
       render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
     },
@@ -260,7 +260,7 @@ const CustomerTable = () => {
       title: "Vai trò",
       dataIndex: "roleName",
       key: "roleName",
-      width: "15%",
+
       ...getColumnSearchProps("roleName"),
       render: (roleName) => (
         <p style={{ textAlign: "left", justifyContent: "left" }}>
@@ -272,7 +272,7 @@ const CustomerTable = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      width: "10%",
+
       ...getColumnSearchProps("status"),
       render: (status) => (
         <p style={{ textAlign: "left" }}>
@@ -284,14 +284,14 @@ const CustomerTable = () => {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      width: "20%",
+
       ...getColumnSearchProps("email"),
     },
     {
       title: "SĐT",
       dataIndex: "phone",
       key: "phone",
-      width: "20%",
+
       ...getColumnSearchProps("phone"),
       render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
     },
@@ -299,7 +299,7 @@ const CustomerTable = () => {
       title: "",
       key: "action",
       align: "left",
-      width: "10%",
+
       render: (_, record) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <ConfigProvider
