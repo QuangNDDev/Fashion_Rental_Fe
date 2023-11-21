@@ -141,10 +141,15 @@ const RenderTag = ({ tagRender }) => {
         color = "yellow";
         text = "Đang vận chuyển";
         break;
+        case "REJECTING_COMPLETED":
+          color = "red";
+          text = "Trả hàng/hoàn tiền";
+          break;
     default:
       color = "default";
       text = "Không Xác Định";
   }
+  
 
   return <Tag color={color}>{text}</Tag>;
 };

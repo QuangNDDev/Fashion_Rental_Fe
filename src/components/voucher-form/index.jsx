@@ -77,6 +77,7 @@ function VoucherForm() {
       maxDiscount: values.maxDiscount,
       voucherTypeID: voucherType,
       productownerID: productownerId,
+      quantity: values.quantity,
     };
     console.log("voucher data: ", voucherData);
     try {
@@ -272,7 +273,7 @@ function VoucherForm() {
                     display: "flex",
                   }}
                 >
-                  <Col span={12}>
+                  <Col span={8}>
                     <p style={{ fontWeight: "bold" }}>Phần trăm giảm giá:</p>
                     <Form.Item
                       name={"discountAmount"}
@@ -287,7 +288,7 @@ function VoucherForm() {
                       />
                     </Form.Item>
                   </Col>
-                  <Col span={12}>
+                  <Col span={8}>
                     <span style={{ fontWeight: "bold" }}>
                       Số tiền giảm giá tối đa:
                     </span>
@@ -300,6 +301,22 @@ function VoucherForm() {
                       <Input
                         type="number"
                         suffix="VNĐ"
+                        placeholder="Vui lòng nhập..."
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <span style={{ fontWeight: "bold" }}>
+                      Số lượng mã giảm giá:
+                    </span>
+                    <Form.Item
+                      name={"quantity"}
+                      rules={[
+                        { required: true, message: "Không được để trống!" },
+                      ]}
+                    >
+                      <Input
+                        type="number"
                         placeholder="Vui lòng nhập..."
                       />
                     </Form.Item>
