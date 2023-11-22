@@ -1,8 +1,4 @@
-import {
-  SearchOutlined,
-  UploadOutlined,
-  CarFilled
-} from "@ant-design/icons";
+import { SearchOutlined, UploadOutlined, CarFilled } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import {
@@ -326,6 +322,7 @@ const OrderRentDeliveryTable = () => {
       });
 
       console.log("Create Delivery Success:", responseData);
+
       try {
         const updateResponse = await axios.put(
           `http://fashionrental.online:8080/orderrent?orderRentID=${form.getFieldValue(
@@ -350,6 +347,7 @@ const OrderRentDeliveryTable = () => {
       } catch (error) {
         console.error("Order code update failed!!!", error);
       }
+
     } catch (error) {
       console.error("Create Delivery Failed:", error);
       api["error"]({
@@ -504,7 +502,7 @@ const OrderRentDeliveryTable = () => {
       title: "Mã đơn",
       dataIndex: "orderRentID",
       key: "orderRentID",
-      width: "5%",
+
       ...getColumnSearchProps("orderRentID"),
       render: (number) => (
         <p style={{ textAlign: "center" }}>{Number(number)}</p>
@@ -514,7 +512,7 @@ const OrderRentDeliveryTable = () => {
       title: "Thời gian",
       dataIndex: "dateOrder",
       key: "dateOrder",
-      width: "10%",
+
       ...getColumnSearchProps("dateOrder"),
       render: (text) => <p>{formatDate(text)}</p>,
     },
@@ -522,7 +520,7 @@ const OrderRentDeliveryTable = () => {
       title: "Tổng tiền",
       dataIndex: "total",
       key: "total",
-      width: "15%",
+
       ...getColumnSearchProps("total"),
       render: (text) => (
         <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
@@ -532,7 +530,7 @@ const OrderRentDeliveryTable = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      width: "15%",
+
       render: (status) => (
         <p>
           <RenderTag tagRender={status} />
@@ -543,12 +541,12 @@ const OrderRentDeliveryTable = () => {
       title: <p style={{ textAlign: "center" }}>Hành Động</p>,
       key: "action",
       align: "left",
-      width: "15%",
+
       render: (text, record) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Space size="middle">
             <Button onClick={() => showDrawer(record)}>
-            <CarFilled />
+              <CarFilled />
               Giao hàng
             </Button>
             {/* <Button onClick={() => deliveryOrder(record)}>

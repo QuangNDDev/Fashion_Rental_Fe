@@ -63,6 +63,7 @@ const TablePending = () => {
   useEffect(() => {
     fetchRequests();
   }, []);
+
   const showDrawer = (record) => {
     console.log(record);
     const fetchProductImg = async () => {
@@ -213,6 +214,7 @@ const TablePending = () => {
   const closeDrawer = () => {
     setIsDrawerVisible(false);
   };
+
   //Modal duyet
   const showModalApprove = (record, productID) => {
     setIsModalVisible(true);
@@ -455,6 +457,32 @@ const TablePending = () => {
         text
       ),
   });
+
+  const formatPriceWithVND = (price) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+  };
+
+  const columnsRentPrice = [
+    {
+      title: "Số ngày thuê",
+      dataIndex: "mockDay",
+      key: "mockDay",
+      width: "30%",
+      render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
+    },
+    {
+      title: "Giá thuê",
+      dataIndex: "rentPrice",
+      key: "rentPrice",
+      width: "50%",
+      render: (text) => (
+        <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
+      ),
+    },
+  ];
   const columns = [
     {
       title: "Ngày tạo",
@@ -942,21 +970,7 @@ const TablePending = () => {
             </>
           )}
           {/* ======================================================================== */}
-          <Form.Item
-            name="price"
-            initialValue={selectedProduct && selectedProduct.price}
-          >
-            <div style={{ display: "flex" }}>
-              <strong>Giá sản phẩm:</strong>
-              <p style={{ marginLeft: "10px" }}>
-                {selectedProduct &&
-                  `${selectedProduct.price.toLocaleString("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  })} `}
-              </p>
-            </div>
-          </Form.Item>
+
           {/* <Form.Item
             name="status"
             initialValue={selectedProduct && selectedProduct.status}
@@ -985,12 +999,35 @@ const TablePending = () => {
               </p>
             </div>
           </Form.Item>
+          <Form.Item
+            name="price"
+            initialValue={selectedProduct && selectedProduct.price}
+          >
+            <div style={{ display: "flex" }}>
+              <strong>Giá sản phẩm:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {selectedProduct &&
+                  `${selectedProduct.price.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })} `}
+              </p>
+            </div>
+          </Form.Item>
           {selectedProduct && selectedProduct.checkType === "RENT" && (
-              <>
+            <>
               <strong>Giá thuê:</strong>
-              <Table responsive bordered={true} columns={columns} dataSource={productRentPrice} />
+              <Table
+                responsive
+                bordered={true}
+                columns={columnsRentPrice}
+                dataSource={productRentPrice}
+                pagination={false}
+                style={{ marginBottom: "20px" }}
+              />
             </>
-            )}
+          )}
+
           <Form.Item
             name="productReceiptUrl"
             initialValue={selectedProduct && selectedProduct.productReceiptUrl}

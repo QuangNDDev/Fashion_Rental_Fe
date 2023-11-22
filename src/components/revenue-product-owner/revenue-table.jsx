@@ -145,28 +145,22 @@ const RevenueTable = () => {
           const totalPrice =
             saleDetail.totalPrice + matchingRentDetail.totalPrice;
 
-          
           const combinedDetail = {
             productID: saleDetail.productID,
             productName: saleDetail.productName,
             totalPrice: totalPrice,
           };
 
-          
           combinedProductDetails.push(combinedDetail);
 
-          
           aggregatedProductRentDetails.splice(matchingRentDetailIndex, 1);
         } else {
-          
           combinedProductDetails.push(saleDetail);
         }
       }
 
-      
       combinedProductDetails.push(...aggregatedProductRentDetails);
 
-     
       console.log("Combined Product Details: ", combinedProductDetails);
 
       setRevenueProductData(combinedProductDetails);
@@ -296,14 +290,14 @@ const RevenueTable = () => {
       title: "Mã sản phẩm",
       dataIndex: "productID",
       key: "orderID",
-      width: "2%",
+
       ...getColumnSearchProps("productownerID"),
     },
     {
       title: "Tên sản phẩm",
       dataIndex: "productName",
       key: "productName",
-      width: "10%",
+
       ...getColumnSearchProps("productName"),
     },
     // {
@@ -322,7 +316,7 @@ const RevenueTable = () => {
       title: "Doanh thu sản phẩm",
       dataIndex: "totalPrice",
       key: "totalPrice",
-      width: "10%",
+
       ...getColumnSearchProps("totalPrice"),
       render: (text) => (
         <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>

@@ -36,6 +36,7 @@ const OrderRent = () => {
     try {
       const response = await axios.get(
         "http://fashionrental.online:8080/orderrent/po/pending/" + productownerId
+
       );
       setOrderData(response.data);
     } catch (error) {
@@ -44,7 +45,7 @@ const OrderRent = () => {
   };
 
   useEffect(() => {
-    fetchOrders();
+    fetchOrdersRent();
   }, []);
 
   const showRejectConfirmModal = () => {
@@ -280,18 +281,17 @@ const OrderRent = () => {
     {
       title: "Mã đơn",
       dataIndex: "orderRentID",
-      key: "orderBuyID",
-      width: "5%",
+
+      key: "orderRentID",
+
       ...getColumnSearchProps("orderRentID"),
-      render: (number) => (
-        <p style={{ textAlign: "center" }}>{Number(number)}</p>
-      ),
+      render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
     },
     {
       title: "Thời gian",
       dataIndex: "dateOrder",
       key: "dateOrder",
-      width: "10%",
+
       ...getColumnSearchProps("dateOrder"),
       render: (text) => <p>{formatDate(text)}</p>,
     },
@@ -299,7 +299,7 @@ const OrderRent = () => {
       title: "Tổng tiền",
       dataIndex: "total",
       key: "total",
-      width: "15%",
+
       ...getColumnSearchProps("total"),
       render: (text) => (
         <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
@@ -309,7 +309,7 @@ const OrderRent = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      width: "15%",
+
       render: (status) => (
         <p>
           <RenderTag tagRender={status} />
@@ -320,7 +320,7 @@ const OrderRent = () => {
       title: <p style={{ textAlign: "center" }}>Hành Động</p>,
       key: "action",
       align: "left",
-      width: "15%",
+
       render: (text, record) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Space size="middle">

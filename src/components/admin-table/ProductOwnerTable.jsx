@@ -227,7 +227,7 @@ const ProductOwnerTable = () => {
       title: "ID",
       dataIndex: "productownerID",
       key: "productownerID",
-      width: "1%",
+
       ...getColumnSearchProps("productownerID"),
       render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
     },
@@ -235,7 +235,7 @@ const ProductOwnerTable = () => {
       title: "Họ và tên",
       dataIndex: "fullName",
       key: "fullName",
-      width: "10%",
+
       ...getColumnSearchProps("fullName"),
       render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
     },
@@ -243,7 +243,7 @@ const ProductOwnerTable = () => {
       title: "Vai trò",
       dataIndex: "roleName",
       key: "roleName",
-      width: "10%",
+
       render: (roleName) => (
         <p style={{ textAlign: "left", marginBottom: "20px" }}>
           <RenderTag tagRender={roleName} />
@@ -254,7 +254,7 @@ const ProductOwnerTable = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      width: "10%",
+
       ...getColumnSearchProps("status"),
       render: (status) => (
         <p style={{ textAlign: "left", marginBottom: "20px" }}>
@@ -266,7 +266,7 @@ const ProductOwnerTable = () => {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      width: "10%",
+
       ...getColumnSearchProps("email"),
       render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
     },
@@ -274,7 +274,7 @@ const ProductOwnerTable = () => {
       title: "SĐT",
       dataIndex: "phone",
       key: "phone",
-      width: "10%",
+
       ...getColumnSearchProps("phone"),
       render: (text) => <p style={{ textAlign: "left" }}>{text}</p>,
     },
@@ -282,7 +282,7 @@ const ProductOwnerTable = () => {
       title: "Địa chỉ",
       dataIndex: "address",
       key: "address",
-      width: "15%",
+
       ...getColumnSearchProps("address"),
       sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ["descend", "ascend"],
@@ -292,7 +292,7 @@ const ProductOwnerTable = () => {
       title: "",
       key: "action",
       align: "left",
-      width: "10%",
+
       render: (_, record) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <ConfigProvider

@@ -14,7 +14,6 @@ import {
 import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
 import React, { useState } from "react";
-import moment from "moment";
 
 function VoucherForm() {
   const [form] = Form.useForm();
@@ -57,8 +56,14 @@ function VoucherForm() {
     const spaceDescription = values.description.trim();
     const spaceVoucherCode = values.voucherCode.trim();
     const spaceVoucherName = values.voucherName.trim();
+    const spaceVoucherQuantity = values.quantity.trim();
 
-    if (!spaceDescription || !spaceVoucherCode || !spaceVoucherName) {
+    if (
+      !spaceDescription ||
+      !spaceVoucherCode ||
+      !spaceVoucherName ||
+      !spaceVoucherQuantity
+    ) {
       notification.error({
         message: "Thêm Mã Khuyến Mãi Thất Bại",
         description: "Không được để trống hoặc chỉ chứa khoảng trắng!",
@@ -119,12 +124,23 @@ function VoucherForm() {
       style={{
         backgroundColor: "#e7e9eb",
         height: "800px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
-      <div className="container__voucher">
+      <div
+        className="container__voucher"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <Space direction="vertical" size={16}>
           {contextHolder}
           <Card
+            hoverable
             title={
               <div
                 style={{
@@ -138,13 +154,17 @@ function VoucherForm() {
             style={{
               width: 700,
               height: "max-content",
-              marginTop: "50px",
-              marginLeft: "60%",
+              margin: "50px auto 0",
             }}
           >
             <ConfigProvider
               theme={{
                 token: {
+                  Button: {
+                    colorPrimary: "rgb(32, 30, 42)",
+                    colorPrimaryHover: "orange",
+                    colorPrimaryActive: "orange",
+                  },
                   Input: {
                     activeBorderColor: "rgb(32, 30, 42)",
                     hoverBorderColor: "rgb(32, 30, 42)",
@@ -186,19 +206,32 @@ function VoucherForm() {
                   gutter={24}
                   style={{
                     display: "flex",
-                    flexDirection: "column",
-                    padding: 10,
                   }}
                 >
-                  <span style={{ fontWeight: "bold" }}>Tên mã khuyến mãi:</span>
-                  <Form.Item
-                    name={"voucherName"}
-                    rules={[
-                      { required: true, message: "Không được để trống!" },
-                    ]}
-                  >
-                    <Input placeholder="Nhập tên mã giảm giá..." />
-                  </Form.Item>
+                  <Col span={12}>
+                    <span style={{ fontWeight: "bold" }}>
+                      Tên mã khuyến mãi:
+                    </span>
+                    <Form.Item
+                      name={"voucherName"}
+                      rules={[
+                        { required: true, message: "Không được để trống!" },
+                      ]}
+                    >
+                      <Input placeholder="Nhập tên mã giảm giá..." />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <span style={{ fontWeight: "bold" }}>Số lượng:</span>
+                    <Form.Item
+                      name={"quantity"}
+                      rules={[
+                        { required: true, message: "Không được để trống!" },
+                      ]}
+                    >
+                      <Input placeholder="Nhập số lượng mã giảm giá..." />
+                    </Form.Item>
+                  </Col>
                 </Row>
 
                 <Row
@@ -241,6 +274,7 @@ function VoucherForm() {
                         onChange={handleDateChange}
                         placeholder={["Từ ngày", "Đến ngày"]}
                         disabledDate={disabledDate}
+                        style={{ width: 313 }}
                       />
                     </Form.Item>
                   </Col>
@@ -253,7 +287,7 @@ function VoucherForm() {
                     padding: 10,
                   }}
                 >
-                  <span style={{ fontWeight: "bold" }}>Tên mã khuyến mãi:</span>
+                  <span style={{ fontWeight: "bold" }}>Mô tả:</span>
                   <Form.Item
                     name={"description"}
                     rules={[
@@ -334,7 +368,7 @@ function VoucherForm() {
                   <Button
                     type="primary"
                     htmlType="submit"
-                    style={{ marginLeft: "20px", backgroundColor: "green" }}
+                    style={{ marginLeft: "20px" }}
                   >
                     Thêm
                   </Button>
