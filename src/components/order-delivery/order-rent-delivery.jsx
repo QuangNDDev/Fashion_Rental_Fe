@@ -278,17 +278,17 @@ const OrderRentDeliveryTable = () => {
       items: selectedProduct,
     };
     console.log("Data GHN:", data);
-    const imgUrls = urlImages.map(item => item.imgUrl);
+    const imgUrls = urlImages.map((item) => item.imgUrl);
     const imgData = {
       accountID: localStorage.getItem("accountId"),
       img: imgUrls,
-      orderRentID:selectedOrderID,
+      orderRentID: selectedOrderID,
     };
-    console.log("img data:",imgData);
+    console.log("img data:", imgData);
     try {
       const imgDataResponse = await axios.post(
-        "http://fashionrental.online:8080/pic",imgData
-        
+        "http://fashionrental.online:8080/pic",
+        imgData
       );
       console.log("Img data success!!!", imgDataResponse.data);
     } catch (error) {
@@ -336,10 +336,10 @@ const OrderRentDeliveryTable = () => {
       }
       try {
         const orderCodeUpdateResponse = await axios.put(
-          `http://fashionrental.online:8080/orderrent/updateorderrentcode?orderCode=${responseData.data.order_code}&orderRentID=${form.getFieldValue(
-            "orderRentID"
-          )}`
-         );
+          `http://fashionrental.online:8080/orderrent/updateorderrentcode?orderCode=${
+            responseData.data.order_code
+          }&orderRentID=${form.getFieldValue("orderRentID")}`
+        );
         console.log(
           "Order code update success!!!",
           orderCodeUpdateResponse.data
@@ -347,7 +347,21 @@ const OrderRentDeliveryTable = () => {
       } catch (error) {
         console.error("Order code update failed!!!", error);
       }
-
+      setTimeout(async () => {
+        try {
+          const updateComfirmingResponse = await axios.put(
+            `http://fashionrental.online:8080/orderrent?orderRentID=${form.getFieldValue(
+            "orderRentID"
+          )}&status=CONFIRMING`
+          );
+          console.log(
+            "Update confirming Success:",
+            updateComfirmingResponse.data
+          );
+        } catch (error) {
+          console.error("Update confirming API Failed!!!", error);
+        }
+      },  60 * 1000);
     } catch (error) {
       console.error("Create Delivery Failed:", error);
       api["error"]({
@@ -357,6 +371,7 @@ const OrderRentDeliveryTable = () => {
       });
     }
   };
+  
 
   // =============================================================
   const [form] = Form.useForm();
