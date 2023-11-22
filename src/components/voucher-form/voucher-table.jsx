@@ -409,6 +409,17 @@ const VoucherTable = () => {
             </div>
           </Form.Item>
           <Form.Item
+            name="quantity"
+            initialValue={selectedRecord && selectedRecord.quantity}
+          >
+            <div style={{ display: "flex" }}>
+              <strong>Số lượng còn lại:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {selectedRecord && selectedRecord.quantity}
+              </p>
+            </div>
+          </Form.Item>
+          <Form.Item
             name="voucherTypeID"
             initialValue={selectedRecord && selectedRecord.voucherTypeID}
           >

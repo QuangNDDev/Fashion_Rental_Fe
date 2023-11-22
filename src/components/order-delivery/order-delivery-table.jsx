@@ -241,30 +241,30 @@ const OrderDeliveryTable = () => {
       });
 
       console.log("Create Delivery Success:", responseData);
-      // try {
-      //   const updateResponse = await axios.put(
-      //     `http://fashionrental.online:8080/orderbuy?orderBuyID=${form.getFieldValue(
-      //       "orderBuyID"
-      //     )}&status=READY_PICKUP`
-      //   );
-      //   console.log("Ready pickup order success!!!", updateResponse.data);
-      //   fetchOrders();
-      // } catch (error) {
-      //   console.error("Ready pickup order failed!!!", error);
-      // }
-      // try {
-      //   const orderCodeUpdateResponse = await axios.put(
-      //     `http://fashionrental.online:8080/orderbuy/updateorderbuycode?orderBuyID=${form.getFieldValue(
-      //       "orderBuyID"
-      //     )}&orderCode=${responseData.data.order_code}`
-      //   );
-      //   console.log(
-      //     "Order code update success!!!",
-      //     orderCodeUpdateResponse.data
-      //   );
-      // } catch (error) {
-      //   console.error("Order code update failed!!!", error);
-      // }
+      try {
+        const updateResponse = await axios.put(
+          `http://fashionrental.online:8080/orderbuy?orderBuyID=${form.getFieldValue(
+            "orderBuyID"
+          )}&status=DELIVERY`
+        );
+        console.log("Delivery order success!!!", updateResponse.data);
+        fetchOrders();
+      } catch (error) {
+        console.error("Delivery order failed!!!", error);
+      }
+      try {
+        const orderCodeUpdateResponse = await axios.put(
+          `http://fashionrental.online:8080/orderbuy/updateorderbuycode?orderBuyID=${form.getFieldValue(
+            "orderBuyID"
+          )}&orderCode=${responseData.data.order_code}`
+        );
+        console.log(
+          "Order code update success!!!",
+          orderCodeUpdateResponse.data
+        );
+      } catch (error) {
+        console.error("Order code update failed!!!", error);
+      }
     } catch (error) {
       console.error("Create Delivery Failed:", error);
       api["error"]({

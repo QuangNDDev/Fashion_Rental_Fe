@@ -81,7 +81,7 @@ const OrderRentDeliveryTable = () => {
   const fetchOrderDetails = async (orderRentId) => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/orderrent/po/prepare/" + orderRentId
+        "http://fashionrental.online:8080/orderrentdetail/" + orderRentId
       );
       const orderRentDetailIDs = response.data.map(
         (item) => item.orderRentDetailID
@@ -277,12 +277,23 @@ const OrderRentDeliveryTable = () => {
       service_type_id: 2,
       items: selectedProduct,
     };
-    // const imgData = {
-    //   accountID: localStorage.getItem("accountId"),
-    //   img: urlImages,
-    //   orderRentDetailID: 0,
-    // };
-    console.log(data);
+    console.log("Data GHN:", data);
+    const imgUrls = urlImages.map(item => item.imgUrl);
+    const imgData = {
+      accountID: localStorage.getItem("accountId"),
+      img: imgUrls,
+      orderRentID:selectedOrderID,
+    };
+    console.log("img data:",imgData);
+    try {
+      const imgDataResponse = await axios.post(
+        "http://fashionrental.online:8080/pic",imgData
+        
+      );
+      console.log("Img data success!!!", imgDataResponse.data);
+    } catch (error) {
+      console.error("Img data failed!!!", error);
+    }
     try {
       const response = await fetch(
         "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create",
@@ -311,30 +322,32 @@ const OrderRentDeliveryTable = () => {
       });
 
       console.log("Create Delivery Success:", responseData);
-      // try {
-      //   const updateResponse = await axios.put(
-      //     `http://fashionrental.online:8080/orderbuy?orderBuyID=${form.getFieldValue(
-      //       "orderBuyID"
-      //     )}&status=DELIVERY`
-      //   );
-      //   console.log("Delivery order success!!!", updateResponse.data);
-      //   fetchOrders();
-      // } catch (error) {
-      //   console.error("Delivery order failed!!!", error);
-      // }
-      // try {
-      // const orderCodeUpdateResponse = await axios.put(
-      //   `http://fashionrental.online:8080/orderrent/updateorderrentcode?orderCode=${form.getFieldValue(
-      //     "orderRentBuyID"
-      //   )}&orderRentID=${responseData.data.order_code}`
-      //  );
-      //   console.log(
-      //     "Order code update success!!!",
-      //     orderCodeUpdateResponse.data
-      //   );
-      // } catch (error) {
-      //   console.error("Order code update failed!!!", error);
-      // }
+
+      try {
+        const updateResponse = await axios.put(
+          `http://fashionrental.online:8080/orderrent?orderRentID=${form.getFieldValue(
+            "orderRentID"
+          )}&status=DELIVERY`
+        );
+        console.log("Delivery order success!!!", updateResponse.data);
+        fetchOrders();
+      } catch (error) {
+        console.error("Delivery order failed!!!", error);
+      }
+      try {
+        const orderCodeUpdateResponse = await axios.put(
+          `http://fashionrental.online:8080/orderrent/updateorderrentcode?orderCode=${responseData.data.order_code}&orderRentID=${form.getFieldValue(
+            "orderRentID"
+          )}`
+         );
+        console.log(
+          "Order code update success!!!",
+          orderCodeUpdateResponse.data
+        );
+      } catch (error) {
+        console.error("Order code update failed!!!", error);
+      }
+
     } catch (error) {
       console.error("Create Delivery Failed:", error);
       api["error"]({
@@ -350,7 +363,7 @@ const OrderRentDeliveryTable = () => {
   const showDrawer = async (record) => {
     fetchProducts(record.orderRentID);
     fetchOrderDetails(record.orderRentID);
-    form.setFieldValue(record);
+    form.setFieldsValue(record);
     form.setFieldsValue({ dateOrder: record.dateOrder });
     form.setFieldsValue({ customerAddress: record.customerAddress });
     form.setFieldsValue({ orderRentID: record.orderRentID });
