@@ -45,7 +45,7 @@ const OrderRent = () => {
   };
 
   useEffect(() => {
-    fetchOrdersRent();
+    fetchOrders();
   }, []);
 
   const showRejectConfirmModal = () => {
