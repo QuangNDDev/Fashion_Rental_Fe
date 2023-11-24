@@ -1,7 +1,4 @@
-import {
-  SearchOutlined,
-  CarFilled
-} from "@ant-design/icons";
+import { SearchOutlined, CarFilled } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import {
@@ -33,7 +30,7 @@ const OrderDeliveryTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState([]);
   const isGHNVisible = poshopId && potoken;
- 
+
   const [api, contextHolder] = notification.useNotification();
 
   const fetchProducts = async (orderID) => {
@@ -44,17 +41,17 @@ const OrderDeliveryTable = () => {
 
       const productDTO = response.data.map((item) => item.productDTO);
       // try {
-        const products = [];
-         for (const product of productDTO) {
-          const productData = {
-            name:product.productName,
-            quantity: 1,
-          };
+      const products = [];
+      for (const product of productDTO) {
+        const productData = {
+          name: product.productName,
+          quantity: 1,
+        };
 
-          products.push(productData);
-         }
-        setSelectedProduct(products);
-        console.log(products);
+        products.push(productData);
+      }
+      setSelectedProduct(products);
+      console.log(products);
       // } catch (error) {
       //   console.error(error);
       // }
@@ -193,7 +190,6 @@ const OrderDeliveryTable = () => {
     { name: "Không cho xem hàng", value: "KHONGCHOXEMHANG" },
   ]);
   const createDelivery = async () => {
-
     setIsDrawerVisible(false);
     const formValues = await form.validateFields();
     const data = {
@@ -241,30 +237,30 @@ const OrderDeliveryTable = () => {
       });
 
       console.log("Create Delivery Success:", responseData);
-      // try {
-      //   const updateResponse = await axios.put(
-      //     `http://fashionrental.online:8080/orderbuy?orderBuyID=${form.getFieldValue(
-      //       "orderBuyID"
-      //     )}&status=READY_PICKUP`
-      //   );
-      //   console.log("Ready pickup order success!!!", updateResponse.data);
-      //   fetchOrders();
-      // } catch (error) {
-      //   console.error("Ready pickup order failed!!!", error);
-      // }
-      // try {
-      //   const orderCodeUpdateResponse = await axios.put(
-      //     `http://fashionrental.online:8080/orderbuy/updateorderbuycode?orderBuyID=${form.getFieldValue(
-      //       "orderBuyID"
-      //     )}&orderCode=${responseData.data.order_code}`
-      //   );
-      //   console.log(
-      //     "Order code update success!!!",
-      //     orderCodeUpdateResponse.data
-      //   );
-      // } catch (error) {
-      //   console.error("Order code update failed!!!", error);
-      // }
+      try {
+        const updateResponse = await axios.put(
+          `http://fashionrental.online:8080/orderbuy?orderBuyID=${form.getFieldValue(
+            "orderBuyID"
+          )}&status=READY_PICKUP`
+        );
+        console.log("Ready pickup order success!!!", updateResponse.data);
+        fetchOrders();
+      } catch (error) {
+        console.error("Ready pickup order failed!!!", error);
+      }
+      try {
+        const orderCodeUpdateResponse = await axios.put(
+          `http://fashionrental.online:8080/orderbuy/updateorderbuycode?orderBuyID=${form.getFieldValue(
+            "orderBuyID"
+          )}&orderCode=${responseData.data.order_code}`
+        );
+        console.log(
+          "Order code update success!!!",
+          orderCodeUpdateResponse.data
+        );
+      } catch (error) {
+        console.error("Order code update failed!!!", error);
+      }
     } catch (error) {
       console.error("Create Delivery Failed:", error);
       api["error"]({
@@ -462,7 +458,7 @@ const OrderDeliveryTable = () => {
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Space size="middle">
             <Button onClick={() => showDrawer(record)}>
-            <CarFilled />
+              <CarFilled />
               Giao hàng
             </Button>
             {/* <Button onClick={() => deliveryOrder(record)}>
@@ -479,332 +475,336 @@ const OrderDeliveryTable = () => {
       <Table bordered={true} columns={columns} dataSource={orderData} />
       {contextHolder}
       {isGHNVisible ? (
-      <Drawer
-        title={"Đơn hàng"}
-        open={isDrawerVisible}
-        onClose={onCloseDrawer}
-        width={1000}
-        extra={
-          <Space>
-            <Button
-              style={{ backgroundColor: "#008000", color: "#fff" }}
-              onClick={() => createDelivery()}
-            >
-              Tạo đơn hàng
-            </Button>
-          </Space>
-        }
-      >
-        
-        <Form form={form}>
-          <div style={{ display: "flex" }}>
-            <div>
-              <h3>Thông tin khách hàng:</h3>
-              <Form.Item
-                name="fullName"
-                initialValue={selectedCustomer && selectedCustomer.fullName}
+        <Drawer
+          title={"Đơn hàng"}
+          open={isDrawerVisible}
+          onClose={onCloseDrawer}
+          width={1000}
+          extra={
+            <Space>
+              <Button
+                style={{ backgroundColor: "#008000", color: "#fff" }}
+                onClick={() => createDelivery()}
               >
-                <div style={{ display: "flex" }}>
-                  <strong>Tên người mua:</strong>
-                  <p style={{ marginLeft: "10px" }}>
-                    {selectedCustomer && selectedCustomer.fullName}
-                  </p>
-                </div>
-              </Form.Item>
-              <Form.Item
-                name="phone"
-                initialValue={selectedCustomer && selectedCustomer.phone}
-              >
-                <div style={{ display: "flex" }}>
-                  <strong>SĐT người mua:</strong>
-                  <p style={{ marginLeft: "10px" }}>
-                    {selectedCustomer && selectedCustomer.phone}
-                  </p>
-                </div>
-              </Form.Item>
-              <Form.Item name="dateOrder">
-                <div style={{ display: "flex" }}>
-                  <strong>Ngày đặt hàng:</strong>
-                  <p style={{ marginLeft: "10px" }}>
-                    <p>{formatDate(form.getFieldValue("dateOrder"))}</p>
-                  </p>
-                </div>
-              </Form.Item>
-              <Form.Item name="customerAddress">
-                <div style={{ display: "flex" }}>
-                  <strong>Địa chỉ:</strong>
-                  <p style={{ marginLeft: "10px" }}>
-                    {form.getFieldValue("customerAddress")}
-                  </p>
-                </div>
-              </Form.Item>
-              <h3>Danh sách sản phẩm:</h3>
-              <ProductOrder key={selectedOrderID} orderID={selectedOrderID} />
+                Tạo đơn hàng
+              </Button>
+            </Space>
+          }
+        >
+          <Form form={form}>
+            <div style={{ display: "flex" }}>
+              <div>
+                <h3>Thông tin khách hàng:</h3>
+                <Form.Item
+                  name="fullName"
+                  initialValue={selectedCustomer && selectedCustomer.fullName}
+                >
+                  <div style={{ display: "flex" }}>
+                    <strong>Tên người mua:</strong>
+                    <p style={{ marginLeft: "10px" }}>
+                      {selectedCustomer && selectedCustomer.fullName}
+                    </p>
+                  </div>
+                </Form.Item>
+                <Form.Item
+                  name="phone"
+                  initialValue={selectedCustomer && selectedCustomer.phone}
+                >
+                  <div style={{ display: "flex" }}>
+                    <strong>SĐT người mua:</strong>
+                    <p style={{ marginLeft: "10px" }}>
+                      {selectedCustomer && selectedCustomer.phone}
+                    </p>
+                  </div>
+                </Form.Item>
+                <Form.Item name="dateOrder">
+                  <div style={{ display: "flex" }}>
+                    <strong>Ngày đặt hàng:</strong>
+                    <p style={{ marginLeft: "10px" }}>
+                      <p>{formatDate(form.getFieldValue("dateOrder"))}</p>
+                    </p>
+                  </div>
+                </Form.Item>
+                <Form.Item name="customerAddress">
+                  <div style={{ display: "flex" }}>
+                    <strong>Địa chỉ:</strong>
+                    <p style={{ marginLeft: "10px" }}>
+                      {form.getFieldValue("customerAddress")}
+                    </p>
+                  </div>
+                </Form.Item>
+                <h3>Danh sách sản phẩm:</h3>
+                <ProductOrder key={selectedOrderID} orderID={selectedOrderID} />
+              </div>
+              <hr></hr>
+
+              <div name="GHN" style={{ marginLeft: "20px" }}>
+                {" "}
+                <h3>Chọn địa chỉ giao hàng:</h3>
+                <Form.Item>
+                  <span style={{ marginRight: "10px" }}>
+                    Chọn tỉnh/thành phố:
+                  </span>
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
+                          style={{
+                            margin: "8px 0",
+                          }}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
+                        ></Space>
+                      </>
+                    )}
+                    options={provinceData.map((item) => ({
+                      label: item.ProvinceName,
+                      value: item.ProvinceID,
+                    }))}
+                    onChange={handleProvinceChange}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <span style={{ marginRight: "10px" }}>Chọn quận/huyện:</span>
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
+                          style={{
+                            margin: "8px 0",
+                          }}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
+                        ></Space>
+                      </>
+                    )}
+                    options={districtData.map((item) => ({
+                      label: item.DistrictName,
+                      value: item.DistrictID,
+                    }))}
+                    onChange={handleDistrictChange}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <span style={{ marginRight: "10px" }}>Chọn phường/xã:</span>
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
+                          style={{
+                            margin: "8px 0",
+                          }}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
+                        ></Space>
+                      </>
+                    )}
+                    options={wardData.map((item) => ({
+                      label: item.WardName,
+                      value: item.WardCode,
+                    }))}
+                    onChange={handleWardChange}
+                  />
+                </Form.Item>
+                <h3>Thông tin đơn hàng:</h3>
+                <span>Nhập cân nặng đơn hàng:</span>
+                <Form.Item
+                  name={"weight"}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng nhập cân nặng đơn hàng!",
+                    },
+                    {
+                      pattern: /^(0|[1-9][0-9]*)$/,
+                      message: "Vui lòng chỉ nhập số nguyên dương!",
+                    },
+                    {
+                      validator: (_, value) => {
+                        if (value <= 30000) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(
+                          "Cân nặng không được vượt quá 30000 gram!"
+                        );
+                      },
+                    },
+                  ]}
+                >
+                  <Input
+                    type="number"
+                    placeholder="Cân nặng đơn hàng"
+                    suffix="gram"
+                  />
+                </Form.Item>
+                <span>Nhập chiều dài đơn hàng:</span>
+                <Form.Item
+                  name={"length"}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng nhập chiều dài đơn hàng!",
+                    },
+                    {
+                      pattern: /^(0|[1-9][0-9]*)$/,
+                      message: "Vui lòng chỉ nhập số nguyên dương!",
+                    },
+                    {
+                      validator: (_, value) => {
+                        if (value <= 150) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(
+                          "Chiều dài không được vượt quá 150 cm!"
+                        );
+                      },
+                    },
+                  ]}
+                >
+                  <Input
+                    type="number"
+                    placeholder="Chiều dài đơn hàng"
+                    suffix="cm"
+                  />
+                </Form.Item>
+                <span>Nhập chiều rộng đơn hàng:</span>
+                <Form.Item
+                  name={"width"}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng nhập chiều rộng đơn hàng!",
+                    },
+                    {
+                      pattern: /^(0|[1-9][0-9]*)$/,
+                      message: "Vui lòng chỉ nhập số nguyên dương!",
+                    },
+                    {
+                      validator: (_, value) => {
+                        if (value <= 150) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(
+                          "Chiều rộng không được vượt quá 150 cm!"
+                        );
+                      },
+                    },
+                  ]}
+                >
+                  <Input
+                    type="number"
+                    placeholder="Chiều rộng đơn hàng"
+                    suffix="cm"
+                  />
+                </Form.Item>
+                <span>Nhập chiều cao đơn hàng:</span>
+                <Form.Item
+                  name={"height"}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng nhập chiều rộng đơn hàng!",
+                    },
+                    {
+                      pattern: /^(0|[1-9][0-9]*)$/,
+                      message: "Vui lòng chỉ nhập số nguyên dương!",
+                    },
+                    {
+                      validator: (_, value) => {
+                        if (value <= 150) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(
+                          "Chiều cao không được vượt quá 150 cm!"
+                        );
+                      },
+                    },
+                  ]}
+                >
+                  <Input
+                    type="number"
+                    placeholder="Chiều cao đơn hàng"
+                    suffix="cm"
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <span style={{ marginRight: "10px" }}>
+                    Ghi chú đơn hàng:{" "}
+                  </span>
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
+                          style={{
+                            margin: "8px 0",
+                          }}
+                        />
+                      </>
+                    )}
+                    options={requiredNote.map((item) => ({
+                      label: item.name,
+                      value: item.value,
+                    }))}
+                    onChange={handleRequiredNoteChange}
+                  />
+                </Form.Item>
+              </div>
             </div>
-            <hr></hr>
-            
-            <div name="GHN" style={{ marginLeft: "20px" }}>
-              {" "}
-              <h3>Chọn địa chỉ giao hàng:</h3>
-              <Form.Item>
-                <span style={{ marginRight: "10px" }}>
-                  Chọn tỉnh/thành phố:
-                </span>
-                <Select
-                  style={{
-                    width: 300,
-                  }}
-                  placeholder="Vui lòng chọn"
-                  showSearch // Bật tính năng tìm kiếm
-                  filterOption={(input, option) =>
-                    option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                  dropdownRender={(menu) => (
-                    <>
-                      {menu}
-                      <Divider
-                        style={{
-                          margin: "8px 0",
-                        }}
-                      />
-                      <Space
-                        style={{
-                          padding: "0 8px 4px",
-                        }}
-                      ></Space>
-                    </>
-                  )}
-                  options={provinceData.map((item) => ({
-                    label: item.ProvinceName,
-                    value: item.ProvinceID,
-                  }))}
-                  onChange={handleProvinceChange}
-                />
-              </Form.Item>
-              <Form.Item>
-                <span style={{ marginRight: "10px" }}>Chọn quận/huyện:</span>
-                <Select
-                  style={{
-                    width: 300,
-                  }}
-                  placeholder="Vui lòng chọn"
-                  showSearch // Bật tính năng tìm kiếm
-                  filterOption={(input, option) =>
-                    option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                  dropdownRender={(menu) => (
-                    <>
-                      {menu}
-                      <Divider
-                        style={{
-                          margin: "8px 0",
-                        }}
-                      />
-                      <Space
-                        style={{
-                          padding: "0 8px 4px",
-                        }}
-                      ></Space>
-                    </>
-                  )}
-                  options={districtData.map((item) => ({
-                    label: item.DistrictName,
-                    value: item.DistrictID,
-                  }))}
-                  onChange={handleDistrictChange}
-                />
-              </Form.Item>
-              <Form.Item>
-                <span style={{ marginRight: "10px" }}>Chọn phường/xã:</span>
-                <Select
-                  style={{
-                    width: 300,
-                  }}
-                  placeholder="Vui lòng chọn"
-                  showSearch // Bật tính năng tìm kiếm
-                  filterOption={(input, option) =>
-                    option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                  dropdownRender={(menu) => (
-                    <>
-                      {menu}
-                      <Divider
-                        style={{
-                          margin: "8px 0",
-                        }}
-                      />
-                      <Space
-                        style={{
-                          padding: "0 8px 4px",
-                        }}
-                      ></Space>
-                    </>
-                  )}
-                  options={wardData.map((item) => ({
-                    label: item.WardName,
-                    value: item.WardCode,
-                  }))}
-                  onChange={handleWardChange}
-                />
-              </Form.Item>
-              <h3>Thông tin đơn hàng:</h3>
-              <span>Nhập cân nặng đơn hàng:</span>
-              <Form.Item
-                name={"weight"}
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng nhập cân nặng đơn hàng!",
-                  },
-                  {
-                    pattern: /^(0|[1-9][0-9]*)$/,
-                    message: "Vui lòng chỉ nhập số nguyên dương!",
-                  },
-                  {
-                    validator: (_, value) => {
-                      if (value <= 30000) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        "Cân nặng không được vượt quá 30000 gram!"
-                      );
-                    },
-                  },
-                ]}
-              >
-                <Input
-                  type="number"
-                  placeholder="Cân nặng đơn hàng"
-                  suffix="gram"
-                />
-              </Form.Item>
-              <span>Nhập chiều dài đơn hàng:</span>
-              <Form.Item
-                name={"length"}
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng nhập chiều dài đơn hàng!",
-                  },
-                  {
-                    pattern: /^(0|[1-9][0-9]*)$/,
-                    message: "Vui lòng chỉ nhập số nguyên dương!",
-                  },
-                  {
-                    validator: (_, value) => {
-                      if (value <= 150) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        "Chiều dài không được vượt quá 150 cm!"
-                      );
-                    },
-                  },
-                ]}
-              >
-                <Input
-                  type="number"
-                  placeholder="Chiều dài đơn hàng"
-                  suffix="cm"
-                />
-              </Form.Item>
-              <span>Nhập chiều rộng đơn hàng:</span>
-              <Form.Item
-                name={"width"}
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng nhập chiều rộng đơn hàng!",
-                  },
-                  {
-                    pattern: /^(0|[1-9][0-9]*)$/,
-                    message: "Vui lòng chỉ nhập số nguyên dương!",
-                  },
-                  {
-                    validator: (_, value) => {
-                      if (value <= 150) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        "Chiều rộng không được vượt quá 150 cm!"
-                      );
-                    },
-                  },
-                ]}
-              >
-                <Input
-                  type="number"
-                  placeholder="Chiều rộng đơn hàng"
-                  suffix="cm"
-                />
-              </Form.Item>
-              <span>Nhập chiều cao đơn hàng:</span>
-              <Form.Item
-                name={"height"}
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng nhập chiều rộng đơn hàng!",
-                  },
-                  {
-                    pattern: /^(0|[1-9][0-9]*)$/,
-                    message: "Vui lòng chỉ nhập số nguyên dương!",
-                  },
-                  {
-                    validator: (_, value) => {
-                      if (value <= 150) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        "Chiều cao không được vượt quá 150 cm!"
-                      );
-                    },
-                  },
-                ]}
-              >
-                <Input
-                  type="number"
-                  placeholder="Chiều cao đơn hàng"
-                  suffix="cm"
-                />
-              </Form.Item>
-              <Form.Item>
-                <span style={{ marginRight: "10px" }}>Ghi chú đơn hàng: </span>
-                <Select
-                  style={{
-                    width: 300,
-                  }}
-                  placeholder="Vui lòng chọn"
-                  showSearch // Bật tính năng tìm kiếm
-                  filterOption={(input, option) =>
-                    option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                  dropdownRender={(menu) => (
-                    <>
-                      {menu}
-                      <Divider
-                        style={{
-                          margin: "8px 0",
-                        }}
-                      />
-                    </>
-                  )}
-                  options={requiredNote.map((item) => ({
-                    label: item.name,
-                    value: item.value,
-                  }))}
-                  onChange={handleRequiredNoteChange}
-                />
-              </Form.Item>
-            </div>
-          </div>
-        </Form>
-      </Drawer>
-    
-    ): (
-     <NotRegisterGHN/>
-    )}
-  </div>
+          </Form>
+        </Drawer>
+      ) : (
+        <NotRegisterGHN />
+      )}
+    </div>
   );
 };
 export default OrderDeliveryTable;

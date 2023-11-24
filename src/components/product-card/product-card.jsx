@@ -293,6 +293,19 @@ const ProductCard = () => {
       ),
     },
   ];
+  const translateCategoryName = (categoryName) => {
+    // Thực hiện ánh xạ giữa giá trị hiện tại và giá trị tiếng Việt
+    const categoryMappings = {
+      Watch: "Đồng hồ",
+      Bag: "Túi",
+      Hat: "Nón",
+      Jewelry: "Trang Sức",
+      Shoe: "Giày",
+      Sunglasses: "Mắt kính",
+    };
+
+    return categoryMappings[categoryName] || categoryName;
+  };
 
   return (
     <>
@@ -431,7 +444,9 @@ const ProductCard = () => {
               <div style={{ display: "flex" }}>
                 <strong>Nghành Hàng:</strong>
                 <p style={{ marginLeft: "10px" }}>
-                  {selectedProduct && selectedProduct.categoryName}
+                  {translateCategoryName(
+                    selectedProduct && selectedProduct.categoryName
+                  )}
                 </p>
               </div>
             </Form.Item>

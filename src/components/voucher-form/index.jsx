@@ -90,6 +90,7 @@ function VoucherForm() {
         "http://fashionrental.online:8080/voucher",
         voucherData
       );
+
       const voucherName = values.voucherName;
       api["success"]({
         message: "Thêm Mã Khuyến Mãi Thành Công",
@@ -99,11 +100,21 @@ function VoucherForm() {
       console.log("Voucher successful", response.data);
     } catch (error) {
       console.error("Add new voucher failed", error);
-      api["error"]({
-        message: "Thêm Mã Khuyến Mãi Thất Bại",
-        description: `Bạn đã thêm ${values.voucherName}vo thất bại`,
-        duration: 1000,
-      });
+
+      if (
+        error.response &&
+        error.response.data.message === "This code already existed"
+      ) {
+        api["error"]({
+          message: "Thêm Mã Khuyến Mãi Thất Bại",
+          description: "Mã khuyến mãi đã tồn tại",
+        });
+      } else {
+        api["error"]({
+          message: "Thêm Mã Khuyến Mãi Thất Bại",
+          description: `Bạn đã thêm ${values.voucherName} thất bại`,
+        });
+      }
     }
   };
 
@@ -344,7 +355,7 @@ function VoucherForm() {
                   <Button
                     type="primary"
                     htmlType="submit"
-                    style={{ backgroundColor: "red" }}
+                    style={{ backgroundColor: "red", fontWeight: "bold" }}
                     onClick={handleCancel}
                   >
                     Hủy
@@ -352,7 +363,7 @@ function VoucherForm() {
                   <Button
                     type="primary"
                     htmlType="submit"
-                    style={{ marginLeft: "20px" }}
+                    style={{ marginLeft: "20px", fontWeight: "bold" }}
                   >
                     Thêm
                   </Button>

@@ -96,15 +96,39 @@ const RegisterForm = () => {
             style={{
               width: "70%",
               marginLeft: "auto",
-              marginTop: "20%",
+              marginTop: "13%",
             }}
           >
             {contextHolder}
             <div
+              style={{
+                marginBottom: "20px",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <a href="">
+                <img
+                  src="/brand_logo-black.png"
+                  alt="Logo"
+                  style={{ width: 130, height: 130 }}
+                />
+              </a>
+            </div>
+            {/* <p
+              style={{
+                textAlign: "center",
+                fontWeight: "bold",
+                fontSize: "20px",
+              }}
+            >
+              Chào mừng đến với RENTALFASHION
+            </p> */}
+            <div
               style={{ marginBottom: "30px", marginTop: "30px" }}
               className="d-flex mb-4"
             >
-              <h1>Đăng Ký</h1>
+              <h1 style={{ textAlign: "center" }}>Đăng Ký</h1>
             </div>
             <ConfigProvider
               theme={{
@@ -121,6 +145,11 @@ const RegisterForm = () => {
                     itemSelectedBg: "rgb(32, 30, 42)",
                     itemSelectedColor: "#ffffff",
                   },
+                  Button: {
+                    colorPrimary: "rgb(32, 30, 42)",
+                    colorPrimaryHover: "orange",
+                    colorPrimaryActive: "orange",
+                  },
                 },
               }}
             >
@@ -131,7 +160,10 @@ const RegisterForm = () => {
               >
                 <Segmented
                   className="choose"
-                  style={{ marginBottom: 30, fontWeight: "bold" }}
+                  style={{
+                    marginBottom: 30,
+                    fontWeight: "bold",
+                  }}
                   options={["Khách Hàng", "Chủ Sản Phẩm"]}
                   onChange={(e) => {
                     if (e === "Khách Hàng") {
@@ -146,7 +178,7 @@ const RegisterForm = () => {
                   <Col xs={24} sm={24} md={12} lg={12}>
                     <Form.Item
                       name="email"
-                      label="Email"
+                      label={<p style={{ fontWeight: "bold" }}>Email</p>}
                       rules={[
                         {
                           required: true,
@@ -162,7 +194,7 @@ const RegisterForm = () => {
                   <Col xs={24} sm={24} md={12} lg={12}>
                     <Form.Item
                       name="password"
-                      label="Mật Khẩu"
+                      label={<p style={{ fontWeight: "bold" }}>Mật khẩu</p>}
                       rules={[
                         {
                           required: true,
@@ -176,7 +208,9 @@ const RegisterForm = () => {
                   <Col xs={24} sm={24} md={12} lg={12}>
                     <Form.Item
                       name="confirmPassword"
-                      label="Nhâp lại mật khẩu"
+                      label={
+                        <p style={{ fontWeight: "bold" }}>Nhập lại mật khẩu</p>
+                      }
                       dependencies={["password"]}
                       rules={[
                         {
@@ -219,12 +253,12 @@ const RegisterForm = () => {
                     Vui lòng đồng ý với các điều khoản và điều kiện
                   </Checkbox>
                 </Form.Item>
-                <Form.Item>
+                <Form.Item style={{ textAlign: "center" }}>
                   <Button
                     className="registerForm__button"
                     type="primary"
                     htmlType="submit"
-                    style={{ backgroundColor: "rgb(32, 30, 42)" }}
+                    style={{ fontWeight: "bold" }}
                   >
                     Đăng Ký
                   </Button>
