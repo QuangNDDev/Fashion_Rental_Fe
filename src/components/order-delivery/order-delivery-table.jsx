@@ -241,12 +241,14 @@ const OrderDeliveryTable = () => {
         const updateResponse = await axios.put(
           `http://fashionrental.online:8080/orderbuy?orderBuyID=${form.getFieldValue(
             "orderBuyID"
+
           )}&status=DELIVERY`
         );
         console.log("Delivery order success!!!", updateResponse.data);
         fetchOrders();
       } catch (error) {
         console.error("Delivery order failed!!!", error);
+
       }
       try {
         const orderCodeUpdateResponse = await axios.put(
@@ -261,6 +263,8 @@ const OrderDeliveryTable = () => {
       } catch (error) {
         console.error("Order code update failed!!!", error);
       }
+
+
       setTimeout(async () => {
         try {
           const updateConfirmingResponse = await axios.put(
@@ -274,6 +278,7 @@ const OrderDeliveryTable = () => {
           console.error("Another API Failed!!!", error);
         }
       }, 60 * 1000);
+
     } catch (error) {
       console.error("Create Delivery Failed:", error);
       api["error"]({

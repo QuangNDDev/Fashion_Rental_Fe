@@ -3533,13 +3533,14 @@ const CreateProduct = () => {
               position: "fixed",
               bottom: 0, // Đặt thẻ div ở dưới cùng của trang
               left: "50%",
-              width: "84%", // Đặt chiều rộng 100% để nó kéo dài từ cạnh trái đến cạnh phải
+              width: "83.8%", // Đặt chiều rộng 100% để nó kéo dài từ cạnh trái đến cạnh phải
               backgroundColor: "white",
               height: "50px",
               zIndex: 999,
-              borderTop: "1px solid #f0f0f0", // Thêm đường viền mỏng màu xanh lá
+              boxShadow:
+                " rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px",
               transform: "translateX(-50%)",
-              marginLeft: "105px",
+              marginLeft: "107px",
             }}
           >
             <Form.Item>
@@ -3549,7 +3550,7 @@ const CreateProduct = () => {
                 htmlType="submit"
                 style={{
                   width: "15%",
-
+                  fontWeight: "bold",
                   position: "fixed",
                   bottom: "45%", // Đặt nút ở dưới cùng của thẻ div
                   left: "50%",

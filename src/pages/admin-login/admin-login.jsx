@@ -140,128 +140,166 @@ const LoginForm = () => {
       style={{
         display: "flex",
         height: "100vh",
+        padding: 0,
+        margin: 0,
       }}
     >
       <div
         style={{
-          flex: 8,
+          width: "100%",
+
           backgroundImage:
             "url('https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
-          backgroundSize: "cover",
-          transform: "translateZ(0)",
-        }}
-      />
-      <div
-        style={{
-          flex: 3,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "0 20px",
         }}
       >
-        <Card style={{ width: 400 }}>
-          {contextHolder}
-          <h2 style={{ textAlign: "center", marginBottom: 24 }}>ĐĂNG NHẬP</h2>
-          <ConfigProvider
-            theme={{
-              token: {
-                Input: {
-                  activeBorderColor: "rgb(32, 30, 42)",
-                  hoverBorderColor: "rgb(32, 30, 42)",
-                },
-                Checkbox: {
-                  colorPrimary: "rgb(32, 30, 42)",
-                },
-              },
-            }}
-          >
-            <Form
-              name="loginForm"
-              initialValues={{ remember: true }}
-              onFinish={onFinish}
-              // onFinishFailed={onFinishFailed}
-              style={{ marginTop: "10px" }}
+        <div
+          style={{
+            width: "35%", // Use string for percentage values
+            backgroundColor: "none", // Assuming you want no background color
+            paddingTop: "20px",
+            paddingBottom: "20px",
+            paddingLeft: 0,
+            paddingRight: 0,
+            backgroundSize: "cover",
+            marginLeft: "auto",
+            height: "100%", // Use string for percentage values
+            backgroundImage: 'url("/Rectangle 12.png")',
+          }}
+        >
+          <Card style={{ width: 400, marginLeft: "35%", marginTop: "20%" }}>
+            {contextHolder}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              <Form.Item
-                name="email"
-                rules={[{ required: true, message: "Vui lòng nhập email!" }]}
+              <div
+                style={{
+                  marginBottom: "20px",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
               >
-                <Input
-                  style={{
-                    fontSize: "15px",
-                    padding: "10px",
-                  }}
-                  prefix={<UserOutlined />}
-                  placeholder="Email"
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="password"
-                rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
-              >
-                <Input.Password
-                  style={{
-                    fontSize: "15px",
-                    padding: "10px",
-                  }}
-                  prefix={<LockOutlined />}
-                  placeholder="Mật Khẩu"
-                />
-              </Form.Item>
-
-              <Form.Item name="remember" valuePropName="checked">
-                <Checkbox>Ghi Nhớ</Checkbox>
-              </Form.Item>
-
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <Form.Item style={{ width: "100%" }}>
-                  <Button
-                    style={{
-                      width: "100%",
-                      height: "43px",
-                      backgroundColor: "rgb(32, 30, 42)",
-                      fontWeight: "bold",
-                      borderColor: "rgb(32, 30, 42)",
-                    }}
-                    type="primary"
-                    htmlType="submit"
-
-                    // loading={loadings[0]}
-                    // onClick={() => enterLoading(0)}
-                  >
-                    {loadingIcon && (
-                      <LoadingOutlined style={{ fontSize: "20px" }} />
-                    )}
-                    &nbsp;Đăng Nhập
-                  </Button>
-                </Form.Item>
+                <a href="">
+                  <img
+                    src="/brand_logo-black.png"
+                    alt="Logo"
+                    style={{ width: 100, height: 100 }}
+                  />
+                </a>
               </div>
-            </Form>
-          </ConfigProvider>
+            </div>
+            <div>
+              <h2 style={{ textAlign: "center", marginBottom: 24 }}>
+                ĐĂNG NHẬP
+              </h2>
+              <ConfigProvider
+                theme={{
+                  token: {
+                    Input: {
+                      activeBorderColor: "rgb(32, 30, 42)",
+                      hoverBorderColor: "rgb(32, 30, 42)",
+                    },
+                    Checkbox: {
+                      colorPrimary: "rgb(32, 30, 42)",
+                    },
+                  },
+                }}
+              >
+                <Form
+                  name="loginForm"
+                  initialValues={{ remember: true }}
+                  onFinish={onFinish}
+                  // onFinishFailed={onFinishFailed}
+                  style={{ marginTop: "10px" }}
+                >
+                  <Form.Item
+                    name="email"
+                    rules={[
+                      { required: true, message: "Vui lòng nhập email!" },
+                    ]}
+                  >
+                    <Input
+                      style={{
+                        fontSize: "15px",
+                        padding: "10px",
+                      }}
+                      prefix={<UserOutlined />}
+                      placeholder="Email"
+                    />
+                  </Form.Item>
 
-          <Divider style={{ fontSize: "14px", fontWeight: "400" }}>
-            Hoặc
-          </Divider>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              margin: "25px 0px",
-            }}
-          >
-            <button
-              className="login-with-google-btn"
-              onClick={handleGoogleLogin}
-            >
-              Đăng nhập với Google
-            </button>
-          </div>
-          <div style={{ marginTop: "20px" }}>
-            Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link>
-          </div>
-        </Card>
+                  <Form.Item
+                    name="password"
+                    rules={[
+                      { required: true, message: "Vui lòng nhập mật khẩu!" },
+                    ]}
+                  >
+                    <Input.Password
+                      style={{
+                        fontSize: "15px",
+                        padding: "10px",
+                      }}
+                      prefix={<LockOutlined />}
+                      placeholder="Mật Khẩu"
+                    />
+                  </Form.Item>
+
+                  <Form.Item name="remember" valuePropName="checked">
+                    <Checkbox>Ghi Nhớ</Checkbox>
+                  </Form.Item>
+
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Form.Item style={{ width: "100%" }}>
+                      <Button
+                        style={{
+                          width: "100%",
+                          height: "43px",
+                          backgroundColor: "rgb(32, 30, 42)",
+                          fontWeight: "bold",
+                          borderColor: "rgb(32, 30, 42)",
+                        }}
+                        type="primary"
+                        htmlType="submit"
+
+                        // loading={loadings[0]}
+                        // onClick={() => enterLoading(0)}
+                      >
+                        {loadingIcon && (
+                          <LoadingOutlined style={{ fontSize: "20px" }} />
+                        )}
+                        &nbsp;Đăng Nhập
+                      </Button>
+                    </Form.Item>
+                  </div>
+                </Form>
+              </ConfigProvider>
+
+              <Divider style={{ fontSize: "14px", fontWeight: "400" }}>
+                Hoặc
+              </Divider>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  margin: "25px 0px",
+                }}
+              >
+                <button
+                  className="login-with-google-btn"
+                  onClick={handleGoogleLogin}
+                >
+                  Đăng nhập với Google
+                </button>
+              </div>
+              <div style={{ marginTop: "20px" }}>
+                Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link>
+              </div>
+            </div>
+          </Card>
+        </div>
       </div>
     </div>
   );
