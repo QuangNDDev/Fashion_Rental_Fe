@@ -6,25 +6,37 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { Button, Drawer, Form, Input, Radio, Space, Table, Tag } from "antd";
-import { EditTwoTone, DeleteFilled } from "@ant-design/icons";
+import {
+  Button,
+  Drawer,
+  Form,
+  Input,
+  notification,
+  Space,
+  Table,
+  Modal,
+} from "antd";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
+import ProductOrder from "./Product-Order";
+import ProductOrderRent from "./Product-Order-Rent";
 const OrderRent = () => {
-  const [users, setUsers] = useState();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
-  const [editingUser, setEditingUser] = useState(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
   const [orderData, setOrderData] = useState([]);
   const productownerId = localStorage.getItem("productownerId");
-
-  const fetchOrdersRent = async () => {
+  const [selectedOrderID, setSelectedOrderID] = useState(null);
+  const [selectedCustomer, setSelectedCustomer] = useState([]);
+  const [api, contextHolder] = notification.useNotification();
+  const [isRejectConfirmModalVisible, setIsRejectConfirmModalVisible] =
+    useState(false);
+  const fetchOrders = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/orderrent/po/" + productownerId
+        "http://fashionrental.online:8080/orderrent/po/pending/" + productownerId
+
       );
       setOrderData(response.data);
     } catch (error) {
@@ -33,8 +45,34 @@ const OrderRent = () => {
   };
 
   useEffect(() => {
-    fetchOrdersRent();
+    fetchOrders();
   }, []);
+
+  const showRejectConfirmModal = () => {
+    setIsRejectConfirmModalVisible(true);
+  };
+
+  const handleRejectConfirmModalCancel = () => {
+    setIsRejectConfirmModalVisible(false);
+  };
+
+  // Hàm xử lý từ chối đơn hàng
+  const rejectOrder = () => {
+    Modal.confirm({
+      title: "Xác nhận từ chối đơn hàng",
+      content: "Bạn có chắc chắn muốn từ chối đơn hàng này không?",
+      okText: "Đồng ý",
+      cancelText: "Hủy",
+      okButtonProps: {
+        style: {
+          backgroundColor: "green", // Màu xanh lá
+          borderColor: "#52c41a", // Màu viền xung quanh
+        },
+      },
+      onOk: handleRejectConfirmModalOk,
+      onCancel: handleRejectConfirmModalCancel,
+    });
+  };
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -45,9 +83,80 @@ const OrderRent = () => {
     clearFilters();
     setSearchText("");
   };
+  // ==============formatDate====================================
+  function formatDate(dateString) {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    const formattedDate = new Date(dateString).toLocaleDateString(
+      "en-US",
+      options
+    );
+    const [month, day, year] = formattedDate.split("/");
+    return `${day}/ ${month}/ ${year}`;
+  }
+  // =====================ApproveOrder============================
+  const approveOrder = async (record) => {
+    console.log("orderBuyID:", record.orderRentID);
+    try {
+      const response = await axios.put(
+        `http://fashionrental.online:8080/orderrent?orderRentID=${record.orderRentID}&status=PREPARE` 
+      );
+      api["success"]({
+        message: "Duyệt Đơn Hàng Thành Công!",
+        description: `Đơn hàng ${response.data.orderRentID} đã được duyệt`,
+        duration: 1000,
+      });
+      console.log("Check order success!!!", response.data);
+      fetchOrders();
+    } catch (error) {
+      api["error"]({
+        message: "Duyệt Đơn Hàng Thất Bại!",
+        description: null,
+      });
+      console.error("Check order  failed", error);
+    }
+  };
+  // =======================RejectOrder===========================
+  const handleRejectConfirmModalOk = async (record) => {
+    try {
+      const response = await axios.put(
+        `http://fashionrental.online:8080/orderrent?orderRentID=${record.orderRentID}&status=CANCELED`
+      );
+
+      api["success"]({
+        message: "Từ Chối Hàng Thành Công!",
+        description: `Đơn hàng ${response.data.orderRentID} đã bị từ chối`,
+      });
+
+      setIsRejectConfirmModalVisible(false);
+
+      fetchOrders();
+    } catch (error) {
+      api["error"]({
+        message: "Từ Chối Đơn Hàng Thất Bại!",
+        description: null,
+      });
+      console.error("Check order failed", error);
+    }
+  };
+
+  // =============================================================
   const [form] = Form.useForm();
-  const showDrawer = (record) => {
+  const showDrawer = async (record) => {
+    form.setFieldValue(record);
+    form.setFieldsValue({ dateOrder: record.dateOrder });
+    form.setFieldsValue({ customerAddress: record.customerAddress });
+    setSelectedOrderID(record.orderRentID);
     setIsDrawerVisible(true);
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/customer/" + record.customerID
+      );
+
+      setSelectedCustomer(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -172,6 +281,7 @@ const OrderRent = () => {
     {
       title: "Mã đơn",
       dataIndex: "orderRentID",
+
       key: "orderRentID",
 
       ...getColumnSearchProps("orderRentID"),
@@ -214,16 +324,26 @@ const OrderRent = () => {
       render: (text, record) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Space size="middle">
-            <Button style={{ marginRight: "15px" }} onClick={showDrawer}>
+            <Button onClick={() => showDrawer(record)}>
               <EyeTwoTone />
               Xem Đơn
             </Button>
-            <Button style={{ marginRight: "15px" }}>
+            <Button onClick={() => approveOrder(record)}>
               <CheckCircleTwoTone twoToneColor="#52c41a" />
             </Button>
-            <Button>
+            <Button onClick={rejectOrder}>
               <CloseCircleTwoTone twoToneColor="#ff4d4f" />
             </Button>
+            <Modal
+              title="Xác nhận từ chối đơn hàng"
+              open={isRejectConfirmModalVisible}
+              onOk={handleRejectConfirmModalOk}
+              onCancel={handleRejectConfirmModalCancel}
+              okText="Đồng ý"
+              cancelText="Hủy"
+            >
+              Bạn có chắc chắn muốn từ chối đơn hàng này không?
+            </Modal>
           </Space>
         </div>
       ),
@@ -237,6 +357,7 @@ const OrderRent = () => {
         columns={columns}
         dataSource={orderData}
       />
+      {contextHolder}
       <Drawer
         title={"Đơn hàng"}
         open={isDrawerVisible}
@@ -246,42 +367,45 @@ const OrderRent = () => {
         <Form form={form}>
           <Form.Item
             name="fullName"
-            label="Người mua"
-            rules={[
-              { required: true, message: "Xin vui lòng nhập Họ và Tên!" },
-              {
-                pattern: /^[^\d]+$/,
-                message: "Không được nhập số!",
-              },
-            ]}
+            initialValue={selectedCustomer && selectedCustomer.fullName}
           >
-            <Input />
+            <div style={{ display: "flex" }}>
+              <strong>Tên người mua:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {selectedCustomer && selectedCustomer.fullName}
+              </p>
+            </div>
           </Form.Item>
           <Form.Item
             name="phone"
-            label="SĐT"
-            rules={[
-              { required: true, message: "Xin vui lòng nhập số điện thoại!" },
-            ]}
+            initialValue={selectedCustomer && selectedCustomer.phone}
           >
-            <Input />
+            <div style={{ display: "flex" }}>
+              <strong>SĐT người mua:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {selectedCustomer && selectedCustomer.phone}
+              </p>
+            </div>
           </Form.Item>
-          <Form.Item
-            name="date"
-            label="Thời gian"
-            rules={[{ required: true, message: "Xin vui lòng nhập email!" }]}
-          >
-            <Input />
+          <Form.Item name="dateOrder">
+            <div style={{ display: "flex" }}>
+              <strong>Ngày đặt hàng:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                <p>{formatDate(form.getFieldValue("dateOrder"))}</p>
+              </p>
+            </div>
           </Form.Item>
-
-          <Form.Item
-            name="address"
-            label="Địa chỉ"
-            rules={[{ required: true, message: "Xin vui lòng nhập địa chỉ!" }]}
-          >
-            <Input />
+          <Form.Item name="customerAddress">
+            <div style={{ display: "flex" }}>
+              <strong>Địa chỉ:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {form.getFieldValue("customerAddress")}
+              </p>
+            </div>
           </Form.Item>
         </Form>
+        <h3>Danh sách sản phẩm:</h3>
+        <ProductOrderRent key={selectedOrderID} orderID={selectedOrderID} />
       </Drawer>
     </div>
   );

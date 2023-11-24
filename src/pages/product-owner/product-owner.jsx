@@ -41,6 +41,9 @@ import CancelOrderSaleTable from "../../components/product-owner-table/CancelOrd
 import ReturnOrderSale from "../../components/product-owner-table/ReturnOrderSale";
 import ReturnOrderRent from "../../components/product-owner-table/ReturnOrderRent";
 import OrderRentDeliveryTable from "../../components/order-delivery/order-rent-delivery";
+import OrderCompletedTable from "../../components/product-owner-table/CompletedOrderSale";
+import RentingOrderTable from "../../components/product-owner-table/RentingReturningOrderRent";
+import OrderRentCompletedTable from "../../components/product-owner-table/OrderRentCompleted";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -415,6 +418,51 @@ const ProductOwner = () => {
             <OrderRentDeliveryTable />
           </div>
         );
+      case "20":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn bán </Breadcrumb.Item>
+              <Breadcrumb.Item>Đang vận chuyển/Thành công </Breadcrumb.Item>
+            </Breadcrumb>
+            <OrderCompletedTable/>
+          </div>
+        );
+        case "21":
+          return (
+            <div>
+              <Breadcrumb
+                style={{
+                  padding: "0 16px",
+                }}
+              >
+                <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
+                <Breadcrumb.Item>Quản lý đơn bán </Breadcrumb.Item>
+                <Breadcrumb.Item>Đơn đang được thuê/Đang trả </Breadcrumb.Item>
+              </Breadcrumb>
+              <RentingOrderTable/>
+            </div>
+          );
+          case "22":
+            return (
+              <div>
+                <Breadcrumb
+                  style={{
+                    padding: "0 16px",
+                  }}
+                >
+                  <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
+                  <Breadcrumb.Item>Quản lý đơn bán </Breadcrumb.Item>
+                  <Breadcrumb.Item>Đơn thuê thành công</Breadcrumb.Item>
+                </Breadcrumb>
+                <OrderRentCompletedTable/>
+              </div>
+            );
       default:
         return null;
     }
@@ -546,9 +594,12 @@ const ProductOwner = () => {
                   <Menu.Item key="1">Đơn bán</Menu.Item>
                   <Menu.Item key="3">Đơn hủy</Menu.Item>
                   <Menu.Item key="4">Trả hàng/Hoàn tiền</Menu.Item>
+                  <Menu.Item key="20">Đang vận chuyển/Thành công</Menu.Item>
                 </SubMenu>
                 <SubMenu key={"sub1-2"} title="Quản lý đơn thuê">
                   <Menu.Item key="2">Đơn thuê</Menu.Item>
+                  <Menu.Item key="21">Đơn đang được thuê/Đang trả</Menu.Item>
+                  <Menu.Item key="22">Đơn thuê thành công</Menu.Item>
                   <Menu.Item key="17">Đơn hủy</Menu.Item>
                   <Menu.Item key="18">Trả hàng/Hoàn tiền</Menu.Item>
                 </SubMenu>

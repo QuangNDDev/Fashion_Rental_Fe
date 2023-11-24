@@ -117,6 +117,7 @@ const OrderTable = () => {
   };
   // =======================RejectOrder===========================
   const handleRejectConfirmModalOk = async () => {
+    setIsRejectConfirmModalVisible(false);
     try {
       const response = await axios.put(
         `http://fashionrental.online:8080/orderbuy?orderBuyID=` +
@@ -128,8 +129,6 @@ const OrderTable = () => {
         message: "Từ Chối Hàng Thành Công!",
         description: `Đơn hàng ${response.data.orderBuyID} đã bị từ chối`,
       });
-
-      setIsRejectConfirmModalVisible(false);
 
       fetchOrders();
     } catch (error) {
