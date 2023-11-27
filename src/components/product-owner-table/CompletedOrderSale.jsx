@@ -46,13 +46,7 @@ import {
       fetchOrders();
     }, []);
   
-    const showRejectConfirmModal = () => {
-      setIsRejectConfirmModalVisible(true);
-    };
   
-    const handleRejectConfirmModalCancel = () => {
-      setIsRejectConfirmModalVisible(false);
-    };
   
   
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
