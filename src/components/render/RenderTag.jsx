@@ -145,19 +145,23 @@ const RenderTag = ({ tagRender }) => {
       color = "red";
       text = "Trả hàng/hoàn tiền";
       break;
-    case " OUT_OF_STOCK":
+    case "OUT_OF_STOCK":
       color = "red";
       text = "Hết";
       break;
-    case " RETURNING":
+    case "RETURNING":
       color = "yellow";
       text = "Đang trả hàng";
+      break;
+      case "PROGRESSING":
+      color = "yellow";
+      text = "Chờ xử lí";
       break;
     default:
       color = "default";
       text = "Không Xác Định";
   }
-
+  
   return <Tag color={color}>{text}</Tag>;
 };
 
