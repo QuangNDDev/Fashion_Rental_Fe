@@ -1,71 +1,40 @@
 import {
-
-    SearchOutlined,
-    CheckCircleTwoTone,
-    CloseCircleTwoTone,
-    EyeTwoTone,
-  } from "@ant-design/icons";
-  import React, { useEffect, useRef, useState } from "react";
-  import Highlighter from "react-highlight-words";
-  import {
-    Button,
-    Drawer,
-    Form,
-    Input,
-    notification,
-    Space,
-    Table,
-    Modal,
-  } from "antd";
-  import RenderTag from "../render/RenderTag";
-  import axios from "axios";
-  import ProductOrder from "./Product-Order";
-  const OrderCompletedTable = () => {
-    const [searchText, setSearchText] = useState("");
-    const [searchedColumn, setSearchedColumn] = useState("");
-    const searchInput = useRef(null);
-    const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-    const [orderData, setOrderData] = useState([]);
-    const productownerId = localStorage.getItem("productownerId");
-    const [selectedOrderID, setSelectedOrderID] = useState(null);
-    const [selectedCustomer, setSelectedCustomer] = useState([]);
-    const [api, contextHolder] = notification.useNotification();
-    const [isRejectConfirmModalVisible, setIsRejectConfirmModalVisible] =
-      useState(false);
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get(
-          "http://fashionrental.online:8080/orderbuy/po/three/" + productownerId
-        );
-        setOrderData(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-  
-    useEffect(() => {
-      fetchOrders();
-    }, []);
-  
-  
-  
-  
-    const handleSearch = (selectedKeys, confirm, dataIndex) => {
-      confirm();
-      setSearchText(selectedKeys[0]);
-      setSearchedColumn(dataIndex);
-    };
-    const handleReset = (clearFilters) => {
-      clearFilters();
-      setSearchText("");
-    };
-    // ==============formatDate====================================
-    function formatDate(dateString) {
-      const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-      const formattedDate = new Date(dateString).toLocaleDateString(
-        "en-US",
-        options
-
+  SearchOutlined,
+  CheckCircleTwoTone,
+  CloseCircleTwoTone,
+  EyeTwoTone,
+} from "@ant-design/icons";
+import React, { useEffect, useRef, useState } from "react";
+import Highlighter from "react-highlight-words";
+import {
+  Button,
+  Drawer,
+  Form,
+  Input,
+  notification,
+  Space,
+  Table,
+  Modal,
+} from "antd";
+import RenderTag from "../render/RenderTag";
+import axios from "axios";
+import ProductOrder from "./Product-Order";
+const OrderCompletedTable = () => {
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef(null);
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+  const [orderData, setOrderData] = useState([]);
+  const productownerId = localStorage.getItem("productownerId");
+  const [selectedOrderID, setSelectedOrderID] = useState(null);
+  const [selectedCustomer, setSelectedCustomer] = useState([]);
+  const [api, contextHolder] = notification.useNotification();
+  const [isRejectConfirmModalVisible, setIsRejectConfirmModalVisible] =
+    useState(false);
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/orderbuy/po/three/" + productownerId
       );
       setOrderData(response.data);
     } catch (error) {
@@ -76,14 +45,6 @@ import {
   useEffect(() => {
     fetchOrders();
   }, []);
-
-  const showRejectConfirmModal = () => {
-    setIsRejectConfirmModalVisible(true);
-  };
-
-  const handleRejectConfirmModalCancel = () => {
-    setIsRejectConfirmModalVisible(false);
-  };
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();

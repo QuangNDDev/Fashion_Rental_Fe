@@ -16,6 +16,7 @@ import {
   Table,
   Modal,
   Image,
+  ConfigProvider,
 } from "antd";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
@@ -168,7 +169,7 @@ const RequestTable = () => {
           style={{
             marginBottom: 8,
             display: "block",
-            borderColor: "green",
+            borderColor: "rgb(32, 30, 42)",
           }}
         />
         <Space>
@@ -179,7 +180,7 @@ const RequestTable = () => {
             size="small"
             style={{
               width: 110,
-              backgroundColor: "#008000",
+              backgroundColor: "rgb(32, 30, 42)",
             }}
           >
             Tìm kiếm
@@ -194,6 +195,7 @@ const RequestTable = () => {
             size="small"
             style={{
               width: 90,
+              borderColor: "rgb(32, 30, 42)",
             }}
           >
             Đặt lại
@@ -204,7 +206,7 @@ const RequestTable = () => {
             onClick={() => {
               close();
             }}
-            style={{ color: "green" }}
+            style={{ color: "rgb(32, 30, 42)" }}
           >
             Đóng
           </Button>
@@ -346,10 +348,25 @@ const RequestTable = () => {
       fetchOrders();
     } catch (error) {
       console.error("Approve request faild!!!", error);
-      api["error"]({
-        message: "Chấp Nhận Yêu Cầu Thất Bại!",
-        description: null,
-      });
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message.includes(
+          "ProductOwner Coc Money can not be a negative number"
+        )
+      ) {
+        // Hiển thị thông báo khi tiền cọc là số âm
+        api["error"]({
+          message: "Chấp Nhận Yêu Cầu Thất Bại!",
+          description: "Tiền cọc của chủ sỡ hữu sản phẩm không đủ!",
+        });
+      } else {
+        // Nếu không phải là lỗi cụ thể trên, hiển thị thông báo lỗi chung
+        api["error"]({
+          message: "Chấp Nhận Yêu Cầu Thất Bại!",
+          description: null,
+        });
+      }
     }
   };
   const handleNotApprove = async () => {
@@ -398,13 +415,32 @@ const RequestTable = () => {
         width={1250}
         extra={
           <Space>
-            <Button
-              style={{ backgroundColor: "#008000", color: "#fff" }}
-              onClick={() => showModalApprove()}
+            <ConfigProvider
+              theme={{
+                token: {
+                  Button: {
+                    colorPrimary: "rgb(32, 30, 42)",
+                    colorPrimaryHover: "orange",
+                    colorPrimaryActive: "orange",
+                  },
+                },
+              }}
             >
-              Chấp nhận
-            </Button>
-            <Button onClick={() => showModalNotApprove()}>Từ chối</Button>
+              <Button
+                danger
+                style={{ fontWeight: "bold" }}
+                onClick={() => showModalNotApprove()}
+              >
+                Từ chối
+              </Button>
+              <Button
+                type="primary"
+                style={{ fontWeight: "bold", marginLeft: "15px" }}
+                onClick={() => showModalApprove()}
+              >
+                Chấp nhận
+              </Button>
+            </ConfigProvider>
           </Space>
         }
       >
@@ -662,34 +698,72 @@ const RequestTable = () => {
         </Form>
       </Drawer>
       <>
-        <Modal
-          title="Lí do"
-          open={isModalApproveOpen}
-          onOk={handleOkApprove}
-          onCancel={handleCancelApprove}
+        <ConfigProvider
+          theme={{
+            token: {
+              Input: {
+                activeBorderColor: "rgb(32, 30, 42)",
+                hoverBorderColor: "rgb(32, 30, 42)",
+              },
+
+              Button: {
+                colorPrimary: "rgb(32, 30, 42)",
+                colorPrimaryHover: "orange",
+                colorPrimaryActive: "orange",
+              },
+            },
+          }}
         >
-          <Form.Item name={"descriptionApprove"}>
-            <Input
-              value={descriptionApproveValue}
-              onChange={(e) => setdescriptionApproveValue(e.target.value)}
-              placeholder="Nhập lí do"
-            />
-          </Form.Item>
-        </Modal>
-        <Modal
-          title="Lí do"
-          open={isModalNotApproveOpen}
-          onOk={handleNotApprove}
-          onCancel={handleCancelNotApprove}
-        >
-          <Form.Item name={"descriptionNotApprove"}>
-            <Input
-              value={descriptionNotApproveValue}
-              onChange={(e) => setdescriptionNotApproveValue(e.target.value)}
-              placeholder="Nhập lí do"
-            />
-          </Form.Item>
-        </Modal>
+          <Modal
+            title="Lí do"
+            open={isModalApproveOpen}
+            onOk={handleOkApprove}
+            onCancel={handleCancelApprove}
+            okText="Duyệt"
+            cancelText="Hủy"
+          >
+            <Form.Item
+              name={"descriptionApprove"}
+              rules={[
+                {
+                  pattern: /^(?!\s*$).+/,
+                  message: "Vui lòng nhập lí do",
+                },
+              ]}
+            >
+              {/* không chấp nhận chuỗi chỉ chứa khoảng trắng và sẽ yêu cầu ít nhất một ký tự không phải khoảng trắng. */}
+              <Input
+                value={descriptionApproveValue}
+                onChange={(e) => setdescriptionApproveValue(e.target.value)}
+                placeholder="Nhập lí do"
+              />
+            </Form.Item>
+          </Modal>
+          <Modal
+            title="Lí do"
+            open={isModalNotApproveOpen}
+            onOk={handleNotApprove}
+            onCancel={handleCancelNotApprove}
+            okText="Gửi"
+            cancelText="Hủy"
+          >
+            <Form.Item
+              name={"descriptionNotApprove"}
+              rules={[
+                {
+                  pattern: /^(?!\s*$).+/,
+                  message: "Vui lòng nhập lí do",
+                },
+              ]}
+            >
+              <Input
+                value={descriptionNotApproveValue}
+                onChange={(e) => setdescriptionNotApproveValue(e.target.value)}
+                placeholder="Nhập lí do"
+              />
+            </Form.Item>
+          </Modal>
+        </ConfigProvider>
       </>
     </div>
   );
