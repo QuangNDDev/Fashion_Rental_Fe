@@ -3,6 +3,7 @@ import {
   CheckCircleTwoTone,
   CloseCircleTwoTone,
   EyeTwoTone,
+  UploadOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
@@ -15,12 +16,18 @@ import {
   Space,
   Table,
   Modal,
+  Upload,
 } from "antd";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
-import ProductOrder from "./Product-Order";
 import ProductOrderRent from "./Product-Order-Rent";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { v4 } from "uuid";
+import { storage } from "../../firebase/firebase";
 const RentingOrderTable = () => {
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewTitle, setPreviewTitle] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
@@ -32,6 +39,10 @@ const RentingOrderTable = () => {
   const [api, contextHolder] = notification.useNotification();
   const [isRejectConfirmModalVisible, setIsRejectConfirmModalVisible] =
     useState(false);
+  const [rejectReason, setRejectReason] = useState("");
+  const [expectedCost, setExpectedCost] = useState("");
+  const handleCancel = () => setPreviewOpen(false);
+  const [urlImages, setUrlImages] = useState([]);
   const fetchOrders = async () => {
     try {
       const response = await axios.get(
@@ -64,27 +75,64 @@ const RentingOrderTable = () => {
     clearFilters();
     setSearchText("");
   };
-  const handleRejectConfirmModalOk = async () => {
+  const handleRejectConfirmModalOk = async (record) => {
     setIsRejectConfirmModalVisible(false);
-    // try {
-    //   const response = await axios.put(
-    //     `http://fashionrental.online:8080/orderbuy?orderBuyID=` +
-    //       selectedOrderID +
-    //       `&status=CANCELED`
-    //   );
+    const rejectData = {
+      description: rejectReason,
+      expectedCost: parseInt(expectedCost),
+      productownerID: parseInt(productownerId),
+      orderRentID: record.orderRentID,
+    };
+    console.log(rejectData);
+    try {
+      const response = await axios.post(
+        `http://fashionrental.online:8080/complaining`,
+        rejectData
+      );
 
-    //   api["success"]({
-    //     message: "Từ Chối Hàng Thành Công!",
-    //     description: `Đơn hàng ${response.data.orderBuyID} đã bị từ chối`,
-    //   });
-    //   fetchOrders();
-    // } catch (error) {
-    //   api["error"]({
-    //     message: "Từ Chối Đơn Hàng Thất Bại!",
-    //     description: null,
-    //   });
-    //   console.error("Check order failed", error);
-    // }
+      api["success"]({
+        message: "Gửi đơn yêu cầu trừ cọc thành công!",
+        description: `Đơn ${response.data.requestComplainingOrderID} đã chuyển cho nhân viên`,
+      });
+      fetchOrders();
+      setRejectReason("");
+      setExpectedCost("");
+      const imgUrls = urlImages.map((item) => item.imgUrl);
+      const imgData = {
+        accountID: localStorage.getItem("accountId"),
+        img: imgUrls,
+        orderRentID: selectedOrderID,
+        status: "PO_RECEIVED"
+      };
+
+      console.log("img data:",imgData);
+      try {
+        const imgDataResponse = await axios.post(
+          "http://fashionrental.online:8080/pic",
+          imgData
+        );
+        console.log("Img data success!!!", imgDataResponse.data);
+      } catch (error) {
+        console.error("Img data failed!!!", error);
+      }
+      try {
+        const responseStatus = await axios.put(
+          `http://fashionrental.online:8080/orderrent?orderRentID=` +
+            record.orderRentID +
+            `&status=PROGRESSING`
+        );
+        console.log("Check order success!!!", responseStatus.data);
+        fetchOrders();
+      } catch (error) {
+        console.error("Check order  failed", error);
+      }
+    } catch (error) {
+      api["error"]({
+        message: "Từ Chối Đơn Hàng Thất Bại!",
+        description: null,
+      });
+      console.error("Check order failed", error);
+    }
   };
   // ==============formatDate====================================
   function formatDate(dateString) {
@@ -97,6 +145,54 @@ const RentingOrderTable = () => {
     return `${day}/ ${month}/ ${year}`;
   }
   // =============================================================
+  const getBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+    setPreviewTitle(
+      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
+    );
+  };
+  const handleFileChange = async (event) => {
+    try {
+      if (event.file.status !== "removed") {
+        console.log("handleFileChange called");
+        console.log("File selected:", event.file);
+        const imageRef = ref(storage, `images/${event.file.name + v4()}`);
+
+        uploadBytes(imageRef, event.file)
+          .then((snapshot) => {
+            // Set the URL after a successful upload
+            getDownloadURL(snapshot.ref).then((url) => {
+              setUrlImages((prevUrls) => [
+                ...prevUrls,
+                { imgUrl: url, fileName: event.file.name },
+              ]);
+            });
+          })
+          .catch((error) => {
+            console.error("Error uploading image:", error);
+          });
+      } else {
+        setUrlImages((prevUrls) =>
+          prevUrls.filter((item) => item.fileName !== event.file.name)
+        );
+        console.log("File removed:", event.file);
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+  //================================================================
   const [form] = Form.useForm();
   const showDrawer = async (record) => {
     form.setFieldValue(record);
@@ -141,7 +237,7 @@ const RentingOrderTable = () => {
           style={{
             marginBottom: 8,
             display: "block",
-            borderColor: "rgb(32, 30, 42)",
+            borderColor: "green",
           }}
         />
         <Space>
@@ -152,7 +248,7 @@ const RentingOrderTable = () => {
             size="small"
             style={{
               width: 110,
-              backgroundColor: "rgb(32, 30, 42)",
+              backgroundColor: "#008000",
             }}
           >
             Tìm kiếm
@@ -167,7 +263,6 @@ const RentingOrderTable = () => {
             size="small"
             style={{
               width: 90,
-              borderColor: "rgb(32, 30, 42)",
             }}
           >
             Đặt lại
@@ -178,7 +273,7 @@ const RentingOrderTable = () => {
             onClick={() => {
               close();
             }}
-            style={{ color: "rgb(32, 30, 42)" }}
+            style={{ color: "green" }}
           >
             Đóng
           </Button>
@@ -250,20 +345,7 @@ const RentingOrderTable = () => {
   };
   // Hàm xử lý từ chối đơn hàng
   const rejectOrder = () => {
-    Modal.confirm({
-      title: "Xác nhận từ chối đơn hàng",
-      content: "Bạn có chắc chắn muốn từ chối đơn hàng này không?",
-      okText: "Đồng ý",
-      cancelText: "Hủy",
-      okButtonProps: {
-        style: {
-          backgroundColor: "green", // Màu xanh lá
-          borderColor: "#52c41a", // Màu viền xung quanh
-        },
-      },
-      onOk: handleRejectConfirmModalOk,
-      onCancel: handleRejectConfirmModalCancel,
-    });
+    setIsRejectConfirmModalVisible(true);
   };
 
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
@@ -357,14 +439,70 @@ const RentingOrderTable = () => {
                 </>
               )}
               <Modal
-                title="Xác nhận từ chối đơn hàng"
-                open={isRejectConfirmModalVisible}
-                onOk={handleRejectConfirmModalOk}
+                title="Gửi yêu cầu cho nhân viên"
+                visible={isRejectConfirmModalVisible}
+                onOk={() => handleRejectConfirmModalOk(record)}
                 onCancel={handleRejectConfirmModalCancel}
                 okText="Đồng ý"
                 cancelText="Hủy"
               >
-                Bạn có chắc chắn muốn từ chối đơn hàng này không?
+                <Form>
+                  <span style={{ marginRight: "8px" }}>Chi phí:</span>
+                  <Form.Item>
+                    <Input
+                      value={expectedCost}
+                      onChange={(e) => setExpectedCost(e.target.value)}
+                      placeholder="Nhập chi phí..."
+                      suffix="VND"
+                    />
+                    <p style={{ color: "red", fontStyle: "italic" }}>
+                      *Chi phí này sẽ được trừ vào tiền cọc của khách hàng
+                    </p>
+                  </Form.Item>
+                  <span style={{ marginRight: "8px" }}>Lí do:</span>
+                  <Form.Item>
+                    <Input.TextArea
+                      value={rejectReason}
+                      onChange={(e) => setRejectReason(e.target.value)}
+                      placeholder="Nhập lý do..."
+                      autoSize={{ minRows: 3, maxRows: 5 }}
+                    />
+                  </Form.Item>
+                  <span style={{ marginRight: "8px" }}>Hình ảnh sản phẩm:</span>
+                  <Form.Item>
+                    <Upload
+                      maxCount={10}
+                      onChange={handleFileChange}
+                      onPreview={handlePreview}
+                      beforeUpload={() => false}
+                      multiple={true}
+                    >
+                      <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+                      <span
+                        style={{
+                          marginLeft: "20px",
+                          fontStyle: "italic",
+                          fontWeight: "normal",
+                          color: "grey",
+                        }}
+                      ></span>
+                    </Upload>
+                  </Form.Item>
+                </Form>
+              </Modal>
+              <Modal
+                open={previewOpen}
+                title={previewTitle}
+                footer={null}
+                onCancel={handleCancel}
+              >
+                <img
+                  alt="example"
+                  style={{
+                    width: "100%",
+                  }}
+                  src={previewImage}
+                />
               </Modal>
             </Space>
           </div>

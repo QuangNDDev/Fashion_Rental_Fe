@@ -283,6 +283,7 @@ const OrderRentDeliveryTable = () => {
       accountID: localStorage.getItem("accountId"),
       img: imgUrls,
       orderRentID: selectedOrderID,
+      status: "PO_SEND"
     };
     console.log("img data:", imgData);
     try {
