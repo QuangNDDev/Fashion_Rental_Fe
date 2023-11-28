@@ -35,8 +35,8 @@ const OrderRent = () => {
   const fetchOrders = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/orderrent/po/pending/" + productownerId
-
+        "http://fashionrental.online:8080/orderrent/po/pending/" +
+          productownerId
       );
       setOrderData(response.data);
     } catch (error) {
@@ -98,7 +98,7 @@ const OrderRent = () => {
     console.log("orderBuyID:", record.orderRentID);
     try {
       const response = await axios.put(
-        `http://fashionrental.online:8080/orderrent?orderRentID=${record.orderRentID}&status=PREPARE` 
+        `http://fashionrental.online:8080/orderrent?orderRentID=${record.orderRentID}&status=PREPARE`
       );
       api["success"]({
         message: "Duyệt Đơn Hàng Thành Công!",
@@ -184,7 +184,7 @@ const OrderRent = () => {
           style={{
             marginBottom: 8,
             display: "block",
-            borderColor: "green",
+            borderColor: "rgb(32, 30, 42)",
           }}
         />
         <Space>
@@ -195,7 +195,7 @@ const OrderRent = () => {
             size="small"
             style={{
               width: 110,
-              backgroundColor: "#008000",
+              backgroundColor: "rgb(32, 30, 42)",
             }}
           >
             Tìm kiếm
@@ -210,6 +210,7 @@ const OrderRent = () => {
             size="small"
             style={{
               width: 90,
+              borderColor: "rgb(32, 30, 42)",
             }}
           >
             Đặt lại
@@ -220,7 +221,7 @@ const OrderRent = () => {
             onClick={() => {
               close();
             }}
-            style={{ color: "green" }}
+            style={{ color: "rgb(32, 30, 42)" }}
           >
             Đóng
           </Button>

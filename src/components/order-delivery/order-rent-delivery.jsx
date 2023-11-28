@@ -351,8 +351,8 @@ const OrderRentDeliveryTable = () => {
         try {
           const updateComfirmingResponse = await axios.put(
             `http://fashionrental.online:8080/orderrent?orderRentID=${form.getFieldValue(
-            "orderRentID"
-          )}&status=CONFIRMING`
+              "orderRentID"
+            )}&status=CONFIRMING`
           );
           console.log(
             "Update confirming Success:",
@@ -361,7 +361,7 @@ const OrderRentDeliveryTable = () => {
         } catch (error) {
           console.error("Update confirming API Failed!!!", error);
         }
-      },  60 * 1000);
+      }, 60 * 1000);
     } catch (error) {
       console.error("Create Delivery Failed:", error);
       api["error"]({
@@ -371,7 +371,6 @@ const OrderRentDeliveryTable = () => {
       });
     }
   };
-  
 
   // =============================================================
   const [form] = Form.useForm();
@@ -421,6 +420,7 @@ const OrderRentDeliveryTable = () => {
           style={{
             marginBottom: 8,
             display: "block",
+            borderColor: "rgb(32, 30, 42)",
           }}
         />
         <Space>
@@ -431,7 +431,7 @@ const OrderRentDeliveryTable = () => {
             size="small"
             style={{
               width: 110,
-              backgroundColor: "#008000",
+              backgroundColor: "rgb(32, 30, 42)",
             }}
           >
             Tìm kiếm
@@ -446,6 +446,7 @@ const OrderRentDeliveryTable = () => {
             size="small"
             style={{
               width: 90,
+              borderColor: "rgb(32, 30, 42)",
             }}
           >
             Đặt lại
@@ -456,6 +457,7 @@ const OrderRentDeliveryTable = () => {
             onClick={() => {
               close();
             }}
+            style={{ color: "rgb(32, 30, 42)" }}
           >
             Đóng
           </Button>

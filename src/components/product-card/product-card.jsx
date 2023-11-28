@@ -294,7 +294,6 @@ const ProductCard = () => {
     },
   ];
   const translateCategoryName = (categoryName) => {
-    // Thực hiện ánh xạ giữa giá trị hiện tại và giá trị tiếng Việt
     const categoryMappings = {
       Watch: "Đồng hồ",
       Bag: "Túi",
@@ -303,7 +302,6 @@ const ProductCard = () => {
       Shoe: "Giày",
       Sunglasses: "Mắt kính",
     };
-
     return categoryMappings[categoryName] || categoryName;
   };
 
@@ -472,10 +470,10 @@ const ProductCard = () => {
                 <p
                   style={{
                     marginLeft: "10px",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                    maxWidth: "300px",
+                    // overflow: "hidden",
+                    // textOverflow: "ellipsis",
+                    // whiteSpace: "nowrap",
+                    // maxWidth: "300px",
                   }}
                 >
                   {selectedProduct && selectedProduct.description}

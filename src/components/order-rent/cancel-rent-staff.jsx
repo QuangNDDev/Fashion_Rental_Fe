@@ -67,7 +67,7 @@ const CancelRentStaff = () => {
       >
         <Input
           ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`Tìm kiếm...`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -76,6 +76,7 @@ const CancelRentStaff = () => {
           style={{
             marginBottom: 8,
             display: "block",
+            borderColor: "rgb(32, 30, 42)",
           }}
         />
         <Space>
@@ -85,7 +86,8 @@ const CancelRentStaff = () => {
             icon={<SearchOutlined />}
             size="small"
             style={{
-              width: 90,
+              width: 110,
+              backgroundColor: "rgb(32, 30, 42)",
             }}
           >
             Tìm kiếm
@@ -100,6 +102,7 @@ const CancelRentStaff = () => {
             size="small"
             style={{
               width: 90,
+              borderColor: "rgb(32, 30, 42)",
             }}
           >
             Đặt lại
@@ -110,6 +113,7 @@ const CancelRentStaff = () => {
             onClick={() => {
               close();
             }}
+            style={{ color: "rgb(32, 30, 42)" }}
           >
             Đóng
           </Button>

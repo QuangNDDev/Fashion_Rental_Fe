@@ -270,7 +270,7 @@ const TableAccept = () => {
       >
         <Input
           ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`Tìm kiếm...`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -279,6 +279,7 @@ const TableAccept = () => {
           style={{
             marginBottom: 8,
             display: "block",
+            borderColor: "rgb(32, 30, 42)",
           }}
         />
         <Space>
@@ -288,32 +289,26 @@ const TableAccept = () => {
             icon={<SearchOutlined />}
             size="small"
             style={{
-              width: 90,
+              width: 110,
+              backgroundColor: "rgb(32, 30, 42)",
             }}
           >
-            Search
+            Tìm kiếm
           </Button>
           <Button
-            onClick={() => clearFilters && handleReset(clearFilters)}
+            onClick={() =>
+              clearFilters &&
+              handleReset(clearFilters) &
+                handleSearch(selectedKeys, confirm, dataIndex) &
+                handleReset(clearFilters)
+            }
             size="small"
             style={{
               width: 90,
+              borderColor: "rgb(32, 30, 42)",
             }}
           >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({
-                closeDropdown: false,
-              });
-              setSearchText(selectedKeys[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            Filter
+            Đặt lại
           </Button>
           <Button
             type="link"
@@ -321,8 +316,9 @@ const TableAccept = () => {
             onClick={() => {
               close();
             }}
+            style={{ color: "rgb(32, 30, 42)" }}
           >
-            close
+            Đóng
           </Button>
         </Space>
       </div>
@@ -356,6 +352,18 @@ const TableAccept = () => {
         text
       ),
   });
+
+  const translateCategoryName = (categoryName) => {
+    const categoryMappings = {
+      Watch: "Đồng hồ",
+      Bag: "Túi",
+      Hat: "Nón",
+      Jewelry: "Trang Sức",
+      Shoe: "Giày",
+      Sunglasses: "Mắt kính",
+    };
+    return categoryMappings[categoryName] || categoryName;
+  };
   const columns = [
     {
       title: <p style={{ textAlign: "left" }}>ID</p>,
@@ -445,7 +453,9 @@ const TableAccept = () => {
             <div style={{ display: "flex" }}>
               <strong>Nghành Hàng:</strong>
               <p style={{ marginLeft: "10px" }}>
-                {selectedProduct && selectedProduct.categoryName}
+                {translateCategoryName(
+                  selectedProduct && selectedProduct.categoryName
+                )}
               </p>
             </div>
           </Form.Item>
