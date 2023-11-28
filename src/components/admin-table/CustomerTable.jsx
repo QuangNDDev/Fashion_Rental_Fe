@@ -273,7 +273,6 @@ const CustomerTable = () => {
       dataIndex: "status",
       key: "status",
 
-      ...getColumnSearchProps("status"),
       render: (status) => (
         <p style={{ textAlign: "left" }}>
           <RenderTag tagRender={status} />

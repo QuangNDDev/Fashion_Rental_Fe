@@ -67,7 +67,7 @@ const OrdersRentStaff = () => {
       >
         <Input
           ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`Tìm kiếm...`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -76,6 +76,7 @@ const OrdersRentStaff = () => {
           style={{
             marginBottom: 8,
             display: "block",
+            borderColor: "rgb(32, 30, 42)",
           }}
         />
         <Space>
@@ -85,10 +86,11 @@ const OrdersRentStaff = () => {
             icon={<SearchOutlined />}
             size="small"
             style={{
-              width: 90,
+              width: 110,
+              backgroundColor: "rgb(32, 30, 42)",
             }}
           >
-            Search
+            Tìm kiếm
           </Button>
           <Button
             onClick={() =>
@@ -100,9 +102,10 @@ const OrdersRentStaff = () => {
             size="small"
             style={{
               width: 90,
+              borderColor: "rgb(32, 30, 42)",
             }}
           >
-            Reset
+            Đặt lại
           </Button>
           <Button
             type="link"
@@ -110,8 +113,9 @@ const OrdersRentStaff = () => {
             onClick={() => {
               close();
             }}
+            style={{ color: "rgb(32, 30, 42)" }}
           >
-            close
+            Đóng
           </Button>
         </Space>
       </div>
@@ -155,7 +159,7 @@ const OrdersRentStaff = () => {
     //   ...getColumnSearchProps("orderRentID"),
     // },
     {
-      title: "Ngày mua",
+      title: "Ngày thuê",
       dataIndex: "dateOrder",
       key: "dateOrder",
 
@@ -221,7 +225,6 @@ const OrdersRentStaff = () => {
       dataIndex: "status",
       key: "status",
 
-      ...getColumnSearchProps("status"),
       render: (status) => (
         <p>
           <RenderTag tagRender={status} />

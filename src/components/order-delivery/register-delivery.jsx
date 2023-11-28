@@ -66,8 +66,13 @@ function RegisterDelivery() {
             theme={{
               token: {
                 Input: {
-                  activeBorderColor: "#008000",
-                  hoverBorderColor: "#008000",
+                  activeBorderColor: "rgb(32, 30, 42)",
+                  hoverBorderColor: "rgb(32, 30, 42)",
+                },
+                Button: {
+                  colorPrimary: "rgb(32, 30, 42)",
+                  colorPrimaryHover: "orange",
+                  colorPrimaryActive: "orange",
                 },
               },
             }}
@@ -98,10 +103,8 @@ function RegisterDelivery() {
               </Form.Item>
               <Form.Item style={{ textAlign: "center" }}>
                 <Button
-                  style={{
-                    backgroundColor: "green",
-                    color: "white",
-                  }}
+                  style={{ fontWeight: "bold" }}
+                  type="primary"
                   htmlType="submit"
                 >
                   Đăng ký

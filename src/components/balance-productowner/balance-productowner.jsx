@@ -13,6 +13,7 @@ import {
   Modal,
   Form,
   Input,
+  ConfigProvider,
 } from "antd";
 import CountUp from "react-countup";
 import { async } from "@firebase/util";
@@ -21,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 const Balance = () => {
   const [balanceData, setBalanceData] = useState([]);
   const accountId = localStorage.getItem("accountId");
+
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
@@ -80,112 +82,128 @@ const Balance = () => {
 
   return (
     <div>
-      <div className="balance-container">
-        <Card
-          title="Tổng Quan"
-          extra={
-            <Space>
-              <Button
-                style={{ backgroundColor: "#008000", color: "#fff" }}
-                onClick={showModal}
-                icon={<PlusCircleOutlined />}
-              >
-                Nạp tiền
-              </Button>
-            </Space>
-          }
-        >
-          <Row gutter={16}>
-            <Col span={12}>
-              <Card bordered={true}>
-                <Statistic
-                  title="Số dư"
-                  value={balanceData.balance}
-                  precision={0}
-                  valueStyle={{ color: "green" }}
-                  // prefix={<DollarOutlined />}
-                  suffix="VNĐ"
-                  formatter={formatter}
-                />
-              </Card>
-            </Col>
-            <Col span={12}>
-              <Card bordered={true}>
-                <Statistic
-                  title="Số dư đang chờ"
-                  value={balanceData.pendingMoney}
-                  precision={0}
-                  valueStyle={{ color: "#FFA500" }}
-                  // prefix={<DollarOutlined />}
-                  suffix="VNĐ"
-                  formatter={formatter}
-                />
-              </Card>
-            </Col>
-          </Row>
-        </Card>
-      </div>
-
-      <Card
-        bordered={true}
-        title={"Lịch sử giao dịch"}
-        style={{ marginTop: "30px" }}
+      <ConfigProvider
+        theme={{
+          token: {
+            Button: {
+              colorPrimary: "rgb(32, 30, 42)",
+              colorPrimaryHover: "orange",
+              colorPrimaryActive: "orange",
+            },
+            Input: {
+              activeBorderColor: "rgb(32, 30, 42)",
+              hoverBorderColor: "rgb(32, 30, 42)",
+            },
+          },
+        }}
       >
-        <TransactionTable />
-      </Card>
-      <Modal
-        title="Thanh toán VN-Pay"
-        open={isModalOpen}
-        onCancel={handleCancel}
-        footer={false}
-      >
-        <Form form={form} onFinish={handleOk}>
-          <span style={{ marginBottom: "5px" }}>Nhập số tiền muốn nạp:</span>
-          <Form.Item
-            name="amount"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập số tiền!",
-              },
-
-              {
-                validator: async (_, value) => {
-                  if (value >= 10000 && value <= 1000000000) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(
-                    new Error(
-                      "Số tiền phải lớn hơn 10,000 VND và nhỏ hơn 1,000,000,000 VND!"
-                    )
-                  );
-                },
-              },
-            ]}
+        <div className="balance-container">
+          <Card
+            title="Tổng Quan"
+            extra={
+              <Space>
+                <Button
+                  type="primary"
+                  style={{ fontWeight: "bolder" }}
+                  onClick={showModal}
+                  icon={<PlusCircleOutlined />}
+                >
+                  Nạp tiền
+                </Button>
+              </Space>
+            }
           >
-            <Input type="number" placeholder="Nhập số tiền" suffix="VND" />
-          </Form.Item>
-          <Form.Item>
-            <Button
-              style={{
-                float: "right",
-                backgroundColor: "#008000",
-                color: "#fff",
-              }}
-              htmlType="submit"
+            <Row gutter={16}>
+              <Col span={12}>
+                <Card bordered={true}>
+                  <Statistic
+                    title="Số dư"
+                    value={balanceData.balance}
+                    precision={0}
+                    valueStyle={{ color: "green" }}
+                    // prefix={<DollarOutlined />}
+                    suffix="VNĐ"
+                    formatter={formatter}
+                  />
+                </Card>
+              </Col>
+              <Col span={12}>
+                <Card bordered={true}>
+                  <Statistic
+                    title="Số dư đang chờ"
+                    value={balanceData.pendingMoney}
+                    precision={0}
+                    valueStyle={{ color: "#FFA500" }}
+                    // prefix={<DollarOutlined />}
+                    suffix="VNĐ"
+                    formatter={formatter}
+                  />
+                </Card>
+              </Col>
+            </Row>
+          </Card>
+        </div>
+
+        <Card
+          bordered={true}
+          title={"Lịch sử giao dịch"}
+          style={{ marginTop: "30px" }}
+        >
+          <TransactionTable />
+        </Card>
+        <Modal
+          title="Thanh toán VN-Pay"
+          open={isModalOpen}
+          onCancel={handleCancel}
+          footer={false}
+        >
+          <Form form={form} onFinish={handleOk}>
+            <span style={{ marginBottom: "5px" }}>Nhập số tiền muốn nạp:</span>
+            <Form.Item
+              name="amount"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập số tiền!",
+                },
+
+                {
+                  validator: async (_, value) => {
+                    if (value >= 10000 && value <= 1000000000) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      new Error(
+                        "Số tiền phải lớn hơn 10,000 VND và nhỏ hơn 1,000,000,000 VND!"
+                      )
+                    );
+                  },
+                },
+              ]}
             >
-              Thanh toán
-            </Button>
-            <Button
-              style={{ float: "right", marginRight: "10px" }}
-              danger
-              onClick={handleCancel}
-            >
-              Huỷ
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
+              <Input type="number" placeholder="Nhập số tiền" suffix="VND" />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                style={{
+                  float: "right",
+                }}
+                htmlType="submit"
+              >
+                Thanh toán
+              </Button>
+              <Button
+                style={{ float: "right", marginRight: "10px" }}
+                danger
+                onClick={handleCancel}
+              >
+                Huỷ
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+      </ConfigProvider>
     </div>
   );
 };

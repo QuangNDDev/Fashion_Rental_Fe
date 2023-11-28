@@ -59,7 +59,7 @@ const ReturnOrderSale = () => {
           style={{
             marginBottom: 8,
             display: "block",
-            borderColor: "green",
+            borderColor: "rgb(32, 30, 42)",
           }}
         />
         <Space>
@@ -70,7 +70,7 @@ const ReturnOrderSale = () => {
             size="small"
             style={{
               width: 110,
-              backgroundColor: "#008000",
+              backgroundColor: "rgb(32, 30, 42)",
             }}
           >
             Tìm kiếm
@@ -85,6 +85,7 @@ const ReturnOrderSale = () => {
             size="small"
             style={{
               width: 90,
+              borderColor: "rgb(32, 30, 42)",
             }}
           >
             Đặt lại
@@ -95,7 +96,7 @@ const ReturnOrderSale = () => {
             onClick={() => {
               close();
             }}
-            style={{ color: "green" }}
+            style={{ color: "rgb(32, 30, 42)" }}
           >
             Đóng
           </Button>
