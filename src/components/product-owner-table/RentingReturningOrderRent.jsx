@@ -97,15 +97,35 @@ const RentingOrderTable = () => {
       fetchOrders();
       setRejectReason("");
       setExpectedCost("");
-    //   try {
-    //     const responseImage = await axios.post(
-    //         `http://fashionrental.online:8080/complaining`,
-    //         rejectData
-    //       );
-    //     console.log("Image success!",responseImage.data);
-    //   } catch (error) {
-    //     console.error("Image failed", error);
-    //   }
+      const imgUrls = urlImages.map((item) => item.imgUrl);
+      const imgData = {
+        accountID: localStorage.getItem("accountId"),
+        img: imgUrls,
+        orderRentID: selectedOrderID,
+        status: "PO_RECEIVED"
+      };
+
+      console.log("img data:",imgData);
+      try {
+        const imgDataResponse = await axios.post(
+          "http://fashionrental.online:8080/pic",
+          imgData
+        );
+        console.log("Img data success!!!", imgDataResponse.data);
+      } catch (error) {
+        console.error("Img data failed!!!", error);
+      }
+      try {
+        const responseStatus = await axios.put(
+          `http://fashionrental.online:8080/orderrent?orderRentID=` +
+            record.orderRentID +
+            `&status=PROGRESSING`
+        );
+        console.log("Check order success!!!", responseStatus.data);
+        fetchOrders();
+      } catch (error) {
+        console.error("Check order  failed", error);
+      }
     } catch (error) {
       api["error"]({
         message: "Từ Chối Đơn Hàng Thất Bại!",
@@ -435,7 +455,9 @@ const RentingOrderTable = () => {
                       placeholder="Nhập chi phí..."
                       suffix="VND"
                     />
-                    <p style={{color:"red",fontStyle:"italic"}}>*Chi phí này sẽ  được trừ vào tiền cọc của khách hàng</p>
+                    <p style={{ color: "red", fontStyle: "italic" }}>
+                      *Chi phí này sẽ được trừ vào tiền cọc của khách hàng
+                    </p>
                   </Form.Item>
                   <span style={{ marginRight: "8px" }}>Lí do:</span>
                   <Form.Item>

@@ -5,6 +5,7 @@ import {
   LogoutOutlined,
   MailFilled,
   NotificationFilled,
+  DeliveredProcedureOutlined
 } from "@ant-design/icons";
 import {
   Avatar,
@@ -32,6 +33,7 @@ import VerificationSuccess from "../../components/verifyPO/verified";
 import OrdersRentStaff from "../../components/order-rent";
 import CancelRentStaff from "../../components/order-rent/cancel-rent-staff";
 import CancelBuyStaff from "../../components/order-buy/cancel-buy-staff";
+import RequestTable from "../../components/Staff-Grid/request";
 
 const { Header, Content, Sider } = Layout;
 
@@ -263,6 +265,20 @@ const Staff = () => {
             <CancelBuyStaff />
           </div>
         );
+        case "10":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Quản lí yêu cầu</Breadcrumb.Item>
+              <Breadcrumb.Item>Danh sách yêu cầu</Breadcrumb.Item>
+            </Breadcrumb>
+            <RequestTable/>
+          </div>
+        );
 
       // case "9":
       //   return (
@@ -393,9 +409,15 @@ const Staff = () => {
 
                 <Menu.Item key="3">Đơn đã từ chối</Menu.Item>
               </SubMenu>
-
               <SubMenu
                 key="sub2"
+                icon={<DeliveredProcedureOutlined style={{ fontSize: "17px" }} />}
+                title="Quảng lí yêu cầu"
+              >
+                  <Menu.Item key="10">Danh sách yêu cầu</Menu.Item>
+              </SubMenu>
+              <SubMenu
+                key="sub3"
                 icon={<EyeFilled style={{ fontSize: "17px" }} />}
                 title="Xem đơn hàng"
               >
