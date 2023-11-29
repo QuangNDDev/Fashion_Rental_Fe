@@ -199,6 +199,8 @@ const ProductCard = () => {
       productName: productData.productName,
       productReceiptUrl: productData.productReceiptUrl,
       description: productData.description,
+      requestDescription: productData.requestDTO.description,
+      requestStatus: productData.requestDTO.status,
       price: productData.price,
       status: productData.status,
       forSale: productData.forSale,
@@ -220,6 +222,8 @@ const ProductCard = () => {
       // Các trường dữ liệu khác tương tự
     });
     setSelectedProduct({
+      requestStatus: productData.requestDTO.status,
+      requestDescription: productData.requestDTO.description,
       checkType: productData.checkType,
       avatar: productData.avatar,
       productName: productData.productName,
@@ -412,7 +416,7 @@ const ProductCard = () => {
           </Col>
         ))}
         <Modal
-          title="Chi tiết sản phẩm"
+          title={<p style={{ textAlign: "center" }}>Chi tiết sản phẩm</p>}
           open={isModalVisible}
           onCancel={handleCancel}
           footer={null}
@@ -423,6 +427,25 @@ const ProductCard = () => {
             onFinish={onFinish}
             // Đặt giá trị mặc định cho các trường nếu cần
           >
+            {selectedProduct &&
+              selectedProduct.requestStatus === "NOT_APPROVED" && (
+                <>
+                  <strong style={{ color: "red" }}>
+                    {" "}
+                    Sản phẩm bị từ chối. Lí do:{" "}
+                  </strong>
+                  <Form.Item
+                    name="requestDescription"
+                    initialValue={
+                      selectedProduct && selectedProduct.requestDescription
+                    }
+                  >
+                    <p>
+                      {selectedProduct && selectedProduct.requestDescription}
+                    </p>
+                  </Form.Item>
+                </>
+              )}
             <Form.Item
               name="productName" //lấy value của cái name gán lên cái setFormValue
               initialValue={selectedProduct && selectedProduct.productName}
@@ -470,10 +493,7 @@ const ProductCard = () => {
                 <p
                   style={{
                     marginLeft: "10px",
-                    // overflow: "hidden",
-                    // textOverflow: "ellipsis",
-                    // whiteSpace: "nowrap",
-                    // maxWidth: "300px",
+                    maxWidth: "400px",
                   }}
                 >
                   {selectedProduct && selectedProduct.description}
@@ -853,6 +873,7 @@ const ProductCard = () => {
                 </p>
               </div>
             </Form.Item>
+
             <Form.Item
               name="productReceiptUrl"
               initialValue={

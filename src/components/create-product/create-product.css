@@ -203,35 +203,35 @@
   font-weight: bold;
 }
 .custom-button {
-  transition: background 0.3s, color 0.3s; /* Thêm hiệu ứng chuyển đổi màu nền và màu chữ */
+  transition: background 0.3s, color 0.3s;
 }
 
 .custom-button:hover {
-  background-color: green; /* Màu nền hover thành xanh lá */
-  color: white; /* Màu chữ hover thành trắng */
+  background-color: green;
+  color: white;
 }
 
 .custom-button .anticon {
-  transition: color 0.3s; /* Thêm hiệu ứng chuyển đổi màu chữ cho biểu tượng */
+  transition: color 0.3s;
 }
 
 .custom-button:hover .anticon {
-  color: white; /* Màu chữ của biểu tượng hover thành trắng */
+  color: white;
 }
 
 .custom-button--delete {
-  transition: background 0.3s, color 0.3s; /* Thêm hiệu ứng chuyển đổi màu nền và màu chữ */
+  transition: background 0.3s, color 0.3s;
 }
 
 .custom-button--delete:hover {
-  background-color: red; /* Màu nền hover thành đỏ */
-  color: white; /* Màu chữ hover thành trắng */
+  background-color: red;
+  color: white;
 }
 
 .custom-button--delete .anticon {
-  transition: color 0.3s; /* Thêm hiệu ứng chuyển đổi màu chữ cho biểu tượng */
+  transition: color 0.3s;
 }
 
 .custom-button--delete:hover .anticon {
-  color: white; /* Màu chữ của biểu tượng hover thành trắng */
+  color: white;
 }
