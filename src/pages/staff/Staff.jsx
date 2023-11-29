@@ -26,9 +26,7 @@ import TablePending from "../../components/Staff-Grid";
 import RejectTable from "../../components/Staff-Grid/reject";
 import ProfileStaff from "../../components/information-staff";
 import OrdersBuyStaff from "../../components/order-buy";
-import CancelOrderTable from "../../components/product-owner-table/CancelOrderTable";
 import TableAccept from "./../../components/Staff-Grid/accept";
-import StaffChat from "../../components/staff-chat";
 import VerificationSuccess from "../../components/verifyPO/verified";
 import OrdersRentStaff from "../../components/order-rent";
 import CancelRentStaff from "../../components/order-rent/cancel-rent-staff";
@@ -273,7 +271,7 @@ const Staff = () => {
                 padding: "0 16px",
               }}
             >
-              <Breadcrumb.Item>Quản lí yêu cầu</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý yêu cầu</Breadcrumb.Item>
               <Breadcrumb.Item>Danh sách yêu cầu</Breadcrumb.Item>
             </Breadcrumb>
             <RequestTable/>
@@ -412,7 +410,7 @@ const Staff = () => {
               <SubMenu
                 key="sub2"
                 icon={<DeliveredProcedureOutlined style={{ fontSize: "17px" }} />}
-                title="Quảng lí yêu cầu"
+                title="Quản lý yêu cầu"
               >
                   <Menu.Item key="10">Danh sách yêu cầu</Menu.Item>
               </SubMenu>

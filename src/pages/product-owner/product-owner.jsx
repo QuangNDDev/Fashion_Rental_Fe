@@ -543,6 +543,7 @@ const ProductOwner = () => {
           </Button>
         </div>
       </Header>
+      
 
       <Layout
         style={{
@@ -607,7 +608,7 @@ const ProductOwner = () => {
               <SubMenu
                 key="sub2"
                 icon={<ShopFilled style={{ fontSize: "17px" }} />}
-                title="Quản Lí Sản Phẩm"
+                title="Quản Lý Sản Phẩm"
               >
                 <Menu.Item key="7">Tất cả sản phẩm</Menu.Item>
                 <Menu.Item key="8">Thêm sản phẩm</Menu.Item>
