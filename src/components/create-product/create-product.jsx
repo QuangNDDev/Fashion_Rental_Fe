@@ -3401,10 +3401,6 @@ const CreateProduct = () => {
                         value: "RENT",
                         label: "Cho Thuê",
                       },
-                      {
-                        value: "SALE_RENT",
-                        label: "Bán Và Cho Thuê",
-                      },
                     ]}
                   />
                 </Space>
@@ -3438,7 +3434,7 @@ const CreateProduct = () => {
                     <Form.Item
                       label="Số ngày 1"
                       name="mockDay"
-                      style={{ width: "250px", marginRight: "10px" }}
+                      style={{ width: "250px", marginRight: "5px" }}
                       rules={[
                         {
                           required: true,
@@ -3450,13 +3446,17 @@ const CreateProduct = () => {
                         },
                       ]}
                     >
-                      <Input type="number" suffix="Ngày" />
+                      <Input
+                        type="number"
+                        suffix="Ngày"
+                        style={{ width: "162px" }}
+                      />
                     </Form.Item>
 
                     <Form.Item
-                      label="Giá thuê"
+                      label="Giá thuê 1"
                       name="rentPrice"
-                      style={{ width: "250px", marginRight: "10px" }}
+                      style={{ width: "235px" }}
                       rules={[
                         {
                           required: true,
@@ -3468,7 +3468,11 @@ const CreateProduct = () => {
                         },
                       ]}
                     >
-                      <Input type="number" suffix="VND" />
+                      <Input
+                        type="number"
+                        suffix="VND"
+                        style={{ width: "162px" }}
+                      />
                     </Form.Item>
                   </div>
                   {additionalFields.map((field, index) => (
@@ -3477,10 +3481,20 @@ const CreateProduct = () => {
                         <Form.Item
                           label={`Số ngày ${index + 2}`}
                           name={`mockDay${index + 2}`}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Không được để trống!",
+                            },
+                            {
+                              pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
+                              message: "Chỉ được nhập số!",
+                            },
+                          ]}
                         >
                           <Input
                             type="number"
-                            style={{ width: "172px" }}
+                            style={{ width: "162px" }}
                             suffix="Ngày"
                           />
                         </Form.Item>
@@ -3488,10 +3502,20 @@ const CreateProduct = () => {
                         <Form.Item
                           label={`Giá thuê ${index + 2}`}
                           name={`rentPrice${index + 2}`}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Không được để trống!",
+                            },
+                            {
+                              pattern: /^[0-9]*$/, // Regex chỉ cho phép nhập số
+                              message: "Chỉ được nhập số!",
+                            },
+                          ]}
                         >
                           <Input
                             type="number"
-                            style={{ width: "172px" }}
+                            style={{ width: "162px" }}
                             suffix="VND"
                           />
                         </Form.Item>
