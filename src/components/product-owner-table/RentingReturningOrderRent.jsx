@@ -210,7 +210,7 @@ const RentingOrderTable = () => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -371,7 +371,7 @@ const RentingOrderTable = () => {
       ),
     },
     {
-      title: "Thời gian",
+      title: "Ngày đặt hàng",
       dataIndex: "dateOrder",
       key: "dateOrder",
 
@@ -526,7 +526,7 @@ const RentingOrderTable = () => {
         width={500}
       >
         <Form form={form}>
-          <Form.Item
+        <Form.Item
             name="fullName"
             initialValue={selectedCustomer && selectedCustomer.fullName}
           >
