@@ -234,7 +234,7 @@ const OrderRentCompletedTable = () => {
       render: (text) => <p>{text}</p>,
     },
     {
-      title: "Ngày đặt",
+      title: "Ngày đặt hàng",
       dataIndex: "dateOrder",
       key: "dateOrder",
 
@@ -292,10 +292,10 @@ const OrderRentCompletedTable = () => {
         title={"Đơn hàng"}
         open={isDrawerVisible}
         onClose={onCloseDrawer}
-        width={900}
+        width={500}
       >
         <Form form={form}>
-          <Form.Item
+        <Form.Item
             name="fullName"
             initialValue={selectedCustomer && selectedCustomer.fullName}
           >
@@ -325,6 +325,7 @@ const OrderRentCompletedTable = () => {
               </p>
             </div>
           </Form.Item>
+        
           <Form.Item name="customerAddress">
             <div style={{ display: "flex" }}>
               <strong>Địa chỉ:</strong>

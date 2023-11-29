@@ -289,7 +289,7 @@ const OrderRent = () => {
       render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
     },
     {
-      title: "Thời gian",
+      title: "Ngày đặt hàng",
       dataIndex: "dateOrder",
       key: "dateOrder",
 
@@ -363,7 +363,7 @@ const OrderRent = () => {
         title={"Đơn hàng"}
         open={isDrawerVisible}
         onClose={onCloseDrawer}
-        width={900}
+        width={500}
       >
         <Form form={form}>
           <Form.Item
@@ -396,6 +396,7 @@ const OrderRent = () => {
               </p>
             </div>
           </Form.Item>
+         
           <Form.Item name="customerAddress">
             <div style={{ display: "flex" }}>
               <strong>Địa chỉ:</strong>

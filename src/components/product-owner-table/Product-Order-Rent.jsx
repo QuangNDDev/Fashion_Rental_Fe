@@ -1,9 +1,8 @@
 import { EyeOutlined } from "@ant-design/icons";
-import { Card, Col, Form, Image, Modal, notification, Row, Switch } from "antd";
+import { Card, Col, Form, Image, Modal, notification, Row } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import MuntilImage from "../Mutil-Image";
-import RenderTag from "../render/RenderTag";
 const { Meta } = Card;
 
 const ProductOrderRent = ({ orderID }) => {
@@ -14,9 +13,9 @@ const ProductOrderRent = ({ orderID }) => {
   const productownerId = localStorage.getItem("productownerId");
   const idAccount = localStorage.getItem("accountId");
   const [productData, setProductData] = useState([]);
-  const [productOrderData, setProductOrderData] = useState([]);
   const [api, contextHolder] = notification.useNotification();
   const [productImage, setProductImage] = useState();
+  const [selectedOrderRentDetail, setselectedOrderRentDetail] = useState([]);
 
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
   const formatPriceWithVND = (price) => {
@@ -33,8 +32,10 @@ const ProductOrderRent = ({ orderID }) => {
       );
 
       const productDTO = response.data.map((item) => item.productDTO);
+
+      console.log("product dto:", productDTO);
       setProductData(productDTO);
-      console.log("productDTO:", productDTO);
+      console.log("Product DTO:", productDTO);
     } catch (error) {
       console.error(error);
     }
@@ -58,7 +59,18 @@ const ProductOrderRent = ({ orderID }) => {
         console.error(error);
       }
     };
-
+    const fetchRentDetail = async () => {
+      try {
+        const responseOrderRentDetail = await axios.get(
+          `http://fashionrental.online:8080/orderrentdetail/${productData.productID}/${orderID}/rentdetail`
+        );
+        setselectedOrderRentDetail(responseOrderRentDetail.data);
+        console.log("detail:", responseOrderRentDetail.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchRentDetail();
     fetchProductImg();
     setIsModalVisible(true);
     const specificationData = JSON.parse(productData.productSpecificationData);
@@ -122,6 +134,7 @@ const ProductOrderRent = ({ orderID }) => {
       skinTexture: skinTexture,
       typeSkinBag: typeSkinBag,
       originBag: originBag,
+      
       // Các trường dữ liệu khác tương tự
     });
     setSelectedProduct({
@@ -176,13 +189,16 @@ const ProductOrderRent = ({ orderID }) => {
     // Đóng modal
     handleCancel();
   };
-  const [open, setOpen] = useState(false);
-  const hide = () => {
-    setOpen(false);
-  };
-  const handleOpenChange = (newOpen) => {
-    setOpen(newOpen);
-  };
+  //format date ------------------------------------
+  function formatDate(dateString) {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    const formattedDate = new Date(dateString).toLocaleDateString(
+      "en-US",
+      options
+    );
+    const [month, day, year] = formattedDate.split("/");
+    return `${day}/ ${month}/ ${year}`;
+  }
   return (
     <>
       {contextHolder}
@@ -245,6 +261,44 @@ const ProductOrderRent = ({ orderID }) => {
             onFinish={onFinish}
             // Đặt giá trị mặc định cho các trường nếu cần
           >
+            <hr />
+            <h3>Thông tin thuê:</h3>
+            <hr />
+            <Form.Item name="startDate">
+              <div style={{ display: "flex" }}>
+                <strong>Ngày bắt đầu:</strong>
+                <p style={{ marginLeft: "10px" }}>
+                  <p>{formatDate(selectedOrderRentDetail.startDate)}</p>
+                </p>
+              </div>
+            </Form.Item>
+            <Form.Item name="endDate">
+              <div style={{ display: "flex" }}>
+                <strong>Ngày kết thúc:</strong>
+                <p style={{ marginLeft: "10px" }}>
+                  <p>{formatDate(selectedOrderRentDetail.endDate)}</p>
+                </p>
+              </div>
+            </Form.Item>
+            <Form.Item name="rentPrice">
+              <div style={{ display: "flex" }}>
+                <strong>Giá thuê:</strong>
+                <p style={{ marginLeft: "10px" }}>
+                  <p>{formatPriceWithVND(selectedOrderRentDetail.rentPrice)}</p>
+                </p>
+              </div>
+            </Form.Item>
+            <Form.Item name="cocMoney">
+              <div style={{ display: "flex" }}>
+                <strong>Tiền cọc:</strong>
+                <p style={{ marginLeft: "10px" }}>
+                  <p>{formatPriceWithVND(selectedOrderRentDetail.cocMoney)}</p>
+                </p>
+              </div>
+            </Form.Item>
+            <hr />
+            <h3>Thông tin sản phẩm</h3>
+            <hr />
             <Form.Item
               name="productName" //lấy value của cái name gán lên cái setFormValue
               initialValue={selectedProduct && selectedProduct.productName}
@@ -631,6 +685,7 @@ const ProductOrderRent = ({ orderID }) => {
                 </p>
               </div>
             </Form.Item>
+
             <Form.Item
               name="productReceiptUrl"
               initialValue={
