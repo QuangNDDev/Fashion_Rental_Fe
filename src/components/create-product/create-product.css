@@ -29,6 +29,19 @@
 .description span {
   font-weight: bold;
 }
+.rules {
+  padding: 20px;
+}
+.rules span {
+  font-weight: bold;
+}
+.product__code {
+  padding: 20px;
+}
+
+.product__code span {
+  font-weight: bold;
+}
 .price {
   display: grid;
   padding: 20px;

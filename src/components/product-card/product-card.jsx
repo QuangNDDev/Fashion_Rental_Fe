@@ -1,4 +1,4 @@
-import { EyeOutlined } from "@ant-design/icons";
+import { EyeOutlined, CommentOutlined } from "@ant-design/icons";
 import {
   Card,
   Col,
@@ -10,6 +10,7 @@ import {
   Switch,
   Badge,
   Table,
+  Rate,
 } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -28,6 +29,24 @@ const ProductCard = () => {
   const [api, contextHolder] = notification.useNotification();
   const [productImage, setProductImage] = useState();
   const [productRentPrice, setProductRentPrice] = useState([]);
+  const [showFullText, setShowFullText] = useState(false);
+  const [showFullFeedback, setShowFullFeedback] = useState(false);
+  //showModalFeedback
+  const handleShowFeedback = () => {
+    setShowFullFeedback(true);
+  };
+
+  const handleModalCloseFeedback = () => {
+    setShowFullFeedback(false);
+  };
+  // showModal xem quy định
+  const handleShowMore = () => {
+    setShowFullText(true);
+  };
+
+  const handleModalClose = () => {
+    setShowFullText(false);
+  };
 
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
   const formatPriceWithVND = (price) => {
@@ -122,6 +141,10 @@ const ProductCard = () => {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  const showModalFeedback = () => {
+    setShowFullFeedback(true);
+  };
 
   const showModal = (productData) => {
     const fetchProductImg = async () => {
@@ -373,6 +396,7 @@ const ProductCard = () => {
                   }}
                 />,
                 <EyeOutlined key="edit" onClick={() => showModal(product)} />,
+                <CommentOutlined onClick={showModalFeedback} />,
               ]}
             >
               <div
@@ -500,6 +524,52 @@ const ProductCard = () => {
                 </p>
               </div>
             </Form.Item>
+
+            <Form.Item
+              name="rules"
+              initialValue={selectedProduct && selectedProduct.description}
+            >
+              <div style={{ display: "flex" }}>
+                <strong style={{ minWidth: "65px" }}>Quy định: </strong>
+                <p
+                  style={{
+                    marginLeft: "5px",
+                    maxWidth: "400px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {/* {selectedProduct && selectedProduct.description} */}
+                  {showFullText
+                    ? selectedProduct && selectedProduct.description
+                    : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+                </p>
+                {!showFullText && (
+                  <span
+                    style={{
+                      color: "blue",
+                      cursor: "pointer",
+                      marginLeft: "5px",
+                      minWidth: "65px",
+                      textDecoration: "underline",
+                    }}
+                    onClick={handleShowMore}
+                  >
+                    Xem thêm
+                  </span>
+                )}
+              </div>
+            </Form.Item>
+            <Modal
+              title="Nội dung đầy đủ"
+              open={showFullText}
+              onCancel={handleModalClose}
+              footer={null}
+            >
+              {/* {selectedProduct && selectedProduct.description} */}
+              aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+            </Modal>
             {/* Set điều kiện để hiện thị theo category */}
             {selectedProduct && selectedProduct.categoryName === "Watch" && (
               <>
@@ -899,8 +969,45 @@ const ProductCard = () => {
             </Form.Item>
           </Form>
         </Modal>
+        <Modal
+          title={<p style={{ textAlign: "center" }}>Bình Luận</p>}
+          open={showFullFeedback}
+          onCancel={handleModalCloseFeedback}
+          footer={false}
+          width={1000}
+        >
+          <div style={{ marginBottom: "20px" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "10px",
+              }}
+            >
+              <img
+                src="https://rukminim2.flixcart.com/image/850/1000/l3vxbbk0/cut-out/y/r/n/4-doremon01-yaraprint-original-imagewf2hdhjwzbg.jpeg?q=20"
+                alt="Avatar"
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "50%",
+                  marginRight: "10px",
+                }}
+              />
+              <div>
+                <p style={{ fontWeight: "bold", margin: "0" }}>
+                  Nguyễn Đăng Quang
+                </p>
+                <p style={{ color: "#888", margin: "0" }}>01/12/2023</p>
+                <Rate allowHalf defaultValue={2.7} disabled />
+              </div>
+            </div>
+            <p>đẹp quá</p>
+          </div>
+        </Modal>
       </Row>
     </>
   );
 };
+
 export default ProductCard;
