@@ -1786,6 +1786,27 @@ const CreateProduct = () => {
                 <TextArea rows={4} placeholder="Nhập mô tả sản phẩm..." />
               </Form.Item>
             </div>
+            <div className="rules">
+              <span>Quy định sản phẩm:</span>
+              <Form.Item
+                name={"rules"}
+                rules={[{ required: true, message: "Không được để trống!" }]}
+              >
+                <TextArea rows={4} placeholder="Nhập quy định sản phẩm..." />
+              </Form.Item>
+            </div>
+            <div className="product__code">
+              <span>Số seri sản phẩm:</span>
+              <Form.Item
+                name={"serialCode"}
+                rules={[{ required: true, message: "Không được để trống!" }]}
+              >
+                <Input
+                  style={{ width: "30%" }}
+                  placeholder="Nhập số seri sản phẩm..."
+                />
+              </Form.Item>
+            </div>
             <Form.Item name={"productCondition"} style={{ marginLeft: "16px" }}>
               <p style={{ fontWeight: "bold" }}>Tình trạng sản phẩm:</p>
               <Slider
@@ -3432,7 +3453,6 @@ const CreateProduct = () => {
                 <div className="rent-price">
                   <div style={{ display: "flex" }}>
                     <Form.Item
-                      label="Số ngày 1"
                       name="mockDay"
                       style={{ width: "250px", marginRight: "5px" }}
                       rules={[
@@ -3450,11 +3470,12 @@ const CreateProduct = () => {
                         type="number"
                         suffix="Ngày"
                         style={{ width: "162px" }}
+                        defaultValue={"1"}
                       />
                     </Form.Item>
 
                     <Form.Item
-                      label="Giá thuê 1"
+                      label="Giá thuê "
                       name="rentPrice"
                       style={{ width: "235px" }}
                       rules={[
