@@ -12,13 +12,6 @@ const RevenueTable = () => {
   const productownerId = localStorage.getItem("productownerId");
   const fetchRevenueProduct = async () => {
     try {
-      const responseProductId = await axios.get(
-        "http://fashionrental.online:8080/product/getproducts/" + productownerId
-      );
-      const productList = responseProductId.data.map(
-        (product) => product.productID
-      );
-      console.log("Product ID List:", productList);
       const responseOrderSaleCompleted = await axios.get(
         "http://fashionrental.online:8080/orderbuy/po/completed/" +
           productownerId
