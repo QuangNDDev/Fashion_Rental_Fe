@@ -120,6 +120,8 @@
 .basic-information--bag {
   background-color: #e7e9eb;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .container-bag {
@@ -128,26 +130,36 @@
 }
 
 .field__bag--1 {
-  display: grid;
+  flex-shrink: 0;
 }
 
 .field__bag--2 {
+  flex-shrink: 0;
+}
+
+.field__bag--3 {
   display: grid;
 }
 .basic-information--glasses {
   /* display: flex; */
   background-color: #e7e9eb;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .basic-information--earring {
   background-color: #e7e9eb;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .basic-information--shoe {
   background-color: #e7e9eb;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .basic-information--step3 {
@@ -163,10 +175,13 @@
 }
 
 .field__glass--1 {
-  display: grid;
+  flex-shrink: 0;
 }
 
 .field__glass--2 {
+  flex-shrink: 0;
+}
+.field__glass--3 {
   display: grid;
 }
 
@@ -176,10 +191,14 @@
 }
 
 .field__shoe--1 {
-  display: grid;
+  flex-shrink: 0;
 }
 
 .field__shoe--2 {
+  flex-shrink: 0;
+}
+
+.field__shoe--3 {
   display: grid;
 }
 
@@ -189,15 +208,19 @@
 }
 
 .field__earring--1 {
-  display: grid;
+  flex-shrink: 0;
 }
 .field__earring--2 {
+  flex-shrink: 0;
+}
+.field__earring--3 {
   display: grid;
 }
-
 .basic-information--hat {
   background-color: #e7e9eb;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .container-hat {
@@ -205,10 +228,14 @@
   justify-content: space-around;
 }
 .field__hat--1 {
-  display: grid;
+  flex-shrink: 0;
 }
 
 .field__hat--2 {
+  flex-shrink: 0;
+}
+
+.field__hat--3 {
   display: grid;
 }
 
