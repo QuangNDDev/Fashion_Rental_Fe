@@ -141,9 +141,23 @@ const ProductCard = () => {
   useEffect(() => {
     fetchProducts();
   }, []);
-
-  const showModalFeedback = () => {
+  const [productFeedback, setProductFeedback] = useState([]);
+  const showModalFeedback = (productData) => {
     setShowFullFeedback(true);
+    const fetchProductFeedback = async () => {
+      try {
+        const response = await axios.get(
+          "http://fashionrental.online:8080/feedback/" +
+            productData.productID
+        );
+        setProductFeedback(response.data);
+        console.log("Product Feedback",response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProductFeedback();
+
   };
 
   const showModal = (productData) => {
@@ -331,6 +345,36 @@ const ProductCard = () => {
     };
     return categoryMappings[categoryName] || categoryName;
   };
+  const feedbackElements = productFeedback.map((feedback, index) => (
+    <div key={index} style={{ marginBottom: "20px"}}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "10px",
+        }}
+      >
+        <img
+          src={feedback.customerDTO.avatarUrl}
+          alt="Avatar"
+          style={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            marginRight: "10px",
+          }}
+        />
+        <div>
+          <p style={{ fontWeight: "bold", margin: "0" }}>
+            {feedback.customerDTO.fullName}
+          </p>
+          <p style={{ color: "#888", margin: "0" }}>{feedback.createdDate}</p>
+          <Rate allowHalf defaultValue={feedback.ratingPoint} disabled />
+        </div>
+      </div>
+      <p>{feedback.description}</p>
+    </div>
+  ));
 
   return (
     <>
@@ -396,7 +440,7 @@ const ProductCard = () => {
                   }}
                 />,
                 <EyeOutlined key="edit" onClick={() => showModal(product)} />,
-                <CommentOutlined onClick={showModalFeedback} />,
+                <CommentOutlined onClick={() => showModalFeedback(product)} />,
               ]}
             >
               <div
@@ -969,41 +1013,15 @@ const ProductCard = () => {
             </Form.Item>
           </Form>
         </Modal>
+        
         <Modal
-          title={<p style={{ textAlign: "center" }}>Bình Luận</p>}
+          title={<p style={{ textAlign: "center" }}>Nhận xét</p>}
           open={showFullFeedback}
           onCancel={handleModalCloseFeedback}
           footer={false}
           width={1000}
         >
-          <div style={{ marginBottom: "20px" }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "10px",
-              }}
-            >
-              <img
-                src="https://rukminim2.flixcart.com/image/850/1000/l3vxbbk0/cut-out/y/r/n/4-doremon01-yaraprint-original-imagewf2hdhjwzbg.jpeg?q=20"
-                alt="Avatar"
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                  marginRight: "10px",
-                }}
-              />
-              <div>
-                <p style={{ fontWeight: "bold", margin: "0" }}>
-                  Nguyễn Đăng Quang
-                </p>
-                <p style={{ color: "#888", margin: "0" }}>01/12/2023</p>
-                <Rate allowHalf defaultValue={2.7} disabled />
-              </div>
-            </div>
-            <p>đẹp quá</p>
-          </div>
+          {productFeedback.length > 0 ? feedbackElements : <p>Chưa có nhận xét nào.</p>}
         </Modal>
       </Row>
     </>
