@@ -1759,9 +1759,9 @@ const CreateProduct = () => {
   const [showAdditionalDetails, setShowAdditionalDetails] = useState(false);
   const handleToggleAdditionalDetails = (visible) => {
     setShowAdditionalDetails(visible);
-    if (!visible) {
-      form.resetFields(["detailName", "value"]);
-    }
+    // if (!visible) {
+    //   form.resetFields(["detailName", "value"]);
+    // }
   };
   // ===================================================
   return (
@@ -2537,56 +2537,23 @@ const CreateProduct = () => {
                     />
                   </Form.Item>
                 </div>
-              </div>
-              {/* ====================================================== */}
-              <span className="text">Thêm chi tiết mới: </span>
-              <button
-                onClick={() =>
-                  handleToggleAdditionalDetails(!showAdditionalDetails)
-                }
-              >
-                {showAdditionalDetails
-                  ? "Ẩn chi tiết mới"
-                  : "Hiển thị chi tiết mới"}
-              </button>
-              {showAdditionalDetails && (
-                <div className="detail-field">
-                  <div style={{ display: "flex" }}>
-                    <Form.Item
-                      label="Tên chi tiết"
-                      name="detailName"
-                      style={{ width: "250px" }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Không được để trống!",
-                        },
-                      ]}
-                    >
-                      <Input style={{ width: "162px" }} />
-                    </Form.Item>
-
-                    <Form.Item
-                      label="Giá trị"
-                      name="value"
-                      style={{ width: "250px", marginLeft: "8px" }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Không được để trống!",
-                        },
-                      ]}
-                    >
-                      <Input style={{ width: "162px" }} />
-                    </Form.Item>
-                  </div>
-                  {additionalDetailFields.map((field, index) => (
-                    <div key={index} className="additional-detail-field">
-                      <Space style={{ display: "flex" }}>
+                <div className="field__bag--3">
+                  <p className="text">Thêm chi tiết mới: </p>
+                  <Button
+                    onClick={() =>
+                      handleToggleAdditionalDetails(!showAdditionalDetails)
+                    }
+                  >
+                    {showAdditionalDetails
+                      ? "Ẩn chi tiết mới"
+                      : "Hiển thị chi tiết mới"}
+                  </Button>
+                  {showAdditionalDetails && (
+                    <div className="detail-field">
+                      <div style={{ display: "flex" }}>
                         <Form.Item
-                          label={`Tên chi tiết`}
+                          name="detailName"
                           style={{ width: "250px" }}
-                          name={`detailName${index + 2}`}
                           rules={[
                             {
                               required: true,
@@ -2594,13 +2561,13 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
+                          <p className="text">Tên chi tiết</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
 
                         <Form.Item
-                          label={`Giá trị `}
-                          style={{ width: "250px" }}
-                          name={`value${index + 2}`}
+                          name="value"
+                          style={{ width: "250px", marginLeft: "8px" }}
                           rules={[
                             {
                               required: true,
@@ -2608,42 +2575,75 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
+                          <p className="text">Giá trị</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
-                      </Space>
+                      </div>
+                      {additionalDetailFields.map((field, index) => (
+                        <div key={index} className="additional-detail-field">
+                          <Space style={{ display: "flex" }}>
+                            <Form.Item
+                              style={{ width: "250px" }}
+                              name={`detailName${index + 2}`}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Không được để trống!",
+                                },
+                              ]}
+                            >
+                              <p className="text">Tên chi tiết</p>
+                              <Input style={{ width: "162px" }} />
+                            </Form.Item>
+
+                            <Form.Item
+                              style={{ width: "250px" }}
+                              name={`value${index + 2}`}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Không được để trống!",
+                                },
+                              ]}
+                            >
+                              <p className="text">Giá trị</p>
+                              <Input style={{ width: "162px" }} />
+                            </Form.Item>
+                          </Space>
+                        </div>
+                      ))}
+                      <div style={{ display: "flex", marginLeft: "150px" }}>
+                        <Button
+                          type="dashed"
+                          onClick={addDetailField}
+                          style={{
+                            width: "195px",
+                            marginRight: "10px",
+                            transition: "background 0.3s",
+                          }}
+                          className="custom-button"
+                        >
+                          <PlusCircleOutlined />
+                        </Button>
+                        {additionalFields.length > 0 && (
+                          <Button
+                            type="dashed"
+                            onClick={() =>
+                              removeDetailField(additionalFields.length - 1)
+                            }
+                            style={{
+                              width: "50px",
+                            }}
+                            className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
+                          >
+                            <DeleteOutlined />
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                  ))}
-                  <div style={{ display: "flex", marginLeft: "150px" }}>
-                    <Button
-                      type="dashed"
-                      onClick={addDetailField}
-                      style={{
-                        width: "195px",
-                        marginRight: "10px",
-                        transition: "background 0.3s",
-                      }}
-                      className="custom-button"
-                    >
-                      <PlusCircleOutlined />
-                    </Button>
-                    {additionalFields.length > 0 && (
-                      <Button
-                        type="dashed"
-                        onClick={() =>
-                          removeDetailField(additionalFields.length - 1)
-                        }
-                        style={{
-                          width: "50px",
-                        }}
-                        className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
-                      >
-                        <DeleteOutlined />
-                      </Button>
-                    )}
-                  </div>
+                  )}
                 </div>
-              )}
-              {/* ====================================================== */}
+              </div>
             </div>
           )}
           {category === 5 && (
@@ -2897,56 +2897,23 @@ const CreateProduct = () => {
                     />
                   </Form.Item>
                 </div>
-              </div>
-              {/* ====================================================== */}
-              <span className="text">Thêm chi tiết mới: </span>
-              <button
-                onClick={() =>
-                  handleToggleAdditionalDetails(!showAdditionalDetails)
-                }
-              >
-                {showAdditionalDetails
-                  ? "Ẩn chi tiết mới"
-                  : "Hiển thị chi tiết mới"}
-              </button>
-              {showAdditionalDetails && (
-                <div className="detail-field">
-                  <div style={{ display: "flex" }}>
-                    <Form.Item
-                      label="Tên chi tiết"
-                      name="detailName"
-                      style={{ width: "250px" }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Không được để trống!",
-                        },
-                      ]}
-                    >
-                      <Input style={{ width: "162px" }} />
-                    </Form.Item>
-
-                    <Form.Item
-                      label="Giá trị"
-                      name="value"
-                      style={{ width: "250px", marginLeft: "8px" }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Không được để trống!",
-                        },
-                      ]}
-                    >
-                      <Input style={{ width: "162px" }} />
-                    </Form.Item>
-                  </div>
-                  {additionalDetailFields.map((field, index) => (
-                    <div key={index} className="additional-detail-field">
-                      <Space style={{ display: "flex" }}>
+                <div className="field__glass--3">
+                  <p className="text">Thêm chi tiết mới: </p>
+                  <Button
+                    onClick={() =>
+                      handleToggleAdditionalDetails(!showAdditionalDetails)
+                    }
+                  >
+                    {showAdditionalDetails
+                      ? "Ẩn chi tiết mới"
+                      : "Hiển thị chi tiết mới"}
+                  </Button>
+                  {showAdditionalDetails && (
+                    <div className="detail-field">
+                      <div style={{ display: "flex" }}>
                         <Form.Item
-                          label={`Tên chi tiết`}
+                          name="detailName"
                           style={{ width: "250px" }}
-                          name={`detailName${index + 2}`}
                           rules={[
                             {
                               required: true,
@@ -2954,13 +2921,13 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
+                          <p className="text">Tên chi tiết</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
 
                         <Form.Item
-                          label={`Giá trị `}
-                          style={{ width: "250px" }}
-                          name={`value${index + 2}`}
+                          name="value"
+                          style={{ width: "250px", marginLeft: "8px" }}
                           rules={[
                             {
                               required: true,
@@ -2968,42 +2935,75 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
+                          <p className="text">Giá trị</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
-                      </Space>
+                      </div>
+                      {additionalDetailFields.map((field, index) => (
+                        <div key={index} className="additional-detail-field">
+                          <Space style={{ display: "flex" }}>
+                            <Form.Item
+                              style={{ width: "250px" }}
+                              name={`detailName${index + 2}`}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Không được để trống!",
+                                },
+                              ]}
+                            >
+                              <p className="text">Tên chi tiết</p>
+                              <Input style={{ width: "162px" }} />
+                            </Form.Item>
+
+                            <Form.Item
+                              style={{ width: "250px" }}
+                              name={`value${index + 2}`}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Không được để trống!",
+                                },
+                              ]}
+                            >
+                              <p className="text">Giá trị</p>
+                              <Input style={{ width: "162px" }} />
+                            </Form.Item>
+                          </Space>
+                        </div>
+                      ))}
+                      <div style={{ display: "flex", marginLeft: "150px" }}>
+                        <Button
+                          type="dashed"
+                          onClick={addDetailField}
+                          style={{
+                            width: "195px",
+                            marginRight: "10px",
+                            transition: "background 0.3s",
+                          }}
+                          className="custom-button"
+                        >
+                          <PlusCircleOutlined />
+                        </Button>
+                        {additionalFields.length > 0 && (
+                          <Button
+                            type="dashed"
+                            onClick={() =>
+                              removeDetailField(additionalFields.length - 1)
+                            }
+                            style={{
+                              width: "50px",
+                            }}
+                            className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
+                          >
+                            <DeleteOutlined />
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                  ))}
-                  <div style={{ display: "flex", marginLeft: "150px" }}>
-                    <Button
-                      type="dashed"
-                      onClick={addDetailField}
-                      style={{
-                        width: "195px",
-                        marginRight: "10px",
-                        transition: "background 0.3s",
-                      }}
-                      className="custom-button"
-                    >
-                      <PlusCircleOutlined />
-                    </Button>
-                    {additionalFields.length > 0 && (
-                      <Button
-                        type="dashed"
-                        onClick={() =>
-                          removeDetailField(additionalFields.length - 1)
-                        }
-                        style={{
-                          width: "50px",
-                        }}
-                        className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
-                      >
-                        <DeleteOutlined />
-                      </Button>
-                    )}
-                  </div>
+                  )}
                 </div>
-              )}
-              {/* ====================================================== */}
+              </div>
             </div>
           )}
 
@@ -3013,13 +3013,13 @@ const CreateProduct = () => {
 
               <div className="container-erring">
                 <div className="field__earring--1">
-                  <span className="text">Thương hiệu:</span>
                   <Form.Item
                     name={"brandNameJewelry"}
                     rules={[
                       { required: true, message: "Không được để trống!" },
                     ]}
                   >
+                    <p className="text">Thương hiệu</p>
                     <Select
                       style={{
                         width: 300,
@@ -3074,13 +3074,13 @@ const CreateProduct = () => {
                     />
                   </Form.Item>
 
-                  <span className="text">Kiểu trang sức:</span>
                   <Form.Item
                     name={"typeJewelrys"}
                     rules={[
                       { required: true, message: "Không được để trống!" },
                     ]}
                   >
+                    <p className="text">Kiểu trang sức:</p>
                     <Select
                       style={{
                         width: 300,
@@ -3136,13 +3136,13 @@ const CreateProduct = () => {
                   </Form.Item>
                 </div>
                 <div className="field__earring--2">
-                  <span className="text">Dịp:</span>
                   <Form.Item
                     name={"occasion"}
                     rules={[
                       { required: true, message: "Không được để trống!" },
                     ]}
                   >
+                    <p className="text">Dịp:</p>
                     <Select
                       style={{
                         width: 300,
@@ -3197,13 +3197,13 @@ const CreateProduct = () => {
                     />
                   </Form.Item>
 
-                  <span className="text">Xuất xứ:</span>
                   <Form.Item
                     name={"originJewelry"}
                     rules={[
                       { required: true, message: "Không được để trống!" },
                     ]}
                   >
+                    <p className="text">Xuất xứ:</p>
                     <Select
                       style={{
                         width: 300,
@@ -3258,112 +3258,115 @@ const CreateProduct = () => {
                     />
                   </Form.Item>
                 </div>
+                <div className="field__earring--3">
+                  <p className="text">Thêm chi tiết mới: </p>
+                  <Button
+                    onClick={() =>
+                      handleToggleAdditionalDetails(!showAdditionalDetails)
+                    }
+                  >
+                    {showAdditionalDetails
+                      ? "Ẩn chi tiết mới"
+                      : "Hiển thị chi tiết mới"}
+                  </Button>
+                  {showAdditionalDetails && (
+                    <div className="detail-field">
+                      <div style={{ display: "flex" }}>
+                        <Form.Item
+                          name="detailName"
+                          style={{ width: "250px" }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Không được để trống!",
+                            },
+                          ]}
+                        >
+                          <p className="text">Tên chi tiết</p>
+                          <Input style={{ width: "162px" }} />
+                        </Form.Item>
+
+                        <Form.Item
+                          name="value"
+                          style={{ width: "250px", marginLeft: "8px" }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Không được để trống!",
+                            },
+                          ]}
+                        >
+                          <p className="text">Giá trị</p>
+                          <Input style={{ width: "162px" }} />
+                        </Form.Item>
+                      </div>
+                      {additionalDetailFields.map((field, index) => (
+                        <div key={index} className="additional-detail-field">
+                          <Space style={{ display: "flex" }}>
+                            <Form.Item
+                              style={{ width: "250px" }}
+                              name={`detailName${index + 2}`}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Không được để trống!",
+                                },
+                              ]}
+                            >
+                              <p className="text">Tên chi tiết</p>
+                              <Input style={{ width: "162px" }} />
+                            </Form.Item>
+
+                            <Form.Item
+                              style={{ width: "250px" }}
+                              name={`value${index + 2}`}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Không được để trống!",
+                                },
+                              ]}
+                            >
+                              <p className="text">Giá trị</p>
+                              <Input style={{ width: "162px" }} />
+                            </Form.Item>
+                          </Space>
+                        </div>
+                      ))}
+                      <div style={{ display: "flex", marginLeft: "150px" }}>
+                        <Button
+                          type="dashed"
+                          onClick={addDetailField}
+                          style={{
+                            width: "195px",
+                            marginRight: "10px",
+                            transition: "background 0.3s",
+                          }}
+                          className="custom-button"
+                        >
+                          <PlusCircleOutlined />
+                        </Button>
+                        {additionalFields.length > 0 && (
+                          <Button
+                            type="dashed"
+                            onClick={() =>
+                              removeDetailField(additionalFields.length - 1)
+                            }
+                            style={{
+                              width: "50px",
+                            }}
+                            className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
+                          >
+                            <DeleteOutlined />
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
               {/* ====================================================== */}
-              <span className="text">Thêm chi tiết mới: </span>
-              <button
-                onClick={() =>
-                  handleToggleAdditionalDetails(!showAdditionalDetails)
-                }
-              >
-                {showAdditionalDetails
-                  ? "Ẩn chi tiết mới"
-                  : "Hiển thị chi tiết mới"}
-              </button>
-              {showAdditionalDetails && (
-                <div className="detail-field">
-                  <div style={{ display: "flex" }}>
-                    <Form.Item
-                      label="Tên chi tiết"
-                      name="detailName"
-                      style={{ width: "250px" }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Không được để trống!",
-                        },
-                      ]}
-                    >
-                      <Input style={{ width: "162px" }} />
-                    </Form.Item>
 
-                    <Form.Item
-                      label="Giá trị"
-                      name="value"
-                      style={{ width: "250px", marginLeft: "8px" }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Không được để trống!",
-                        },
-                      ]}
-                    >
-                      <Input style={{ width: "162px" }} />
-                    </Form.Item>
-                  </div>
-                  {additionalDetailFields.map((field, index) => (
-                    <div key={index} className="additional-detail-field">
-                      <Space style={{ display: "flex" }}>
-                        <Form.Item
-                          label={`Tên chi tiết`}
-                          style={{ width: "250px" }}
-                          name={`detailName${index + 2}`}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Không được để trống!",
-                            },
-                          ]}
-                        >
-                          <Input style={{ width: "162px" }} />
-                        </Form.Item>
-
-                        <Form.Item
-                          label={`Giá trị `}
-                          style={{ width: "250px" }}
-                          name={`value${index + 2}`}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Không được để trống!",
-                            },
-                          ]}
-                        >
-                          <Input style={{ width: "162px" }} />
-                        </Form.Item>
-                      </Space>
-                    </div>
-                  ))}
-                  <div style={{ display: "flex", marginLeft: "150px" }}>
-                    <Button
-                      type="dashed"
-                      onClick={addDetailField}
-                      style={{
-                        width: "195px",
-                        marginRight: "10px",
-                        transition: "background 0.3s",
-                      }}
-                      className="custom-button"
-                    >
-                      <PlusCircleOutlined />
-                    </Button>
-                    {additionalFields.length > 0 && (
-                      <Button
-                        type="dashed"
-                        onClick={() =>
-                          removeDetailField(additionalFields.length - 1)
-                        }
-                        style={{
-                          width: "50px",
-                        }}
-                        className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
-                      >
-                        <DeleteOutlined />
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              )}
               {/* ====================================================== */}
             </div>
           )}
@@ -3618,56 +3621,23 @@ const CreateProduct = () => {
                     />
                   </Form.Item>
                 </div>
-              </div>
-              {/* ====================================================== */}
-              <span className="text">Thêm chi tiết mới: </span>
-              <button
-                onClick={() =>
-                  handleToggleAdditionalDetails(!showAdditionalDetails)
-                }
-              >
-                {showAdditionalDetails
-                  ? "Ẩn chi tiết mới"
-                  : "Hiển thị chi tiết mới"}
-              </button>
-              {showAdditionalDetails && (
-                <div className="detail-field">
-                  <div style={{ display: "flex" }}>
-                    <Form.Item
-                      label="Tên chi tiết"
-                      name="detailName"
-                      style={{ width: "250px" }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Không được để trống!",
-                        },
-                      ]}
-                    >
-                      <Input style={{ width: "162px" }} />
-                    </Form.Item>
-
-                    <Form.Item
-                      label="Giá trị"
-                      name="value"
-                      style={{ width: "250px", marginLeft: "8px" }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Không được để trống!",
-                        },
-                      ]}
-                    >
-                      <Input style={{ width: "162px" }} />
-                    </Form.Item>
-                  </div>
-                  {additionalDetailFields.map((field, index) => (
-                    <div key={index} className="additional-detail-field">
-                      <Space style={{ display: "flex" }}>
+                <div className="field__shoe--3">
+                  <p className="text">Thêm chi tiết mới: </p>
+                  <Button
+                    onClick={() =>
+                      handleToggleAdditionalDetails(!showAdditionalDetails)
+                    }
+                  >
+                    {showAdditionalDetails
+                      ? "Ẩn chi tiết mới"
+                      : "Hiển thị chi tiết mới"}
+                  </Button>
+                  {showAdditionalDetails && (
+                    <div className="detail-field">
+                      <div style={{ display: "flex" }}>
                         <Form.Item
-                          label={`Tên chi tiết`}
+                          name="detailName"
                           style={{ width: "250px" }}
-                          name={`detailName${index + 2}`}
                           rules={[
                             {
                               required: true,
@@ -3675,13 +3645,13 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
+                          <p className="text">Tên chi tiết</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
 
                         <Form.Item
-                          label={`Giá trị `}
-                          style={{ width: "250px" }}
-                          name={`value${index + 2}`}
+                          name="value"
+                          style={{ width: "250px", marginLeft: "8px" }}
                           rules={[
                             {
                               required: true,
@@ -3689,41 +3659,75 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
+                          <p className="text">Giá trị</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
-                      </Space>
+                      </div>
+                      {additionalDetailFields.map((field, index) => (
+                        <div key={index} className="additional-detail-field">
+                          <Space style={{ display: "flex" }}>
+                            <Form.Item
+                              style={{ width: "250px" }}
+                              name={`detailName${index + 2}`}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Không được để trống!",
+                                },
+                              ]}
+                            >
+                              <p className="text">Tên chi tiết</p>
+                              <Input style={{ width: "162px" }} />
+                            </Form.Item>
+
+                            <Form.Item
+                              style={{ width: "250px" }}
+                              name={`value${index + 2}`}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Không được để trống!",
+                                },
+                              ]}
+                            >
+                              <p className="text">Giá trị</p>
+                              <Input style={{ width: "162px" }} />
+                            </Form.Item>
+                          </Space>
+                        </div>
+                      ))}
+                      <div style={{ display: "flex", marginLeft: "150px" }}>
+                        <Button
+                          type="dashed"
+                          onClick={addDetailField}
+                          style={{
+                            width: "195px",
+                            marginRight: "10px",
+                            transition: "background 0.3s",
+                          }}
+                          className="custom-button"
+                        >
+                          <PlusCircleOutlined />
+                        </Button>
+                        {additionalFields.length > 0 && (
+                          <Button
+                            type="dashed"
+                            onClick={() =>
+                              removeDetailField(additionalFields.length - 1)
+                            }
+                            style={{
+                              width: "50px",
+                            }}
+                            className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
+                          >
+                            <DeleteOutlined />
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                  ))}
-                  <div style={{ display: "flex", marginLeft: "150px" }}>
-                    <Button
-                      type="dashed"
-                      onClick={addDetailField}
-                      style={{
-                        width: "195px",
-                        marginRight: "10px",
-                        transition: "background 0.3s",
-                      }}
-                      className="custom-button"
-                    >
-                      <PlusCircleOutlined />
-                    </Button>
-                    {additionalFields.length > 0 && (
-                      <Button
-                        type="dashed"
-                        onClick={() =>
-                          removeDetailField(additionalFields.length - 1)
-                        }
-                        style={{
-                          width: "50px",
-                        }}
-                        className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
-                      >
-                        <DeleteOutlined />
-                      </Button>
-                    )}
-                  </div>
+                  )}
                 </div>
-              )}
+              </div>
               {/* ====================================================== */}
             </div>
           )}
@@ -3978,52 +3982,23 @@ const CreateProduct = () => {
                     />
                   </Form.Item>
                 </div>
-              </div>
-              {/* ====================================================== */}
-              <span className="text">Thêm chi tiết mới: </span>
-              <button onClick={handleToggleAdditionalDetails}>
-                {showAdditionalDetails
-                  ? "Ẩn chi tiết mới"
-                  : "Thêm chi tiết mới"}
-              </button>
-              {showAdditionalDetails && (
-                <div className="detail-field">
-                  <div style={{ display: "flex" }}>
-                    <Form.Item
-                      label="Tên chi tiết"
-                      name="detailName"
-                      style={{ width: "250px" }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Không được để trống!",
-                        },
-                      ]}
-                    >
-                      <Input style={{ width: "162px" }} />
-                    </Form.Item>
-
-                    <Form.Item
-                      label="Giá trị"
-                      name="value"
-                      style={{ width: "250px", marginLeft: "8px" }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Không được để trống!",
-                        },
-                      ]}
-                    >
-                      <Input style={{ width: "162px" }} />
-                    </Form.Item>
-                  </div>
-                  {additionalDetailFields.map((field, index) => (
-                    <div key={index} className="additional-detail-field">
-                      <Space style={{ display: "flex" }}>
+                <div className="field__hat--3">
+                  <p className="text">Thêm chi tiết mới: </p>
+                  <Button
+                    onClick={() =>
+                      handleToggleAdditionalDetails(!showAdditionalDetails)
+                    }
+                  >
+                    {showAdditionalDetails
+                      ? "Ẩn chi tiết mới"
+                      : "Hiển thị chi tiết mới"}
+                  </Button>
+                  {showAdditionalDetails && (
+                    <div className="detail-field">
+                      <div style={{ display: "flex" }}>
                         <Form.Item
-                          label={`Tên chi tiết`}
+                          name="detailName"
                           style={{ width: "250px" }}
-                          name={`detailName${index + 2}`}
                           rules={[
                             {
                               required: true,
@@ -4031,13 +4006,13 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
+                          <p className="text">Tên chi tiết</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
 
                         <Form.Item
-                          label={`Giá trị `}
-                          style={{ width: "250px" }}
-                          name={`value${index + 2}`}
+                          name="value"
+                          style={{ width: "250px", marginLeft: "8px" }}
                           rules={[
                             {
                               required: true,
@@ -4045,42 +4020,75 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
+                          <p className="text">Giá trị</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
-                      </Space>
+                      </div>
+                      {additionalDetailFields.map((field, index) => (
+                        <div key={index} className="additional-detail-field">
+                          <Space style={{ display: "flex" }}>
+                            <Form.Item
+                              style={{ width: "250px" }}
+                              name={`detailName${index + 2}`}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Không được để trống!",
+                                },
+                              ]}
+                            >
+                              <p className="text">Tên chi tiết</p>
+                              <Input style={{ width: "162px" }} />
+                            </Form.Item>
+
+                            <Form.Item
+                              style={{ width: "250px" }}
+                              name={`value${index + 2}`}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Không được để trống!",
+                                },
+                              ]}
+                            >
+                              <p className="text">Giá trị</p>
+                              <Input style={{ width: "162px" }} />
+                            </Form.Item>
+                          </Space>
+                        </div>
+                      ))}
+                      <div style={{ display: "flex", marginLeft: "150px" }}>
+                        <Button
+                          type="dashed"
+                          onClick={addDetailField}
+                          style={{
+                            width: "195px",
+                            marginRight: "10px",
+                            transition: "background 0.3s",
+                          }}
+                          className="custom-button"
+                        >
+                          <PlusCircleOutlined />
+                        </Button>
+                        {additionalFields.length > 0 && (
+                          <Button
+                            type="dashed"
+                            onClick={() =>
+                              removeDetailField(additionalFields.length - 1)
+                            }
+                            style={{
+                              width: "50px",
+                            }}
+                            className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
+                          >
+                            <DeleteOutlined />
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                  ))}
-                  <div style={{ display: "flex", marginLeft: "150px" }}>
-                    <Button
-                      type="dashed"
-                      onClick={addDetailField}
-                      style={{
-                        width: "195px",
-                        marginRight: "10px",
-                        transition: "background 0.3s",
-                      }}
-                      className="custom-button"
-                    >
-                      <PlusCircleOutlined />
-                    </Button>
-                    {additionalFields.length > 0 && (
-                      <Button
-                        type="dashed"
-                        onClick={() =>
-                          removeDetailField(additionalFields.length - 1)
-                        }
-                        style={{
-                          width: "50px",
-                        }}
-                        className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
-                      >
-                        <DeleteOutlined />
-                      </Button>
-                    )}
-                  </div>
+                  )}
                 </div>
-              )}
-              {/* ====================================================== */}
+              </div>
             </div>
           )}
 
