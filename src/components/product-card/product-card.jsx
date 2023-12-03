@@ -142,22 +142,21 @@ const ProductCard = () => {
     fetchProducts();
   }, []);
   const [productFeedback, setProductFeedback] = useState([]);
+  const [productFeedbackImg, setProductFeedbackImg] = useState([]);
   const showModalFeedback = (productData) => {
     setShowFullFeedback(true);
     const fetchProductFeedback = async () => {
       try {
         const response = await axios.get(
-          "http://fashionrental.online:8080/feedback/" +
-            productData.productID
+          "http://fashionrental.online:8080/feedback/" + productData.productID
         );
         setProductFeedback(response.data);
-        console.log("Product Feedback",response.data);
+        console.log("Product Feedback", response.data);
       } catch (error) {
         console.error(error);
       }
     };
     fetchProductFeedback();
-
   };
 
   const showModal = (productData) => {
@@ -346,7 +345,7 @@ const ProductCard = () => {
     return categoryMappings[categoryName] || categoryName;
   };
   const feedbackElements = productFeedback.map((feedback, index) => (
-    <div key={index} style={{ marginBottom: "20px"}}>
+    <div key={index} style={{ marginBottom: "20px" }}>
       <div
         style={{
           display: "flex",
@@ -372,7 +371,24 @@ const ProductCard = () => {
           <Rate allowHalf defaultValue={feedback.ratingPoint} disabled />
         </div>
       </div>
-      <p>{feedback.description}</p>
+      <div>
+        <div>
+          <p>{feedback.description}</p>
+        </div>
+        {feedback.imgDTOs && feedback.imgDTOs.length > 0 && (
+        <div>
+          <h5>Hình ảnh:</h5>
+          {feedback.imgDTOs.map((imgSrc, index) => (
+            <Image
+              key={index}
+              width={70}
+              src={imgSrc.imgUrl}
+              alt={`Hình ảnh ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
+      </div>
     </div>
   ));
 
@@ -1013,7 +1029,7 @@ const ProductCard = () => {
             </Form.Item>
           </Form>
         </Modal>
-        
+
         <Modal
           title={<p style={{ textAlign: "center" }}>Nhận xét</p>}
           open={showFullFeedback}
@@ -1021,7 +1037,11 @@ const ProductCard = () => {
           footer={false}
           width={1000}
         >
-          {productFeedback.length > 0 ? feedbackElements : <p>Chưa có nhận xét nào.</p>}
+          {productFeedback.length > 0 ? (
+            feedbackElements
+          ) : (
+            <p>Chưa có nhận xét nào.</p>
+          )}
         </Modal>
       </Row>
     </>
