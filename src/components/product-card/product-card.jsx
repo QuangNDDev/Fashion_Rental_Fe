@@ -411,7 +411,7 @@ const ProductCard = () => {
               bordered={true}
               style={{
                 width: 230,
-                position: "relative", // Để Badge.Ribbon có thể sử dụng position: absolute
+                position: "relative",
               }}
               cover={
                 <div
