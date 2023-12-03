@@ -417,7 +417,6 @@ const CreateProduct = () => {
 
           // Reset form fields
           form.resetFields();
-
           console.log("Registration successful", response.data);
           const detailName = [];
           const value = [];
@@ -429,24 +428,28 @@ const CreateProduct = () => {
               value.push(values[key]);
             }
           }
-          if (detailName.length > 0 && value.length > 0) {
-            const formDetail = {
+          const combinedDetails = [];
+          for (let i = 0; i < Math.min(detailName.length, value.length); i++) {
+            const detailObject = {
               productID: response.data.productID,
-              detailName: detailName,
-              value: value,
+              detailName: detailName[i],
+              value: value[i],
             };
-            console.log("detail data:", formDetail);
-            try {
-              const detailResponse = await axios.post(
-                "http://fashionrental.online:8080/productdetail",
-                formDetail
-              );
+            combinedDetails.push(detailObject);
+          }
+          console.log("Combined Details:", combinedDetails);
+          if (detailName.length > 0 && value.length > 0) {
+          try {
+            const detailResponse = await axios.post(
+              "http://fashionrental.online:8080/productdetail",
+              combinedDetails
+            );
 
-              console.log("Detail product Success!!");
-              console.log(detailResponse.data);
-            } catch (error) {
-              console.error("Error detail product:", error);
-            }
+            console.log("Detail product Success!!");
+            console.log(detailResponse.data);
+          } catch (error) {
+            console.error("Error detail product:", error);
+          }
           } else {
             console.log("Không có dữ liệu trong cả detailName và value.");
           }
@@ -573,6 +576,41 @@ const CreateProduct = () => {
         });
         form.resetFields();
         console.log("Registration successful", response.data);
+        const detailName = [];
+        const value = [];
+
+        for (const key in values) {
+          if (key.startsWith("detailName")) {
+            detailName.push(values[key]);
+          } else if (key.startsWith("value")) {
+            value.push(values[key]);
+          }
+        }
+        const combinedDetails = [];
+        for (let i = 0; i < Math.min(detailName.length, value.length); i++) {
+          const detailObject = {
+            productID: response.data.productID,
+            detailName: detailName[i],
+            value: value[i],
+          };
+          combinedDetails.push(detailObject);
+        }
+        console.log("Combined Details:", combinedDetails);
+        if (detailName.length > 0 && value.length > 0) {
+        try {
+          const detailResponse = await axios.post(
+            "http://fashionrental.online:8080/productdetail",
+            combinedDetails
+          );
+
+          console.log("Detail product Success!!");
+          console.log(detailResponse.data);
+        } catch (error) {
+          console.error("Error detail product:", error);
+        }
+        } else {
+          console.log("Không có dữ liệu trong cả detailName và value.");
+        }
         if (
           response.data.checkType === "RENT" ||
           response.data.checkType === "SALE_RENT"
@@ -680,6 +718,41 @@ const CreateProduct = () => {
         });
         form.resetFields();
         console.log("Registration successful", response.data);
+        const detailName = [];
+        const value = [];
+
+        for (const key in values) {
+          if (key.startsWith("detailName")) {
+            detailName.push(values[key]);
+          } else if (key.startsWith("value")) {
+            value.push(values[key]);
+          }
+        }
+        const combinedDetails = [];
+        for (let i = 0; i < Math.min(detailName.length, value.length); i++) {
+          const detailObject = {
+            productID: response.data.productID,
+            detailName: detailName[i],
+            value: value[i],
+          };
+          combinedDetails.push(detailObject);
+        }
+        console.log("Combined Details:", combinedDetails);
+        if (detailName.length > 0 && value.length > 0) {
+        try {
+          const detailResponse = await axios.post(
+            "http://fashionrental.online:8080/productdetail",
+            combinedDetails
+          );
+
+          console.log("Detail product Success!!");
+          console.log(detailResponse.data);
+        } catch (error) {
+          console.error("Error detail product:", error);
+        }
+        } else {
+          console.log("Không có dữ liệu trong cả detailName và value.");
+        }
         if (
           response.data.checkType === "RENT" ||
           response.data.checkType === "SALE_RENT"
@@ -794,7 +867,41 @@ const CreateProduct = () => {
           form.resetFields();
 
           console.log("Registration successful", response.data);
+          const detailName = [];
+          const value = [];
 
+          for (const key in values) {
+            if (key.startsWith("detailName")) {
+              detailName.push(values[key]);
+            } else if (key.startsWith("value")) {
+              value.push(values[key]);
+            }
+          }
+          const combinedDetails = [];
+          for (let i = 0; i < Math.min(detailName.length, value.length); i++) {
+            const detailObject = {
+              productID: response.data.productID,
+              detailName: detailName[i],
+              value: value[i],
+            };
+            combinedDetails.push(detailObject);
+          }
+          console.log("Combined Details:", combinedDetails);
+          if (detailName.length > 0 && value.length > 0) {
+          try {
+            const detailResponse = await axios.post(
+              "http://fashionrental.online:8080/productdetail",
+              combinedDetails
+            );
+
+            console.log("Detail product Success!!");
+            console.log(detailResponse.data);
+          } catch (error) {
+            console.error("Error detail product:", error);
+          }
+          } else {
+            console.log("Không có dữ liệu trong cả detailName và value.");
+          }
           if (
             response.data.checkType === "RENT" ||
             response.data.checkType === "SALE_RENT"
@@ -918,6 +1025,41 @@ const CreateProduct = () => {
         });
         form.resetFields();
         console.log("Registration successful", response.data);
+        const detailName = [];
+        const value = [];
+
+        for (const key in values) {
+          if (key.startsWith("detailName")) {
+            detailName.push(values[key]);
+          } else if (key.startsWith("value")) {
+            value.push(values[key]);
+          }
+        }
+        const combinedDetails = [];
+        for (let i = 0; i < Math.min(detailName.length, value.length); i++) {
+          const detailObject = {
+            productID: response.data.productID,
+            detailName: detailName[i],
+            value: value[i],
+          };
+          combinedDetails.push(detailObject);
+        }
+        console.log("Combined Details:", combinedDetails);
+        if (detailName.length > 0 && value.length > 0) {
+        try {
+          const detailResponse = await axios.post(
+            "http://fashionrental.online:8080/productdetail",
+            combinedDetails
+          );
+
+          console.log("Detail product Success!!");
+          console.log(detailResponse.data);
+        } catch (error) {
+          console.error("Error detail product:", error);
+        }
+        } else {
+          console.log("Không có dữ liệu trong cả detailName và value.");
+        }
         if (
           response.data.checkType === "RENT" ||
           response.data.checkType === "SALE_RENT"
@@ -1025,6 +1167,41 @@ const CreateProduct = () => {
         });
         form.resetFields();
         console.log("Registration successful", response.data);
+        const detailName = [];
+        const value = [];
+
+        for (const key in values) {
+          if (key.startsWith("detailName")) {
+            detailName.push(values[key]);
+          } else if (key.startsWith("value")) {
+            value.push(values[key]);
+          }
+        }
+        const combinedDetails = [];
+        for (let i = 0; i < Math.min(detailName.length, value.length); i++) {
+          const detailObject = {
+            productID: response.data.productID,
+            detailName: detailName[i],
+            value: value[i],
+          };
+          combinedDetails.push(detailObject);
+        }
+        console.log("Combined Details:", combinedDetails);
+        if (detailName.length > 0 && value.length > 0) {
+        try {
+          const detailResponse = await axios.post(
+            "http://fashionrental.online:8080/productdetail",
+            combinedDetails
+          );
+
+          console.log("Detail product Success!!");
+          console.log(detailResponse.data);
+        } catch (error) {
+          console.error("Error detail product:", error);
+        }
+        } else {
+          console.log("Không có dữ liệu trong cả detailName và value.");
+        }
         if (
           response.data.checkType === "RENT" ||
           response.data.checkType === "SALE_RENT"
