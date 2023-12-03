@@ -14,7 +14,6 @@ const ProductRentOrder = ({ orderID }) => {
   const productownerId = localStorage.getItem("productownerId");
   const idAccount = localStorage.getItem("accountId");
   const [productData, setProductData] = useState([]);
-  const [productOrderData, setProductOrderData] = useState([]);
   const [api, contextHolder] = notification.useNotification();
   const [productImage, setProductImage] = useState();
 
@@ -32,8 +31,10 @@ const ProductRentOrder = ({ orderID }) => {
         "http://fashionrental.online:8080/orderrentdetail/" + orderID
       );
 
-      setProductData(response.data[0].productDTO);
-      console.log("productDTO:", response.data[0].productDTO);
+      const productDTO = response.data.map((item) => item.productDTO);
+      console.log("Order ID:", orderID);
+      setProductData(productDTO);
+      console.log("productDTO:", productDTO);
     } catch (error) {
       console.error(error);
     }
@@ -186,50 +187,53 @@ const ProductRentOrder = ({ orderID }) => {
     <>
       {contextHolder}
       <Row gutter={[16, 16]}>
-        <Col
-          xs={24}
-          sm={12}
-          md={8}
-          lg={6}
-          xl={6}
-          key={productData.id}
-          style={{ paddingTop: 20 }}
-        >
-          <Card
-            bordered={true}
-            style={{
-              width: 230,
-            }}
-            cover={
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <img
-                  alt="example"
-                  src={productData.productAvt}
-                  style={{
-                    height: 150,
-                    width: 200,
-                    marginTop: 5,
-                  }}
-                />
-              </div>
-            }
-            actions={[
-              <EyeOutlined key="edit" onClick={() => showModal(productData)} />,
-            ]}
+      {productData.map((product) => (
+          <Col
+            xs={24}
+            sm={12}
+            md={8}
+            lg={6}
+            xl={6}
+            key={product.id}
+            style={{ paddingTop: 20 }}
           >
-            <Meta
-              title={productData.productName}
-              description={formatPriceWithVND(productData.price)}
-              style={{ textAlign: "center" }}
-            />
-          </Card>
-        </Col>
+            <Card
+              hoverable
+              bordered={true}
+              style={{
+                width: 230,
+              }}
+              cover={
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <img
+                    alt="example"
+                    src={product.productAvt}
+                    style={{
+                      height: 150,
+                      width: 200,
+                      marginTop: 5,
+                    }}
+                  />
+                </div>
+              }
+              actions={[
+                <EyeOutlined key="edit" onClick={() => showModal(product)} />,
+              ]}
+            >
+              <Meta
+                title={product.productName}
+                description={formatPriceWithVND(product.price)}
+                style={{ textAlign: "center" }}
+              />
+            </Card>
+          </Col>
+        ))}
 
         <Modal
           title="Chi tiết sản phẩm"

@@ -32,8 +32,6 @@ const ProductOrderRent = ({ orderID }) => {
       );
 
       const productDTO = response.data.map((item) => item.productDTO);
-
-      console.log("product dto:", productDTO);
       setProductData(productDTO);
       console.log("Product DTO:", productDTO);
     } catch (error) {
