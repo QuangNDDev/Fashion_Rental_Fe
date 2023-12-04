@@ -47,14 +47,12 @@ function VerifyProductOwner() {
       .post("http://fashionrental.online:8080/po/sign-up", createPO)
       .then((response) => {
         if (response.data.message === "Created Fail By Email Already Existed") {
-          // Xử lý trường hợp tài khoản đã tồn tại
           api["error"]({
             message: "Tài Khoản Này Đã Được Xác Thực",
             description: "Thông báo tài khoản đã tồn tại",
             duration: 1500,
           });
         } else {
-          // Xử lý trường hợp tài khoản đã xác thực thành công
           console.log("Staff member created:", response.data);
 
           api["success"]({
@@ -66,7 +64,6 @@ function VerifyProductOwner() {
         }
       })
       .catch((error) => {
-        // Xử lý các lỗi khác
         console.error("Created Fail By Email Already Existed:", error);
         api["error"]({
           message: "Xác Thực Thất Bại!",

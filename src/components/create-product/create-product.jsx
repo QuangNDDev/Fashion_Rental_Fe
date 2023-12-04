@@ -341,7 +341,6 @@ const CreateProduct = () => {
   const inputOriginHatRef = useRef(null);
 
   const categoryTranslations = {
-    Watch: "Đồng Hồ",
     Hat: "Nón",
     Jewelry: "Trang Sức",
     Bag: "Túi",
@@ -398,6 +397,8 @@ const CreateProduct = () => {
         categoryID: checkCategory,
         status: "WAITING",
         productownerID: productownerId,
+        term: values.term,
+        serialNumber: values.serialNumber,
       };
 
       // Check if productownerId is not null before making the API call
@@ -439,17 +440,17 @@ const CreateProduct = () => {
           }
           console.log("Combined Details:", combinedDetails);
           if (detailName.length > 0 && value.length > 0) {
-          try {
-            const detailResponse = await axios.post(
-              "http://fashionrental.online:8080/productdetail",
-              combinedDetails
-            );
+            try {
+              const detailResponse = await axios.post(
+                "http://fashionrental.online:8080/productdetail",
+                combinedDetails
+              );
 
-            console.log("Detail product Success!!");
-            console.log(detailResponse.data);
-          } catch (error) {
-            console.error("Error detail product:", error);
-          }
+              console.log("Detail product Success!!");
+              console.log(detailResponse.data);
+            } catch (error) {
+              console.error("Error detail product:", error);
+            }
           } else {
             console.log("Không có dữ liệu trong cả detailName và value.");
           }
@@ -562,6 +563,8 @@ const CreateProduct = () => {
         categoryID: checkCategory,
         status: "WAITING",
         productownerID: productownerId,
+        term: values.term,
+        serialNumber: values.serialNumber,
       };
 
       try {
@@ -597,17 +600,17 @@ const CreateProduct = () => {
         }
         console.log("Combined Details:", combinedDetails);
         if (detailName.length > 0 && value.length > 0) {
-        try {
-          const detailResponse = await axios.post(
-            "http://fashionrental.online:8080/productdetail",
-            combinedDetails
-          );
+          try {
+            const detailResponse = await axios.post(
+              "http://fashionrental.online:8080/productdetail",
+              combinedDetails
+            );
 
-          console.log("Detail product Success!!");
-          console.log(detailResponse.data);
-        } catch (error) {
-          console.error("Error detail product:", error);
-        }
+            console.log("Detail product Success!!");
+            console.log(detailResponse.data);
+          } catch (error) {
+            console.error("Error detail product:", error);
+          }
         } else {
           console.log("Không có dữ liệu trong cả detailName và value.");
         }
@@ -704,6 +707,8 @@ const CreateProduct = () => {
         categoryID: checkCategory,
         status: "WAITING",
         productownerID: productownerId,
+        term: values.term,
+        serialNumber: values.serialNumber,
       };
 
       try {
@@ -739,17 +744,17 @@ const CreateProduct = () => {
         }
         console.log("Combined Details:", combinedDetails);
         if (detailName.length > 0 && value.length > 0) {
-        try {
-          const detailResponse = await axios.post(
-            "http://fashionrental.online:8080/productdetail",
-            combinedDetails
-          );
+          try {
+            const detailResponse = await axios.post(
+              "http://fashionrental.online:8080/productdetail",
+              combinedDetails
+            );
 
-          console.log("Detail product Success!!");
-          console.log(detailResponse.data);
-        } catch (error) {
-          console.error("Error detail product:", error);
-        }
+            console.log("Detail product Success!!");
+            console.log(detailResponse.data);
+          } catch (error) {
+            console.error("Error detail product:", error);
+          }
         } else {
           console.log("Không có dữ liệu trong cả detailName và value.");
         }
@@ -846,6 +851,8 @@ const CreateProduct = () => {
         categoryID: checkCategory,
         status: "WAITING",
         productownerID: productownerId,
+        term: values.term,
+        serialNumber: values.serialNumber,
       };
 
       // Check if productownerId is not null before making the API call
@@ -888,17 +895,17 @@ const CreateProduct = () => {
           }
           console.log("Combined Details:", combinedDetails);
           if (detailName.length > 0 && value.length > 0) {
-          try {
-            const detailResponse = await axios.post(
-              "http://fashionrental.online:8080/productdetail",
-              combinedDetails
-            );
+            try {
+              const detailResponse = await axios.post(
+                "http://fashionrental.online:8080/productdetail",
+                combinedDetails
+              );
 
-            console.log("Detail product Success!!");
-            console.log(detailResponse.data);
-          } catch (error) {
-            console.error("Error detail product:", error);
-          }
+              console.log("Detail product Success!!");
+              console.log(detailResponse.data);
+            } catch (error) {
+              console.error("Error detail product:", error);
+            }
           } else {
             console.log("Không có dữ liệu trong cả detailName và value.");
           }
@@ -1011,6 +1018,8 @@ const CreateProduct = () => {
         categoryID: checkCategory,
         status: "WAITING",
         productownerID: productownerId,
+        term: values.term,
+        serialNumber: values.serialNumber,
       };
 
       try {
@@ -1046,17 +1055,17 @@ const CreateProduct = () => {
         }
         console.log("Combined Details:", combinedDetails);
         if (detailName.length > 0 && value.length > 0) {
-        try {
-          const detailResponse = await axios.post(
-            "http://fashionrental.online:8080/productdetail",
-            combinedDetails
-          );
+          try {
+            const detailResponse = await axios.post(
+              "http://fashionrental.online:8080/productdetail",
+              combinedDetails
+            );
 
-          console.log("Detail product Success!!");
-          console.log(detailResponse.data);
-        } catch (error) {
-          console.error("Error detail product:", error);
-        }
+            console.log("Detail product Success!!");
+            console.log(detailResponse.data);
+          } catch (error) {
+            console.error("Error detail product:", error);
+          }
         } else {
           console.log("Không có dữ liệu trong cả detailName và value.");
         }
@@ -1153,6 +1162,8 @@ const CreateProduct = () => {
         categoryID: checkCategory,
         status: "WAITING",
         productownerID: productownerId,
+        term: values.term,
+        serialNumber: values.serialNumber,
       };
 
       try {
@@ -1188,17 +1199,17 @@ const CreateProduct = () => {
         }
         console.log("Combined Details:", combinedDetails);
         if (detailName.length > 0 && value.length > 0) {
-        try {
-          const detailResponse = await axios.post(
-            "http://fashionrental.online:8080/productdetail",
-            combinedDetails
-          );
+          try {
+            const detailResponse = await axios.post(
+              "http://fashionrental.online:8080/productdetail",
+              combinedDetails
+            );
 
-          console.log("Detail product Success!!");
-          console.log(detailResponse.data);
-        } catch (error) {
-          console.error("Error detail product:", error);
-        }
+            console.log("Detail product Success!!");
+            console.log(detailResponse.data);
+          } catch (error) {
+            console.error("Error detail product:", error);
+          }
         } else {
           console.log("Không có dữ liệu trong cả detailName và value.");
         }
@@ -2017,7 +2028,7 @@ const CreateProduct = () => {
             <div className="rules">
               <span>Quy định sản phẩm:</span>
               <Form.Item
-                name={"rules"}
+                name={"term"}
                 rules={[{ required: true, message: "Không được để trống!" }]}
               >
                 <TextArea rows={4} placeholder="Nhập quy định sản phẩm..." />
@@ -2026,7 +2037,7 @@ const CreateProduct = () => {
             <div className="product__code">
               <span>Số seri sản phẩm:</span>
               <Form.Item
-                name={"serialCode"}
+                name={"serialNumber"}
                 rules={[{ required: true, message: "Không được để trống!" }]}
               >
                 <Input
@@ -2443,11 +2454,11 @@ const CreateProduct = () => {
                     >
                       <PlusCircleOutlined />
                     </Button>
-                    {additionalFields.length > 0 && (
+                    {additionalDetailFields.length > 0 && (
                       <Button
                         type="dashed"
                         onClick={() =>
-                          removeDetailField(additionalFields.length - 1)
+                          removeDetailField(additionalDetailFields.length - 1)
                         }
                         style={{
                           width: "50px",
@@ -2720,10 +2731,18 @@ const CreateProduct = () => {
                     onClick={() =>
                       handleToggleAdditionalDetails(!showAdditionalDetails)
                     }
+                    style={{
+                      padding: "10px 10px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
-                    {showAdditionalDetails
-                      ? "Ẩn chi tiết mới"
-                      : "Hiển thị chi tiết mới"}
+                    {showAdditionalDetails ? (
+                      <MinusOutlined />
+                    ) : (
+                      <PlusOutlined />
+                    )}
                   </Button>
                   {showAdditionalDetails && (
                     <div className="detail-field">
@@ -2738,7 +2757,7 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
-                          <p className="text">Tên chi tiết</p>
+                          <p className="text">Tên chi tiết:</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
 
@@ -2752,7 +2771,7 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
-                          <p className="text">Giá trị</p>
+                          <p className="text">Giá trị:</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
                       </div>
@@ -2769,7 +2788,7 @@ const CreateProduct = () => {
                                 },
                               ]}
                             >
-                              <p className="text">Tên chi tiết</p>
+                              <p className="text">Tên chi tiết:</p>
                               <Input style={{ width: "162px" }} />
                             </Form.Item>
 
@@ -2783,7 +2802,7 @@ const CreateProduct = () => {
                                 },
                               ]}
                             >
-                              <p className="text">Giá trị</p>
+                              <p className="text">Giá trị:</p>
                               <Input style={{ width: "162px" }} />
                             </Form.Item>
                           </Space>
@@ -2802,16 +2821,18 @@ const CreateProduct = () => {
                         >
                           <PlusCircleOutlined />
                         </Button>
-                        {additionalFields.length > 0 && (
+                        {additionalDetailFields.length > 0 && (
                           <Button
                             type="dashed"
                             onClick={() =>
-                              removeDetailField(additionalFields.length - 1)
+                              removeDetailField(
+                                additionalDetailFields.length - 1
+                              )
                             }
                             style={{
                               width: "50px",
                             }}
-                            className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
+                            className="custom-button--delete"
                           >
                             <DeleteOutlined />
                           </Button>
@@ -3080,10 +3101,18 @@ const CreateProduct = () => {
                     onClick={() =>
                       handleToggleAdditionalDetails(!showAdditionalDetails)
                     }
+                    style={{
+                      padding: "10px 10px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
-                    {showAdditionalDetails
-                      ? "Ẩn chi tiết mới"
-                      : "Hiển thị chi tiết mới"}
+                    {showAdditionalDetails ? (
+                      <MinusOutlined />
+                    ) : (
+                      <PlusOutlined />
+                    )}
                   </Button>
                   {showAdditionalDetails && (
                     <div className="detail-field">
@@ -3098,7 +3127,7 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
-                          <p className="text">Tên chi tiết</p>
+                          <p className="text">Tên chi tiết:</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
 
@@ -3112,7 +3141,7 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
-                          <p className="text">Giá trị</p>
+                          <p className="text">Giá trị:</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
                       </div>
@@ -3129,7 +3158,7 @@ const CreateProduct = () => {
                                 },
                               ]}
                             >
-                              <p className="text">Tên chi tiết</p>
+                              <p className="text">Tên chi tiết:</p>
                               <Input style={{ width: "162px" }} />
                             </Form.Item>
 
@@ -3143,7 +3172,7 @@ const CreateProduct = () => {
                                 },
                               ]}
                             >
-                              <p className="text">Giá trị</p>
+                              <p className="text">Giá trị:</p>
                               <Input style={{ width: "162px" }} />
                             </Form.Item>
                           </Space>
@@ -3162,16 +3191,18 @@ const CreateProduct = () => {
                         >
                           <PlusCircleOutlined />
                         </Button>
-                        {additionalFields.length > 0 && (
+                        {additionalDetailFields.length > 0 && (
                           <Button
                             type="dashed"
                             onClick={() =>
-                              removeDetailField(additionalFields.length - 1)
+                              removeDetailField(
+                                additionalDetailFields.length - 1
+                              )
                             }
                             style={{
                               width: "50px",
                             }}
-                            className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
+                            className="custom-button--delete"
                           >
                             <DeleteOutlined />
                           </Button>
@@ -3441,10 +3472,18 @@ const CreateProduct = () => {
                     onClick={() =>
                       handleToggleAdditionalDetails(!showAdditionalDetails)
                     }
+                    style={{
+                      padding: "10px 10px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
-                    {showAdditionalDetails
-                      ? "Ẩn chi tiết mới"
-                      : "Hiển thị chi tiết mới"}
+                    {showAdditionalDetails ? (
+                      <MinusOutlined />
+                    ) : (
+                      <PlusOutlined />
+                    )}
                   </Button>
                   {showAdditionalDetails && (
                     <div className="detail-field">
@@ -3459,7 +3498,7 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
-                          <p className="text">Tên chi tiết</p>
+                          <p className="text">Tên chi tiết:</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
 
@@ -3473,7 +3512,7 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
-                          <p className="text">Giá trị</p>
+                          <p className="text">Giá trị:</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
                       </div>
@@ -3490,7 +3529,7 @@ const CreateProduct = () => {
                                 },
                               ]}
                             >
-                              <p className="text">Tên chi tiết</p>
+                              <p className="text">Tên chi tiết:</p>
                               <Input style={{ width: "162px" }} />
                             </Form.Item>
 
@@ -3504,7 +3543,7 @@ const CreateProduct = () => {
                                 },
                               ]}
                             >
-                              <p className="text">Giá trị</p>
+                              <p className="text">Giá trị:</p>
                               <Input style={{ width: "162px" }} />
                             </Form.Item>
                           </Space>
@@ -3523,16 +3562,18 @@ const CreateProduct = () => {
                         >
                           <PlusCircleOutlined />
                         </Button>
-                        {additionalFields.length > 0 && (
+                        {additionalDetailFields.length > 0 && (
                           <Button
                             type="dashed"
                             onClick={() =>
-                              removeDetailField(additionalFields.length - 1)
+                              removeDetailField(
+                                additionalDetailFields.length - 1
+                              )
                             }
                             style={{
                               width: "50px",
                             }}
-                            className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
+                            className="custom-button--delete"
                           >
                             <DeleteOutlined />
                           </Button>
@@ -3542,9 +3583,6 @@ const CreateProduct = () => {
                   )}
                 </div>
               </div>
-              {/* ====================================================== */}
-
-              {/* ====================================================== */}
             </div>
           )}
 
@@ -3804,10 +3842,18 @@ const CreateProduct = () => {
                     onClick={() =>
                       handleToggleAdditionalDetails(!showAdditionalDetails)
                     }
+                    style={{
+                      padding: "10px 10px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
-                    {showAdditionalDetails
-                      ? "Ẩn chi tiết mới"
-                      : "Hiển thị chi tiết mới"}
+                    {showAdditionalDetails ? (
+                      <MinusOutlined />
+                    ) : (
+                      <PlusOutlined />
+                    )}
                   </Button>
                   {showAdditionalDetails && (
                     <div className="detail-field">
@@ -3822,7 +3868,7 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
-                          <p className="text">Tên chi tiết</p>
+                          <p className="text">Tên chi tiết:</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
 
@@ -3836,7 +3882,7 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
-                          <p className="text">Giá trị</p>
+                          <p className="text">Giá trị:</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
                       </div>
@@ -3853,7 +3899,7 @@ const CreateProduct = () => {
                                 },
                               ]}
                             >
-                              <p className="text">Tên chi tiết</p>
+                              <p className="text">Tên chi tiết:</p>
                               <Input style={{ width: "162px" }} />
                             </Form.Item>
 
@@ -3867,7 +3913,7 @@ const CreateProduct = () => {
                                 },
                               ]}
                             >
-                              <p className="text">Giá trị</p>
+                              <p className="text">Giá trị:</p>
                               <Input style={{ width: "162px" }} />
                             </Form.Item>
                           </Space>
@@ -3886,16 +3932,18 @@ const CreateProduct = () => {
                         >
                           <PlusCircleOutlined />
                         </Button>
-                        {additionalFields.length > 0 && (
+                        {additionalDetailFields.length > 0 && (
                           <Button
                             type="dashed"
                             onClick={() =>
-                              removeDetailField(additionalFields.length - 1)
+                              removeDetailField(
+                                additionalDetailFields.length - 1
+                              )
                             }
                             style={{
                               width: "50px",
                             }}
-                            className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
+                            className="custom-button--delete"
                           >
                             <DeleteOutlined />
                           </Button>
@@ -4165,10 +4213,18 @@ const CreateProduct = () => {
                     onClick={() =>
                       handleToggleAdditionalDetails(!showAdditionalDetails)
                     }
+                    style={{
+                      padding: "10px 10px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
-                    {showAdditionalDetails
-                      ? "Ẩn chi tiết mới"
-                      : "Hiển thị chi tiết mới"}
+                    {showAdditionalDetails ? (
+                      <MinusOutlined />
+                    ) : (
+                      <PlusOutlined />
+                    )}
                   </Button>
                   {showAdditionalDetails && (
                     <div className="detail-field">
@@ -4183,7 +4239,7 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
-                          <p className="text">Tên chi tiết</p>
+                          <p className="text">Tên chi tiết:</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
 
@@ -4197,7 +4253,7 @@ const CreateProduct = () => {
                             },
                           ]}
                         >
-                          <p className="text">Giá trị</p>
+                          <p className="text">Giá trị:</p>
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
                       </div>
@@ -4214,7 +4270,7 @@ const CreateProduct = () => {
                                 },
                               ]}
                             >
-                              <p className="text">Tên chi tiết</p>
+                              <p className="text">Tên chi tiết:</p>
                               <Input style={{ width: "162px" }} />
                             </Form.Item>
 
@@ -4228,7 +4284,7 @@ const CreateProduct = () => {
                                 },
                               ]}
                             >
-                              <p className="text">Giá trị</p>
+                              <p className="text">Giá trị:</p>
                               <Input style={{ width: "162px" }} />
                             </Form.Item>
                           </Space>
@@ -4247,16 +4303,18 @@ const CreateProduct = () => {
                         >
                           <PlusCircleOutlined />
                         </Button>
-                        {additionalFields.length > 0 && (
+                        {additionalDetailFields.length > 0 && (
                           <Button
                             type="dashed"
                             onClick={() =>
-                              removeDetailField(additionalFields.length - 1)
+                              removeDetailField(
+                                additionalDetailFields.length - 1
+                              )
                             }
                             style={{
                               width: "50px",
                             }}
-                            className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
+                            className="custom-button--delete"
                           >
                             <DeleteOutlined />
                           </Button>
@@ -4340,7 +4398,8 @@ const CreateProduct = () => {
                         type="number"
                         suffix="Ngày"
                         style={{ width: "162px" }}
-                        defaultValue={"1"}
+                        // defaultValue={"1"}
+                        min={1}
                       />
                     </Form.Item>
 
@@ -4450,14 +4509,14 @@ const CreateProduct = () => {
               position: "fixed",
               bottom: 0, // Đặt thẻ div ở dưới cùng của trang
               left: "50%",
-              width: "83.8%", // Đặt chiều rộng 100% để nó kéo dài từ cạnh trái đến cạnh phải
+              width: "81.5%", // Đặt chiều rộng 100% để nó kéo dài từ cạnh trái đến cạnh phải
               backgroundColor: "white",
               height: "50px",
               zIndex: 999,
               boxShadow:
                 " rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px",
               transform: "translateX(-50%)",
-              marginLeft: "107px",
+              marginLeft: "127px",
             }}
           >
             <Form.Item>

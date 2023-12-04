@@ -430,39 +430,39 @@ const ProductOwner = () => {
               <Breadcrumb.Item>Quản lý đơn bán </Breadcrumb.Item>
               <Breadcrumb.Item>Đang vận chuyển/Thành công </Breadcrumb.Item>
             </Breadcrumb>
-            <OrderCompletedTable/>
+            <OrderCompletedTable />
           </div>
         );
-        case "21":
-          return (
-            <div>
-              <Breadcrumb
-                style={{
-                  padding: "0 16px",
-                }}
-              >
-                <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
-                <Breadcrumb.Item>Quản lý đơn bán </Breadcrumb.Item>
-                <Breadcrumb.Item>Đơn đang được thuê/Đang trả </Breadcrumb.Item>
-              </Breadcrumb>
-              <RentingOrderTable/>
-            </div>
-          );
-          case "22":
-            return (
-              <div>
-                <Breadcrumb
-                  style={{
-                    padding: "0 16px",
-                  }}
-                >
-                  <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
-                  <Breadcrumb.Item>Quản lý đơn bán </Breadcrumb.Item>
-                  <Breadcrumb.Item>Đơn thuê thành công</Breadcrumb.Item>
-                </Breadcrumb>
-                <OrderRentCompletedTable/>
-              </div>
-            );
+      case "21":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn bán </Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn đang được thuê/Đang trả </Breadcrumb.Item>
+            </Breadcrumb>
+            <RentingOrderTable />
+          </div>
+        );
+      case "22":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn bán </Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn thuê thành công</Breadcrumb.Item>
+            </Breadcrumb>
+            <OrderRentCompletedTable />
+          </div>
+        );
       default:
         return null;
     }
@@ -543,16 +543,15 @@ const ProductOwner = () => {
           </Button>
         </div>
       </Header>
-      
 
       <Layout
         style={{
           background: "#000",
-          marginLeft: 200,
+          marginLeft: 240,
         }}
       >
         <Sider
-          width={200}
+          width={242}
           breakpoint="md"
           collapsedWidth="0"
           trigger
@@ -589,38 +588,97 @@ const ProductOwner = () => {
               <SubMenu
                 key="sub1"
                 icon={<ContainerOutlined style={{ fontSize: "17px" }} />}
-                title="Quản Lý Đơn Hàng"
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Quản Lý Đơn Hàng
+                  </p>
+                }
               >
-                <SubMenu key={"sub1-1"} title="Quản lý đơn bán">
-                  <Menu.Item key="1">Đơn bán</Menu.Item>
-                  <Menu.Item key="3">Đơn hủy</Menu.Item>
-                  <Menu.Item key="4">Trả hàng/Hoàn tiền</Menu.Item>
-                  <Menu.Item key="20">Đang vận chuyển/Thành công</Menu.Item>
+                <SubMenu
+                  key={"sub1-1"}
+                  title={
+                    <p style={{ fontSize: "15px", fontWeight: "500" }}>
+                      Quản lý đơn bán
+                    </p>
+                  }
+                >
+                  <Menu.Item key="1">
+                    {<p style={{ fontSize: "14.5px" }}>Đơn bán</p>}
+                  </Menu.Item>
+                  <Menu.Item key="3">
+                    {<p style={{ fontSize: "14.5px" }}>Đơn hủy</p>}
+                  </Menu.Item>
+                  <Menu.Item key="4">
+                    {<p style={{ fontSize: "14.5px" }}>Trả hàng/Hoàn tiền</p>}
+                  </Menu.Item>
+                  <Menu.Item key="20">
+                    {
+                      <p style={{ fontSize: "14.5px" }}>
+                        Đang vận chuyển/Thành công
+                      </p>
+                    }
+                  </Menu.Item>
                 </SubMenu>
-                <SubMenu key={"sub1-2"} title="Quản lý đơn thuê">
-                  <Menu.Item key="2">Đơn thuê</Menu.Item>
-                  <Menu.Item key="21">Đơn đang được thuê/Đang trả</Menu.Item>
-                  <Menu.Item key="22">Đơn thuê thành công</Menu.Item>
-                  <Menu.Item key="17">Đơn hủy</Menu.Item>
-                  <Menu.Item key="18">Trả hàng/Hoàn tiền</Menu.Item>
+                <SubMenu
+                  key={"sub1-2"}
+                  title={
+                    <p style={{ fontSize: "15px", fontWeight: "500" }}>
+                      Quản lý đơn thuê
+                    </p>
+                  }
+                >
+                  <Menu.Item key="2">
+                    {<p style={{ fontSize: "14.5px" }}>Đơn thuê</p>}
+                  </Menu.Item>
+                  <Menu.Item key="21">
+                    {
+                      <p style={{ fontSize: "14.5px" }}>
+                        Đơn đang được thuê/Đang trả
+                      </p>
+                    }
+                  </Menu.Item>
+                  <Menu.Item key="22">
+                    {<p style={{ fontSize: "14.5px" }}>Đơn thuê thành công</p>}
+                  </Menu.Item>
+                  <Menu.Item key="17">
+                    {<p style={{ fontSize: "14.5px" }}>Đơn hủy </p>}
+                  </Menu.Item>
+                  <Menu.Item key="18">
+                    {<p style={{ fontSize: "14.5px" }}>Trả hàng/Hoàn tiền </p>}
+                  </Menu.Item>
                 </SubMenu>
               </SubMenu>
               <SubMenu
                 key="sub2"
                 icon={<ShopFilled style={{ fontSize: "17px" }} />}
-                title="Quản Lý Sản Phẩm"
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Quản Lý Sản Phẩm
+                  </p>
+                }
               >
-                <Menu.Item key="7">Tất cả sản phẩm</Menu.Item>
-                <Menu.Item key="8">Thêm sản phẩm</Menu.Item>
+                <Menu.Item key="7">
+                  {<p style={{ fontSize: "14.5px" }}>Tất cả sản phẩm </p>}
+                </Menu.Item>
+                <Menu.Item key="8">
+                  {<p style={{ fontSize: "14.5px" }}>Thêm sản phẩm </p>}
+                </Menu.Item>
               </SubMenu>
               <SubMenu
                 key="sub3"
                 icon={<UserOutlined style={{ fontSize: "17px" }} />}
-                title="Quản Lý Tài Khoản"
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Quản Lý Tài Khoản
+                  </p>
+                }
               >
-                {" "}
-                <Menu.Item key="10">Xác thực tài khoản</Menu.Item>
-                <Menu.Item key="9">Thông tin cơ bản</Menu.Item>
+                <Menu.Item key="10">
+                  {<p style={{ fontSize: "14.5px" }}>Xác thực tài khoản </p>}
+                </Menu.Item>
+                <Menu.Item key="9">
+                  {<p style={{ fontSize: "14.5px" }}>Thông tin cơ bản </p>}
+                </Menu.Item>
               </SubMenu>
               <SubMenu
                 key="sub4"
