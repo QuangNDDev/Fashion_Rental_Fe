@@ -38,6 +38,7 @@ const TablePending = () => {
     useState(false);
   const [api, contextHolder] = notification.useNotification();
   const [productRentPrice, setProductRentPrice] = useState([]);
+  const [showFullText, setShowFullText] = useState(false);
 
   function formatDate(dateString) {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -101,6 +102,7 @@ const TablePending = () => {
     axios
       .get("http://fashionrental.online:8080/product/" + record.productID)
       .then((response) => {
+        console.log(response.data);
         const specificationData = JSON.parse(
           response.data.productSpecificationData
         );
@@ -130,6 +132,8 @@ const TablePending = () => {
         const originShoe = specificationData.originShoe;
         console.log(response.data);
         form.setFieldsValue({
+          serialNumber: response.data.serialNumber,
+          term: response.data.term,
           brandNameHat: brandNameHat,
           typeHat: typeHat,
           materialHat: materialHat,
@@ -168,6 +172,8 @@ const TablePending = () => {
           // Các trường dữ liệu khác tương tự
         });
         setSelectedProduct({
+          serialNumber: response.data.serialNumber,
+          term: response.data.term,
           checkType: response.data.checkType,
           avatar: response.data.avatar,
           productName: response.data.productName,
@@ -602,6 +608,27 @@ const TablePending = () => {
       ),
     },
   ];
+
+  // showModal xem quy định
+  const handleShowMore = () => {
+    setShowFullText(true);
+  };
+
+  const handleModalClose = () => {
+    setShowFullText(false);
+  };
+  const shouldDisplayReadMore =
+    selectedProduct &&
+    selectedProduct.term &&
+    selectedProduct.term.length > 100;
+
+  const truncatedTerm =
+    selectedProduct && selectedProduct.term
+      ? selectedProduct.term.length > 100
+        ? selectedProduct.term.substring(0, 100) + "..."
+        : selectedProduct.term
+      : "Không có";
+
   return (
     <div>
       <Table
@@ -619,13 +646,25 @@ const TablePending = () => {
       >
         <Form form={form}>
           <Form.Item
-            name="productName" //lấy value của cái name gán lên cái setFormValue
+            name="productName"
             initialValue={selectedProduct && selectedProduct.productName}
           >
             <div style={{ display: "flex" }}>
               <strong>Tên sản phẩm:</strong>
               <p style={{ marginLeft: "10px" }}>
                 {selectedProduct && selectedProduct.productName}
+              </p>
+            </div>
+          </Form.Item>
+
+          <Form.Item
+            name="serialNumber"
+            initialValue={selectedProduct && selectedProduct.serialNumber}
+          >
+            <div style={{ display: "flex" }}>
+              <strong>Số Seri sản phẩm:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {selectedProduct && selectedProduct.serialNumber}
               </p>
             </div>
           </Form.Item>
@@ -665,13 +704,61 @@ const TablePending = () => {
               <p
                 style={{
                   marginLeft: "10px",
-                  maxWidth: "300px",
+                  maxWidth: "400px",
                 }}
               >
                 {selectedProduct && selectedProduct.description}
               </p>
             </div>
           </Form.Item>
+          <Form.Item
+            name="term"
+            initialValue={selectedProduct && selectedProduct.term}
+          >
+            <div style={{ display: "flex" }}>
+              <strong style={{ minWidth: "65px" }}>Quy định: </strong>
+              <p
+                style={{
+                  marginLeft: "5px",
+                  maxWidth: "400px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {/* {selectedProduct && selectedProduct.description} */}
+                {showFullText ? selectedProduct.term : truncatedTerm}
+              </p>
+              {shouldDisplayReadMore && (
+                <span
+                  style={{
+                    color: "blue",
+                    cursor: "pointer",
+                    marginLeft: "5px",
+                    minWidth: "65px",
+                    textDecoration: "underline",
+                  }}
+                  onClick={handleShowMore}
+                >
+                  Xem thêm
+                </span>
+              )}
+            </div>
+          </Form.Item>
+          <Modal
+            title={<p style={{ textAlign: "center" }}>Nội dung đầy đủ</p>}
+            open={showFullText}
+            onCancel={handleModalClose}
+            footer={null}
+            style={{
+              maxHeight: "70vh",
+              overflowY: "auto",
+            }}
+          >
+            <pre style={{ whiteSpace: "pre-wrap", fontFamily: "inherit" }}>
+              {selectedProduct && selectedProduct.term}
+            </pre>
+          </Modal>
           {/* Set điều kiện để hiện thị theo category */}
           {selectedProduct && selectedProduct.categoryName === "Watch" && (
             <>

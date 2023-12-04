@@ -137,9 +137,6 @@
   flex-shrink: 0;
 }
 
-.field__bag--3 {
-  display: grid;
-}
 .basic-information--glasses {
   /* display: flex; */
   background-color: #e7e9eb;
@@ -181,9 +178,6 @@
 .field__glass--2 {
   flex-shrink: 0;
 }
-.field__glass--3 {
-  display: grid;
-}
 
 .container-shoe {
   display: flex;
@@ -198,10 +192,6 @@
   flex-shrink: 0;
 }
 
-.field__shoe--3 {
-  display: grid;
-}
-
 .container-erring {
   display: flex;
   justify-content: space-around;
@@ -213,9 +203,7 @@
 .field__earring--2 {
   flex-shrink: 0;
 }
-.field__earring--3 {
-  display: grid;
-}
+
 .basic-information--hat {
   background-color: #e7e9eb;
   margin-bottom: 20px;
@@ -233,10 +221,6 @@
 
 .field__hat--2 {
   flex-shrink: 0;
-}
-
-.field__hat--3 {
-  display: grid;
 }
 
 .text {

@@ -16,6 +16,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import MuntilImage from "../Mutil-Image";
 import RenderTag from "../render/RenderTag";
+
 const { Meta } = Card;
 
 const ProductCard = () => {
@@ -31,6 +32,7 @@ const ProductCard = () => {
   const [productRentPrice, setProductRentPrice] = useState([]);
   const [showFullText, setShowFullText] = useState(false);
   const [showFullFeedback, setShowFullFeedback] = useState(false);
+
   //showModalFeedback
   const handleShowFeedback = () => {
     setShowFullFeedback(true);
@@ -189,6 +191,7 @@ const ProductCard = () => {
         console.error(error);
       }
     };
+
     fetchProductRentPrice();
     fetchProductImg();
     setIsModalVisible(true);
@@ -218,6 +221,8 @@ const ProductCard = () => {
     const outsideSkin = specificationData.outsideSkin;
     const originShoe = specificationData.originShoe;
     form.setFieldsValue({
+      term: productData.term,
+      serialNumber: productData.serialNumber,
       brandNameHat: brandNameHat,
       typeHat: typeHat,
       materialHat: materialHat,
@@ -258,6 +263,8 @@ const ProductCard = () => {
       // Các trường dữ liệu khác tương tự
     });
     setSelectedProduct({
+      term: productData.term,
+      serialNumber: productData.serialNumber,
       requestStatus: productData.requestDTO.status,
       requestDescription: productData.requestDTO.description,
       checkType: productData.checkType,
@@ -376,21 +383,33 @@ const ProductCard = () => {
           <p>{feedback.description}</p>
         </div>
         {feedback.imgDTOs && feedback.imgDTOs.length > 0 && (
-        <div>
-          <h5>Hình ảnh:</h5>
-          {feedback.imgDTOs.map((imgSrc, index) => (
-            <Image
-              key={index}
-              width={70}
-              src={imgSrc.imgUrl}
-              alt={`Hình ảnh ${index + 1}`}
-            />
-          ))}
-        </div>
-      )}
+          <div>
+            <h5>Hình ảnh:</h5>
+            {feedback.imgDTOs.map((imgSrc, index) => (
+              <Image
+                key={index}
+                width={70}
+                src={imgSrc.imgUrl}
+                alt={`Hình ảnh ${index + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   ));
+
+  const shouldDisplayReadMore =
+    selectedProduct &&
+    selectedProduct.term &&
+    selectedProduct.term.length > 100;
+
+  const truncatedTerm =
+    selectedProduct && selectedProduct.term
+      ? selectedProduct.term.length > 100
+        ? selectedProduct.term.substring(0, 100) + "..."
+        : selectedProduct.term
+      : "Không có";
 
   return (
     <>
@@ -543,7 +562,7 @@ const ProductCard = () => {
             </Form.Item>
 
             <Form.Item
-              name="categoryName" //lấy value của cái name gán lên cái setFormValue
+              name="categoryName"
               initialValue={selectedProduct && selectedProduct.categoryName}
             >
               <div style={{ display: "flex" }}>
@@ -552,6 +571,18 @@ const ProductCard = () => {
                   {translateCategoryName(
                     selectedProduct && selectedProduct.categoryName
                   )}
+                </p>
+              </div>
+            </Form.Item>
+
+            <Form.Item
+              name="serialNumber"
+              initialValue={selectedProduct && selectedProduct.serialNumber}
+            >
+              <div style={{ display: "flex" }}>
+                <strong>Số Seri sản phẩm:</strong>
+                <p style={{ marginLeft: "10px" }}>
+                  {selectedProduct && selectedProduct.serialNumber}
                 </p>
               </div>
             </Form.Item>
@@ -586,8 +617,8 @@ const ProductCard = () => {
             </Form.Item>
 
             <Form.Item
-              name="rules"
-              initialValue={selectedProduct && selectedProduct.description}
+              name="term"
+              initialValue={selectedProduct && selectedProduct.term}
             >
               <div style={{ display: "flex" }}>
                 <strong style={{ minWidth: "65px" }}>Quy định: </strong>
@@ -601,11 +632,9 @@ const ProductCard = () => {
                   }}
                 >
                   {/* {selectedProduct && selectedProduct.description} */}
-                  {showFullText
-                    ? selectedProduct && selectedProduct.description
-                    : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+                  {showFullText ? selectedProduct.term : truncatedTerm}
                 </p>
-                {!showFullText && (
+                {shouldDisplayReadMore && (
                   <span
                     style={{
                       color: "blue",
@@ -622,13 +651,18 @@ const ProductCard = () => {
               </div>
             </Form.Item>
             <Modal
-              title="Nội dung đầy đủ"
+              title={<p style={{ textAlign: "center" }}>Nội dung đầy đủ</p>}
               open={showFullText}
               onCancel={handleModalClose}
               footer={null}
+              style={{
+                maxHeight: "70vh",
+                overflowY: "auto",
+              }}
             >
-              {/* {selectedProduct && selectedProduct.description} */}
-              aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+              <pre style={{ whiteSpace: "pre-wrap", fontFamily: "inherit" }}>
+                {selectedProduct && selectedProduct.term}
+              </pre>
             </Modal>
             {/* Set điều kiện để hiện thị theo category */}
             {selectedProduct && selectedProduct.categoryName === "Watch" && (
@@ -755,6 +789,7 @@ const ProductCard = () => {
                     </p>
                   </div>
                 </Form.Item>
+
                 <Form.Item
                   name="materialHat"
                   initialValue={selectedProduct && selectedProduct.materialHat}
