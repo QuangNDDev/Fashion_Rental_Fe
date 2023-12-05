@@ -11,6 +11,7 @@ const ProductOrder = ({ orderID }) => {
   const [formData, setFormData] = useState(null);
   const [form] = Form.useForm();
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProductDetail, setSelectedProductDetail] = useState([]);
   const productownerId = localStorage.getItem("productownerId");
   const idAccount = localStorage.getItem("accountId");
   const [productData, setProductData] = useState([]);
@@ -124,6 +125,7 @@ const ProductOrder = ({ orderID }) => {
       originBag: originBag,
       // Các trường dữ liệu khác tương tự
     });
+    setSelectedProductDetail(productData.details);
     setSelectedProduct({
       checkType: productData.checkType,
       avatar: productData.avatar,
@@ -614,6 +616,26 @@ const ProductOrder = ({ orderID }) => {
                     </p>
                   </div>
                 </Form.Item>
+              </>
+            )}
+            {/* ======================================================================== */}
+
+            {selectedProductDetail && selectedProductDetail.length > 0 && (
+              <>
+                {/* Vòng lặp để render các detailName và value từ selectedProductDetail */}
+                {selectedProductDetail.map((detail, index) => (
+                  <React.Fragment key={index}>
+                    <Form.Item
+                      name={`detailName_${index}`}
+                      initialValue={detail.detailName}
+                    >
+                      <div style={{ display: "flex" }}>
+                        <strong>{detail.detailName}:</strong>
+                        <p style={{ marginLeft: "10px" }}>{detail.value}</p>
+                      </div>
+                    </Form.Item>
+                  </React.Fragment>
+                ))}
               </>
             )}
             {/* ======================================================================== */}

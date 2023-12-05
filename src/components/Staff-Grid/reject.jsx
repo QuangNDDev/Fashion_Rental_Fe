@@ -9,6 +9,7 @@ import RenderTag from "../render/RenderTag";
 const RejectTable = () => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProductDetail, setSelectedProductDetail] = useState([]);
   const [previewImage, setPreviewImage] = useState(null);
   const [form] = Form.useForm();
   const [requestsData, setRequestsData] = useState([]);
@@ -171,6 +172,7 @@ const RejectTable = () => {
           originBag: originBag,
           // Các trường dữ liệu khác tương tự
         });
+        setSelectedProductDetail(response.data.details);
         setSelectedProduct({
           serialNumber: response.data.serialNumber,
           term: response.data.term,
@@ -870,7 +872,27 @@ const RejectTable = () => {
               </Form.Item>
             </>
           )}
-          {/* ======================================================================== */}
+         {/* ======================================================================== */}
+
+         {selectedProductDetail && selectedProductDetail.length > 0 && (
+              <>
+                {/* Vòng lặp để render các detailName và value từ selectedProductDetail */}
+                {selectedProductDetail.map((detail, index) => (
+                  <React.Fragment key={index}>
+                    <Form.Item
+                      name={`detailName_${index}`}
+                      initialValue={detail.detailName}
+                    >
+                      <div style={{ display: "flex" }}>
+                        <strong>{detail.detailName}:</strong>
+                        <p style={{ marginLeft: "10px" }}>{detail.value}</p>
+                      </div>
+                    </Form.Item>
+                  </React.Fragment>
+                ))}
+              </>
+            )}
+            {/* ======================================================================== */}
 
           {/* <Form.Item
             name="status"
