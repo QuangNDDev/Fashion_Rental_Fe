@@ -3523,7 +3523,7 @@ const CreateProduct = () => {
                         >
                           <PlusCircleOutlined />
                         </Button>
-                        {additionalFields.length > 0 && (
+                        {additionalDetailFields.length > 0 && (
                           <Button
                             type="dashed"
                             onClick={() =>
