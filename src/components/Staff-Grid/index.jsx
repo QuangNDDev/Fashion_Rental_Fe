@@ -706,7 +706,7 @@ const TablePending = () => {
               <p
                 style={{
                   marginLeft: "10px",
-                  maxWidth: "400px",
+                  maxWidth: "330px",
                 }}
               >
                 {selectedProduct && selectedProduct.description}
@@ -1068,24 +1068,24 @@ const TablePending = () => {
           {/* ======================================================================== */}
 
           {selectedProductDetail && selectedProductDetail.length > 0 && (
-              <>
-                {/* Vòng lặp để render các detailName và value từ selectedProductDetail */}
-                {selectedProductDetail.map((detail, index) => (
-                  <React.Fragment key={index}>
-                    <Form.Item
-                      name={`detailName_${index}`}
-                      initialValue={detail.detailName}
-                    >
-                      <div style={{ display: "flex" }}>
-                        <strong>{detail.detailName}:</strong>
-                        <p style={{ marginLeft: "10px" }}>{detail.value}</p>
-                      </div>
-                    </Form.Item>
-                  </React.Fragment>
-                ))}
-              </>
-            )}
-            {/* ======================================================================== */}
+            <>
+              {/* Vòng lặp để render các detailName và value từ selectedProductDetail */}
+              {selectedProductDetail.map((detail, index) => (
+                <React.Fragment key={index}>
+                  <Form.Item
+                    name={`detailName_${index}`}
+                    initialValue={detail.detailName}
+                  >
+                    <div style={{ display: "flex" }}>
+                      <strong>{detail.detailName}:</strong>
+                      <p style={{ marginLeft: "10px" }}>{detail.value}</p>
+                    </div>
+                  </Form.Item>
+                </React.Fragment>
+              ))}
+            </>
+          )}
+          {/* ======================================================================== */}
 
           {/* <Form.Item
             name="status"

@@ -401,7 +401,7 @@ const Staff = () => {
                 icon={<CheckOutlined style={{ fontSize: "17px" }} />}
                 title={
                   <p style={{ fontSize: "16px", fontWeight: "500" }}>
-                    Duyệt sản phẩm
+                    Duyệt Sản Phẩm
                   </p>
                 }
               >
@@ -424,7 +424,7 @@ const Staff = () => {
                 }
                 title={
                   <p style={{ fontSize: "16px", fontWeight: "500" }}>
-                    Quản lý yêu cầu
+                    Quản Lý Yêu Cầu
                   </p>
                 }
               >
@@ -437,7 +437,7 @@ const Staff = () => {
                 icon={<EyeFilled style={{ fontSize: "17px" }} />}
                 title={
                   <p style={{ fontSize: "16px", fontWeight: "500" }}>
-                    Xem đơn hàng
+                    Xem Đơn Hàng
                   </p>
                 }
               >
@@ -490,12 +490,11 @@ const Staff = () => {
                 icon={<NotificationFilled style={{ fontSize: "17px" }} />}
                 title={
                   <p style={{ fontSize: "16px", fontWeight: "500" }}>
-                    Thông tin
+                    Thông Tin
                   </p>
                 }
               >
                 <Menu.Item key="8">
-                  {" "}
                   {<p style={{ fontSize: "14.5px" }}>Thông tin cá nhân</p>}
                 </Menu.Item>
               </SubMenu>

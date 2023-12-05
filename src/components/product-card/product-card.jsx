@@ -393,7 +393,7 @@ const ProductCard = () => {
             </p>
           </div>
           <div>
-            <Rate allowHalf defaultValue={feedback.ratingPoint} disabled />
+            <Rate allowHalf value={feedback.ratingPoint} disabled />
           </div>
         </div>
       </div>
@@ -560,7 +560,7 @@ const ProductCard = () => {
                       style={{
                         color: "red",
                         fontStyle: "italic",
-                        fontSize: "20px",
+                        fontSize: "17px",
                         margin: 0,
                       }}
                     >
@@ -574,15 +574,16 @@ const ProductCard = () => {
                       style={{
                         color: "red",
                         fontStyle: "italic",
-                        fontSize: "20px",
+                        fontSize: "17px",
                         margin: 0,
+                        overflowWrap: "break-word",
                       }}
                     >
                       <span
                         style={{
                           color: "red",
                           fontStyle: "italic",
-                          fontSize: "20px",
+                          fontSize: "17px",
                           marginLeft: "5px",
                         }}
                       >
