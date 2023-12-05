@@ -13,6 +13,7 @@ import {
   Select,
   Divider,
   Upload,
+  ConfigProvider,
 } from "antd";
 import { storage } from "../../firebase/firebase";
 import RenderTag from "../render/RenderTag";
@@ -283,7 +284,7 @@ const OrderRentDeliveryTable = () => {
       accountID: localStorage.getItem("accountId"),
       img: imgUrls,
       orderRentID: selectedOrderID,
-      status: "PO_SEND"
+      status: "PO_SEND",
     };
     console.log("img data:", imgData);
     try {
@@ -588,12 +589,25 @@ const OrderRentDeliveryTable = () => {
           width={1100}
           extra={
             <Space>
-              <Button
-                style={{ backgroundColor: "#008000", color: "#fff" }}
-                onClick={() => createDelivery()}
+              <ConfigProvider
+                theme={{
+                  token: {
+                    Button: {
+                      colorPrimary: "rgb(32, 30, 42)",
+                      colorPrimaryHover: "orange",
+                      colorPrimaryActive: "orange",
+                    },
+                  },
+                }}
               >
-                Tạo đơn hàng
-              </Button>
+                <Button
+                  type="primary"
+                  style={{ fontWeight: "bold" }}
+                  onClick={() => createDelivery()}
+                >
+                  Tạo đơn hàng
+                </Button>
+              </ConfigProvider>
             </Space>
           }
         >

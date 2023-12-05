@@ -2371,30 +2371,59 @@ const CreateProduct = () => {
 
               {/* ====================================================== */}
               <p className="text">Thêm chi tiết mới: </p>
-                  <Button
-                    onClick={() =>
-                      handleToggleAdditionalDetails(!showAdditionalDetails)
-                    }
-                    style={{
-                      padding: "10px 10px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {showAdditionalDetails ? (
-                      <MinusOutlined />
-                    ) : (
-                      <PlusOutlined />
-                    )}
-                  </Button>
-                  {showAdditionalDetails && (
-                    <div className="detail-field">
-                      <div style={{ display: "flex" }}>
+              <Button
+                onClick={() =>
+                  handleToggleAdditionalDetails(!showAdditionalDetails)
+                }
+                style={{
+                  padding: "10px 10px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {showAdditionalDetails ? <MinusOutlined /> : <PlusOutlined />}
+              </Button>
+              {showAdditionalDetails && (
+                <div className="detail-field">
+                  <div style={{ display: "flex" }}>
+                    <Form.Item
+                      name={"detailName"}
+                      label={"Tên chi tiết: "}
+                      style={{ width: "250px" }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Không được để trống!",
+                        },
+                      ]}
+                    >
+                      {/* <p className="text">Tên chi tiết:</p> */}
+                      <Input style={{ width: "162px" }} />
+                    </Form.Item>
+
+                    <Form.Item
+                      name={"value"}
+                      label={"Giá trị: "}
+                      style={{ width: "250px", marginLeft: "8px" }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Không được để trống!",
+                        },
+                      ]}
+                    >
+                      {/* <p className="text">Giá trị:</p> */}
+                      <Input style={{ width: "162px" }} />
+                    </Form.Item>
+                  </div>
+                  {additionalDetailFields.map((field, index) => (
+                    <div key={index} className="additional-detail-field">
+                      <Space style={{ display: "flex" }}>
                         <Form.Item
-                          name={"detailName"}
-                          label={"Tên chi tiết: "}
                           style={{ width: "250px" }}
+                          name={`detailName${index + 2}`}
+                          label={"Tên chi tiết: "}
                           rules={[
                             {
                               required: true,
@@ -2407,9 +2436,9 @@ const CreateProduct = () => {
                         </Form.Item>
 
                         <Form.Item
-                          name={"value"}
+                          style={{ width: "250px" }}
+                          name={`value${index + 2}`}
                           label={"Giá trị: "}
-                          style={{ width: "250px", marginLeft: "8px" }}
                           rules={[
                             {
                               required: true,
@@ -2420,74 +2449,39 @@ const CreateProduct = () => {
                           {/* <p className="text">Giá trị:</p> */}
                           <Input style={{ width: "162px" }} />
                         </Form.Item>
-                      </div>
-                      {additionalDetailFields.map((field, index) => (
-                        <div key={index} className="additional-detail-field">
-                          <Space style={{ display: "flex" }}>
-                            <Form.Item
-                              style={{ width: "250px" }}
-                              name={`detailName${index + 2}`}
-                              label={"Tên chi tiết: "}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Không được để trống!",
-                                },
-                              ]}
-                            >
-                              {/* <p className="text">Tên chi tiết:</p> */}
-                              <Input style={{ width: "162px" }} />
-                            </Form.Item>
-
-                            <Form.Item
-                              style={{ width: "250px" }}
-                              name={`value${index + 2}`}
-                              label={"Giá trị: "}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Không được để trống!",
-                                },
-                              ]}
-                            >
-                              {/* <p className="text">Giá trị:</p> */}
-                              <Input style={{ width: "162px" }} />
-                            </Form.Item>
-                          </Space>
-                        </div>
-                      ))}
-                      <div style={{ display: "flex", marginLeft: "150px" }}>
-                        <Button
-                          type="dashed"
-                          onClick={addDetailField}
-                          style={{
-                            width: "195px",
-                            marginRight: "10px",
-                            transition: "background 0.3s",
-                          }}
-                          className="custom-button"
-                        >
-                          <PlusCircleOutlined />
-                        </Button>
-                        {additionalDetailFields.length > 0 && (
-                          <Button
-                            type="dashed"
-                            onClick={() =>
-                              removeDetailField(
-                                additionalDetailFields.length - 1
-                              )
-                            }
-                            style={{
-                              width: "50px",
-                            }}
-                            className="custom-button--delete"
-                          >
-                            <DeleteOutlined />
-                          </Button>
-                        )}
-                      </div>
+                      </Space>
                     </div>
-                  )}
+                  ))}
+                  <div style={{ display: "flex", marginLeft: "150px" }}>
+                    <Button
+                      type="dashed"
+                      onClick={addDetailField}
+                      style={{
+                        width: "195px",
+                        marginRight: "10px",
+                        transition: "background 0.3s",
+                      }}
+                      className="custom-button"
+                    >
+                      <PlusCircleOutlined />
+                    </Button>
+                    {additionalDetailFields.length > 0 && (
+                      <Button
+                        type="dashed"
+                        onClick={() =>
+                          removeDetailField(additionalDetailFields.length - 1)
+                        }
+                        style={{
+                          width: "50px",
+                        }}
+                        className="custom-button--delete"
+                      >
+                        <DeleteOutlined />
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              )}
               {/* ====================================================== */}
             </div>
           )}
@@ -2743,7 +2737,7 @@ const CreateProduct = () => {
                   </Form.Item>
                 </div>
                 <div className="field__bag--3">
-                <p className="text">Thêm chi tiết mới: </p>
+                  <p className="text">Thêm chi tiết mới: </p>
                   <Button
                     onClick={() =>
                       handleToggleAdditionalDetails(!showAdditionalDetails)
@@ -2766,7 +2760,9 @@ const CreateProduct = () => {
                       <div style={{ display: "flex" }}>
                         <Form.Item
                           name={"detailName"}
-                          label={"Tên chi tiết: "}
+                          label={
+                            <p style={{ fontWeight: "bold" }}>Tên chi tiết</p>
+                          }
                           style={{ width: "250px" }}
                           rules={[
                             {
@@ -2781,7 +2777,7 @@ const CreateProduct = () => {
 
                         <Form.Item
                           name={"value"}
-                          label={"Giá trị: "}
+                          label={<p style={{ fontWeight: "bold" }}>Giá trị</p>}
                           style={{ width: "250px", marginLeft: "8px" }}
                           rules={[
                             {
@@ -2800,7 +2796,11 @@ const CreateProduct = () => {
                             <Form.Item
                               style={{ width: "250px" }}
                               name={`detailName${index + 2}`}
-                              label={"Tên chi tiết: "}
+                              label={
+                                <p style={{ fontWeight: "bold" }}>
+                                  Tên chi tiết
+                                </p>
+                              }
                               rules={[
                                 {
                                   required: true,
@@ -2815,7 +2815,9 @@ const CreateProduct = () => {
                             <Form.Item
                               style={{ width: "250px" }}
                               name={`value${index + 2}`}
-                              label={"Giá trị: "}
+                              label={
+                                <p style={{ fontWeight: "bold" }}>Giá trị</p>
+                              }
                               rules={[
                                 {
                                   required: true,
@@ -3117,7 +3119,7 @@ const CreateProduct = () => {
                   </Form.Item>
                 </div>
                 <div className="field__glass--3">
-                <p className="text">Thêm chi tiết mới: </p>
+                  <p className="text">Thêm chi tiết mới: </p>
                   <Button
                     onClick={() =>
                       handleToggleAdditionalDetails(!showAdditionalDetails)
@@ -3140,7 +3142,9 @@ const CreateProduct = () => {
                       <div style={{ display: "flex" }}>
                         <Form.Item
                           name={"detailName"}
-                          label={"Tên chi tiết: "}
+                          label={
+                            <p style={{ fontWeight: "bold" }}>Tên chi tiết</p>
+                          }
                           style={{ width: "250px" }}
                           rules={[
                             {
@@ -3155,7 +3159,7 @@ const CreateProduct = () => {
 
                         <Form.Item
                           name={"value"}
-                          label={"Giá trị: "}
+                          label={<p style={{ fontWeight: "bold" }}>Giá trị</p>}
                           style={{ width: "250px", marginLeft: "8px" }}
                           rules={[
                             {
@@ -3174,7 +3178,11 @@ const CreateProduct = () => {
                             <Form.Item
                               style={{ width: "250px" }}
                               name={`detailName${index + 2}`}
-                              label={"Tên chi tiết: "}
+                              label={
+                                <p style={{ fontWeight: "bold" }}>
+                                  Tên chi tiết
+                                </p>
+                              }
                               rules={[
                                 {
                                   required: true,
@@ -3189,7 +3197,9 @@ const CreateProduct = () => {
                             <Form.Item
                               style={{ width: "250px" }}
                               name={`value${index + 2}`}
-                              label={"Giá trị: "}
+                              label={
+                                <p style={{ fontWeight: "bold" }}>Giá trị</p>
+                              }
                               rules={[
                                 {
                                   required: true,
@@ -3246,14 +3256,13 @@ const CreateProduct = () => {
 
               <div className="container-erring">
                 <div className="field__earring--1">
-                <p className="text">Thương hiệu</p>
+                  <p className="text">Thương hiệu</p>
                   <Form.Item
                     name={"brandNameJewelry"}
                     rules={[
                       { required: true, message: "Không được để trống!" },
                     ]}
                   >
-                    
                     <Select
                       style={{
                         width: 300,
@@ -3314,7 +3323,6 @@ const CreateProduct = () => {
                       { required: true, message: "Không được để trống!" },
                     ]}
                   >
-                    
                     <Select
                       style={{
                         width: 300,
@@ -3370,14 +3378,13 @@ const CreateProduct = () => {
                   </Form.Item>
                 </div>
                 <div className="field__earring--2">
-                <p className="text">Dịp:</p>
+                  <p className="text">Dịp:</p>
                   <Form.Item
                     name={"occasion"}
                     rules={[
                       { required: true, message: "Không được để trống!" },
                     ]}
                   >
-                    
                     <Select
                       style={{
                         width: 300,
@@ -3438,7 +3445,6 @@ const CreateProduct = () => {
                       { required: true, message: "Không được để trống!" },
                     ]}
                   >
-                    
                     <Select
                       style={{
                         width: 300,
@@ -3494,7 +3500,7 @@ const CreateProduct = () => {
                   </Form.Item>
                 </div>
                 <div className="field__earring--3">
-                <p className="text">Thêm chi tiết mới: </p>
+                  <p className="text">Thêm chi tiết mới: </p>
                   <Button
                     onClick={() =>
                       handleToggleAdditionalDetails(!showAdditionalDetails)
@@ -3517,7 +3523,9 @@ const CreateProduct = () => {
                       <div style={{ display: "flex" }}>
                         <Form.Item
                           name={"detailName"}
-                          label={"Tên chi tiết: "}
+                          label={
+                            <p style={{ fontWeight: "bold" }}>Tên chi tiết</p>
+                          }
                           style={{ width: "250px" }}
                           rules={[
                             {
@@ -3532,7 +3540,7 @@ const CreateProduct = () => {
 
                         <Form.Item
                           name={"value"}
-                          label={"Giá trị: "}
+                          label={<p style={{ fontWeight: "bold" }}>Giá trị</p>}
                           style={{ width: "250px", marginLeft: "8px" }}
                           rules={[
                             {
@@ -3551,7 +3559,11 @@ const CreateProduct = () => {
                             <Form.Item
                               style={{ width: "250px" }}
                               name={`detailName${index + 2}`}
-                              label={"Tên chi tiết: "}
+                              label={
+                                <p style={{ fontWeight: "bold" }}>
+                                  Tên chi tiết
+                                </p>
+                              }
                               rules={[
                                 {
                                   required: true,
@@ -3566,7 +3578,9 @@ const CreateProduct = () => {
                             <Form.Item
                               style={{ width: "250px" }}
                               name={`value${index + 2}`}
-                              label={"Giá trị: "}
+                              label={
+                                <p style={{ fontWeight: "bold" }}>Giá trị</p>
+                              }
                               rules={[
                                 {
                                   required: true,
@@ -3868,7 +3882,7 @@ const CreateProduct = () => {
                   </Form.Item>
                 </div>
                 <div className="field__shoe--3">
-                <p className="text">Thêm chi tiết mới: </p>
+                  <p className="text">Thêm chi tiết mới: </p>
                   <Button
                     onClick={() =>
                       handleToggleAdditionalDetails(!showAdditionalDetails)
@@ -3891,7 +3905,9 @@ const CreateProduct = () => {
                       <div style={{ display: "flex" }}>
                         <Form.Item
                           name={"detailName"}
-                          label={"Tên chi tiết: "}
+                          label={
+                            <p style={{ fontWeight: "bold" }}>Tên chi tiết</p>
+                          }
                           style={{ width: "250px" }}
                           rules={[
                             {
@@ -3906,7 +3922,7 @@ const CreateProduct = () => {
 
                         <Form.Item
                           name={"value"}
-                          label={"Giá trị: "}
+                          label={<p style={{ fontWeight: "bold" }}>Giá trị</p>}
                           style={{ width: "250px", marginLeft: "8px" }}
                           rules={[
                             {
@@ -3925,7 +3941,11 @@ const CreateProduct = () => {
                             <Form.Item
                               style={{ width: "250px" }}
                               name={`detailName${index + 2}`}
-                              label={"Tên chi tiết: "}
+                              label={
+                                <p style={{ fontWeight: "bold" }}>
+                                  Tên chi tiết
+                                </p>
+                              }
                               rules={[
                                 {
                                   required: true,
@@ -3940,7 +3960,9 @@ const CreateProduct = () => {
                             <Form.Item
                               style={{ width: "250px" }}
                               name={`value${index + 2}`}
-                              label={"Giá trị: "}
+                              label={
+                                <p style={{ fontWeight: "bold" }}>Giá trị</p>
+                              }
                               rules={[
                                 {
                                   required: true,
@@ -4266,7 +4288,9 @@ const CreateProduct = () => {
                       <div style={{ display: "flex" }}>
                         <Form.Item
                           name={"detailName"}
-                          label={"Tên chi tiết: "}
+                          label={
+                            <p style={{ fontWeight: "bold" }}>Tên chi tiết</p>
+                          }
                           style={{ width: "250px" }}
                           rules={[
                             {
@@ -4281,7 +4305,7 @@ const CreateProduct = () => {
 
                         <Form.Item
                           name={"value"}
-                          label={"Giá trị: "}
+                          label={<p style={{ fontWeight: "bold" }}>Giá trị</p>}
                           style={{ width: "250px", marginLeft: "8px" }}
                           rules={[
                             {
@@ -4300,7 +4324,11 @@ const CreateProduct = () => {
                             <Form.Item
                               style={{ width: "250px" }}
                               name={`detailName${index + 2}`}
-                              label={"Tên chi tiết: "}
+                              label={
+                                <p style={{ fontWeight: "bold" }}>
+                                  Tên chi tiết
+                                </p>
+                              }
                               rules={[
                                 {
                                   required: true,
@@ -4315,7 +4343,9 @@ const CreateProduct = () => {
                             <Form.Item
                               style={{ width: "250px" }}
                               name={`value${index + 2}`}
-                              label={"Giá trị: "}
+                              label={
+                                <p style={{ fontWeight: "bold" }}>Giá trị</p>
+                              }
                               rules={[
                                 {
                                   required: true,
@@ -4546,9 +4576,9 @@ const CreateProduct = () => {
           <div
             style={{
               position: "fixed",
-              bottom: 0, // Đặt thẻ div ở dưới cùng của trang
+              bottom: 0,
               left: "50%",
-              width: "81.5%", // Đặt chiều rộng 100% để nó kéo dài từ cạnh trái đến cạnh phải
+              width: "81.5%",
               backgroundColor: "white",
               height: "50px",
               zIndex: 999,
@@ -4559,7 +4589,6 @@ const CreateProduct = () => {
             }}
           >
             <Form.Item>
-              {/* Nội dung của Form.Item */}
               <Button
                 type="primary"
                 htmlType="submit"
@@ -4567,9 +4596,9 @@ const CreateProduct = () => {
                   width: "15%",
                   fontWeight: "bold",
                   position: "fixed",
-                  bottom: "45%", // Đặt nút ở dưới cùng của thẻ div
+                  bottom: "45%",
                   left: "50%",
-                  transform: "translate(-50%, 50%)", // Đảm bảo nút ở giữa và ở dưới cùng
+                  transform: "translate(-50%, 50%)",
                   zIndex: 999,
                 }}
               >

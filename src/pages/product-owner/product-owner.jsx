@@ -685,7 +685,7 @@ const ProductOwner = () => {
                 icon={<WalletOutlined style={{ fontSize: "17px" }} />}
                 title={
                   <p style={{ fontSize: "16px", fontWeight: "500" }}>
-                    Tài chính
+                    Tài Chính
                   </p>
                 }
               >
@@ -701,7 +701,7 @@ const ProductOwner = () => {
                 icon={<PercentageOutlined style={{ fontSize: "17px" }} />}
                 title={
                   <p style={{ fontSize: "16px", fontWeight: "500" }}>
-                    Khuyến mãi
+                    Khuyến Mãi
                   </p>
                 }
               >
@@ -717,7 +717,7 @@ const ProductOwner = () => {
                 icon={<CarOutlined style={{ fontSize: "17px" }} />}
                 title={
                   <p style={{ fontSize: "16px", fontWeight: "500" }}>
-                    Giao hàng
+                    Giao Hàng
                   </p>
                 }
               >
