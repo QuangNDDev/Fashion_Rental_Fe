@@ -158,9 +158,9 @@ const Admin = () => {
         </div>
       </Header>
 
-      <Layout style={{ marginLeft: 200 }}>
+      <Layout style={{ marginLeft: 240 }}>
         <Sider
-          width={200}
+          width={240}
           theme="dark"
           breakpoint="md"
           collapsedWidth="0"
@@ -194,11 +194,21 @@ const Admin = () => {
               <SubMenu
                 key="sub1"
                 icon={<UserOutlined />}
-                title="Quản lí người dùng"
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Quản lý người dùng
+                  </p>
+                }
               >
-                <Menu.Item key="1">Khách hàng</Menu.Item>
-                <Menu.Item key="2">Chủ sở hữu sản phẩm</Menu.Item>
-                <Menu.Item key="3">Nhân viên</Menu.Item>
+                <Menu.Item key="1">
+                  {<p style={{ fontSize: "14.5px" }}>Khách hàng</p>}
+                </Menu.Item>
+                <Menu.Item key="2">
+                  {<p style={{ fontSize: "14.5px" }}>Chủ sở hữu sản phẩm</p>}
+                </Menu.Item>
+                <Menu.Item key="3">
+                  {<p style={{ fontSize: "14.5px" }}>Nhân viên</p>}
+                </Menu.Item>
               </SubMenu>
               {/* <SubMenu key="sub2" icon={<UserOutlined />} title="Quản lí 1">
               <Menu.Item key="1">Khách hàng</Menu.Item>

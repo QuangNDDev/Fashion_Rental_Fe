@@ -305,17 +305,27 @@ const ProductCard = () => {
       originShoe: originShoe,
     });
   };
+  const formatDate = (inputDate) => {
+    const date = new Date(inputDate);
 
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    const formattedDate = `${day}/${month}/${year}`;
+
+    return formattedDate;
+  };
   const handleCancel = () => {
     setIsModalVisible(false);
-    // Đặt lại form về trạng thái ban đầu nếu cần
+
     form.resetFields();
   };
   const onFinish = (values) => {
     console.log("Received values:", values);
-    // Lưu dữ liệu vào state
+
     setFormData(values);
-    // Đóng modal
+
     handleCancel();
   };
   const [open, setOpen] = useState(false);
@@ -371,11 +381,17 @@ const ProductCard = () => {
           }}
         />
         <div>
-          <p style={{ fontWeight: "bold", margin: "0" }}>
-            {feedback.customerDTO.fullName}
-          </p>
-          <p style={{ color: "#888", margin: "0" }}>{feedback.createdDate}</p>
-          <Rate allowHalf defaultValue={feedback.ratingPoint} disabled />
+          <div style={{ display: "flex" }}>
+            <p style={{ fontWeight: "bold", marginRight: "5px" }}>
+              {feedback.customerDTO.fullName}
+            </p>
+            <p style={{ color: "#888", margin: "0" }}>
+              {formatDate(feedback.createdtDate)}
+            </p>
+          </div>
+          <div>
+            <Rate allowHalf defaultValue={feedback.ratingPoint} disabled />
+          </div>
         </div>
       </div>
       <div>
@@ -385,14 +401,17 @@ const ProductCard = () => {
         {feedback.imgDTOs && feedback.imgDTOs.length > 0 && (
           <div>
             <h5>Hình ảnh:</h5>
-            {feedback.imgDTOs.map((imgSrc, index) => (
-              <Image
-                key={index}
-                width={70}
-                src={imgSrc.imgUrl}
-                alt={`Hình ảnh ${index + 1}`}
-              />
-            ))}
+            <div style={{ display: "flex", gap: "8px" }}>
+              {feedback.imgDTOs.map((imgSrc, index) => (
+                <Image
+                  key={index}
+                  width={70}
+                  src={imgSrc.imgUrl}
+                  alt={`Hình ảnh ${index + 1}`}
+                  style={{ marginRight: "50px" }}
+                />
+              ))}
+            </div>
           </div>
         )}
       </div>
@@ -533,20 +552,41 @@ const ProductCard = () => {
             {selectedProduct &&
               selectedProduct.requestStatus === "NOT_APPROVED" && (
                 <>
-                  <strong style={{ color: "red" }}>
-                    {" "}
-                    Sản phẩm bị từ chối. Lí do:{" "}
-                  </strong>
-                  <Form.Item
-                    name="requestDescription"
-                    initialValue={
-                      selectedProduct && selectedProduct.requestDescription
-                    }
-                  >
-                    <p>
-                      {selectedProduct && selectedProduct.requestDescription}
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <p
+                      style={{
+                        color: "red",
+                        fontStyle: "italic",
+                        fontSize: "20px",
+                        margin: 0,
+                      }}
+                    >
+                      *Sản phẩm bị từ chối vì lý do:
                     </p>
-                  </Form.Item>
+                    <Form.Item
+                      name="requestDescription"
+                      initialValue={
+                        selectedProduct && selectedProduct.requestDescription
+                      }
+                      style={{
+                        color: "red",
+                        fontStyle: "italic",
+                        fontSize: "20px",
+                        margin: 0,
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: "red",
+                          fontStyle: "italic",
+                          fontSize: "20px",
+                          marginLeft: "5px",
+                        }}
+                      >
+                        {selectedProduct && selectedProduct.requestDescription}
+                      </span>
+                    </Form.Item>
+                  </div>
                 </>
               )}
             <Form.Item

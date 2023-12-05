@@ -5,7 +5,7 @@ import {
   LogoutOutlined,
   MailFilled,
   NotificationFilled,
-  DeliveredProcedureOutlined
+  DeliveredProcedureOutlined,
 } from "@ant-design/icons";
 import {
   Avatar,
@@ -263,7 +263,7 @@ const Staff = () => {
             <CancelBuyStaff />
           </div>
         );
-        case "10":
+      case "10":
         return (
           <div>
             <Breadcrumb
@@ -274,7 +274,7 @@ const Staff = () => {
               <Breadcrumb.Item>Quản lý yêu cầu</Breadcrumb.Item>
               <Breadcrumb.Item>Danh sách yêu cầu</Breadcrumb.Item>
             </Breadcrumb>
-            <RequestTable/>
+            <RequestTable />
           </div>
         );
 
@@ -361,9 +361,9 @@ const Staff = () => {
         </div>
       </Header>
 
-      <Layout style={{ background: "#000", marginLeft: 230 }}>
+      <Layout style={{ background: "#000", marginLeft: 240 }}>
         <Sider
-          width={205}
+          width={215}
           style={{
             position: "fixed",
             left: 0,
@@ -399,33 +399,81 @@ const Staff = () => {
               <SubMenu
                 key="sub1"
                 icon={<CheckOutlined style={{ fontSize: "17px" }} />}
-                title="Duyệt sản phẩm"
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Duyệt sản phẩm
+                  </p>
+                }
               >
-                <Menu.Item key="1">Đơn chờ xử lý</Menu.Item>
+                <Menu.Item key="1">
+                  {<p style={{ fontSize: "14.5px" }}>Đơn chờ xử lý</p>}
+                </Menu.Item>
 
-                <Menu.Item key="2">Đơn đã duyệt</Menu.Item>
+                <Menu.Item key="2">
+                  {<p style={{ fontSize: "14.5px" }}>Đơn đã duyệt</p>}
+                </Menu.Item>
 
-                <Menu.Item key="3">Đơn đã từ chối</Menu.Item>
+                <Menu.Item key="3">
+                  {<p style={{ fontSize: "14.5px" }}>Đơn đã từ chối</p>}
+                </Menu.Item>
               </SubMenu>
               <SubMenu
                 key="sub2"
-                icon={<DeliveredProcedureOutlined style={{ fontSize: "17px" }} />}
-                title="Quản lý yêu cầu"
+                icon={
+                  <DeliveredProcedureOutlined style={{ fontSize: "17px" }} />
+                }
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Quản lý yêu cầu
+                  </p>
+                }
               >
-                  <Menu.Item key="10">Danh sách yêu cầu</Menu.Item>
+                <Menu.Item key="10">
+                  {<p style={{ fontSize: "14.5px" }}>Danh sách yêu cầu</p>}
+                </Menu.Item>
               </SubMenu>
               <SubMenu
                 key="sub3"
                 icon={<EyeFilled style={{ fontSize: "17px" }} />}
-                title="Xem đơn hàng"
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Xem đơn hàng
+                  </p>
+                }
               >
-                <SubMenu key="sub2-1" title="Đơn hàng cho thuê">
-                  <Menu.Item key="4">Sản phẩm đang cho thuê</Menu.Item>
-                  <Menu.Item key="6">Sản phẩm bị trả về</Menu.Item>
+                <SubMenu
+                  key="sub2-1"
+                  title={
+                    <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                      Đơn hàng cho thuê
+                    </p>
+                  }
+                >
+                  <Menu.Item key="4">
+                    {
+                      <p style={{ fontSize: "14.5px" }}>
+                        Sản phẩm đang cho thuê
+                      </p>
+                    }
+                  </Menu.Item>
+                  <Menu.Item key="6">
+                    {<p style={{ fontSize: "14.5px" }}>Sản phẩm bị trả về</p>}
+                  </Menu.Item>
                 </SubMenu>
-                <SubMenu key="sub2-2" title="Đơn hàng bán">
-                  <Menu.Item key="5">Sản phẩm đã bán</Menu.Item>
-                  <Menu.Item key="9">Sản phẩm bị trả về</Menu.Item>
+                <SubMenu
+                  key="sub2-2"
+                  title={
+                    <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                      Đơn hàng bán
+                    </p>
+                  }
+                >
+                  <Menu.Item key="5">
+                    {<p style={{ fontSize: "14.5px" }}>Sản phẩm đã bán</p>}
+                  </Menu.Item>
+                  <Menu.Item key="9">
+                    {<p style={{ fontSize: "14.5px" }}>Sản phẩm bị trả về</p>}
+                  </Menu.Item>
                 </SubMenu>
               </SubMenu>
 
@@ -440,9 +488,16 @@ const Staff = () => {
               <SubMenu
                 key="sub4"
                 icon={<NotificationFilled style={{ fontSize: "17px" }} />}
-                title="Thông tin"
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Thông tin
+                  </p>
+                }
               >
-                <Menu.Item key="8">Thông tin cá nhân</Menu.Item>
+                <Menu.Item key="8">
+                  {" "}
+                  {<p style={{ fontSize: "14.5px" }}>Thông tin cá nhân</p>}
+                </Menu.Item>
               </SubMenu>
 
               {/* <SubMenu
