@@ -683,28 +683,65 @@ const ProductOwner = () => {
               <SubMenu
                 key="sub4"
                 icon={<WalletOutlined style={{ fontSize: "17px" }} />}
-                title="Tài chính"
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Tài chính
+                  </p>
+                }
               >
-                <Menu.Item key="11">Doanh thu</Menu.Item>
-                <Menu.Item key="12">Số dư TK</Menu.Item>
+                <Menu.Item key="11">
+                  {<p style={{ fontSize: "14.5px" }}>Doanh thu </p>}
+                </Menu.Item>
+                <Menu.Item key="12">
+                  {<p style={{ fontSize: "14.5px" }}>Số dư TK </p>}
+                </Menu.Item>
               </SubMenu>
               <SubMenu
                 key="sub5"
                 icon={<PercentageOutlined style={{ fontSize: "17px" }} />}
-                title="Khuyến mãi"
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Khuyến mãi
+                  </p>
+                }
               >
-                <Menu.Item key="13">Thêm mã khuyến mãi</Menu.Item>
-                <Menu.Item key="14">Xem mã khuyến mãi</Menu.Item>
+                <Menu.Item key="13">
+                  {<p style={{ fontSize: "14.5px" }}>Thêm mã khuyến mãi </p>}
+                </Menu.Item>
+                <Menu.Item key="14">
+                  {<p style={{ fontSize: "14.5px" }}>Xem mã khuyến mãi </p>}
+                </Menu.Item>
               </SubMenu>
               <SubMenu
                 key="sub6"
                 icon={<CarOutlined style={{ fontSize: "17px" }} />}
-                title="Giao hàng"
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Giao hàng
+                  </p>
+                }
               >
-                <Menu.Item key="15">Đăng ký GHN</Menu.Item>
-                <SubMenu key={"sub6-1"} title="Đơn hàng chưa giao">
-                  <Menu.Item key="16">Đơn bán</Menu.Item>
-                  <Menu.Item key="19">Đơn thuê</Menu.Item>
+                <Menu.Item key="15">
+                  {
+                    <p style={{ fontSize: "15px", fontWeight: "500" }}>
+                      Đăng ký GHN
+                    </p>
+                  }
+                </Menu.Item>
+                <SubMenu
+                  key={"sub6-1"}
+                  title={
+                    <p style={{ fontSize: "15px", fontWeight: "500" }}>
+                      Đơn hàng chưa giao
+                    </p>
+                  }
+                >
+                  <Menu.Item key="16">
+                    {<p style={{ fontSize: "14.5px" }}>Đơn bán</p>}
+                  </Menu.Item>
+                  <Menu.Item key="19">
+                    {<p style={{ fontSize: "14.5px" }}>Đơn thuê </p>}
+                  </Menu.Item>
                 </SubMenu>
               </SubMenu>
             </Menu>

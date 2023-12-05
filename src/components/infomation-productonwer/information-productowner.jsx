@@ -99,21 +99,20 @@ const InformationPO = () => {
   const handleFileChange = (event) => {
     console.log("handleFileChange called");
     console.log("File selected:", event.file);
-    if (event.file.status !== "removed") {
-      if (event.file) {
-        const imageRef = ref(storage, `images/${event.file.name + v4()}`);
 
-        uploadBytes(imageRef, event.file)
-          .then((snapshot) => {
-            // Set the URL after a successful upload
-            getDownloadURL(snapshot.ref).then((url) => {
-              setUrlImage(url);
-            });
-          })
-          .catch((error) => {
-            console.error("Error uploading image:", error);
-          });
-      }
+    if (event.file.status !== "removed" && event.file) {
+      const imageRef = ref(storage, `images/${event.file.name + v4()}`);
+
+      uploadBytes(imageRef, event.file)
+        .then((snapshot) => getDownloadURL(snapshot.ref))
+        .then((url) => {
+          if (url !== productowner.avatarUrl) {
+            setUrlImage(url);
+          }
+        })
+        .catch((error) => {
+          console.error("Error uploading image:", error);
+        });
     } else {
       setUrlImage(productowner.avatarUrl);
     }
