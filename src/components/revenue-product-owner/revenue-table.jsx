@@ -13,13 +13,12 @@ const RevenueTable = () => {
   const fetchRevenueProduct = async () => {
     try {
       const responseOrderSaleCompleted = await axios.get(
-        "http://fashionrental.online:8080/orderbuy/po/completed/" +
-          productownerId
+        "http://fashionrental.online:8080/orderbuy/po/completed/" + productownerId
       );
       const orderBuyList = responseOrderSaleCompleted.data.map(
         (orderSaleDetail) => orderSaleDetail.orderBuyID
       );
-      console.log("Order Buy List:", orderBuyList);
+  
       const orderSaleDetailList = [];
       for (const orderBuyId of orderBuyList) {
         try {
@@ -31,24 +30,24 @@ const RevenueTable = () => {
           console.error(error);
         }
       }
-      console.log("Order Sale Detail List:", orderSaleDetailList);
+  
       const productOrderSaleDetails = orderSaleDetailList.map((orderDetail) => {
-        return {
-          price: orderDetail[0].price,
-          productName: orderDetail[0].productDTO.productName,
-          productID: orderDetail[0].productDTO.productID,
-        };
+        return orderDetail.map((detail) => {
+          return {
+            price: detail.price,
+            productName: detail.productDTO.productName,
+            productID: detail.productDTO.productID,
+          };
+        });
       });
-
-      console.log("Product Order Sale Details: ", productOrderSaleDetails);
+  
       const responseOrderRentCompleted = await axios.get(
-        "http://fashionrental.online:8080/orderrent/po/completed/" +
-          productownerId
+        "http://fashionrental.online:8080/orderrent/po/completed/" + productownerId
       );
       const orderRentList = responseOrderRentCompleted.data.map(
         (orderRentDetail) => orderRentDetail.orderRentID
       );
-      console.log("Order Rent List:", orderRentList);
+  
       const orderRentDetailList = [];
       for (const orderRentId of orderRentList) {
         try {
@@ -60,107 +59,108 @@ const RevenueTable = () => {
           console.error(error);
         }
       }
-      console.log("Order Rent Detail List:", orderRentDetailList);
+  
       const productOrderRentDetails = orderRentDetailList.map((orderDetail) => {
-        return {
-          price: orderDetail[0].rentPrice,
-          productName: orderDetail[0].productDTO.productName,
-          productID: orderDetail[0].productDTO.productID,
-        };
-      });
-
-      console.log("Product Order Rent Details: ", productOrderRentDetails);
-      const productSaleDetailsMap = new Map();
-
-      for (const orderSaleDetail of orderSaleDetailList) {
-        const {
-          price,
-          productDTO: { productID, productName },
-        } = orderSaleDetail[0];
-
-        if (productSaleDetailsMap.has(productID)) {
-          const currentData = productSaleDetailsMap.get(productID);
-          const updatedPrice = currentData.totalPrice + price;
-          productSaleDetailsMap.set(productID, {
-            productID,
-            productName,
-            totalPrice: updatedPrice,
-          });
-        } else {
-          productSaleDetailsMap.set(productID, {
-            productID,
-            productName,
-            totalPrice: price,
-          });
-        }
-      }
-      const productRentDetailsMap = new Map();
-
-      for (const orderRentDetail of orderRentDetailList) {
-        const {
-          rentPrice,
-          productDTO: { productID, productName },
-        } = orderRentDetail[0];
-
-        if (productRentDetailsMap.has(productID)) {
-          const currentData = productRentDetailsMap.get(productID);
-          const updatedPrice = currentData.totalPrice + rentPrice;
-          productRentDetailsMap.set(productID, {
-            productID,
-            productName,
-            totalPrice: updatedPrice,
-          });
-        } else {
-          productRentDetailsMap.set(productID, {
-            productID,
-            productName,
-            totalPrice: rentPrice,
-          });
-        }
-      }
-
-      const aggregatedProductSaleDetails = Array.from(
-        productSaleDetailsMap.values()
-      );
-      const aggregatedProductRentDetails = Array.from(
-        productRentDetailsMap.values()
-      );
-
-      const combinedProductDetails = [];
-      for (const saleDetail of aggregatedProductSaleDetails) {
-        const matchingRentDetailIndex = aggregatedProductRentDetails.findIndex(
-          (rentDetail) => rentDetail.productID === saleDetail.productID
-        );
-
-        if (matchingRentDetailIndex !== -1) {
-          const matchingRentDetail =
-            aggregatedProductRentDetails[matchingRentDetailIndex];
-          const totalPrice =
-            saleDetail.totalPrice + matchingRentDetail.totalPrice;
-
-          const combinedDetail = {
-            productID: saleDetail.productID,
-            productName: saleDetail.productName,
-            totalPrice: totalPrice,
+        return orderDetail.map((detail) => {
+          return {
+            price: detail.rentPrice,
+            productName: detail.productDTO.productName,
+            productID: detail.productDTO.productID,
           };
-
-          combinedProductDetails.push(combinedDetail);
-
-          aggregatedProductRentDetails.splice(matchingRentDetailIndex, 1);
-        } else {
-          combinedProductDetails.push(saleDetail);
+        });
+      });
+  
+      const productSaleDetailsMap = new Map();
+      for (const orderSaleDetail of orderSaleDetailList) {
+        for (const detail of orderSaleDetail) {
+          const {
+            price,
+            productDTO: { productID, productName },
+          } = detail;
+  
+          if (productSaleDetailsMap.has(productID)) {
+            const currentData = productSaleDetailsMap.get(productID);
+            const updatedPrice = currentData.totalPrice + price;
+            productSaleDetailsMap.set(productID, {
+              productID,
+              productName,
+              totalPrice: updatedPrice,
+            });
+          } else {
+            productSaleDetailsMap.set(productID, {
+              productID,
+              productName,
+              totalPrice: price,
+            });
+          }
         }
       }
-
-      combinedProductDetails.push(...aggregatedProductRentDetails);
-
-      console.log("Combined Product Details: ", combinedProductDetails);
-
+  
+      const productRentDetailsMap = new Map();
+      for (const orderRentDetail of orderRentDetailList) {
+        for (const detail of orderRentDetail) {
+          const {
+            rentPrice,
+            productDTO: { productID, productName },
+          } = detail;
+  
+          if (productRentDetailsMap.has(productID)) {
+            const currentData = productRentDetailsMap.get(productID);
+            const updatedPrice = currentData.totalPrice + rentPrice;
+            productRentDetailsMap.set(productID, {
+              productID,
+              productName,
+              totalPrice: updatedPrice,
+            });
+          } else {
+            productRentDetailsMap.set(productID, {
+              productID,
+              productName,
+              totalPrice: rentPrice,
+            });
+          }
+        }
+      }
+  
+      const aggregatedProductSaleDetails = Array.from(productSaleDetailsMap.values());
+      const aggregatedProductRentDetails = Array.from(productRentDetailsMap.values());
+  
+      const combinedProductDetails = [];
+      for (const saleDetails of aggregatedProductSaleDetails) {
+        for (const saleDetail of saleDetails) {
+          const matchingRentDetailIndex = aggregatedProductRentDetails.findIndex(
+            (rentDetail) => rentDetail.productID === saleDetail.productID
+          );
+  
+          if (matchingRentDetailIndex !== -1) {
+            const matchingRentDetail = aggregatedProductRentDetails[matchingRentDetailIndex];
+            const totalPrice = saleDetail.totalPrice + matchingRentDetail.totalPrice;
+  
+            const combinedDetail = {
+              productID: saleDetail.productID,
+              productName: saleDetail.productName,
+              totalPrice: totalPrice,
+            };
+  
+            combinedProductDetails.push(combinedDetail);
+  
+            aggregatedProductRentDetails.splice(matchingRentDetailIndex, 1);
+          } else {
+            combinedProductDetails.push(saleDetail);
+          }
+        }
+      }
+  
+      for (const rentDetails of aggregatedProductRentDetails) {
+        combinedProductDetails.push(rentDetails);
+      }
+  
       setRevenueProductData(combinedProductDetails);
     } catch (error) {
       console.error(error);
     }
   };
+  
 
   useEffect(() => {
     fetchRevenueProduct();
