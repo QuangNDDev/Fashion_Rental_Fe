@@ -183,7 +183,18 @@ const OrderDeliveryTable = () => {
       options
     );
     const [month, day, year] = formattedDate.split("/");
-    return `${day}/ ${month}/ ${year}`;
+    return `${day}/${month}/${year}`;
+  }
+  
+  function formatDateTime(dateOrder) {
+    if (!Array.isArray(dateOrder) || dateOrder.length < 5) {
+      return "Invalid date format";
+    }
+  
+    const [year, month, day, hour, minute] = dateOrder;
+    const formattedDate = formatDate(`${year}-${month}-${day}`);
+    const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    return `${formattedTime} ${formattedDate}`;
   }
   const [requiredNote, setRequiredNote] = useState([
     { name: "Cho thử hàng", value: "CHOTHUHANG" },
@@ -453,7 +464,7 @@ const OrderDeliveryTable = () => {
       key: "dateOrder",
       width: "10%",
       ...getColumnSearchProps("dateOrder"),
-      render: (text) => <p>{formatDate(text)}</p>,
+      render: (text) => <p>{formatDateTime(text)}</p>,
     },
     {
       title: "Tổng tiền",
@@ -577,7 +588,7 @@ const OrderDeliveryTable = () => {
                     <div style={{ display: "flex" }}>
                       <strong>Ngày đặt hàng:</strong>
                       <p style={{ marginLeft: "10px" }}>
-                        <p>{formatDate(form.getFieldValue("dateOrder"))}</p>
+                        <p>{formatDateTime(form.getFieldValue("dateOrder"))}</p>
                       </p>
                     </div>
                   </Form.Item>

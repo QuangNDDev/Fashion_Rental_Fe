@@ -1,18 +1,22 @@
-import { SearchOutlined } from "@ant-design/icons";
-import { Button, Input, Space, Table } from "antd";
+import { SearchOutlined,EyeTwoTone, } from "@ant-design/icons";
+import { Button, Drawer, Form, Input, Space, Table,notification, } from "antd";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import RenderTag from "../render/RenderTag";
+import ProductOrderRent from "./Product-Order-Rent";
 const CancelOrderRent = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
-
+  const [selectedOrderID, setSelectedOrderID] = useState(null);
+  const [selectedCustomer, setSelectedCustomer] = useState([]);
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
   const fetchCancelOrders = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/orderbuy/po/canceled/" +
+        "http://fashionrental.online:8080/orderrent/po/cancel/" +
           localStorage.getItem("productownerId")
       );
 
@@ -33,6 +37,27 @@ const CancelOrderRent = () => {
   const handleReset = (clearFilters) => {
     clearFilters();
     setSearchText("");
+  };
+  const [form] = Form.useForm();
+  const showDrawer = async (record) => {
+    form.setFieldValue(record);
+    form.setFieldsValue({ dateOrder: record.dateOrder });
+    form.setFieldsValue({ customerAddress: record.customerAddress });
+    setSelectedOrderID(record.orderRentID);
+    setIsDrawerVisible(true);
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/customer/" + record.customerID
+      );
+
+      setSelectedCustomer(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const onCloseDrawer = () => {
+    setIsDrawerVisible(false);
   };
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -141,7 +166,18 @@ const CancelOrderRent = () => {
       options
     );
     const [month, day, year] = formattedDate.split("/");
-    return `${day}/ ${month}/ ${year}`;
+    return `${day}/${month}/${year}`;
+  }
+  
+  function formatDateTime(dateOrder) {
+    if (!Array.isArray(dateOrder) || dateOrder.length < 5) {
+      return "Invalid date format";
+    }
+  
+    const [year, month, day, hour, minute] = dateOrder;
+    const formattedDate = formatDate(`${year}-${month}-${day}`);
+    const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    return `${formattedTime} ${formattedDate}`;
   }
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
   const formatPriceWithVND = (price) => {
@@ -154,10 +190,10 @@ const CancelOrderRent = () => {
   const columns = [
     {
       title: "Mã đơn",
-      dataIndex: "orderBuyID",
-      key: "orderBuyID",
+      dataIndex: "orderRentID",
+      key: "orderRentID",
 
-      ...getColumnSearchProps("orderBuyID"),
+      ...getColumnSearchProps("orderRentID"),
       render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
     },
     {
@@ -166,7 +202,7 @@ const CancelOrderRent = () => {
       key: "dateOrder",
 
       ...getColumnSearchProps("dateOrder"),
-      render: (text) => <p>{formatDate(text)}</p>,
+      render: (text) => <p>{formatDateTime(text)}</p>,
     },
     {
       title: "Tổng tiền",
@@ -189,6 +225,22 @@ const CancelOrderRent = () => {
         </p>
       ),
     },
+    {
+      title: <p style={{ textAlign: "center" }}>Hành Động</p>,
+      key: "action",
+      align: "left",
+
+      render: (text, record) => (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Space size="middle">
+            <Button onClick={() => showDrawer(record)}>
+              <EyeTwoTone />
+              Xem Đơn
+            </Button>
+          </Space>
+        </div>
+      ),
+    },
   ];
   return (
     <div>
@@ -198,6 +250,57 @@ const CancelOrderRent = () => {
         columns={columns}
         dataSource={cancelOrderRentData}
       />
+      {contextHolder}
+      <Drawer
+        title={"Đơn hàng"}
+        open={isDrawerVisible}
+        onClose={onCloseDrawer}
+        width={500}
+      >
+        <Form form={form}>
+          <Form.Item
+            name="fullName"
+            initialValue={selectedCustomer && selectedCustomer.fullName}
+          >
+            <div style={{ display: "flex" }}>
+              <strong>Tên người mua:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {selectedCustomer && selectedCustomer.fullName}
+              </p>
+            </div>
+          </Form.Item>
+          <Form.Item
+            name="phone"
+            initialValue={selectedCustomer && selectedCustomer.phone}
+          >
+            <div style={{ display: "flex" }}>
+              <strong>SĐT người mua:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {selectedCustomer && selectedCustomer.phone}
+              </p>
+            </div>
+          </Form.Item>
+          <Form.Item name="dateOrder">
+            <div style={{ display: "flex" }}>
+              <strong>Ngày đặt hàng:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                <p>{formatDateTime(form.getFieldValue("dateOrder"))}</p>
+              </p>
+            </div>
+          </Form.Item>
+         
+          <Form.Item name="customerAddress">
+            <div style={{ display: "flex" }}>
+              <strong>Địa chỉ:</strong>
+              <p style={{ marginLeft: "10px" }}>
+                {form.getFieldValue("customerAddress")}
+              </p>
+            </div>
+          </Form.Item>
+        </Form>
+        <h3>Danh sách sản phẩm:</h3>
+        <ProductOrderRent key={selectedOrderID} orderID={selectedOrderID} />
+      </Drawer>
     </div>
   );
 };

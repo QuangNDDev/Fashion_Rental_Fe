@@ -102,10 +102,10 @@ const RentingOrderTable = () => {
         accountID: localStorage.getItem("accountId"),
         img: imgUrls,
         orderRentID: selectedOrderID,
-        status: "PO_RECEIVED"
+        status: "PO_RECEIVED",
       };
 
-      console.log("img data:",imgData);
+      console.log("img data:", imgData);
       try {
         const imgDataResponse = await axios.post(
           "http://fashionrental.online:8080/pic",
@@ -135,6 +135,15 @@ const RentingOrderTable = () => {
     }
   };
   // ==============formatDate====================================
+  // function formatDate(dateString) {
+  //   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+  //   const formattedDate = new Date(dateString).toLocaleDateString(
+  //     "en-US",
+  //     options
+  //   );
+  //   const [month, day, year] = formattedDate.split("/");
+  //   return `${day}/ ${month}/ ${year}`;
+  // }
   function formatDate(dateString) {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     const formattedDate = new Date(dateString).toLocaleDateString(
@@ -142,7 +151,18 @@ const RentingOrderTable = () => {
       options
     );
     const [month, day, year] = formattedDate.split("/");
-    return `${day}/ ${month}/ ${year}`;
+    return `${day}/${month}/${year}`;
+  }
+  
+  function formatDateTime(dateOrder) {
+    if (!Array.isArray(dateOrder) || dateOrder.length < 5) {
+      return "Invalid date format";
+    }
+  
+    const [year, month, day, hour, minute] = dateOrder;
+    const formattedDate = formatDate(`${year}-${month}-${day}`);
+    const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    return `${formattedTime} ${formattedDate}`;
   }
   // =============================================================
   const getBase64 = (file) =>
@@ -210,7 +230,7 @@ const RentingOrderTable = () => {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -376,7 +396,7 @@ const RentingOrderTable = () => {
       key: "dateOrder",
 
       ...getColumnSearchProps("dateOrder"),
-      render: (text) => <p>{formatDate(text)}</p>,
+      render: (text) => <p>{formatDateTime(text)}</p>,
     },
     {
       title: "Tổng tiền",
@@ -526,7 +546,7 @@ const RentingOrderTable = () => {
         width={500}
       >
         <Form form={form}>
-        <Form.Item
+          <Form.Item
             name="fullName"
             initialValue={selectedCustomer && selectedCustomer.fullName}
           >
@@ -552,7 +572,7 @@ const RentingOrderTable = () => {
             <div style={{ display: "flex" }}>
               <strong>Ngày đặt hàng:</strong>
               <p style={{ marginLeft: "10px" }}>
-                <p>{formatDate(form.getFieldValue("dateOrder"))}</p>
+                <p>{formatDateTime(form.getFieldValue("dateOrder"))}</p>
               </p>
             </div>
           </Form.Item>

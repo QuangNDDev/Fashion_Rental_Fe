@@ -442,7 +442,7 @@ const ProductOwner = () => {
               }}
             >
               <Breadcrumb.Item>Quản lý đơn hàng</Breadcrumb.Item>
-              <Breadcrumb.Item>Quản lý đơn bán </Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý đơn thuê </Breadcrumb.Item>
               <Breadcrumb.Item>Đơn đang được thuê/Đang trả </Breadcrumb.Item>
             </Breadcrumb>
             <RentingOrderTable />

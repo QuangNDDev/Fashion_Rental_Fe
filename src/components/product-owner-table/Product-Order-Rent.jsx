@@ -197,7 +197,18 @@ const ProductOrderRent = ({ orderID }) => {
       options
     );
     const [month, day, year] = formattedDate.split("/");
-    return `${day}/ ${month}/ ${year}`;
+    return `${day}/${month}/${year}`;
+  }
+  
+  function formatDateTime(dateOrder) {
+    if (!Array.isArray(dateOrder) || dateOrder.length < 5) {
+      return "Invalid date format";
+    }
+  
+    const [year, month, day, hour, minute] = dateOrder;
+    const formattedDate = formatDate(`${year}-${month}-${day}`);
+    const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    return `${formattedTime} ${formattedDate}`;
   }
   return (
     <>
@@ -268,7 +279,7 @@ const ProductOrderRent = ({ orderID }) => {
               <div style={{ display: "flex" }}>
                 <strong>Ngày bắt đầu:</strong>
                 <p style={{ marginLeft: "10px" }}>
-                  <p>{formatDate(selectedOrderRentDetail.startDate)}</p>
+                  <p>{formatDateTime(selectedOrderRentDetail.startDate)}</p>
                 </p>
               </div>
             </Form.Item>
@@ -276,7 +287,7 @@ const ProductOrderRent = ({ orderID }) => {
               <div style={{ display: "flex" }}>
                 <strong>Ngày kết thúc:</strong>
                 <p style={{ marginLeft: "10px" }}>
-                  <p>{formatDate(selectedOrderRentDetail.endDate)}</p>
+                  <p>{formatDateTime(selectedOrderRentDetail.endDate)}</p>
                 </p>
               </div>
             </Form.Item>

@@ -13,6 +13,18 @@ const Revenue = () => {
   const [orderSaleWeekData, setOrderSaleWeekData] = useState([]);
   const [orderSaleMonthData, setOrderSaleMonthData] = useState([]);
   const productownerId = localStorage.getItem("productownerId");
+  const accountId = localStorage.getItem("accountId");
+  const [balanceData, setBalanceData] = useState([]);
+  const fetchBalance = async () => {
+    try {
+      const response = await axios.get(
+        "http://fashionrental.online:8080/wallet/" + accountId
+      );
+      setBalanceData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const fetchOrderSales = async () => {
     try {
       const response = await axios.get(
@@ -81,32 +93,33 @@ const Revenue = () => {
     fetchOrderRents();
     fetchOrderRentsWeek();
     fetchOrderRentsMonth();
+    fetchBalance();
   }, []);
-  const calculateUnpaid = () => {
-    let total = 0;
-    let totalSale = 0;
-    let totalRent = 0;
-    orderSaleData.forEach((order) => {
-      if (
-        ["PENDING", "PREPARE", "READY_PICKUP", "CONFIRMING"].includes(
-          order.status
-        )
-      ) {
-        totalSale += order.totalBuyPriceProduct;
-      }
-    });
-    orderRentData.forEach((order) => {
-      if (
-        ["PENDING", "PREPARE", "READY_PICKUP", "CONFIRMING"].includes(
-          order.status
-        )
-      ) {
-        totalRent += order.totalRentPriceProduct;
-      }
-    });
-    total = totalSale + totalRent;
-    return total;
-  };
+  // const calculateUnpaid = () => {
+  //   let total = 0;
+  //   let totalSale = 0;
+  //   let totalRent = 0;
+  //   orderSaleData.forEach((order) => {
+  //     if (
+  //       ["PENDING", "PREPARE", "DELIVERY", "CONFIRMING"].includes(
+  //         order.status
+  //       )
+  //     ) {
+  //       totalSale += order.totalBuyPriceProduct;
+  //     }
+  //   });
+  //   orderRentData.forEach((order) => {
+  //     if (
+  //       ["PENDING", "PREPARE", "DELIVERY", "CONFIRMING"].includes(
+  //         order.status
+  //       )
+  //     ) {
+  //       totalRent += order.totalRentPriceProduct;
+  //     }
+  //   });
+  //   total = totalSale + totalRent;
+  //   return total;
+  // };
   const calculatePaid = () => {
     let total = 0;
     let totalSale = 0;
@@ -160,7 +173,6 @@ const Revenue = () => {
   };
   const totalPaidWeek = calculatePaidWeek();
   const totalPaidMonth = calculatePaidMonth();
-  const totalUnpaid = calculateUnpaid();
   const totalPaid = calculatePaid();
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
   const formatter = (value) => (
@@ -176,7 +188,7 @@ const Revenue = () => {
               <Card bordered={true} title="Chưa thanh toán">
                 <Statistic
                   title="Tổng cộng"
-                  value={totalUnpaid}
+                  value={balanceData.pendingMoney}
                   precision={0}
                   valueStyle={{ color: "#FFA500" }}
                   suffix="VNĐ"

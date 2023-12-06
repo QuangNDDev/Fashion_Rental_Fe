@@ -35,7 +35,18 @@ const TableAccept = () => {
       options
     );
     const [month, day, year] = formattedDate.split("/");
-    return `${day}/ ${month}/ ${year}`;
+    return `${day}/${month}/${year}`;
+  }
+  
+  function formatDateTime(dateOrder) {
+    if (!Array.isArray(dateOrder) || dateOrder.length < 5) {
+      return "Invalid date format";
+    }
+  
+    const [year, month, day, hour, minute] = dateOrder;
+    const formattedDate = formatDate(`${year}-${month}-${day}`);
+    const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    return `${formattedTime} ${formattedDate}`;
   }
   const formatPriceWithVND = (price) => {
     return new Intl.NumberFormat("vi-VN", {
@@ -386,14 +397,14 @@ const TableAccept = () => {
       dataIndex: "createDate",
       key: "createDate",
       ...getColumnSearchProps("createDate"),
-      render: (text) => <p style={{ textAlign: "left" }}>{formatDate(text)}</p>,
+      render: (text) => <p style={{ textAlign: "left" }}>{formatDateTime(text)}</p>,
     },
     {
       title: "Ngày duyệt",
       dataIndex: "updateDate",
       key: "updateDate",
       ...getColumnSearchProps("updateDate"),
-      render: (text) => <p style={{ textAlign: "left" }}>{formatDate(text)}</p>,
+      render: (text) => <p style={{ textAlign: "left" }}>{formatDateTime(text)}</p>,
     },
     {
       title: "Trạng thái",
