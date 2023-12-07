@@ -414,9 +414,11 @@ const StaffTable = () => {
                 ]}
               >
                 <Radio.Group>
-                  <Radio value={"VERIFIED"}>Đang hoạt động</Radio>
-                  <Radio value={"BLOCKED"}>Không hoạt động</Radio>
-                </Radio.Group>
+                <Radio value={"VERIFIED"||"NOT_VERIFIED"}>
+                  Đang hoạt động
+                </Radio>
+                <Radio value={"BLOCKED"}>Không hoạt động</Radio>
+              </Radio.Group>
               </Form.Item>
               <Form.Item>
                 <Button

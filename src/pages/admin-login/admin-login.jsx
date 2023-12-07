@@ -74,9 +74,9 @@ const LoginForm = () => {
       const response = await axios.post(
         `http://fashionrental.online:8080/account/login?email=${email}&password=${password}`
       );
-      console.log(response);
+      console.log(response.data.status);
 
-      if (response.data) {
+      if (response.data.status != "BLOCKED") {
         localStorage.setItem("accountId", response.data.accountID);
         localStorage.setItem("roleId", response.data.role.roleID);
 
@@ -113,6 +113,11 @@ const LoginForm = () => {
             description: "Tài khoản của bạn không có quyền truy cập!!!",
           });
         }
+      }else{
+        api["warning"]({
+          message: "Đăng Nhập Thất Bại",
+          description: "Tài khoản của bạn đã bị khoá!!!",
+        });
       }
     } catch (error) {
       console.error(error);

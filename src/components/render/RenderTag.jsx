@@ -142,7 +142,7 @@ const RenderTag = ({ tagRender }) => {
       text = "Đang vận chuyển";
       break;
     case "REJECTING_COMPLETED":
-      color = "red";
+      color = "green";
       text = "Trả hàng/hoàn tiền";
       break;
     case "OUT_OF_STOCK":
