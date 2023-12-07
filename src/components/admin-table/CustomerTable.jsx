@@ -225,8 +225,7 @@ const CustomerTable = () => {
     } catch (error) {
       api["error"]({
         message: "Cập Nhật Thất Bại!",
-        description:
-          "Tên, Email và Số điện thoại không được để trống hoặc chỉ chứa khoảng trắng!",
+        description: null,
       });
       console.log(error);
     }

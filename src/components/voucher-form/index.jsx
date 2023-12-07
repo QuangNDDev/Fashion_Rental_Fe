@@ -57,12 +57,14 @@ function VoucherForm() {
     const spaceVoucherCode = values.voucherCode.trim();
     const spaceVoucherName = values.voucherName.trim();
     const spaceVoucherQuantity = values.quantity.trim();
+    const spaceMaxDiscount = values.maxDiscount.trim();
 
     if (
       !spaceDescription ||
       !spaceVoucherCode ||
       !spaceVoucherName ||
-      !spaceVoucherQuantity
+      !spaceVoucherQuantity ||
+      !spaceMaxDiscount
     ) {
       notification.error({
         message: "Thêm Mã Khuyến Mãi Thất Bại",
@@ -238,9 +240,16 @@ function VoucherForm() {
                       name={"quantity"}
                       rules={[
                         { required: true, message: "Không được để trống!" },
+                        {
+                          pattern: /^(0|[1-9]\d*)(\.\d+)?$/,
+                          message: "Vui lòng nhập số không âm!",
+                        },
                       ]}
                     >
-                      <Input placeholder="Nhập số lượng mã giảm giá..." />
+                      <Input
+                        type="number"
+                        placeholder="Nhập số lượng mã giảm giá..."
+                      />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -341,6 +350,10 @@ function VoucherForm() {
                       name={"maxDiscount"}
                       rules={[
                         { required: true, message: "Không được để trống!" },
+                        {
+                          pattern: /^(0|[1-9]\d*)(\.\d+)?$/,
+                          message: "Vui lòng nhập số không âm!",
+                        },
                       ]}
                     >
                       <Input

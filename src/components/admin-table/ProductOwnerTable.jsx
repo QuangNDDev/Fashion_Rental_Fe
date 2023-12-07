@@ -198,7 +198,7 @@ const ProductOwnerTable = () => {
       );
 
       api["success"]({
-        message: "Cập Nhật Thành Công",
+        message: "Cập Nhật Thành Công!",
         description: null,
       });
 
