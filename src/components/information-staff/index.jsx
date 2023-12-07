@@ -81,7 +81,7 @@ const ProfileStaff = () => {
           });
           api["success"]({
             message: "Xác Thực Thành Công!",
-            description: "Chúc mừng bạn đã đăng ký thành công",
+            description: "Chúc mừng bạn đã xác thực thành công",
             duration: 1800,
           });
         }
