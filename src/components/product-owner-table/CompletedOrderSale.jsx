@@ -328,7 +328,7 @@ const OrderCompletedTable = () => {
           </Form.Item>
           <Form.Item name="customerAddress">
             <div style={{ display: "flex" }}>
-              <strong>Địa chỉ:</strong>
+            <strong style={{minWidth:"55px"}}>Địa chỉ:</strong>
               <p style={{ marginLeft: "10px" }}>
                 {form.getFieldValue("customerAddress")}
               </p>

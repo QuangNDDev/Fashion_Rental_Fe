@@ -377,14 +377,14 @@ const RejectTable = () => {
       dataIndex: "createDate",
       key: "createDate",
       ...getColumnSearchProps("createDate"),
-      render: (text) => <p style={{ textAlign: "left" }}>{formatDateTime(text)}</p>,
+      render: (text) => <p style={{ textAlign: "left" }}>{formatDate(text)}</p>,
     },
     {
       title: "Ngày từ chối",
       dataIndex: "updateDate",
       key: "updateDate",
       ...getColumnSearchProps("updateDate"),
-      render: (text) => <p style={{ textAlign: "left" }}>{formatDateTime(text)}</p>,
+      render: (text) => <p style={{ textAlign: "left" }}>{formatDate(text)}</p>,
     },
     {
       title: "Trạng thái",
@@ -536,7 +536,7 @@ const RejectTable = () => {
             initialValue={selectedProduct && selectedProduct.term}
           >
             <div style={{ display: "flex" }}>
-              <strong style={{ minWidth: "65px" }}>Quy định: </strong>
+              <strong style={{ minWidth: "60px" }}>Quy định: </strong>
               <p
                 style={{
                   marginLeft: "5px",
@@ -895,7 +895,7 @@ const RejectTable = () => {
                     initialValue={detail.detailName}
                   >
                     <div style={{ display: "flex" }}>
-                      <strong>{detail.detailName}:</strong>
+                    <strong style={{minWidth:"80px"}}>{detail.detailName}:</strong>
                       <p style={{ marginLeft: "10px" }}>{detail.value}</p>
                     </div>
                   </Form.Item>

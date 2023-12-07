@@ -397,14 +397,14 @@ const TableAccept = () => {
       dataIndex: "createDate",
       key: "createDate",
       ...getColumnSearchProps("createDate"),
-      render: (text) => <p style={{ textAlign: "left" }}>{formatDateTime(text)}</p>,
+      render: (text) => <p style={{ textAlign: "left" }}>{formatDate(text)}</p>,
     },
     {
       title: "Ngày duyệt",
       dataIndex: "updateDate",
       key: "updateDate",
       ...getColumnSearchProps("updateDate"),
-      render: (text) => <p style={{ textAlign: "left" }}>{formatDateTime(text)}</p>,
+      render: (text) => <p style={{ textAlign: "left" }}>{formatDate(text)}</p>,
     },
     {
       title: "Trạng thái",
@@ -903,7 +903,7 @@ const TableAccept = () => {
                     initialValue={detail.detailName}
                   >
                     <div style={{ display: "flex" }}>
-                      <strong>{detail.detailName}:</strong>
+                      <strong style={{minWidth:"80px"}}>{detail.detailName}:</strong>
                       <p style={{ marginLeft: "10px" }}>{detail.value}</p>
                     </div>
                   </Form.Item>
