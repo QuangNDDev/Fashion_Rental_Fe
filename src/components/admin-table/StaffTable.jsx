@@ -92,7 +92,7 @@ const StaffTable = () => {
           )
           .then((response) => {
             api["success"]({
-              message: "Cập Nhật Thành Công",
+              message: "Cập Nhật Thành Công!",
               description: null,
             });
             console.log(response);
@@ -147,7 +147,7 @@ const StaffTable = () => {
         );
 
         api["success"]({
-          message: "Thêm Mới Nhân Viên Thành Công",
+          message: "Thêm Mới Nhân Viên Thành Công!",
           description: (
             <div style={{ fontSize: "15px" }}>
               Email: {formValues.email}
