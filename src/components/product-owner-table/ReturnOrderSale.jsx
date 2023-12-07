@@ -1,4 +1,4 @@
-import { SearchOutlined,EyeTwoTone } from "@ant-design/icons";
+import { SearchOutlined,EyeTwoTone,CheckCircleTwoTone } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import { Button, Drawer, Form, Input, Space, Table,notification } from "antd";
@@ -18,7 +18,7 @@ const ReturnOrderSale = () => {
   const fetchRejectingCompletedOrders = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/orderbuy/po/rejectingcompleted/" +
+        "http://fashionrental.online:8080/orderrent/po/rejecting&rejectingcompleted/" +
           localStorage.getItem("productownerId")
       );
       setorderRecjectingCompleted(response.data);
@@ -186,14 +186,37 @@ const ReturnOrderSale = () => {
       currency: "VND",
     }).format(price);
   };
-
+// =====================ApproveOrder============================
+const approveOrder = async (record) => {
+  console.log("orderBuyID:", record.orderRentID);
+  try {
+    const response = await axios.put(
+      `http://fashionrental.online:8080/orderrent?orderRentID=` +
+        record.orderRentID +
+        `&status=REJECTING_COMPLETED`
+    );
+    api["success"]({
+      message: "Duyệt Đơn Hàng Thành Công!",
+      description: `Đơn hàng ${response.data.orderRentID} đã được duyệt`,
+      duration: 1000,
+    });
+    console.log("Check order success!!!", response.data);
+    fetchRejectingCompletedOrders();
+  } catch (error) {
+    api["error"]({
+      message: "Duyệt Đơn Hàng Thất Bại!",
+      description: null,
+    });
+    console.error("Check order  failed", error);
+  }
+};
   const columns = [
     {
       title: "Mã đơn",
-      dataIndex: "orderBuyID",
+      dataIndex: "orderRentID",
       key: "orderBuyID",
 
-      ...getColumnSearchProps("orderBuyID"),
+      ...getColumnSearchProps("orderRentID"),
       render: (number) => (
         <p style={{ textAlign: "center" }}>{Number(number)}</p>
       ),
@@ -232,16 +255,33 @@ const ReturnOrderSale = () => {
       key: "action",
       align: "left",
 
-      render: (text, record) => (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Space size="middle">
-            <Button onClick={() => showDrawer(record)}>
-              <EyeTwoTone />
-              Xem Đơn
-            </Button>
-          </Space>
-        </div>
-      ),
+      render: (text, record) => {
+        const isReturning = record.status === "REJECTING";
+
+        return (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Space size="middle">
+              {!isReturning && (
+                <Button onClick={() => showDrawer(record)}>
+                  <EyeTwoTone />
+                  Xem Đơn
+                </Button>
+              )}
+              {isReturning && (
+                <>
+                  <Button onClick={() => showDrawer(record)}>
+                    <EyeTwoTone />
+                    Xem Đơn
+                  </Button>
+                  <Button onClick={() => approveOrder(record)}>
+                    <CheckCircleTwoTone twoToneColor="#52c41a" />
+                  </Button>
+                </>
+              )}
+            </Space>
+          </div>
+        );
+      },
     },
   ];
   return (

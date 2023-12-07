@@ -363,7 +363,7 @@ const OrderRentDeliveryTable = () => {
         } catch (error) {
           console.error("Update confirming API Failed!!!", error);
         }
-      }, 60 * 1000);
+      }, 30 * 1000);
     } catch (error) {
       console.error("Create Delivery Failed:", error);
       api["error"]({

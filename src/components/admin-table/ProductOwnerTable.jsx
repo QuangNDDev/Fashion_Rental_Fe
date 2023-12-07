@@ -403,11 +403,11 @@ const ProductOwnerTable = () => {
                 { required: true, message: "Cập nhật trạng thái hoạt động!" },
               ]}
             >
-              <Radio.Group>
-                <Radio style={{ marginLeft: "50px" }} value={true}>
+             <Radio.Group>
+                <Radio style={{ marginLeft: "50px" }} value={"VERIFIED"||"NOT_VERIFIED"}>
                   Đang hoạt động
                 </Radio>
-                <Radio value={false}>Không hoạt động</Radio>
+                <Radio value={"BLOCKED"}>Không hoạt động</Radio>
               </Radio.Group>
             </Form.Item>
 
