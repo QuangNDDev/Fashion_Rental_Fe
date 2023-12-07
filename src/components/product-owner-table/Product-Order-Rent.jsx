@@ -1,5 +1,5 @@
 import { EyeOutlined } from "@ant-design/icons";
-import { Card, Col, Form, Image, Modal, notification, Row } from "antd";
+import { Card, Col, Form, Image, Modal, notification, Row, Table } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import MuntilImage from "../Mutil-Image";
@@ -13,6 +13,7 @@ const ProductOrderRent = ({ orderID }) => {
   const [selectedProductDetail, setSelectedProductDetail] = useState([]);
   const productownerId = localStorage.getItem("productownerId");
   const idAccount = localStorage.getItem("accountId");
+  const [productRentPrice, setProductRentPrice] = useState([]);
   const [productData, setProductData] = useState([]);
   const [api, contextHolder] = notification.useNotification();
   const [productImage, setProductImage] = useState();
@@ -43,7 +44,24 @@ const ProductOrderRent = ({ orderID }) => {
   useEffect(() => {
     fetchProducts();
   }, []);
-
+  const columns = [
+    {
+      title: "Số ngày thuê",
+      dataIndex: "mockDay",
+      key: "mockDay",
+      width: "30%",
+      render: (number) => <p style={{ textAlign: "left" }}>{Number(number)}</p>,
+    },
+    {
+      title: "Giá thuê",
+      dataIndex: "rentPrice",
+      key: "rentPrice",
+      width: "50%",
+      render: (text) => (
+        <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
+      ),
+    },
+  ];
   const showModal = (productData) => {
     const fetchProductImg = async () => {
       try {
@@ -54,6 +72,22 @@ const ProductOrderRent = ({ orderID }) => {
         const imgUrlArray = response.data.map((item) => item.imgUrl);
         setProductImage(imgUrlArray);
         console.log(imgUrlArray);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    const fetchProductRentPrice = async () => {
+      try {
+        const response = await axios.get(
+          "http://fashionrental.online:8080/rentprice/" + productData.productID
+        );
+        const filteredData = response.data.map((item) => ({
+          mockDay: item.mockDay,
+          rentPrice: item.rentPrice,
+        }));
+
+        setProductRentPrice(filteredData);
+        console.log(filteredData);
       } catch (error) {
         console.error(error);
       }
@@ -69,6 +103,7 @@ const ProductOrderRent = ({ orderID }) => {
         console.error(error);
       }
     };
+    fetchProductRentPrice();
     fetchRentDetail();
     fetchProductImg();
     setIsModalVisible(true);
@@ -222,7 +257,7 @@ const ProductOrderRent = ({ orderID }) => {
             lg={6}
             xl={6}
             key={product.id}
-            style={{ paddingTop: 20 }}
+            style={{ paddingTop: 20,marginRight:20 }}
           >
             <Card
               bordered={true}
@@ -279,7 +314,7 @@ const ProductOrderRent = ({ orderID }) => {
               <div style={{ display: "flex" }}>
                 <strong>Ngày bắt đầu:</strong>
                 <p style={{ marginLeft: "10px" }}>
-                  <p>{formatDateTime(selectedOrderRentDetail.startDate)}</p>
+                  <p>{formatDate(selectedOrderRentDetail.startDate)}</p>
                 </p>
               </div>
             </Form.Item>
@@ -287,7 +322,7 @@ const ProductOrderRent = ({ orderID }) => {
               <div style={{ display: "flex" }}>
                 <strong>Ngày kết thúc:</strong>
                 <p style={{ marginLeft: "10px" }}>
-                  <p>{formatDateTime(selectedOrderRentDetail.endDate)}</p>
+                  <p>{formatDate(selectedOrderRentDetail.endDate)}</p>
                 </p>
               </div>
             </Form.Item>
@@ -716,7 +751,18 @@ const ProductOrderRent = ({ orderID }) => {
                 </p>
               </div>
             </Form.Item>
-
+            {selectedProduct && selectedProduct.checkType === "RENT" && (
+              <>
+                <strong>Giá thuê:</strong>
+                <Table
+                  responsive
+                  pagination={false}
+                  bordered={true}
+                  columns={columns}
+                  dataSource={productRentPrice}
+                />
+              </>
+            )}
             <Form.Item
               name="productReceiptUrl"
               initialValue={

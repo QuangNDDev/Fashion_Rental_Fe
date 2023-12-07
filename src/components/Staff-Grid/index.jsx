@@ -1088,7 +1088,7 @@ const TablePending = () => {
                       initialValue={detail.detailName}
                     >
                       <div style={{ display: "flex" }}>
-                        <strong>{detail.detailName}:</strong>
+                      <strong style={{minWidth:"80px"}}>{detail.detailName}:</strong>
                         <p style={{ marginLeft: "10px" }}>{detail.value}</p>
                       </div>
                     </Form.Item>

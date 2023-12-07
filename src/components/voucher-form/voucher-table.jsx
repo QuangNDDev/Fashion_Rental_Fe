@@ -10,6 +10,7 @@ import {
   Table,
   notification,
   Drawer,
+  Tag,
 } from "antd";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
@@ -168,9 +169,9 @@ const VoucherTable = () => {
   };
   const renderVoucherType = (voucherTypeID) => {
     if (voucherTypeID === 1) {
-      return "Bán";
+      return <Tag color={"green"}>{"Bán"}</Tag>;
     } else if (voucherTypeID === 2) {
-      return "Thuê";
+      return <Tag color={"yellow"}>{"Thuê"}</Tag>;
     }
     return "";
   };
@@ -367,18 +368,7 @@ const VoucherTable = () => {
             initialValue={selectedRecord && selectedRecord.description}
           >
             <div style={{ display: "flex" }}>
-              <strong>Số lượng:</strong>
-              <p style={{ marginLeft: "10px" }}>
-                {selectedRecord && selectedRecord.quantity}
-              </p>
-            </div>
-          </Form.Item>
-          <Form.Item
-            name="description"
-            initialValue={selectedRecord && selectedRecord.description}
-          >
-            <div style={{ display: "flex" }}>
-              <strong>Mô tả:</strong>
+              <strong style={{minWidth:"55px"}}>Mô tả:</strong>
               <p style={{ marginLeft: "10px" }}>
                 {selectedRecord && selectedRecord.description}
               </p>
@@ -414,7 +404,7 @@ const VoucherTable = () => {
           >
             <div style={{ display: "flex" }}>
               <strong>Số lượng còn lại:</strong>
-              <p style={{ marginLeft: "10px" }}>
+              <p style={{ marginLeft: "10px",color:"red" }}>
                 {selectedRecord && selectedRecord.quantity}
               </p>
             </div>

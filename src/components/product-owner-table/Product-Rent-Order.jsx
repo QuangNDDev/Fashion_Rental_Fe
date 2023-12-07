@@ -197,7 +197,7 @@ const ProductRentOrder = ({ orderID }) => {
             lg={6}
             xl={6}
             key={product.id}
-            style={{ paddingTop: 20 }}
+            style={{ paddingTop: 20,marginRight:20 }}
           >
             <Card
               hoverable
