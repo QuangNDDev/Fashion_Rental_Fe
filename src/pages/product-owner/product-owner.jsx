@@ -8,18 +8,9 @@ import {
   WalletOutlined,
   PercentageOutlined,
   CarOutlined,
+  MessageOutlined,
 } from "@ant-design/icons";
-import {
-  Breadcrumb,
-  Layout,
-  Menu,
-  theme,
-  Button,
-  Avatar,
-  Modal,
-  Badge,
-  ConfigProvider,
-} from "antd";
+import { Breadcrumb, Layout, Menu, theme, Button, Avatar, Modal, Badge, ConfigProvider } from "antd";
 import { useNavigate } from "react-router-dom";
 import Notification from "../../components/notification/Notification";
 import axios from "axios";
@@ -56,18 +47,10 @@ const ProductOwner = () => {
 
   const fetchProductOwner = async () => {
     try {
-      const response = await axios.get(
-        "http://fashionrental.online:8080/account/" + idAccount
-      );
+      const response = await axios.get("http://fashionrental.online:8080/account/" + idAccount);
       setProductOwner(response.data.data.productowner);
-      localStorage.setItem(
-        "productownerId",
-        response.data.data.productowner.productownerID
-      );
-      localStorage.setItem(
-        "poshopID",
-        response.data.data.productowner.poshopID
-      );
+      localStorage.setItem("productownerId", response.data.data.productowner.productownerID);
+      localStorage.setItem("poshopID", response.data.data.productowner.poshopID);
       localStorage.setItem("potoken", response.data.data.productowner.potoken);
     } catch (error) {
       console.error(error);
@@ -80,9 +63,7 @@ const ProductOwner = () => {
   }, []);
   const fetchAccountID = async () => {
     try {
-      const response = await axios.get(
-        "http://fashionrental.online:8080/account/" + idAccount
-      );
+      const response = await axios.get("http://fashionrental.online:8080/account/" + idAccount);
       setAccountID(response.data.data);
     } catch (error) {
       console.error(error);
@@ -93,8 +74,7 @@ const ProductOwner = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const [isNotificationModalVisible, setNotificationModalVisible] =
-    useState(false);
+  const [isNotificationModalVisible, setNotificationModalVisible] = useState(false);
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(3);
 
   const handleLogout = () => {
@@ -523,6 +503,19 @@ const ProductOwner = () => {
             {productowner?.fullName ? productowner.fullName : ""}
           </span>
           <Badge count={unreadNotificationCount}>
+            <MessageOutlined
+              style={{
+                fontSize: "20px",
+                color: "white",
+                cursor: "pointer",
+                marginLeft: "25px",
+              }}
+              onClick={() => {
+                navigate("/chat");
+              }}
+            />
+          </Badge>
+          <Badge count={unreadNotificationCount}>
             <BellOutlined
               style={{
                 fontSize: "20px",
@@ -588,160 +581,66 @@ const ProductOwner = () => {
               <SubMenu
                 key="sub1"
                 icon={<ContainerOutlined style={{ fontSize: "17px" }} />}
-                title={
-                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
-                    Quản Lý Đơn Hàng
-                  </p>
-                }
+                title={<p style={{ fontSize: "16px", fontWeight: "500" }}>Quản Lý Đơn Hàng</p>}
               >
-                <SubMenu
-                  key={"sub1-1"}
-                  title={
-                    <p style={{ fontSize: "15px", fontWeight: "500" }}>
-                      Quản lý đơn bán
-                    </p>
-                  }
-                >
-                  <Menu.Item key="1">
-                    {<p style={{ fontSize: "14.5px" }}>Đơn bán</p>}
-                  </Menu.Item>
-                  <Menu.Item key="3">
-                    {<p style={{ fontSize: "14.5px" }}>Đơn hủy</p>}
-                  </Menu.Item>
-                  <Menu.Item key="4">
-                    {<p style={{ fontSize: "14.5px" }}>Trả hàng/Hoàn tiền</p>}
-                  </Menu.Item>
-                  <Menu.Item key="20">
-                    {
-                      <p style={{ fontSize: "14.5px" }}>
-                        Đang vận chuyển/Thành công
-                      </p>
-                    }
-                  </Menu.Item>
+                <SubMenu key={"sub1-1"} title={<p style={{ fontSize: "15px", fontWeight: "500" }}>Quản lý đơn bán</p>}>
+                  <Menu.Item key="1">{<p style={{ fontSize: "14.5px" }}>Đơn bán</p>}</Menu.Item>
+                  <Menu.Item key="3">{<p style={{ fontSize: "14.5px" }}>Đơn hủy</p>}</Menu.Item>
+                  <Menu.Item key="4">{<p style={{ fontSize: "14.5px" }}>Trả hàng/Hoàn tiền</p>}</Menu.Item>
+                  <Menu.Item key="20">{<p style={{ fontSize: "14.5px" }}>Đang vận chuyển/Thành công</p>}</Menu.Item>
                 </SubMenu>
-                <SubMenu
-                  key={"sub1-2"}
-                  title={
-                    <p style={{ fontSize: "15px", fontWeight: "500" }}>
-                      Quản lý đơn thuê
-                    </p>
-                  }
-                >
-                  <Menu.Item key="2">
-                    {<p style={{ fontSize: "14.5px" }}>Đơn thuê</p>}
-                  </Menu.Item>
-                  <Menu.Item key="21">
-                    {
-                      <p style={{ fontSize: "14.5px" }}>
-                        Đơn đang được thuê/Đang trả
-                      </p>
-                    }
-                  </Menu.Item>
-                  <Menu.Item key="22">
-                    {<p style={{ fontSize: "14.5px" }}>Đơn thuê thành công</p>}
-                  </Menu.Item>
-                  <Menu.Item key="17">
-                    {<p style={{ fontSize: "14.5px" }}>Đơn hủy </p>}
-                  </Menu.Item>
-                  <Menu.Item key="18">
-                    {<p style={{ fontSize: "14.5px" }}>Trả hàng/Hoàn tiền </p>}
-                  </Menu.Item>
+                <SubMenu key={"sub1-2"} title={<p style={{ fontSize: "15px", fontWeight: "500" }}>Quản lý đơn thuê</p>}>
+                  <Menu.Item key="2">{<p style={{ fontSize: "14.5px" }}>Đơn thuê</p>}</Menu.Item>
+                  <Menu.Item key="21">{<p style={{ fontSize: "14.5px" }}>Đơn đang được thuê/Đang trả</p>}</Menu.Item>
+                  <Menu.Item key="22">{<p style={{ fontSize: "14.5px" }}>Đơn thuê thành công</p>}</Menu.Item>
+                  <Menu.Item key="17">{<p style={{ fontSize: "14.5px" }}>Đơn hủy </p>}</Menu.Item>
+                  <Menu.Item key="18">{<p style={{ fontSize: "14.5px" }}>Trả hàng/Hoàn tiền </p>}</Menu.Item>
                 </SubMenu>
               </SubMenu>
               <SubMenu
                 key="sub2"
                 icon={<ShopFilled style={{ fontSize: "17px" }} />}
-                title={
-                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
-                    Quản Lý Sản Phẩm
-                  </p>
-                }
+                title={<p style={{ fontSize: "16px", fontWeight: "500" }}>Quản Lý Sản Phẩm</p>}
               >
-                <Menu.Item key="7">
-                  {<p style={{ fontSize: "14.5px" }}>Tất cả sản phẩm </p>}
-                </Menu.Item>
-                <Menu.Item key="8">
-                  {<p style={{ fontSize: "14.5px" }}>Thêm sản phẩm </p>}
-                </Menu.Item>
+                <Menu.Item key="7">{<p style={{ fontSize: "14.5px" }}>Tất cả sản phẩm </p>}</Menu.Item>
+                <Menu.Item key="8">{<p style={{ fontSize: "14.5px" }}>Thêm sản phẩm </p>}</Menu.Item>
               </SubMenu>
               <SubMenu
                 key="sub3"
                 icon={<UserOutlined style={{ fontSize: "17px" }} />}
-                title={
-                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
-                    Quản Lý Tài Khoản
-                  </p>
-                }
+                title={<p style={{ fontSize: "16px", fontWeight: "500" }}>Quản Lý Tài Khoản</p>}
               >
-                <Menu.Item key="10">
-                  {<p style={{ fontSize: "14.5px" }}>Xác thực tài khoản </p>}
-                </Menu.Item>
-                <Menu.Item key="9">
-                  {<p style={{ fontSize: "14.5px" }}>Thông tin cơ bản </p>}
-                </Menu.Item>
+                <Menu.Item key="10">{<p style={{ fontSize: "14.5px" }}>Xác thực tài khoản </p>}</Menu.Item>
+                <Menu.Item key="9">{<p style={{ fontSize: "14.5px" }}>Thông tin cơ bản </p>}</Menu.Item>
               </SubMenu>
               <SubMenu
                 key="sub4"
                 icon={<WalletOutlined style={{ fontSize: "17px" }} />}
-                title={
-                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
-                    Tài Chính
-                  </p>
-                }
+                title={<p style={{ fontSize: "16px", fontWeight: "500" }}>Tài Chính</p>}
               >
-                <Menu.Item key="11">
-                  {<p style={{ fontSize: "14.5px" }}>Doanh thu </p>}
-                </Menu.Item>
-                <Menu.Item key="12">
-                  {<p style={{ fontSize: "14.5px" }}>Số dư TK </p>}
-                </Menu.Item>
+                <Menu.Item key="11">{<p style={{ fontSize: "14.5px" }}>Doanh thu </p>}</Menu.Item>
+                <Menu.Item key="12">{<p style={{ fontSize: "14.5px" }}>Số dư TK </p>}</Menu.Item>
               </SubMenu>
               <SubMenu
                 key="sub5"
                 icon={<PercentageOutlined style={{ fontSize: "17px" }} />}
-                title={
-                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
-                    Khuyến Mãi
-                  </p>
-                }
+                title={<p style={{ fontSize: "16px", fontWeight: "500" }}>Khuyến Mãi</p>}
               >
-                <Menu.Item key="13">
-                  {<p style={{ fontSize: "14.5px" }}>Thêm mã khuyến mãi </p>}
-                </Menu.Item>
-                <Menu.Item key="14">
-                  {<p style={{ fontSize: "14.5px" }}>Xem mã khuyến mãi </p>}
-                </Menu.Item>
+                <Menu.Item key="13">{<p style={{ fontSize: "14.5px" }}>Thêm mã khuyến mãi </p>}</Menu.Item>
+                <Menu.Item key="14">{<p style={{ fontSize: "14.5px" }}>Xem mã khuyến mãi </p>}</Menu.Item>
               </SubMenu>
               <SubMenu
                 key="sub6"
                 icon={<CarOutlined style={{ fontSize: "17px" }} />}
-                title={
-                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
-                    Giao Hàng
-                  </p>
-                }
+                title={<p style={{ fontSize: "16px", fontWeight: "500" }}>Giao Hàng</p>}
               >
-                <Menu.Item key="15">
-                  {
-                    <p style={{ fontSize: "15px", fontWeight: "500" }}>
-                      Đăng ký GHN
-                    </p>
-                  }
-                </Menu.Item>
+                <Menu.Item key="15">{<p style={{ fontSize: "15px", fontWeight: "500" }}>Đăng ký GHN</p>}</Menu.Item>
                 <SubMenu
                   key={"sub6-1"}
-                  title={
-                    <p style={{ fontSize: "15px", fontWeight: "500" }}>
-                      Đơn hàng chưa giao
-                    </p>
-                  }
+                  title={<p style={{ fontSize: "15px", fontWeight: "500" }}>Đơn hàng chưa giao</p>}
                 >
-                  <Menu.Item key="16">
-                    {<p style={{ fontSize: "14.5px" }}>Đơn bán</p>}
-                  </Menu.Item>
-                  <Menu.Item key="19">
-                    {<p style={{ fontSize: "14.5px" }}>Đơn thuê </p>}
-                  </Menu.Item>
+                  <Menu.Item key="16">{<p style={{ fontSize: "14.5px" }}>Đơn bán</p>}</Menu.Item>
+                  <Menu.Item key="19">{<p style={{ fontSize: "14.5px" }}>Đơn thuê </p>}</Menu.Item>
                 </SubMenu>
               </SubMenu>
             </Menu>

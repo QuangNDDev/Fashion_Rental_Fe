@@ -1,16 +1,6 @@
 import React, { useState } from "react";
-import { UserOutlined, LogoutOutlined, BellOutlined } from "@ant-design/icons";
-import {
-  Breadcrumb,
-  Layout,
-  Menu,
-  theme,
-  Button,
-  Avatar,
-  Modal,
-  Badge,
-  ConfigProvider,
-} from "antd";
+import { UserOutlined, LogoutOutlined, BellOutlined, MessageOutlined } from "@ant-design/icons";
+import { Breadcrumb, Layout, Menu, theme, Button, Avatar, Modal, Badge, ConfigProvider } from "antd";
 import { useNavigate } from "react-router-dom";
 import Notification from "../../components/notification/Notification";
 import CustomerTable from "../../components/admin-table/CustomerTable";
@@ -26,8 +16,7 @@ const Admin = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const [isNotificationModalVisible, setNotificationModalVisible] =
-    useState(false);
+  const [isNotificationModalVisible, setNotificationModalVisible] = useState(false);
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(3);
 
   const handleLogout = () => {
@@ -115,9 +104,7 @@ const Admin = () => {
         {/* Display a placeholder logo */}
         <div style={{ color: "#fff", display: "flex", alignItems: "center" }}>
           <img src="/brand_logo.png" alt="Brand Logo" width={70} height={50} />
-          <h2 style={{ color: "#fff", fontWeight: "normal" }}>
-            Kênh người quản lý
-          </h2>
+          <h2 style={{ color: "#fff", fontWeight: "normal" }}>Kênh người quản lý</h2>
         </div>
         {/* Notification bell icon and avatar */}
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -136,6 +123,19 @@ const Admin = () => {
           >
             Admin
           </span>
+          <Badge count={unreadNotificationCount}>
+            <MessageOutlined
+              style={{
+                fontSize: "20px",
+                color: "white",
+                cursor: "pointer",
+                marginLeft: "25px",
+              }}
+              onClick={() => {
+                navigate("/chat");
+              }}
+            />
+          </Badge>
           <Badge count={unreadNotificationCount}>
             <BellOutlined
               style={{
@@ -194,21 +194,11 @@ const Admin = () => {
               <SubMenu
                 key="sub1"
                 icon={<UserOutlined />}
-                title={
-                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
-                    Quản lý người dùng
-                  </p>
-                }
+                title={<p style={{ fontSize: "16px", fontWeight: "500" }}>Quản lý người dùng</p>}
               >
-                <Menu.Item key="1">
-                  {<p style={{ fontSize: "14.5px" }}>Khách hàng</p>}
-                </Menu.Item>
-                <Menu.Item key="2">
-                  {<p style={{ fontSize: "14.5px" }}>Chủ sở hữu sản phẩm</p>}
-                </Menu.Item>
-                <Menu.Item key="3">
-                  {<p style={{ fontSize: "14.5px" }}>Nhân viên</p>}
-                </Menu.Item>
+                <Menu.Item key="1">{<p style={{ fontSize: "14.5px" }}>Khách hàng</p>}</Menu.Item>
+                <Menu.Item key="2">{<p style={{ fontSize: "14.5px" }}>Chủ sở hữu sản phẩm</p>}</Menu.Item>
+                <Menu.Item key="3">{<p style={{ fontSize: "14.5px" }}>Nhân viên</p>}</Menu.Item>
               </SubMenu>
               {/* <SubMenu key="sub2" icon={<UserOutlined />} title="Quản lí 1">
               <Menu.Item key="1">Khách hàng</Menu.Item>

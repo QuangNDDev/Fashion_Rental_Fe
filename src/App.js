@@ -8,12 +8,17 @@ import PrivateRouteStaff from "./components/protect-page/Protect-Pages-Staff";
 import ProductOwner from "./pages/product-owner/product-owner";
 import PrivateRouteProductOwner from "./components/protect-page/Protect-Page-ProductOwner";
 import RegisterForm from "./components/RegisterForm";
+import Chat from "./components/chat";
+import ChatDetail from "./components/chat/chat-detail";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<LoginForm />} />
       <Route path="login" element={<LoginForm />} />
+      <Route path="chat" element={<Chat />}>
+        <Route path=":id" element={<ChatDetail />} />
+      </Route>
 
       {/* Protect admin page  */}
       <Route element={<PrivateRouteAdmin />}>
