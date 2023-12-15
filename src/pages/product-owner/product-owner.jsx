@@ -463,6 +463,7 @@ const ProductOwner = () => {
             <OrderRentCompletedTable />
           </div>
         );
+
       default:
         return null;
     }

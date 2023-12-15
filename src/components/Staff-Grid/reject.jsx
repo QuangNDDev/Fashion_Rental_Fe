@@ -27,15 +27,17 @@ const RejectTable = () => {
     const [month, day, year] = formattedDate.split("/");
     return `${day}/${month}/${year}`;
   }
-  
+
   function formatDateTime(dateOrder) {
     if (!Array.isArray(dateOrder) || dateOrder.length < 5) {
       return "Invalid date format";
     }
-  
+
     const [year, month, day, hour, minute] = dateOrder;
     const formattedDate = formatDate(`${year}-${month}-${day}`);
-    const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    const formattedTime = `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
     return `${formattedTime} ${formattedDate}`;
   }
   const formatPriceWithVND = (price) => {
@@ -895,8 +897,10 @@ const RejectTable = () => {
                     initialValue={detail.detailName}
                   >
                     <div style={{ display: "flex" }}>
-                    <strong style={{minWidth:"80px"}}>{detail.detailName}:</strong>
-                      <p style={{ marginLeft: "10px" }}>{detail.value}</p>
+                      <strong style={{ minWidth: "70px" }}>
+                        {detail.detailName}:
+                      </strong>
+                      <p>{detail.value}</p>
                     </div>
                   </Form.Item>
                 </React.Fragment>

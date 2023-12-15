@@ -18,6 +18,7 @@ const ProductOrderRent = ({ orderID }) => {
   const [api, contextHolder] = notification.useNotification();
   const [productImage, setProductImage] = useState();
   const [selectedOrderRentDetail, setselectedOrderRentDetail] = useState([]);
+  const [showFullText, setShowFullText] = useState(false);
 
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
   const formatPriceWithVND = (price) => {
@@ -133,6 +134,8 @@ const ProductOrderRent = ({ orderID }) => {
     const outsideSkin = specificationData.outsideSkin;
     const originShoe = specificationData.originShoe;
     form.setFieldsValue({
+      term: productData.term,
+      serialNumber: productData.serialNumber,
       brandNameHat: brandNameHat,
       typeHat: typeHat,
       materialHat: materialHat,
@@ -168,11 +171,13 @@ const ProductOrderRent = ({ orderID }) => {
       skinTexture: skinTexture,
       typeSkinBag: typeSkinBag,
       originBag: originBag,
-      
+
       // Các trường dữ liệu khác tương tự
     });
-    setSelectedProductDetail(productData.details);
+    setSelectedProductDetail(productData.detailDTO);
     setSelectedProduct({
+      term: productData.term,
+      serialNumber: productData.serialNumber,
       checkType: productData.checkType,
       avatar: productData.avatar,
       productName: productData.productName,
@@ -234,17 +239,40 @@ const ProductOrderRent = ({ orderID }) => {
     const [month, day, year] = formattedDate.split("/");
     return `${day}/${month}/${year}`;
   }
-  
+
   function formatDateTime(dateOrder) {
     if (!Array.isArray(dateOrder) || dateOrder.length < 5) {
       return "Invalid date format";
     }
-  
+
     const [year, month, day, hour, minute] = dateOrder;
     const formattedDate = formatDate(`${year}-${month}-${day}`);
-    const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    const formattedTime = `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
     return `${formattedTime} ${formattedDate}`;
   }
+
+  // showModal xem quy định
+  const handleShowMore = () => {
+    setShowFullText(true);
+  };
+
+  const handleModalClose = () => {
+    setShowFullText(false);
+  };
+  const shouldDisplayReadMore =
+    selectedProduct &&
+    selectedProduct.term &&
+    selectedProduct.term.length > 100;
+
+  const truncatedTerm =
+    selectedProduct && selectedProduct.term
+      ? selectedProduct.term.length > 100
+        ? selectedProduct.term.substring(0, 100) + "..."
+        : selectedProduct.term
+      : "Không có";
+
   return (
     <>
       {contextHolder}
@@ -257,7 +285,7 @@ const ProductOrderRent = ({ orderID }) => {
             lg={6}
             xl={6}
             key={product.id}
-            style={{ paddingTop: 20,marginRight:20 }}
+            style={{ paddingTop: 20, marginRight: 20 }}
           >
             <Card
               bordered={true}
@@ -356,6 +384,17 @@ const ProductOrderRent = ({ orderID }) => {
                 </p>
               </div>
             </Form.Item>
+            <Form.Item
+              name="serialNumber"
+              initialValue={selectedProduct && selectedProduct.serialNumber}
+            >
+              <div style={{ display: "flex" }}>
+                <strong>Số Seri sản phẩm:</strong>
+                <p style={{ marginLeft: "10px" }}>
+                  {selectedProduct && selectedProduct.serialNumber}
+                </p>
+              </div>
+            </Form.Item>
 
             <Form.Item
               name="categoryName" //lấy value của cái name gán lên cái setFormValue
@@ -390,16 +429,61 @@ const ProductOrderRent = ({ orderID }) => {
                 <p
                   style={{
                     marginLeft: "10px",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                    maxWidth: "300px",
+                    maxWidth: "400px",
                   }}
                 >
                   {selectedProduct && selectedProduct.description}
                 </p>
               </div>
             </Form.Item>
+            <Form.Item
+              name="term"
+              initialValue={selectedProduct && selectedProduct.term}
+            >
+              <div style={{ display: "flex" }}>
+                <strong style={{ minWidth: "65px" }}>Quy định: </strong>
+                <p
+                  style={{
+                    marginLeft: "5px",
+                    maxWidth: "400px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {/* {selectedProduct && selectedProduct.description} */}
+                  {showFullText ? selectedProduct.term : truncatedTerm}
+                </p>
+                {shouldDisplayReadMore && (
+                  <span
+                    style={{
+                      color: "blue",
+                      cursor: "pointer",
+                      marginLeft: "5px",
+                      minWidth: "65px",
+                      textDecoration: "underline",
+                    }}
+                    onClick={handleShowMore}
+                  >
+                    Xem thêm
+                  </span>
+                )}
+              </div>
+            </Form.Item>
+            <Modal
+              title={<p style={{ textAlign: "center" }}>Nội dung đầy đủ</p>}
+              open={showFullText}
+              onCancel={handleModalClose}
+              footer={null}
+              style={{
+                maxHeight: "70vh",
+                overflowY: "auto",
+              }}
+            >
+              <pre style={{ whiteSpace: "pre-wrap", fontFamily: "inherit" }}>
+                {selectedProduct && selectedProduct.term}
+              </pre>
+            </Modal>
             {/* Set điều kiện để hiện thị theo category */}
             {selectedProduct && selectedProduct.categoryName === "Watch" && (
               <>
@@ -755,6 +839,7 @@ const ProductOrderRent = ({ orderID }) => {
               <>
                 <strong>Giá thuê:</strong>
                 <Table
+                  style={{ marginBottom: "20px" }}
                   responsive
                   pagination={false}
                   bordered={true}

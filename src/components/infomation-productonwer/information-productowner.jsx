@@ -167,7 +167,7 @@ const InformationPO = () => {
                   },
                 ]}
               >
-                <Input />
+                <Input readOnly />
               </Form.Item>
               <p>Địa Chỉ:</p>
               <Form.Item

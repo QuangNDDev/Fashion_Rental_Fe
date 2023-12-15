@@ -409,6 +409,7 @@ const ProductCard = () => {
                 <Image
                   key={index}
                   width={70}
+                  height={70}
                   src={imgSrc.imgUrl}
                   alt={`Hình ảnh ${index + 1}`}
                   style={{ marginRight: "50px" }}

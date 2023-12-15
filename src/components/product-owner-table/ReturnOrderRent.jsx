@@ -1,12 +1,19 @@
 import { SearchOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { Button, Drawer, Form, Input, Radio, Space, Table,notification, } from "antd";
+import {
+  Button,
+  Drawer,
+  Form,
+  Input,
+  Radio,
+  Space,
+  Table,
+  notification,
+} from "antd";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
-import {
-  EyeTwoTone,
-} from "@ant-design/icons";
+import { EyeTwoTone, CheckCircleTwoTone } from "@ant-design/icons";
 import ProductOrderRent from "./Product-Order-Rent";
 const ReturnOrderRent = () => {
   const [searchText, setSearchText] = useState("");
@@ -20,7 +27,7 @@ const ReturnOrderRent = () => {
   const fetchRejectingCompletedOrders = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/orderrent/po/rejectcompleted/" +
+        "http://fashionrental.online:8080/orderrent/po/rejecting&rejectingcompleted/" +
           localStorage.getItem("productownerId")
       );
       setorderRecjectingCompleted(response.data);
@@ -170,15 +177,17 @@ const ReturnOrderRent = () => {
     const [month, day, year] = formattedDate.split("/");
     return `${day}/${month}/${year}`;
   }
-  
+
   function formatDateTime(dateOrder) {
     if (!Array.isArray(dateOrder) || dateOrder.length < 5) {
       return "Invalid date format";
     }
-  
+
     const [year, month, day, hour, minute] = dateOrder;
     const formattedDate = formatDate(`${year}-${month}-${day}`);
-    const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    const formattedTime = `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
     return `${formattedTime} ${formattedDate}`;
   }
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
@@ -187,6 +196,30 @@ const ReturnOrderRent = () => {
       style: "currency",
       currency: "VND",
     }).format(price);
+  };
+
+  //=======================approve Order================================
+  const approveOrder = async (record) => {
+    try {
+      const response = await axios.put(
+        `http://fashionrental.online:8080/orderrent?orderRentID=` +
+          record.orderRentID +
+          `&status=REJECTING_COMPLETED`
+      );
+      api["success"]({
+        message: "Duyệt Đơn Hàng Thành Công!",
+        description: `Đơn hàng ${response.data.orderRentID} đã được duyệt`,
+        duration: 1000,
+      });
+      console.log("Check order success!!!", response.data);
+      fetchRejectingCompletedOrders();
+    } catch (error) {
+      api["error"]({
+        message: "Duyệt Đơn Hàng Thất Bại!",
+        description: null,
+      });
+      console.error("Check order  failed", error);
+    }
   };
 
   const columns = [
@@ -234,16 +267,33 @@ const ReturnOrderRent = () => {
       key: "action",
       align: "left",
 
-      render: (text, record) => (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Space size="middle">
-            <Button onClick={() => showDrawer(record)}>
-              <EyeTwoTone />
-              Xem Đơn
-            </Button>
-          </Space>
-        </div>
-      ),
+      render: (text, record) => {
+        const isReturning = record.status === "REJECTING";
+
+        return (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Space size="middle">
+              {!isReturning && (
+                <Button onClick={() => showDrawer(record)}>
+                  <EyeTwoTone />
+                  Xem Đơn
+                </Button>
+              )}
+              {isReturning && (
+                <>
+                  <Button onClick={() => showDrawer(record)}>
+                    <EyeTwoTone />
+                    Xem Đơn
+                  </Button>
+                  <Button onClick={() => approveOrder(record)}>
+                    <CheckCircleTwoTone twoToneColor="#52c41a" />
+                  </Button>
+                </>
+              )}
+            </Space>
+          </div>
+        );
+      },
     },
   ];
   return (
@@ -292,10 +342,10 @@ const ReturnOrderRent = () => {
               </p>
             </div>
           </Form.Item>
-         
+
           <Form.Item name="customerAddress">
             <div style={{ display: "flex" }}>
-            <strong style={{minWidth:"55px"}}>Địa chỉ:</strong>
+              <strong style={{ minWidth: "55px" }}>Địa chỉ:</strong>
               <p style={{ marginLeft: "10px" }}>
                 {form.getFieldValue("customerAddress")}
               </p>

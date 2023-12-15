@@ -13,12 +13,13 @@ const RevenueTable = () => {
   const fetchRevenueProduct = async () => {
     try {
       const responseOrderSaleCompleted = await axios.get(
-        "http://fashionrental.online:8080/orderbuy/po/completed/" + productownerId
+        "http://fashionrental.online:8080/orderbuy/po/completed/" +
+          productownerId
       );
       const orderBuyList = responseOrderSaleCompleted.data.map(
         (orderSaleDetail) => orderSaleDetail.orderBuyID
       );
-  
+
       const orderSaleDetailList = [];
       for (const orderBuyId of orderBuyList) {
         try {
@@ -30,7 +31,7 @@ const RevenueTable = () => {
           console.error(error);
         }
       }
-  
+
       const productOrderSaleDetails = orderSaleDetailList.map((orderDetail) => {
         return orderDetail.map((detail) => {
           return {
@@ -40,14 +41,15 @@ const RevenueTable = () => {
           };
         });
       });
-  
+
       const responseOrderRentCompleted = await axios.get(
-        "http://fashionrental.online:8080/orderrent/po/completed/" + productownerId
+        "http://fashionrental.online:8080/orderrent/po/completed/" +
+          productownerId
       );
       const orderRentList = responseOrderRentCompleted.data.map(
         (orderRentDetail) => orderRentDetail.orderRentID
       );
-  
+
       const orderRentDetailList = [];
       for (const orderRentId of orderRentList) {
         try {
@@ -59,7 +61,7 @@ const RevenueTable = () => {
           console.error(error);
         }
       }
-  
+
       const productOrderRentDetails = orderRentDetailList.map((orderDetail) => {
         return orderDetail.map((detail) => {
           return {
@@ -69,7 +71,7 @@ const RevenueTable = () => {
           };
         });
       });
-  
+
       const productSaleDetailsMap = new Map();
       for (const orderSaleDetail of orderSaleDetailList) {
         for (const detail of orderSaleDetail) {
@@ -77,7 +79,7 @@ const RevenueTable = () => {
             price,
             productDTO: { productID, productName },
           } = detail;
-  
+
           if (productSaleDetailsMap.has(productID)) {
             const currentData = productSaleDetailsMap.get(productID);
             const updatedPrice = currentData.totalPrice + price;
@@ -95,7 +97,7 @@ const RevenueTable = () => {
           }
         }
       }
-  
+
       const productRentDetailsMap = new Map();
       for (const orderRentDetail of orderRentDetailList) {
         for (const detail of orderRentDetail) {
@@ -103,7 +105,7 @@ const RevenueTable = () => {
             rentPrice,
             productDTO: { productID, productName },
           } = detail;
-  
+
           if (productRentDetailsMap.has(productID)) {
             const currentData = productRentDetailsMap.get(productID);
             const updatedPrice = currentData.totalPrice + rentPrice;
@@ -121,46 +123,98 @@ const RevenueTable = () => {
           }
         }
       }
-  
-      const aggregatedProductSaleDetails = Array.from(productSaleDetailsMap.values());
-      const aggregatedProductRentDetails = Array.from(productRentDetailsMap.values());
-  
+
+      //     const aggregatedProductSaleDetails = Array.from(productSaleDetailsMap.values());
+      //     const aggregatedProductRentDetails = Array.from(productRentDetailsMap.values());
+
+      //     const combinedProductDetails = [];
+      //     for (const saleDetails of aggregatedProductSaleDetails) {
+      //       for (const saleDetail of saleDetails) {
+      //         const matchingRentDetailIndex = aggregatedProductRentDetails.findIndex(
+      //           (rentDetail) => rentDetail.productID === saleDetail.productID
+      //         );
+
+      //         if (matchingRentDetailIndex !== -1) {
+      //           const matchingRentDetail = aggregatedProductRentDetails[matchingRentDetailIndex];
+      //           const totalPrice = saleDetail.totalPrice + matchingRentDetail.totalPrice;
+
+      //           const combinedDetail = {
+      //             productID: saleDetail.productID,
+      //             productName: saleDetail.productName,
+      //             totalPrice: totalPrice,
+      //           };
+
+      //           combinedProductDetails.push(combinedDetail);
+
+      //           aggregatedProductRentDetails.splice(matchingRentDetailIndex, 1);
+      //         } else {
+      //           combinedProductDetails.push(saleDetail);
+      //         }
+      //       }
+      //     }
+
+      //     for (const rentDetails of aggregatedProductRentDetails) {
+      //       combinedProductDetails.push(rentDetails);
+      //     }
+
+      //     setRevenueProductData(combinedProductDetails);
+      //   } catch (error) {
+      //     console.error(error);
+      //   }
+      // };
+      const aggregatedProductSaleDetails = Array.from(
+        productSaleDetailsMap.values()
+      );
+      const aggregatedProductRentDetails = Array.from(
+        productRentDetailsMap.values()
+      );
+
       const combinedProductDetails = [];
+
       for (const saleDetails of aggregatedProductSaleDetails) {
-        for (const saleDetail of saleDetails) {
-          const matchingRentDetailIndex = aggregatedProductRentDetails.findIndex(
-            (rentDetail) => rentDetail.productID === saleDetail.productID
-          );
-  
-          if (matchingRentDetailIndex !== -1) {
-            const matchingRentDetail = aggregatedProductRentDetails[matchingRentDetailIndex];
-            const totalPrice = saleDetail.totalPrice + matchingRentDetail.totalPrice;
-  
-            const combinedDetail = {
-              productID: saleDetail.productID,
-              productName: saleDetail.productName,
-              totalPrice: totalPrice,
-            };
-  
-            combinedProductDetails.push(combinedDetail);
-  
-            aggregatedProductRentDetails.splice(matchingRentDetailIndex, 1);
-          } else {
-            combinedProductDetails.push(saleDetail);
+        if (Array.isArray(saleDetails)) {
+          for (const saleDetail of saleDetails) {
+            const matchingRentDetailIndex =
+              aggregatedProductRentDetails.findIndex(
+                (rentDetail) => rentDetail.productID === saleDetail.productID
+              );
+
+            if (matchingRentDetailIndex !== -1) {
+              const matchingRentDetail =
+                aggregatedProductRentDetails[matchingRentDetailIndex];
+              const totalPrice =
+                saleDetail.totalPrice + matchingRentDetail.totalPrice;
+
+              const combinedDetail = {
+                productID: saleDetail.productID,
+                productName: saleDetail.productName,
+                totalPrice: totalPrice,
+              };
+
+              combinedProductDetails.push(combinedDetail);
+
+              aggregatedProductRentDetails.splice(matchingRentDetailIndex, 1);
+            } else {
+              combinedProductDetails.push(saleDetail);
+            }
           }
+        } else {
+          console.error(
+            "Invalid data in aggregatedProductSaleDetails:",
+            saleDetails
+          );
         }
       }
-  
+
       for (const rentDetails of aggregatedProductRentDetails) {
         combinedProductDetails.push(rentDetails);
       }
-  
+
       setRevenueProductData(combinedProductDetails);
     } catch (error) {
       console.error(error);
     }
   };
-  
 
   useEffect(() => {
     fetchRevenueProduct();

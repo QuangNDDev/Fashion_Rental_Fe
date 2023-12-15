@@ -1,7 +1,11 @@
-import { SearchOutlined,EyeTwoTone,CheckCircleTwoTone } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  EyeTwoTone,
+  CheckCircleTwoTone,
+} from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { Button, Drawer, Form, Input, Space, Table,notification } from "antd";
+import { Button, Drawer, Form, Input, Space, Table, notification } from "antd";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
 import ProductOrder from "./Product-Order";
@@ -18,7 +22,7 @@ const ReturnOrderSale = () => {
   const fetchRejectingCompletedOrders = async () => {
     try {
       const response = await axios.get(
-        "http://fashionrental.online:8080/orderrent/po/rejecting&rejectingcompleted/" +
+        "http://fashionrental.online:8080/orderbuy/po/rejecting&rejectingcompleted/" +
           localStorage.getItem("productownerId")
       );
       setorderRecjectingCompleted(response.data);
@@ -58,6 +62,7 @@ const ReturnOrderSale = () => {
     } catch (error) {
       console.error(error);
     }
+    console.log("orderBuyID: ", record);
   };
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -168,15 +173,17 @@ const ReturnOrderSale = () => {
     const [month, day, year] = formattedDate.split("/");
     return `${day}/${month}/${year}`;
   }
-  
+
   function formatDateTime(dateOrder) {
     if (!Array.isArray(dateOrder) || dateOrder.length < 5) {
       return "Invalid date format";
     }
-  
+
     const [year, month, day, hour, minute] = dateOrder;
     const formattedDate = formatDate(`${year}-${month}-${day}`);
-    const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    const formattedTime = `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
     return `${formattedTime} ${formattedDate}`;
   }
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
@@ -186,37 +193,36 @@ const ReturnOrderSale = () => {
       currency: "VND",
     }).format(price);
   };
-// =====================ApproveOrder============================
-const approveOrder = async (record) => {
-  console.log("orderBuyID:", record.orderRentID);
-  try {
-    const response = await axios.put(
-      `http://fashionrental.online:8080/orderrent?orderRentID=` +
-        record.orderRentID +
-        `&status=REJECTING_COMPLETED`
-    );
-    api["success"]({
-      message: "Duyệt Đơn Hàng Thành Công!",
-      description: `Đơn hàng ${response.data.orderRentID} đã được duyệt`,
-      duration: 1000,
-    });
-    console.log("Check order success!!!", response.data);
-    fetchRejectingCompletedOrders();
-  } catch (error) {
-    api["error"]({
-      message: "Duyệt Đơn Hàng Thất Bại!",
-      description: null,
-    });
-    console.error("Check order  failed", error);
-  }
-};
+  // =====================ApproveOrder============================
+  const approveOrder = async (record) => {
+    try {
+      const response = await axios.put(
+        `http://fashionrental.online:8080/orderbuy?orderBuyID=` +
+          record.orderBuyID +
+          `&status=REJECTING_COMPLETED`
+      );
+      api["success"]({
+        message: "Duyệt Đơn Hàng Thành Công!",
+        description: `Đơn hàng ${response.data.orderBuyID} đã được duyệt`,
+        duration: 1000,
+      });
+      console.log("Check order success!!!", response.data);
+      fetchRejectingCompletedOrders();
+    } catch (error) {
+      api["error"]({
+        message: "Duyệt Đơn Hàng Thất Bại!",
+        description: null,
+      });
+      console.error("Check order  failed", error);
+    }
+  };
   const columns = [
     {
       title: "Mã đơn",
-      dataIndex: "orderRentID",
+      dataIndex: "orderBuyID",
       key: "orderBuyID",
 
-      ...getColumnSearchProps("orderRentID"),
+      ...getColumnSearchProps("orderBuyID"),
       render: (number) => (
         <p style={{ textAlign: "center" }}>{Number(number)}</p>
       ),
@@ -332,7 +338,7 @@ const approveOrder = async (record) => {
           </Form.Item>
           <Form.Item name="customerAddress">
             <div style={{ display: "flex" }}>
-            <strong style={{minWidth:"55px"}}>Địa chỉ:</strong>
+              <strong style={{ minWidth: "55px" }}>Địa chỉ:</strong>
               <p style={{ marginLeft: "10px" }}>
                 {form.getFieldValue("customerAddress")}
               </p>
