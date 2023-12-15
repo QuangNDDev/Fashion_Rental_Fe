@@ -42,6 +42,8 @@ code {
 }
 
 .chat-page {
+  height: calc(100vh - 64px) !important;
+  overflow: hidden;
   .ant-menu-item {
     height: fit-content !important;
     line-height: normal;

@@ -16,21 +16,33 @@ function App() {
     <Routes>
       <Route path="/" element={<LoginForm />} />
       <Route path="login" element={<LoginForm />} />
-      <Route path="chat" element={<Chat />}>
-        <Route path=":id" element={<ChatDetail />} />
-      </Route>
 
       {/* Protect admin page  */}
       <Route element={<PrivateRouteAdmin />}>
-        <Route path="admin" element={<Admin />} />
+        <Route path="admin">
+          <Route path="" element={<Admin />} />
+          <Route path="chat" element={<Chat role={"AD"} />}>
+            <Route path=":id" element={<ChatDetail />} />
+          </Route>
+        </Route>
       </Route>
       {/* Protect staff page */}
       <Route element={<PrivateRouteStaff />}>
-        <Route path="staff" element={<Staff />} />
+        <Route path="staff">
+          <Route path="" element={<Staff />} />
+          <Route path="chat" element={<Chat role={"ST"} />}>
+            <Route path=":id" element={<ChatDetail />} />
+          </Route>
+        </Route>
       </Route>
       {/* Protect product owner page */}
       <Route element={<PrivateRouteProductOwner />}>
-        <Route path="productowner" element={<ProductOwner />} />
+        <Route path="productowner">
+          <Route path="" element={<ProductOwner />}></Route>
+          <Route path="chat" element={<Chat role={"PO"} />}>
+            <Route path=":id" element={<ChatDetail />} />
+          </Route>
+        </Route>
       </Route>
       {/* Register */}
       <Route path="register" element={<RegisterForm />}></Route>

@@ -1,6 +1,6 @@
 // src/ChatApp.js
 import React, { useEffect, useState } from "react";
-import { Button, Form, Input, Layout, Menu, Modal, Row, Select, Spin } from "antd";
+import { Button, Col, Form, Input, Layout, Menu, Modal, Row, Select, Spin } from "antd";
 import "./index.scss";
 import ChatDetail from "./chat-detail";
 import useRealtime from "../../hooks/useRealtime";
@@ -9,10 +9,11 @@ import { useForm } from "antd/es/form/Form";
 import axios from "axios";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const { Sider, Content } = Layout;
 
-const ChatApp = () => {
+const ChatApp = ({ role }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = useForm();
   const [loading, setLoading] = useState(false);
@@ -58,7 +59,7 @@ const ChatApp = () => {
 
   const handleRoomClick = (room) => {
     console.log(room);
-    navigate(`/chat/${room}`);
+    navigate(`${room}`);
   };
 
   useEffect(() => {
@@ -85,7 +86,7 @@ const ChatApp = () => {
   }
 
   return (
-    <Layout style={{ minHeight: "100vh" }} className="chat-page">
+    <Layout className="chat-page">
       <Sider width={300} style={{ background: "#fff", height: "100%", borderRight: 0, padding: 10 }}>
         <Row
           style={{
@@ -94,9 +95,46 @@ const ChatApp = () => {
             marginBottom: 10,
           }}
         >
-          <Button type="primary" onClick={showModal}>
-            Create new room
-          </Button>
+          <Row
+            align={"middle"}
+            justify={"space-around"}
+            gutter={12}
+            style={{
+              cursor: "pointer",
+            }}
+          >
+            <Col span={10}>
+              <Row
+                align={"middle"}
+                onClick={() => {
+                  if (role === "PO") {
+                    navigate("/productOwner");
+                  }
+                  if (role === "ST") {
+                    navigate("/staff");
+                  }
+                  if (role === "AD") {
+                    navigate("/admin");
+                  }
+                }}
+              >
+                <ArrowLeftOutlined />{" "}
+                <span
+                  style={{
+                    marginLeft: 10,
+                    fontWeight: 700,
+                  }}
+                >
+                  Trở về
+                </span>
+              </Row>
+            </Col>
+            <Col span={14}>
+              <Button type="primary" onClick={showModal}>
+                Create new room
+              </Button>
+            </Col>
+          </Row>
           <Modal title="Create new Room" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
             <Form
               form={form}
@@ -177,13 +215,14 @@ const ChatApp = () => {
           })}
         </Menu>
       </Sider>
-      <Layout style={{ padding: "16px" }}>
+      <Layout style={{ padding: "16px", height: "100%" }}>
         <Content
           style={{
             background: "#fff",
             padding: 24,
             margin: 0,
             minHeight: 280,
+            height: "100%",
           }}
         >
           {/* {currentRoom ? <ChatDetail room={currentRoom} /> : <h2>Select a room</h2>} */}
