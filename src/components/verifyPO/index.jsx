@@ -127,10 +127,50 @@ function VerifyProductOwner() {
       console.log(confirmationResult);
       const response = await confirmationResult
         .confirm(otp)
-        .then((res) => {
-          console.log(res);
+        .then((response) => {
+          if (response.operationType == "signIn") {
+            console.log("dung ne");
+            const createPO = {
+              accountID: localStorage.getItem("accountId"),
+              fullName: fullName,
+              address: address,
+              phone: phone,
+              avatarUrl: urlImage,
+            };
+            updateAccountStatus(createPO.accountID, "VERIFIED");
+            axios
+              .post("http://fashionrental.online:8080/po/sign-up", createPO)
+              .then((response) => {
+                if (response.data.message === "Created Fail By Email Already Existed") {
+                  api["error"]({
+                    message: "Tài Khoản Này Đã Được Xác Thực",
+                    description: "Thông báo tài khoản đã tồn tại",
+                    duration: 1500,
+                  });
+                } else {
+                  console.log("Staff member created:", response.data);
+                  api["success"]({
+                    message: "Xác Thực Thành Công!",
+                    description: "Chúc mừng bạn đã đăng ký thành công",
+                    duration: 1500,
+                  });
+                  window.location.reload();
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+                console.error("Created Fail By Email Already Existed:", error);
+                api["error"]({
+                  message: "Xác Thực Thất Bại!",
+                  description: "Bạn đã xác thực thất bại",
+                  duration: 1500,
+                });
+              });
+            // setIsModalOpen(false);
+          }
         })
         .catch((error) => {
+          console.log(error);
           api["error"]({
             message: "Xác Thực Thất Bại!",
             description: error.message,
@@ -138,46 +178,6 @@ function VerifyProductOwner() {
           });
         });
       console.log(response);
-      if (response.operationType == "signIn") {
-        console.log("dung ne");
-        const createPO = {
-          accountID: localStorage.getItem("accountId"),
-          fullName: fullName,
-          address: address,
-          phone: phone,
-          avatarUrl: urlImage,
-        };
-        updateAccountStatus(createPO.accountID, "VERIFIED");
-        axios
-          .post("http://fashionrental.online:8080/po/sign-up", createPO)
-          .then((response) => {
-            if (response.data.message === "Created Fail By Email Already Existed") {
-              api["error"]({
-                message: "Tài Khoản Này Đã Được Xác Thực",
-                description: "Thông báo tài khoản đã tồn tại",
-                duration: 1500,
-              });
-            } else {
-              console.log("Staff member created:", response.data);
-              api["success"]({
-                message: "Xác Thực Thành Công!",
-                description: "Chúc mừng bạn đã đăng ký thành công",
-                duration: 1500,
-              });
-              window.location.reload();
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-            console.error("Created Fail By Email Already Existed:", error);
-            api["error"]({
-              message: "Xác Thực Thất Bại!",
-              description: "Bạn đã xác thực thất bại",
-              duration: 1500,
-            });
-          });
-        // setIsModalOpen(false);
-      }
     } catch (err) {
       setError(err.message);
     }
