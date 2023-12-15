@@ -3,6 +3,7 @@ import {
   EyeTwoTone,
   SearchOutlined,
   CloseCircleTwoTone,
+  PlusOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -15,6 +16,9 @@ import {
   Space,
   Table,
   notification,
+  Select,
+  Divider,
+  ConfigProvider,
 } from "antd";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
@@ -40,7 +44,63 @@ const TablePending = () => {
   const [api, contextHolder] = notification.useNotification();
   const [productRentPrice, setProductRentPrice] = useState([]);
   const [showFullText, setShowFullText] = useState(false);
+  //bien approve add product
+  let indexApprove = 0;
+  const [itemsApprove, setItemsApprove] = useState(["Sẩn phẩm đạt yêu cầu"]);
+  const [reasonApprove, setReasonApprove] = useState("");
+  const inputApproveRef = useRef(null);
 
+  const [isInputApproveValid, setIsInputApproveValid] = useState(false);
+  const onNameChangeApprove = (event) => {
+    const inputApproveText = event.target.value;
+    setReasonApprove(inputApproveText);
+    setIsInputApproveValid(!!inputApproveText);
+  };
+  const addItemApprove = (e) => {
+    e.preventDefault();
+    if (isInputApproveValid) {
+      setItemsApprove([
+        ...itemsApprove,
+        reasonApprove || `New item ${indexApprove++}`,
+      ]);
+      setReasonApprove("");
+      setIsInputApproveValid(false); // Đặt lại trạng thái khi thêm xong
+      setTimeout(() => {
+        inputApproveRef.current?.focus();
+      }, 0);
+    }
+  };
+  //bien reject product
+  let indexReject = 0;
+  const [itemsReject, setItemsReject] = useState([
+    "Sản phẩm không đạt yêu cầu",
+    "Hình ảnh hóa đơn sản phẩm không rõ",
+    "Số seri sản phẩm không đúng",
+  ]);
+  const [reasonReject, setReasonReject] = useState("");
+  const inputRejectRef = useRef(null);
+
+  const [isInputRejectValid, setIsInputRejectValid] = useState(false);
+  const onNameChangeReject = (event) => {
+    const inputRejectText = event.target.value;
+    setReasonReject(inputRejectText);
+    setIsInputRejectValid(!!inputRejectText);
+  };
+  const addItemReject = (e) => {
+    e.preventDefault();
+    if (isInputRejectValid) {
+      setItemsReject([
+        ...itemsReject,
+        reasonReject || `New item ${indexReject++}`,
+      ]);
+      setReasonReject("");
+      setIsInputRejectValid(false); // Đặt lại trạng thái khi thêm xong
+      setTimeout(() => {
+        inputRejectRef.current?.focus();
+      }, 0);
+    }
+  };
+  ////////////////////////////////////////////
   function formatDate(dateString) {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     const formattedDate = new Date(dateString).toLocaleDateString(
@@ -554,71 +614,190 @@ const TablePending = () => {
           <Button onClick={() => showModalNotApprove(record, record.productID)}>
             <CloseCircleTwoTone twoToneColor="#ff4d4f" />
           </Button>
-          <Modal
-            title="Duyệt Sản Phẩm"
-            open={isModalVisible}
-            onCancel={handleCancel}
-            footer={null}
+          <ConfigProvider
+            theme={{
+              token: {
+                Button: {
+                  colorPrimary: "rgb(32, 30, 42)",
+                  colorPrimaryHover: "orange",
+                  colorPrimaryActive: "orange",
+                },
+
+                Select: {
+                  colorPrimaryHover: "rgb(32, 30, 42)",
+                  colorPrimary: "rgb(32, 30, 42)",
+                  controlItemBgActive: "rgb(32, 30, 42)",
+                  optionSelectedColor: "orange",
+                },
+              },
+            }}
           >
-            <Form form={form}>
-              <p>Lý Do Duyệt:</p>
-              <Form.Item
-                name="descriptionRequest"
-                onChange={(e) => setDescriptionRequest(e.target.value)}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item style={{ textAlign: "center" }}>
-                <Button
-                  type="primary"
-                  style={{ backgroundColor: "red" }}
-                  onClick={handleCancel}
+            <Modal
+              title={<p style={{ textAlign: "center" }}>Duyệt Sản Phẩm</p>}
+              open={isModalVisible}
+              onCancel={handleCancel}
+              footer={null}
+            >
+              <Form form={form}>
+                <Form.Item
+                  name="descriptionRequest"
+                  label={<span style={{ fontWeight: 600 }}>Lý do duyệt </span>}
                 >
-                  Hủy
-                </Button>
-                <Button
-                  type="primary"
-                  style={{ backgroundColor: "#008000", marginLeft: "20px" }}
-                  onClick={handleOk}
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    onChange={(value) => setDescriptionRequest(value)}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
+                          style={{
+                            margin: "8px 0",
+                          }}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
+                        >
+                          <Input
+                            placeholder="Thêm thuộc tính mới"
+                            ref={inputApproveRef}
+                            value={reasonApprove}
+                            onChange={onNameChangeApprove}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          />
+                          <Button
+                            style={{
+                              backgroundColor: "rgb(32, 30, 42)",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                            type="text"
+                            icon={<PlusOutlined />}
+                            onClick={addItemApprove}
+                            disabled={!isInputApproveValid}
+                          >
+                            Thêm
+                          </Button>
+                        </Space>
+                      </>
+                    )}
+                    options={itemsApprove.map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                  />
+                </Form.Item>
+                <Form.Item style={{ textAlign: "center" }}>
+                  <Button
+                    type="primary"
+                    style={{ backgroundColor: "red" }}
+                    onClick={handleCancel}
+                  >
+                    Hủy
+                  </Button>
+                  <Button
+                    type="primary"
+                    style={{ backgroundColor: "#008000", marginLeft: "20px" }}
+                    onClick={handleOk}
+                  >
+                    Duyệt
+                  </Button>
+                </Form.Item>
+              </Form>
+            </Modal>
+            <Modal
+              title={<p style={{ textAlign: "center" }}>Từ Chối Sản Phẩm</p>}
+              open={isModalVisibleNotApprove}
+              onOk={handleSend}
+              onCancel={handleCancelNotApprove}
+              footer={null}
+            >
+              <Form form={form}>
+                <Form.Item
+                  name="descriptionNotApprove"
+                  label={<p style={{ fontWeight: 600 }}>Lý do từ chối</p>}
                 >
-                  Duyệt
-                </Button>
-              </Form.Item>
-            </Form>
-          </Modal>
-          <Modal
-            title="Từ Chối Sản Phẩm"
-            open={isModalVisibleNotApprove}
-            onOk={handleSend}
-            onCancel={handleCancelNotApprove}
-            footer={null}
-          >
-            <Form form={form}>
-              <p>Lý Do Từ Chối:</p>
-              <Form.Item
-                name="descriptionNotApprove"
-                onChange={(e) => setDescriptionReject(e.target.value)}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item style={{ textAlign: "center" }}>
-                <Button
-                  type="primary"
-                  style={{ backgroundColor: "red" }}
-                  onClick={handleCancelNotApprove}
-                >
-                  Hủy
-                </Button>
-                <Button
-                  type="primary"
-                  style={{ backgroundColor: "#008000", marginLeft: "20px" }}
-                  onClick={handleSend}
-                >
-                  Gửi
-                </Button>
-              </Form.Item>
-            </Form>
-          </Modal>
+                  <Select
+                    style={{
+                      width: 300,
+                    }}
+                    onChange={(value) => setDescriptionReject(value)}
+                    placeholder="Vui lòng chọn"
+                    showSearch // Bật tính năng tìm kiếm
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                    dropdownRender={(menu) => (
+                      <>
+                        {menu}
+                        <Divider
+                          style={{
+                            margin: "8px 0",
+                          }}
+                        />
+                        <Space
+                          style={{
+                            padding: "0 8px 4px",
+                          }}
+                        >
+                          <Input
+                            placeholder="Thêm thuộc tính mới"
+                            ref={inputRejectRef}
+                            value={reasonReject}
+                            onChange={onNameChangeReject}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          />
+                          <Button
+                            style={{
+                              backgroundColor: "rgb(32, 30, 42)",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                            type="text"
+                            icon={<PlusOutlined />}
+                            onClick={addItemReject}
+                            disabled={!isInputRejectValid}
+                          >
+                            Thêm
+                          </Button>
+                        </Space>
+                      </>
+                    )}
+                    options={itemsReject.map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                  />
+                </Form.Item>
+                <Form.Item style={{ textAlign: "center" }}>
+                  <Button
+                    type="primary"
+                    style={{ backgroundColor: "red" }}
+                    onClick={handleCancelNotApprove}
+                  >
+                    Hủy
+                  </Button>
+                  <Button
+                    type="primary"
+                    style={{ backgroundColor: "#008000", marginLeft: "20px" }}
+                    onClick={handleSend}
+                  >
+                    Gửi
+                  </Button>
+                </Form.Item>
+              </Form>
+            </Modal>
+          </ConfigProvider>
         </div>
       ),
     },
@@ -1090,10 +1269,10 @@ const TablePending = () => {
                     initialValue={detail.detailName}
                   >
                     <div style={{ display: "flex" }}>
-                      <strong style={{ minWidth: "80px" }}>
+                      <strong style={{ minWidth: "70px" }}>
                         {detail.detailName}:
                       </strong>
-                      <p style={{ marginLeft: "10px" }}>{detail.value}</p>
+                      <p>{detail.value}</p>
                     </div>
                   </Form.Item>
                 </React.Fragment>

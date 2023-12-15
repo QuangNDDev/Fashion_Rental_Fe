@@ -48,9 +48,29 @@ const RentingOrderTable = () => {
       const response = await axios.get(
         "http://fashionrental.online:8080/orderrent/po/three/" + productownerId
       );
-      setOrderData(response.data);
+
+      const orderData = response.data;
+      const dayRemainingArray = [];
+
+      for (const order of orderData) {
+        try {
+          const responseDayRemaining = await axios.get(
+            `http://fashionrental.online:8080/orderrentdetail/${order.orderRentID}`
+          );
+          dayRemainingArray.push(responseDayRemaining.data[0].dayRemaining);
+        } catch (error) {
+          console.error("Error fetching day remaining:", error);
+          dayRemainingArray.push(null);
+        }
+      }
+      const updatedOrderData = orderData.map((order, index) => ({
+        ...order,
+        dayRemaining: dayRemainingArray[index],
+      }));
+      console.log(updatedOrderData);
+      setOrderData(updatedOrderData);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching orders:", error);
     }
   };
 
@@ -153,15 +173,17 @@ const RentingOrderTable = () => {
     const [month, day, year] = formattedDate.split("/");
     return `${day}/${month}/${year}`;
   }
-  
+
   function formatDateTime(dateOrder) {
     if (!Array.isArray(dateOrder) || dateOrder.length < 5) {
       return "Invalid date format";
     }
-  
+
     const [year, month, day, hour, minute] = dateOrder;
     const formattedDate = formatDate(`${year}-${month}-${day}`);
-    const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    const formattedTime = `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
     return `${formattedTime} ${formattedDate}`;
   }
   // =============================================================
@@ -428,6 +450,17 @@ const RentingOrderTable = () => {
       ),
     },
     {
+      title: "Số ngày thuê còn lại",
+      dataIndex: "dayRemaining",
+      key: "dayRemaining",
+
+      render: (dayRemaining) => (
+        <p style={{ textAlign: "left" }}>
+          <RenderTag tagRender={dayRemaining} />
+        </p>
+      ),
+    },
+    {
       title: <p style={{ textAlign: "center" }}>Hành Động</p>,
       key: "action",
       align: "left",
@@ -578,7 +611,7 @@ const RentingOrderTable = () => {
           </Form.Item>
           <Form.Item name="customerAddress">
             <div style={{ display: "flex" }}>
-              <strong style={{minWidth:"55px"}}>Địa chỉ:</strong>
+              <strong style={{ minWidth: "55px" }}>Địa chỉ:</strong>
               <p style={{ marginLeft: "10px" }}>
                 {form.getFieldValue("customerAddress")}
               </p>

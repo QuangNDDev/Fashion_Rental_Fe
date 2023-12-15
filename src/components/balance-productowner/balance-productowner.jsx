@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { PlusCircleOutlined, MinusOutlined } from "@ant-design/icons";
 import "./balance-productowner.css";
 import TransactionTable from "./transaction-history-table";
 import {
@@ -59,11 +59,7 @@ const Balance = () => {
           accountId +
           "&amount=" +
           values.amount +
-          "&orderInfo=Nap tien vao tai khoan " +
-          accountId +
-          " so tien: " +
-          values.amount +
-          "vnd"
+          "&orderInfo=Nap tien"
       );
 
       console.log("VN-Pay successful!!!", response.data);
@@ -78,6 +74,35 @@ const Balance = () => {
   const handleCancel = () => {
     form.resetFields();
     setIsModalOpen(false);
+  };
+  // ----------------------modal rút tiền--------------------------------
+  const [isModalOpenWithdraw, setIsModalOpenWithdraw] = useState(false);
+  const showModalWithdraw = () => {
+    setIsModalOpenWithdraw(true);
+  };
+  const handleOkWithdraw = async (values) => {
+    setIsModalOpenWithdraw(false);
+    console.log(values);
+    try {
+      const response = await axios.post(
+        "http://fashionrental.online:8080/VNPaycontroller/submitOrder?accountID=" +
+          accountId +
+          "&amount=" +
+          values.amount +
+          "&orderInfo=Rut tien"
+      );
+      console.log("VN-Pay successful!!!", response.data);
+      if (response.data) {
+        window.open(response.data, "_blank");
+      }
+    } catch (error) {
+      console.error("Error calling API:", error);
+      throw error;
+    }
+  };
+  const handleCancelWithdraw = () => {
+    form.resetFields();
+    setIsModalOpenWithdraw(false);
   };
 
   return (
@@ -109,6 +134,14 @@ const Balance = () => {
                   icon={<PlusCircleOutlined />}
                 >
                   Nạp tiền
+                </Button>
+                <Button
+                  type="primary"
+                  style={{ fontWeight: "bolder" }}
+                  onClick={showModalWithdraw}
+                  icon={<MinusOutlined />}
+                >
+                  Rút tiền
                 </Button>
               </Space>
             }
@@ -197,6 +230,58 @@ const Balance = () => {
                 style={{ float: "right", marginRight: "10px" }}
                 danger
                 onClick={handleCancel}
+              >
+                Huỷ
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+        <Modal
+          title="Thanh toán VN-Pay"
+          open={isModalOpenWithdraw}
+          onCancel={handleCancelWithdraw}
+          footer={false}
+        >
+          <Form form={form} onFinish={handleOkWithdraw}>
+            <span style={{ marginBottom: "5px" }}>Nhập số tiền muốn rút:</span>
+            <Form.Item
+              name="amount"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập số tiền!",
+                },
+
+                {
+                  validator: async (_, value) => {
+                    if (value >= 10000 && value <= 1000000000) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      new Error(
+                        "Số tiền phải lớn hơn 10,000 VND và nhỏ hơn 1,000,000,000 VND!"
+                      )
+                    );
+                  },
+                },
+              ]}
+            >
+              <Input type="number" placeholder="Nhập số tiền" suffix="VND" />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                style={{
+                  float: "right",
+                }}
+                htmlType="submit"
+              >
+                Thanh toán
+              </Button>
+              <Button
+                style={{ float: "right", marginRight: "10px" }}
+                danger
+                onClick={handleCancelWithdraw}
               >
                 Huỷ
               </Button>

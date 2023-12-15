@@ -55,10 +55,16 @@ const ProductOwnerTable = () => {
   const [form] = Form.useForm();
   const showEditDrawer = (record) => {
     setEditingUser(record);
-    console.log(editingUser);
     setIsEdit(true);
     setIsDrawerVisible(true);
-    form.setFieldsValue(record);
+    form.setFieldsValue({
+      fullName: record.fullName,
+      phone: record.phone,
+      email: record.email,
+      address: record.address,
+      status: record.status,
+      // ... các trường khác
+    });
   };
   const onClose = () => {
     setIsDrawerVisible(false);
@@ -367,7 +373,7 @@ const ProductOwnerTable = () => {
                 { required: true, message: "Xin vui lòng nhập số điện thoại!" },
               ]}
             >
-              <Input type="number" />
+              <Input />
             </Form.Item>
             <p style={{ fontWeight: "bold" }}>Email:</p>
             <Form.Item
@@ -403,8 +409,11 @@ const ProductOwnerTable = () => {
                 { required: true, message: "Cập nhật trạng thái hoạt động!" },
               ]}
             >
-             <Radio.Group>
-                <Radio style={{ marginLeft: "50px" }} value={"VERIFIED"||"NOT_VERIFIED"}>
+              <Radio.Group>
+                <Radio
+                  style={{ marginLeft: "50px" }}
+                  value={"VERIFIED" || "NOT_VERIFIED"}
+                >
                   Đang hoạt động
                 </Radio>
                 <Radio value={"BLOCKED"}>Không hoạt động</Radio>

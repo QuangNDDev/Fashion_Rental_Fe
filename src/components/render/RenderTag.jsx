@@ -153,15 +153,24 @@ const RenderTag = ({ tagRender }) => {
       color = "yellow";
       text = "Đang trả hàng";
       break;
-      case "PROGRESSING":
+    case "PROGRESSING":
       color = "yellow";
       text = "Chờ xử lí";
       break;
+
+    // default:
+    //   color = "default";
+    //   text = "Không Xác Định";
     default:
-      color = "default";
-      text = "Không Xác Định";
+      if (Number(tagRender) < 0) {
+        color = "red";
+        text = `Đã trễ: ${-1 * Number(tagRender)} ngày`;
+      } else {
+        color = "green";
+        text = `Còn lại: ${tagRender} ngày`;
+      }
   }
-  
+
   return <Tag color={color}>{text}</Tag>;
 };
 
