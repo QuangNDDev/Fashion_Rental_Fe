@@ -1,13 +1,4 @@
-import {
-  Form,
-  Input,
-  Button,
-  Card,
-  Checkbox,
-  notification,
-  Divider,
-  ConfigProvider,
-} from "antd";
+import { Form, Input, Button, Card, Checkbox, notification, Divider, ConfigProvider } from "antd";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { UserOutlined, LockOutlined, LoadingOutlined } from "@ant-design/icons";
@@ -32,14 +23,56 @@ const LoginForm = () => {
   };
   const handleGoogleLogin = () => {
     signInWithPopup(auth, provider)
-      .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        console.log(credential);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
+      .then((googleAuth) => {
+        googleAuth.user.getIdToken().then(async (tkn) => {
+          const response = await axios.post(`http://fashionrental.online:8080/account/login-gg`, {
+            token: tkn,
+          });
+
+          if (response.data.status != "BLOCKED") {
+            localStorage.setItem("accountId", response.data.accountID);
+            localStorage.setItem("roleId", response.data.role.roleID);
+
+            if (response.data.role.roleID == 4) {
+              api["success"]({
+                message: "Đăng Nhập Thành Công",
+                description: `Xin Chào Admin!`,
+                duration: 1000,
+              });
+              setTimeout(() => {
+                handleNavigationAdmin();
+              }, 500);
+            } else if (response.data.role.roleID == 3) {
+              api["success"]({
+                message: "Đăng Nhập Thành Công",
+                description: null,
+                duration: 1000,
+              });
+              setTimeout(() => {
+                handleNavigationStaff();
+              }, 500);
+            } else if (response.data.role.roleID == 2) {
+              api["success"]({
+                message: "Đăng Nhập Thành Công",
+                description: null,
+                duration: 1000,
+              });
+              setTimeout(() => {
+                handleNavigationProductOwner();
+              }, 500);
+            } else {
+              api["warning"]({
+                message: "Đăng Nhập Thất Bại",
+                description: "Tài khoản của bạn không có quyền truy cập!!!",
+              });
+            }
+          } else {
+            api["warning"]({
+              message: "Đăng Nhập Thất Bại",
+              description: "Tài khoản của bạn đã bị khoá!!!",
+            });
+          }
+        });
       })
       .catch((error) => {
         // Handle Errors here.
@@ -113,7 +146,7 @@ const LoginForm = () => {
             description: "Tài khoản của bạn không có quyền truy cập!!!",
           });
         }
-      }else{
+      } else {
         api["warning"]({
           message: "Đăng Nhập Thất Bại",
           description: "Tài khoản của bạn đã bị khoá!!!",
@@ -121,11 +154,7 @@ const LoginForm = () => {
       }
     } catch (error) {
       console.error(error);
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message === "Login Fail"
-      ) {
+      if (error.response && error.response.data && error.response.data.message === "Login Fail") {
         api["error"]({
           message: "Đăng Nhập Thất Bại",
           description: "Vui lòng kiểm tra lại email và mật khẩu.",
@@ -188,18 +217,12 @@ const LoginForm = () => {
                 }}
               >
                 <a href="">
-                  <img
-                    src="/brand_logo-black.png"
-                    alt="Logo"
-                    style={{ width: 100, height: 100 }}
-                  />
+                  <img src="/brand_logo-black.png" alt="Logo" style={{ width: 100, height: 100 }} />
                 </a>
               </div>
             </div>
             <div>
-              <h2 style={{ textAlign: "center", marginBottom: 24 }}>
-                ĐĂNG NHẬP
-              </h2>
+              <h2 style={{ textAlign: "center", marginBottom: 24 }}>ĐĂNG NHẬP</h2>
               <ConfigProvider
                 theme={{
                   token: {
@@ -220,12 +243,7 @@ const LoginForm = () => {
                   // onFinishFailed={onFinishFailed}
                   style={{ marginTop: "10px" }}
                 >
-                  <Form.Item
-                    name="email"
-                    rules={[
-                      { required: true, message: "Vui lòng nhập email!" },
-                    ]}
-                  >
+                  <Form.Item name="email" rules={[{ required: true, message: "Vui lòng nhập email!" }]}>
                     <Input
                       style={{
                         fontSize: "15px",
@@ -236,12 +254,7 @@ const LoginForm = () => {
                     />
                   </Form.Item>
 
-                  <Form.Item
-                    name="password"
-                    rules={[
-                      { required: true, message: "Vui lòng nhập mật khẩu!" },
-                    ]}
-                  >
+                  <Form.Item name="password" rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}>
                     <Input.Password
                       style={{
                         fontSize: "15px",
@@ -272,9 +285,7 @@ const LoginForm = () => {
                         // loading={loadings[0]}
                         // onClick={() => enterLoading(0)}
                       >
-                        {loadingIcon && (
-                          <LoadingOutlined style={{ fontSize: "20px" }} />
-                        )}
+                        {loadingIcon && <LoadingOutlined style={{ fontSize: "20px" }} />}
                         &nbsp;Đăng Nhập
                       </Button>
                     </Form.Item>
@@ -282,9 +293,7 @@ const LoginForm = () => {
                 </Form>
               </ConfigProvider>
 
-              <Divider style={{ fontSize: "14px", fontWeight: "400" }}>
-                Hoặc
-              </Divider>
+              <Divider style={{ fontSize: "14px", fontWeight: "400" }}>Hoặc</Divider>
               <div
                 style={{
                   display: "flex",
@@ -292,10 +301,7 @@ const LoginForm = () => {
                   margin: "25px 0px",
                 }}
               >
-                <button
-                  className="login-with-google-btn"
-                  onClick={handleGoogleLogin}
-                >
+                <button className="login-with-google-btn" onClick={handleGoogleLogin}>
                   Đăng nhập với Google
                 </button>
               </div>
