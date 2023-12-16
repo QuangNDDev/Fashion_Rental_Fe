@@ -38,7 +38,9 @@ const ChatDetail = () => {
 
   const fetchAccount = async () => {
     try {
-      const response = await axios.get("http://fashionrental.online:8080/account/" + accountID);
+      const response = await axios.get(
+        "http://fashionrental.online:8080/account/" + accountID
+      );
       console.log(response.data.data.email);
       nameAccount.current = response.data.data.email;
     } catch (error) {
@@ -63,23 +65,31 @@ const ChatDetail = () => {
     if (message.trim() !== "") {
       //   setMessages([...messages, { sender: "You", text: message, self: true }]);
       //   setMessage("");
-      await axios.post(`http://fashionrental.online:8080/chat/send/${id.current}`, {
-        accountID: Number(accountID),
-        roomID: Number(id.current),
-        message: message,
-      });
+      await axios.post(
+        `http://fashionrental.online:8080/chat/send/${id.current}`,
+        {
+          accountID: Number(accountID),
+          roomID: Number(id.current),
+          message: message,
+        }
+      );
       setMessage("");
       fetchChatDetail();
       fetchRoom();
     }
   };
   const fetchChatDetail = async () => {
-    const response = await axios.get(`http://fashionrental.online:8080/chat/detail/${id.current}`);
+    const response = await axios.get(
+      `http://fashionrental.online:8080/chat/detail/${id.current}`
+    );
     setRoom(response.data);
     setMessages(
       response.data.messages.map((message) => {
         return {
-          sender: message.account.accountID == accountID ? "" : message.account.email + ":",
+          sender:
+            message.account.accountID == accountID
+              ? ""
+              : message.account.email + ":",
           text: message.message,
           self: message.account.accountID == accountID,
           created: message.createAt,
@@ -100,15 +110,27 @@ const ChatDetail = () => {
   }, [params.id]);
 
   return (
-    <div className="chat-detail" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+    <div
+      className="chat-detail"
+      style={{ display: "flex", flexDirection: "column", height: "100%" }}
+    >
       {/* Header */}
-      <Row style={{ padding: "10px", paddingBottom: 20, borderBottom: "1px solid #ddd" }}>
+      <Row
+        style={{
+          padding: "10px",
+          paddingBottom: 20,
+          borderBottom: "1px solid #ddd",
+        }}
+      >
         <Col span={22}>
           <h2>{room?.name}</h2>
         </Col>
         {/* Add room members or any other room information */}
         <Col span={2}>
-          <Avatar.Group maxCount={2} maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}>
+          <Avatar.Group
+            maxCount={2}
+            maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+          >
             {room?.accounts.map((item) => {
               return (
                 <Tooltip title={item.email}>
@@ -138,7 +160,12 @@ const ChatDetail = () => {
               >
                 <strong>{item.sender}</strong> {item.text}
                 <br />
-                <small>{formatDistanceToNow(new Date(item.created), { addSuffix: false, includeSeconds: true })}</small>
+                <small>
+                  {formatDistanceToNow(new Date(item.created), {
+                    addSuffix: false,
+                    includeSeconds: true,
+                  })}
+                </small>
               </div>
             </List.Item>
           )}
@@ -147,7 +174,9 @@ const ChatDetail = () => {
 
       {/* Footer */}
       <div style={{ padding: "10px" }}>
-        {typing.length > 0 && <p className="typing">{`${typing?.join(",")} is typing...`}</p>}
+        {typing.length > 0 && (
+          <p className="typing">{`${typing?.join(",")} is typing...`}</p>
+        )}
         <Row>
           <Col span={22}>
             <Input
@@ -162,8 +191,12 @@ const ChatDetail = () => {
             />
           </Col>
           <Col span={2}>
-            <Button type="primary" onClick={handleSendMessage} style={{ marginLeft: "10px", width: "100%" }}>
-              Send
+            <Button
+              type="primary"
+              onClick={handleSendMessage}
+              style={{ marginLeft: "10px", width: "100%" }}
+            >
+              Gửi
             </Button>
           </Col>
         </Row>

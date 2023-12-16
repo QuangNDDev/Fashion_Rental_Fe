@@ -1,6 +1,17 @@
 // src/ChatApp.js
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Input, Layout, Menu, Modal, Row, Select, Spin } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  Layout,
+  Menu,
+  Modal,
+  Row,
+  Select,
+  Spin,
+} from "antd";
 import "./index.scss";
 import ChatDetail from "./chat-detail";
 import useRealtime from "../../hooks/useRealtime";
@@ -33,13 +44,17 @@ const ChatApp = ({ role }) => {
 
   const fetchAccount = async () => {
     setLoading(true);
-    const response = await axios.get("http://fashionrental.online:8080/account/getall");
+    const response = await axios.get(
+      "http://fashionrental.online:8080/account/getall"
+    );
     setAccounts(response.data);
     setLoading(false);
   };
 
   const fetchRoom = async () => {
-    const response = await axios.get(`http://fashionrental.online:8080/chat/${accountID}`);
+    const response = await axios.get(
+      `http://fashionrental.online:8080/chat/${accountID}`
+    );
     console.log(response.data);
     setRooms(response.data);
   };
@@ -87,7 +102,15 @@ const ChatApp = ({ role }) => {
 
   return (
     <Layout className="chat-page">
-      <Sider width={300} style={{ background: "#fff", height: "100%", borderRight: 0, padding: 10 }}>
+      <Sider
+        width={300}
+        style={{
+          background: "#fff",
+          height: "100%",
+          borderRight: 0,
+          padding: 10,
+        }}
+      >
         <Row
           style={{
             justifyContent: "center",
@@ -130,12 +153,21 @@ const ChatApp = ({ role }) => {
               </Row>
             </Col>
             <Col span={14}>
-              <Button type="primary" onClick={showModal}>
-                Create new room
+              <Button
+                type="primary"
+                onClick={showModal}
+                style={{ fontWeight: "bold" }}
+              >
+                Tạo phòng
               </Button>
             </Col>
           </Row>
-          <Modal title="Create new Room" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+          <Modal
+            title={<p style={{ textAlign: "center" }}>Tạo phòng</p>}
+            open={isModalOpen}
+            onOk={handleOk}
+            onCancel={handleCancel}
+          >
             <Form
               form={form}
               labelCol={{
@@ -145,23 +177,23 @@ const ChatApp = ({ role }) => {
             >
               <FormItem
                 name={"name"}
-                label="Room name"
+                label="Tên phòng"
                 rules={[
                   {
                     required: true,
-                    message: "Please enter room name",
+                    message: "Vui lòng chọn thành viên!",
                   },
                 ]}
               >
-                <Input />
+                <Input placeholder="Vui lòng nhập..." />
               </FormItem>
               <FormItem
                 name={"members"}
-                label="Room member"
+                label="Thành viên"
                 rules={[
                   {
                     required: true,
-                    message: "Please enter room member",
+                    message: "Vui lòng chọn thành viên!",
                   },
                 ]}
               >
@@ -171,11 +203,13 @@ const ChatApp = ({ role }) => {
                   <Select
                     mode="multiple"
                     style={{ width: "100%" }}
-                    placeholder="Please select"
+                    placeholder="Vui lòng chọn..."
                     //   onChange={handleChange}
                     allowClear
                     filterOption={(input, options) => {
-                      return options.label.toLocaleLowerCase().includes(input.toLocaleLowerCase());
+                      return options.label
+                        .toLocaleLowerCase()
+                        .includes(input.toLocaleLowerCase());
                     }}
                     options={accounts.map((item) => {
                       return {
@@ -189,7 +223,11 @@ const ChatApp = ({ role }) => {
             </Form>
           </Modal>
         </Row>
-        <Menu mode="vertical" selectedKeys={params.id} defaultSelectedKeys={["1"]}>
+        <Menu
+          mode="vertical"
+          selectedKeys={params.id}
+          defaultSelectedKeys={["1"]}
+        >
           {rooms.map((room) => {
             return (
               <Menu.Item
@@ -205,10 +243,15 @@ const ChatApp = ({ role }) => {
               >
                 <span className="chat-box">
                   <p className="chat-title">{room.name}</p>
-                  <p className="chat-message">{truncateAndCreateLink(room.lastMessage)}</p>
+                  <p className="chat-message">
+                    {truncateAndCreateLink(room.lastMessage)}
+                  </p>
                 </span>
                 <span className="time">
-                  {formatDistanceToNow(new Date(room.lastUpdated), { addSuffix: false, includeSeconds: true })}
+                  {formatDistanceToNow(new Date(room.lastUpdated), {
+                    addSuffix: false,
+                    includeSeconds: true,
+                  })}
                 </span>
               </Menu.Item>
             );
