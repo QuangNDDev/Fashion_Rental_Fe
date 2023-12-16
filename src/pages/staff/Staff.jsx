@@ -8,7 +8,17 @@ import {
   DeliveredProcedureOutlined,
   MessageOutlined,
 } from "@ant-design/icons";
-import { Avatar, Badge, Breadcrumb, Button, ConfigProvider, Layout, Menu, Modal, theme } from "antd";
+import {
+  Avatar,
+  Badge,
+  Breadcrumb,
+  Button,
+  ConfigProvider,
+  Layout,
+  Menu,
+  Modal,
+  theme,
+} from "antd";
 import SubMenu from "antd/es/menu/SubMenu";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -32,7 +42,9 @@ const Staff = () => {
   const [accountID, setAccountID] = useState([]);
   const fetchStaff = async () => {
     try {
-      const response = await axios.get("http://fashionrental.online:8080/account/" + idAccount);
+      const response = await axios.get(
+        "http://fashionrental.online:8080/account/" + idAccount
+      );
       setStaff(response.data.data.staff);
       localStorage.setItem("staffId", response.data.data.staff.staffID);
     } catch (error) {
@@ -46,7 +58,9 @@ const Staff = () => {
   }, []);
   const fetchAccountID = async () => {
     try {
-      const response = await axios.get("http://fashionrental.online:8080/account/" + idAccount);
+      const response = await axios.get(
+        "http://fashionrental.online:8080/account/" + idAccount
+      );
       setAccountID(response.data.data);
     } catch (error) {
       console.error(error);
@@ -58,7 +72,8 @@ const Staff = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const [selectedMenuKey, setSelectedMenuKey] = useState("1");
-  const [isNotificationModalVisible, setNotificationModalVisible] = useState(false);
+  const [isNotificationModalVisible, setNotificationModalVisible] =
+    useState(false);
   const [unreadNotificationCount, setUnreadNotificationCount] = useState("3");
 
   const handleLogout = () => {
@@ -283,9 +298,9 @@ const Staff = () => {
   };
   return (
     <Layout>
-      <Layout style={{ background: "#000", marginLeft: 240 }}>
+      <Layout style={{ background: "#fff", marginLeft: 275 }}>
         <Sider
-          width={215}
+          width={260}
           style={{
             position: "fixed",
             left: 0,
@@ -321,46 +336,104 @@ const Staff = () => {
               <SubMenu
                 key="sub1"
                 icon={<CheckOutlined style={{ fontSize: "17px" }} />}
-                title={<p style={{ fontSize: "16px", fontWeight: "500" }}>Duyệt Sản Phẩm</p>}
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Duyệt Sản Phẩm
+                  </p>
+                }
               >
-                <Menu.Item key="1">{<p style={{ fontSize: "14.5px" }}>Đơn chờ xử lý</p>}</Menu.Item>
+                <Menu.Item key="1">
+                  {<p style={{ fontSize: "14.5px" }}>Đơn chờ xử lý</p>}
+                </Menu.Item>
 
-                <Menu.Item key="2">{<p style={{ fontSize: "14.5px" }}>Đơn đã duyệt</p>}</Menu.Item>
+                <Menu.Item key="2">
+                  {<p style={{ fontSize: "14.5px" }}>Đơn đã duyệt</p>}
+                </Menu.Item>
 
-                <Menu.Item key="3">{<p style={{ fontSize: "14.5px" }}>Đơn đã từ chối</p>}</Menu.Item>
+                <Menu.Item key="3">
+                  {<p style={{ fontSize: "14.5px" }}>Đơn đã từ chối</p>}
+                </Menu.Item>
               </SubMenu>
               <SubMenu
                 key="sub2"
-                icon={<DeliveredProcedureOutlined style={{ fontSize: "17px" }} />}
-                title={<p style={{ fontSize: "16px", fontWeight: "500" }}>Quản Lý Yêu Cầu</p>}
+                icon={
+                  <DeliveredProcedureOutlined style={{ fontSize: "17px" }} />
+                }
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Quản Lý Yêu Cầu
+                  </p>
+                }
               >
-                <Menu.Item key="10">{<p style={{ fontSize: "14.5px" }}>Danh sách yêu cầu</p>}</Menu.Item>
+                <Menu.Item key="10">
+                  {<p style={{ fontSize: "14.5px" }}>Danh sách yêu cầu</p>}
+                </Menu.Item>
               </SubMenu>
               <SubMenu
                 key="sub3"
                 icon={<EyeFilled style={{ fontSize: "17px" }} />}
-                title={<p style={{ fontSize: "16px", fontWeight: "500" }}>Xem Đơn Hàng</p>}
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Xem Đơn Hàng
+                  </p>
+                }
               >
-                <SubMenu key="sub2-1" title={<p style={{ fontSize: "16px", fontWeight: "500" }}>Đơn hàng cho thuê</p>}>
-                  <Menu.Item key="4">{<p style={{ fontSize: "14.5px" }}>Sản phẩm đang cho thuê</p>}</Menu.Item>
-                  <Menu.Item key="6">{<p style={{ fontSize: "14.5px" }}>Sản phẩm bị trả về</p>}</Menu.Item>
+                <SubMenu
+                  key="sub2-1"
+                  title={
+                    <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                      Đơn hàng cho thuê
+                    </p>
+                  }
+                >
+                  <Menu.Item key="4">
+                    {
+                      <p style={{ fontSize: "14.5px" }}>
+                        Sản phẩm đang cho thuê
+                      </p>
+                    }
+                  </Menu.Item>
+                  <Menu.Item key="6">
+                    {<p style={{ fontSize: "14.5px" }}>Sản phẩm bị trả về</p>}
+                  </Menu.Item>
                 </SubMenu>
-                <SubMenu key="sub2-2" title={<p style={{ fontSize: "16px", fontWeight: "500" }}>Đơn hàng bán</p>}>
-                  <Menu.Item key="5">{<p style={{ fontSize: "14.5px" }}>Sản phẩm đã bán</p>}</Menu.Item>
-                  <Menu.Item key="9">{<p style={{ fontSize: "14.5px" }}>Sản phẩm bị trả về</p>}</Menu.Item>
+                <SubMenu
+                  key="sub2-2"
+                  title={
+                    <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                      Đơn hàng bán
+                    </p>
+                  }
+                >
+                  <Menu.Item key="5">
+                    {<p style={{ fontSize: "14.5px" }}>Sản phẩm đã bán</p>}
+                  </Menu.Item>
+                  <Menu.Item key="9">
+                    {<p style={{ fontSize: "14.5px" }}>Sản phẩm bị trả về</p>}
+                  </Menu.Item>
                 </SubMenu>
               </SubMenu>
 
-              <SubMenu key="sub3" title="Báo cáo" icon={<MailFilled twoToneColor="#ff0000" />}>
+              <SubMenu
+                key="sub3"
+                title="Báo cáo"
+                icon={<MailFilled twoToneColor="#ff0000" />}
+              >
                 <Menu.Item key="7">Báo cáo sản phẩm</Menu.Item>
               </SubMenu>
 
               <SubMenu
                 key="sub4"
                 icon={<NotificationFilled style={{ fontSize: "17px" }} />}
-                title={<p style={{ fontSize: "16px", fontWeight: "500" }}>Thông Tin</p>}
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Thông Tin
+                  </p>
+                }
               >
-                <Menu.Item key="8">{<p style={{ fontSize: "14.5px" }}>Thông tin cá nhân</p>}</Menu.Item>
+                <Menu.Item key="8">
+                  {<p style={{ fontSize: "14.5px" }}>Thông tin cá nhân</p>}
+                </Menu.Item>
               </SubMenu>
 
               {/* <SubMenu
@@ -373,12 +446,18 @@ const Staff = () => {
             </Menu>
           </ConfigProvider>
         </Sider>
-        <Layout>
+        <Layout
+          style={{
+            padding: "0 24px 24px",
+
+            background: "#fff",
+          }}
+        >
           <Content
             responsive
             style={{
               padding: 24,
-              marginLeft: 15,
+              marginLeft: 14,
               minHeight: 280,
               background: colorBgContainer,
             }}
