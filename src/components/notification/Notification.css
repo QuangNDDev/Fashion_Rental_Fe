@@ -1,16 +1,33 @@
-.noti-form{
-    background-color: rgba(246, 246, 246, 0.75);
-    height: 31px;
-    border-radius: 5px;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 2px;
-    overflow: hidden;
+.noti-form {
+  background-color: rgba(246, 246, 246, 0.75);
+  height: 31px;
+  border-radius: 5px;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2px;
+  overflow: hidden;
 }
-.noti-name{
-    text-align: left;
-    margin-left: 10px;
-    padding-top: 4px;
-    font-weight: bold;
-    
+.noti-name {
+  text-align: left;
+  margin-left: 10px;
+  padding-top: 4px;
+  font-weight: bold;
+}
+
+.unread-icon {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  border-radius: 50%;
+  background-color: rgb(0, 170, 255);
+}
+
+.notification-item {
+  padding: 15px 20px;
+  border-bottom: 1px solid rgb(238, 238, 238);
+}
+
+.notification-wrapper {
+  max-height: 500px;
+  overflow: auto;
 }

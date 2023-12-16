@@ -10,43 +10,47 @@ import PrivateRouteProductOwner from "./components/protect-page/Protect-Page-Pro
 import RegisterForm from "./components/RegisterForm";
 import Chat from "./components/chat";
 import ChatDetail from "./components/chat/chat-detail";
+import useRealtime from "./hooks/useRealtime";
+import useNotification from "antd/es/notification/useNotification";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<LoginForm />} />
-      <Route path="login" element={<LoginForm />} />
+    <>
+      <Routes>
+        <Route path="/" element={<LoginForm />} />
+        <Route path="login" element={<LoginForm />} />
 
-      {/* Protect admin page  */}
-      <Route element={<PrivateRouteAdmin />}>
-        <Route path="admin">
-          <Route path="" element={<Admin />} />
-          <Route path="chat" element={<Chat role={"AD"} />}>
-            <Route path=":id" element={<ChatDetail />} />
+        {/* Protect admin page  */}
+        <Route element={<PrivateRouteAdmin />}>
+          <Route path="admin">
+            <Route path="" element={<Admin />} />
+            <Route path="chat" element={<Chat role={"AD"} />}>
+              <Route path=":id" element={<ChatDetail />} />
+            </Route>
           </Route>
         </Route>
-      </Route>
-      {/* Protect staff page */}
-      <Route element={<PrivateRouteStaff />}>
-        <Route path="staff">
-          <Route path="" element={<Staff />} />
-          <Route path="chat" element={<Chat role={"ST"} />}>
-            <Route path=":id" element={<ChatDetail />} />
+        {/* Protect staff page */}
+        <Route element={<PrivateRouteStaff />}>
+          <Route path="staff">
+            <Route path="" element={<Staff />} />
+            <Route path="chat" element={<Chat role={"ST"} />}>
+              <Route path=":id" element={<ChatDetail />} />
+            </Route>
           </Route>
         </Route>
-      </Route>
-      {/* Protect product owner page */}
-      <Route element={<PrivateRouteProductOwner />}>
-        <Route path="productowner">
-          <Route path="" element={<ProductOwner />}></Route>
-          <Route path="chat" element={<Chat role={"PO"} />}>
-            <Route path=":id" element={<ChatDetail />} />
+        {/* Protect product owner page */}
+        <Route element={<PrivateRouteProductOwner />}>
+          <Route path="productowner">
+            <Route path="" element={<ProductOwner />}></Route>
+            <Route path="chat" element={<Chat role={"PO"} />}>
+              <Route path=":id" element={<ChatDetail />} />
+            </Route>
           </Route>
         </Route>
-      </Route>
-      {/* Register */}
-      <Route path="register" element={<RegisterForm />}></Route>
-    </Routes>
+        {/* Register */}
+        <Route path="register" element={<RegisterForm />}></Route>
+      </Routes>
+    </>
   );
 }
 

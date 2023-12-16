@@ -151,17 +151,7 @@ function PrivateRouteProductOwner() {
                 }}
               />
             </Badge>
-            <Badge count={unreadNotificationCount}>
-              <BellOutlined
-                style={{
-                  fontSize: "20px",
-                  color: "white",
-                  cursor: "pointer",
-                  marginLeft: "25px",
-                }}
-                onClick={showNotificationModal}
-              />
-            </Badge>
+            <Notification />
             <Button
               type="link"
               icon={<LogoutOutlined />}

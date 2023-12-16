@@ -15,6 +15,7 @@ import {
   DeliveredProcedureOutlined,
   MessageOutlined,
 } from "@ant-design/icons";
+import Notification from "../notification/Notification";
 function PrivateRouteStaff() {
   const isAuthen = true;
   // let [isLoad, setIsLoad] = useState(true);
@@ -134,17 +135,7 @@ function PrivateRouteStaff() {
                 }}
               />
             </Badge>
-            <Badge count={unreadNotificationCount}>
-              <BellOutlined
-                style={{
-                  fontSize: "20px",
-                  color: "white",
-                  cursor: "pointer",
-                  marginLeft: "25px",
-                }}
-                onClick={showNotificationModal}
-              />
-            </Badge>
+            <Notification />
             <Button
               type="link"
               icon={<LogoutOutlined />}
@@ -164,6 +155,7 @@ function PrivateRouteStaff() {
           style={{ position: "absolute", bottom: "50px", right: "20px" }}
         >
           {/* Nội dung thông báo ở đây */}
+          <Notification />
         </Modal>
       </>
     );
