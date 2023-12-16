@@ -125,11 +125,6 @@ const OrderTable = () => {
           `&status=CANCELED`
       );
 
-      api["success"]({
-        message: "Từ Chối Hàng Thành Công!",
-        description: `Đơn hàng ${response.data.orderBuyID} đã bị từ chối`,
-      });
-
       fetchOrders();
     } catch (error) {
       api["error"]({
@@ -268,15 +263,17 @@ const OrderTable = () => {
     const [month, day, year] = formattedDate.split("/");
     return `${day}/${month}/${year}`;
   }
-  
+
   function formatDateTime(dateOrder) {
     if (!Array.isArray(dateOrder) || dateOrder.length < 5) {
       return "Invalid date format";
     }
-  
+
     const [year, month, day, hour, minute] = dateOrder;
     const formattedDate = formatDate(`${year}-${month}-${day}`);
-    const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    const formattedTime = `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
     return `${formattedTime} ${formattedDate}`;
   }
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
@@ -411,7 +408,7 @@ const OrderTable = () => {
           </Form.Item>
           <Form.Item name="customerAddress">
             <div style={{ display: "flex" }}>
-            <strong style={{minWidth:"55px"}}>Địa chỉ:</strong>
+              <strong style={{ minWidth: "55px" }}>Địa chỉ:</strong>
               <p style={{ marginLeft: "10px" }}>
                 {form.getFieldValue("customerAddress")}
               </p>

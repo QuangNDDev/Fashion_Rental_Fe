@@ -8,7 +8,8 @@ import axios from "axios";
 const Notification = () => {
   const idAccount = localStorage.getItem("accountId");
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
-  const [isNotificationModalVisible, setNotificationModalVisible] = useState(false);
+  const [isNotificationModalVisible, setNotificationModalVisible] =
+    useState(false);
   const [api, context] = useNotification();
   const [notifications, setNotifications] = useState([]);
 
@@ -18,7 +19,7 @@ const Notification = () => {
       api["info"]({
         message: title,
         description: des,
-        duration: 5000,
+        duration: null,
       });
 
       fetchNotification();
@@ -33,15 +34,21 @@ const Notification = () => {
   const hideNotificationModal = async () => {
     setNotificationModalVisible(false);
     setUnreadNotificationCount(0);
-    const response = await axios.post(`http://fashionrental.online:8080/notification/${idAccount}`);
+    const response = await axios.post(
+      `http://fashionrental.online:8080/notification/${idAccount}`
+    );
     fetchNotification();
   };
 
   const fetchNotification = async () => {
-    const response = await axios.get(`http://fashionrental.online:8080/notification/${idAccount}`);
+    const response = await axios.get(
+      `http://fashionrental.online:8080/notification/${idAccount}`
+    );
     setNotifications(response.data);
     console.log(response.data.filter((item) => !item.read).length);
-    setUnreadNotificationCount(response.data.filter((item) => !item.read).length);
+    setUnreadNotificationCount(
+      response.data.filter((item) => !item.read).length
+    );
     console.log(response.data);
   };
 
@@ -65,7 +72,9 @@ const Notification = () => {
       </Badge>
 
       <Modal
-        title="Thông báo"
+        title={
+          <p style={{ fontWeight: "bold", textAlign: "center" }}>Thông báo</p>
+        }
         open={isNotificationModalVisible}
         onCancel={hideNotificationModal}
         footer={null}
@@ -85,13 +94,15 @@ const Notification = () => {
                   </p>
                   <p
                     style={{
-                      color: "rgb(210, 208, 208)",
+                      color: "black",
                     }}
                   >
                     {notification.message}
                   </p>
                 </Col>
-                <Col span={1}>{!notification.read && <span className="unread-icon"></span>}</Col>
+                <Col span={1}>
+                  {!notification.read && <span className="unread-icon"></span>}
+                </Col>
               </Row>
             );
           })}

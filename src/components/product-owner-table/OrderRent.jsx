@@ -92,15 +92,17 @@ const OrderRent = () => {
     const [month, day, year] = formattedDate.split("/");
     return `${day}/${month}/${year}`;
   }
-  
+
   function formatDateTime(dateOrder) {
     if (!Array.isArray(dateOrder) || dateOrder.length < 5) {
       return "Invalid date format";
     }
-  
+
     const [year, month, day, hour, minute] = dateOrder;
     const formattedDate = formatDate(`${year}-${month}-${day}`);
-    const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    const formattedTime = `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
     return `${formattedTime} ${formattedDate}`;
   }
   // =====================ApproveOrder============================
@@ -131,11 +133,6 @@ const OrderRent = () => {
       const response = await axios.put(
         `http://fashionrental.online:8080/orderrent?orderRentID=${record.orderRentID}&status=CANCELED`
       );
-
-      api["success"]({
-        message: "Từ Chối Hàng Thành Công!",
-        description: `Đơn hàng ${response.data.orderRentID} đã bị từ chối`,
-      });
 
       setIsRejectConfirmModalVisible(false);
 
@@ -406,10 +403,10 @@ const OrderRent = () => {
               </p>
             </div>
           </Form.Item>
-         
+
           <Form.Item name="customerAddress">
             <div style={{ display: "flex" }}>
-            <strong style={{minWidth:"55px"}}>Địa chỉ:</strong>
+              <strong style={{ minWidth: "55px" }}>Địa chỉ:</strong>
               <p style={{ marginLeft: "10px" }}>
                 {form.getFieldValue("customerAddress")}
               </p>
