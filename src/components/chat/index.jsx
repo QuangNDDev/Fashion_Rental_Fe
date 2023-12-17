@@ -29,7 +29,7 @@ const ChatApp = ({ role }) => {
     if (name === "New message") {
       fetchRoom();
     }
-  });
+  }, accountID);
 
   const fetchAccount = async () => {
     setLoading(true);

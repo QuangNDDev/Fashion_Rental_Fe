@@ -14,13 +14,14 @@ const ChatDetail = () => {
   const [room, setRoom] = useState();
   const [messages, setMessages] = useState([]);
   const id = useRef(params.id);
-  const accountID = localStorage.getItem("accountId");
+  const accountID = params?.accountID ? params?.accountID : localStorage.getItem("accountId");
   const nameAccount = useRef();
   const [typing, setTyping] = useState([]);
   const fetchRoom = useOutletContext();
   const navigate = useNavigate();
 
   useRealtime((message) => {
+    console.log(message);
     if (message.body.includes("Typing: ")) {
       const name = message.body.replace("Typing:", "");
       if (name?.trim() !== nameAccount.current?.trim()) {
@@ -35,7 +36,7 @@ const ChatDetail = () => {
     }
 
     // setTyping()
-  });
+  }, accountID);
 
   const fetchAccount = async () => {
     try {
@@ -80,9 +81,9 @@ const ChatDetail = () => {
     setMessages(
       response.data.messages.map((message) => {
         return {
-          sender: message.account.accountID == accountID ? "" : message.account.email + ":",
+          sender: message.account?.accountID == accountID ? "" : message.account.email + ":",
           text: message.message,
-          self: message.account.accountID == accountID,
+          self: message.account?.accountID == accountID,
           created: message.createAt,
         };
       })
