@@ -103,3 +103,28 @@ code {
     opacity: 0.9;
   }
 }
+
+.back-button {
+  display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  .slider-room.hide {
+    display: none;
+  }
+
+  .slider-room.show {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: auto !important;
+  }
+
+  .back-button {
+    display: inline;
+  }
+
+  .chat-page {
+    height: 100vh !important;
+  }
+}

@@ -20,6 +20,12 @@ function App() {
         <Route path="/" element={<LoginForm />} />
         <Route path="login" element={<LoginForm />} />
 
+        <Route path=":accountID">
+          <Route path="chat" element={<Chat />}>
+            <Route path=":id" element={<ChatDetail />} />
+          </Route>
+        </Route>
+
         {/* Protect admin page  */}
         <Route element={<PrivateRouteAdmin />}>
           <Route path="admin">

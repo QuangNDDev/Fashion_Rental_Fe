@@ -2,11 +2,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Input, Button, List, Row, Col, Avatar, Tooltip } from "antd";
 import "./index.scss";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import axios from "axios";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import useRealtime from "../../hooks/useRealtime";
-import useLatest from "../../hooks/useLatest";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const ChatDetail = () => {
   const params = useParams();
@@ -18,6 +18,7 @@ const ChatDetail = () => {
   const nameAccount = useRef();
   const [typing, setTyping] = useState([]);
   const fetchRoom = useOutletContext();
+  const navigate = useNavigate();
 
   useRealtime((message) => {
     if (message.body.includes("Typing: ")) {
@@ -38,9 +39,7 @@ const ChatDetail = () => {
 
   const fetchAccount = async () => {
     try {
-      const response = await axios.get(
-        "http://fashionrental.online:8080/account/" + accountID
-      );
+      const response = await axios.get("http://fashionrental.online:8080/account/" + accountID);
       console.log(response.data.data.email);
       nameAccount.current = response.data.data.email;
     } catch (error) {
@@ -65,31 +64,23 @@ const ChatDetail = () => {
     if (message.trim() !== "") {
       //   setMessages([...messages, { sender: "You", text: message, self: true }]);
       //   setMessage("");
-      await axios.post(
-        `http://fashionrental.online:8080/chat/send/${id.current}`,
-        {
-          accountID: Number(accountID),
-          roomID: Number(id.current),
-          message: message,
-        }
-      );
+      await axios.post(`http://fashionrental.online:8080/chat/send/${id.current}`, {
+        accountID: Number(accountID),
+        roomID: Number(id.current),
+        message: message,
+      });
       setMessage("");
       fetchChatDetail();
       fetchRoom();
     }
   };
   const fetchChatDetail = async () => {
-    const response = await axios.get(
-      `http://fashionrental.online:8080/chat/detail/${id.current}`
-    );
+    const response = await axios.get(`http://fashionrental.online:8080/chat/detail/${id.current}`);
     setRoom(response.data);
     setMessages(
       response.data.messages.map((message) => {
         return {
-          sender:
-            message.account.accountID == accountID
-              ? ""
-              : message.account.email + ":",
+          sender: message.account.accountID == accountID ? "" : message.account.email + ":",
           text: message.message,
           self: message.account.accountID == accountID,
           created: message.createAt,
@@ -111,7 +102,7 @@ const ChatDetail = () => {
 
   return (
     <div
-      className="chat-detail"
+      className={`chat-detail ${id.current ? "show" : "hide"}`}
       style={{ display: "flex", flexDirection: "column", height: "100%" }}
     >
       {/* Header */}
@@ -123,14 +114,22 @@ const ChatDetail = () => {
         }}
       >
         <Col span={22}>
-          <h2>{room?.name}</h2>
+          <h2>
+            <ArrowLeftOutlined
+              className="back-button"
+              style={{
+                marginRight: 15,
+              }}
+              onClick={() => {
+                navigate(`/${params.accountID}/chat`);
+              }}
+            />
+            {room?.name}
+          </h2>
         </Col>
         {/* Add room members or any other room information */}
         <Col span={2}>
-          <Avatar.Group
-            maxCount={2}
-            maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
-          >
+          <Avatar.Group maxCount={2} maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}>
             {room?.accounts.map((item) => {
               return (
                 <Tooltip title={item.email}>
@@ -174,11 +173,9 @@ const ChatDetail = () => {
 
       {/* Footer */}
       <div style={{ padding: "10px" }}>
-        {typing.length > 0 && (
-          <p className="typing">{`${typing?.join(",")} is typing...`}</p>
-        )}
+        {typing.length > 0 && <p className="typing">{`${typing?.join(",")} is typing...`}</p>}
         <Row>
-          <Col span={22}>
+          <Col xs={18} span={22}>
             <Input
               onInput={async () => {
                 const response = await axios.post(
@@ -190,12 +187,8 @@ const ChatDetail = () => {
               onChange={handleMessageChange}
             />
           </Col>
-          <Col span={2}>
-            <Button
-              type="primary"
-              onClick={handleSendMessage}
-              style={{ marginLeft: "10px", width: "100%" }}
-            >
+          <Col xs={6} span={2}>
+            <Button type="primary" onClick={handleSendMessage} style={{ marginLeft: "10px", width: "100%" }}>
               Gửi
             </Button>
           </Col>
