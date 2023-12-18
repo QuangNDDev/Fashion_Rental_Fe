@@ -128,10 +128,11 @@ const OrderRent = () => {
     }
   };
   // =======================RejectOrder===========================
-  const handleRejectConfirmModalOk = async (record) => {
+  const handleRejectConfirmModalOk = async () => {
+    console.log("orderRentID:", selectedOrderID);
     try {
       const response = await axios.put(
-        `http://fashionrental.online:8080/orderrent?orderRentID=${record.orderRentID}&status=CANCELED`
+        `http://fashionrental.online:8080/orderrent?orderRentID=${selectedOrderID}&status=CANCELED`
       );
 
       setIsRejectConfirmModalVisible(false);
