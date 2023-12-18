@@ -3,34 +3,24 @@ import React, { useEffect, useState } from "react";
 import { PlusCircleOutlined, MinusOutlined } from "@ant-design/icons";
 import "./balance-productowner.css";
 import TransactionTable from "./transaction-history-table";
-import {
-  Row,
-  Card,
-  Statistic,
-  Col,
-  Space,
-  Button,
-  Modal,
-  Form,
-  Input,
-  ConfigProvider,
-} from "antd";
+import { Row, Card, Statistic, Col, Space, Button, Modal, Form, Input, ConfigProvider } from "antd";
 import CountUp from "react-countup";
 import { async } from "@firebase/util";
 import { useNavigate } from "react-router-dom";
+import useRealtime from "../../hooks/useRealtime";
+import useNotification from "antd/es/notification/useNotification";
 
 const Balance = () => {
   const [balanceData, setBalanceData] = useState([]);
   const accountId = localStorage.getItem("accountId");
+  const [api, context] = useNotification();
 
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
   const fetchBalance = async () => {
     try {
-      const response = await axios.get(
-        "http://fashionrental.online:8080/wallet/" + accountId
-      );
+      const response = await axios.get("http://fashionrental.online:8080/wallet/" + accountId);
       setBalanceData(response.data);
     } catch (error) {
       console.error(error);
@@ -50,12 +40,23 @@ const Balance = () => {
   const showModal = () => {
     setIsModalOpen(true);
   };
+
+  useRealtime((message) => {
+    if (message.body === "payment success") {
+      fetchBalance();
+      api["success"]({
+        description: "Nạp tiền thành công.",
+        message: "Thông báo",
+      });
+    }
+  });
+
   const handleOk = async (values) => {
     setIsModalOpen(false);
     console.log(values);
     try {
       const response = await axios.post(
-        "http://fashionrental.online:8080/VNPaycontroller/submitOrder?accountID=" +
+        "http://localhost:8080/VNPaycontroller/submitOrder?accountID=" +
           accountId +
           "&amount=" +
           values.amount +
@@ -107,6 +108,7 @@ const Balance = () => {
 
   return (
     <div>
+      {context}
       <ConfigProvider
         theme={{
           token: {
@@ -177,19 +179,10 @@ const Balance = () => {
           </Card>
         </div>
 
-        <Card
-          bordered={true}
-          title={"Lịch sử giao dịch"}
-          style={{ marginTop: "30px" }}
-        >
+        <Card bordered={true} title={"Lịch sử giao dịch"} style={{ marginTop: "30px" }}>
           <TransactionTable />
         </Card>
-        <Modal
-          title="Thanh toán VN-Pay"
-          open={isModalOpen}
-          onCancel={handleCancel}
-          footer={false}
-        >
+        <Modal title="Thanh toán VN-Pay" open={isModalOpen} onCancel={handleCancel} footer={false}>
           <Form form={form} onFinish={handleOk}>
             <span style={{ marginBottom: "5px" }}>Nhập số tiền muốn nạp:</span>
             <Form.Item
@@ -205,11 +198,7 @@ const Balance = () => {
                     if (value >= 10000 && value <= 1000000000) {
                       return Promise.resolve();
                     }
-                    return Promise.reject(
-                      new Error(
-                        "Số tiền phải lớn hơn 10,000 VND và nhỏ hơn 1,000,000,000 VND!"
-                      )
-                    );
+                    return Promise.reject(new Error("Số tiền phải lớn hơn 10,000 VND và nhỏ hơn 1,000,000,000 VND!"));
                   },
                 },
               ]}
@@ -226,22 +215,13 @@ const Balance = () => {
               >
                 Thanh toán
               </Button>
-              <Button
-                style={{ float: "right", marginRight: "10px" }}
-                danger
-                onClick={handleCancel}
-              >
+              <Button style={{ float: "right", marginRight: "10px" }} danger onClick={handleCancel}>
                 Huỷ
               </Button>
             </Form.Item>
           </Form>
         </Modal>
-        <Modal
-          title="Thanh toán VN-Pay"
-          open={isModalOpenWithdraw}
-          onCancel={handleCancelWithdraw}
-          footer={false}
-        >
+        <Modal title="Thanh toán VN-Pay" open={isModalOpenWithdraw} onCancel={handleCancelWithdraw} footer={false}>
           <Form form={form} onFinish={handleOkWithdraw}>
             <span style={{ marginBottom: "5px" }}>Nhập số tiền muốn rút:</span>
             <Form.Item
@@ -257,11 +237,7 @@ const Balance = () => {
                     if (value >= 10000 && value <= 1000000000) {
                       return Promise.resolve();
                     }
-                    return Promise.reject(
-                      new Error(
-                        "Số tiền phải lớn hơn 10,000 VND và nhỏ hơn 1,000,000,000 VND!"
-                      )
-                    );
+                    return Promise.reject(new Error("Số tiền phải lớn hơn 10,000 VND và nhỏ hơn 1,000,000,000 VND!"));
                   },
                 },
               ]}
@@ -278,11 +254,7 @@ const Balance = () => {
               >
                 Thanh toán
               </Button>
-              <Button
-                style={{ float: "right", marginRight: "10px" }}
-                danger
-                onClick={handleCancelWithdraw}
-              >
+              <Button style={{ float: "right", marginRight: "10px" }} danger onClick={handleCancelWithdraw}>
                 Huỷ
               </Button>
             </Form.Item>

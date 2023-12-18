@@ -1,21 +1,7 @@
-import {
-  SearchOutlined,
-  CheckCircleTwoTone,
-  CloseCircleTwoTone,
-  EyeTwoTone,
-} from "@ant-design/icons";
+import { SearchOutlined, CheckCircleTwoTone, CloseCircleTwoTone, EyeTwoTone } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import {
-  Button,
-  Drawer,
-  Form,
-  Input,
-  notification,
-  Space,
-  Table,
-  Modal,
-} from "antd";
+import { Button, Drawer, Form, Input, notification, Space, Table, Modal } from "antd";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
 import ProductOrder from "./Product-Order";
@@ -29,13 +15,10 @@ const OrderTable = () => {
   const [selectedOrderID, setSelectedOrderID] = useState(null);
   const [selectedCustomer, setSelectedCustomer] = useState([]);
   const [api, contextHolder] = notification.useNotification();
-  const [isRejectConfirmModalVisible, setIsRejectConfirmModalVisible] =
-    useState(false);
+  const [isRejectConfirmModalVisible, setIsRejectConfirmModalVisible] = useState(false);
   const fetchOrders = async () => {
     try {
-      const response = await axios.get(
-        "http://fashionrental.online:8080/orderbuy/po/pending/" + productownerId
-      );
+      const response = await axios.get("http://fashionrental.online:8080/orderbuy/po/pending/" + productownerId);
       setOrderData(response.data);
     } catch (error) {
       console.error(error);
@@ -44,7 +27,7 @@ const OrderTable = () => {
 
   useEffect(() => {
     fetchOrders();
-  }, []);
+  }, [productownerId]);
 
   const showRejectConfirmModal = () => {
     setIsRejectConfirmModalVisible(true);
@@ -84,10 +67,7 @@ const OrderTable = () => {
   // ==============formatDate====================================
   function formatDate(dateString) {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    const formattedDate = new Date(dateString).toLocaleDateString(
-      "en-US",
-      options
-    );
+    const formattedDate = new Date(dateString).toLocaleDateString("en-US", options);
     const [month, day, year] = formattedDate.split("/");
     return `${day}/ ${month}/ ${year}`;
   }
@@ -96,9 +76,7 @@ const OrderTable = () => {
     console.log("orderBuyID:", record.orderBuyID);
     try {
       const response = await axios.put(
-        `http://fashionrental.online:8080/orderbuy?orderBuyID=` +
-          record.orderBuyID +
-          `&status=PREPARE`
+        `http://fashionrental.online:8080/orderbuy?orderBuyID=` + record.orderBuyID + `&status=PREPARE`
       );
       api["success"]({
         message: "Duyệt Đơn Hàng Thành Công!",
@@ -121,9 +99,9 @@ const OrderTable = () => {
     console.log("selectedOrderID:", selectedOrderID);
     try {
       const response = await axios.put(
-        `http://fashionrental.online:8080/orderbuy?orderBuyID=` +
-          record.orderBuyID +
-          `&status=CANCELED`
+
+        `http://fashionrental.online:8080/orderbuy?orderBuyID=` + selectedOrderID + `&status=CANCELED`
+
       );
 
       fetchOrders();
@@ -145,9 +123,7 @@ const OrderTable = () => {
     setSelectedOrderID(record.orderBuyID);
     setIsDrawerVisible(true);
     try {
-      const response = await axios.get(
-        "http://fashionrental.online:8080/customer/" + record.customerID
-      );
+      const response = await axios.get("http://fashionrental.online:8080/customer/" + record.customerID);
 
       setSelectedCustomer(response.data);
       console.log(response.data);
@@ -157,13 +133,7 @@ const OrderTable = () => {
   };
 
   const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-      close,
-    }) => (
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
       <div
         style={{
           padding: 8,
@@ -174,9 +144,7 @@ const OrderTable = () => {
           ref={searchInput}
           placeholder={`Tìm kiếm...`}
           value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
           style={{
             marginBottom: 8,
@@ -200,9 +168,7 @@ const OrderTable = () => {
           <Button
             onClick={() =>
               clearFilters &&
-              handleReset(clearFilters) &
-                handleSearch(selectedKeys, confirm, dataIndex) &
-                handleReset(clearFilters)
+              handleReset(clearFilters) & handleSearch(selectedKeys, confirm, dataIndex) & handleReset(clearFilters)
             }
             size="small"
             style={{
@@ -232,8 +198,7 @@ const OrderTable = () => {
         }}
       />
     ),
-    onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
@@ -257,10 +222,7 @@ const OrderTable = () => {
   //format date ------------------------------------
   function formatDate(dateString) {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    const formattedDate = new Date(dateString).toLocaleDateString(
-      "en-US",
-      options
-    );
+    const formattedDate = new Date(dateString).toLocaleDateString("en-US", options);
     const [month, day, year] = formattedDate.split("/");
     return `${day}/${month}/${year}`;
   }
@@ -272,9 +234,7 @@ const OrderTable = () => {
 
     const [year, month, day, hour, minute] = dateOrder;
     const formattedDate = formatDate(`${year}-${month}-${day}`);
-    const formattedTime = `${hour.toString().padStart(2, "0")}:${minute
-      .toString()
-      .padStart(2, "0")}`;
+    const formattedTime = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
     return `${formattedTime} ${formattedDate}`;
   }
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
@@ -295,9 +255,7 @@ const OrderTable = () => {
       key: "orderBuyID",
 
       ...getColumnSearchProps("orderBuyID"),
-      render: (number) => (
-        <p style={{ textAlign: "center" }}>{Number(number)}</p>
-      ),
+      render: (number) => <p style={{ textAlign: "center" }}>{Number(number)}</p>,
     },
     {
       title: "Thời gian",
@@ -313,9 +271,7 @@ const OrderTable = () => {
       key: "total",
 
       ...getColumnSearchProps("total"),
-      render: (text) => (
-        <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>
-      ),
+      render: (text) => <p style={{ textAlign: "left" }}>{formatPriceWithVND(text)}</p>,
     },
     {
       title: "Trạng thái",
@@ -363,40 +319,20 @@ const OrderTable = () => {
   ];
   return (
     <div>
-      <Table
-        responsive
-        bordered={true}
-        columns={columns}
-        dataSource={orderData}
-      />
+      <Table responsive bordered={true} columns={columns} dataSource={orderData} />
       {contextHolder}
-      <Drawer
-        title={"Đơn hàng"}
-        open={isDrawerVisible}
-        onClose={onCloseDrawer}
-        width={900}
-      >
+      <Drawer title={"Đơn hàng"} open={isDrawerVisible} onClose={onCloseDrawer} width={900}>
         <Form form={form}>
-          <Form.Item
-            name="fullName"
-            initialValue={selectedCustomer && selectedCustomer.fullName}
-          >
+          <Form.Item name="fullName" initialValue={selectedCustomer && selectedCustomer.fullName}>
             <div style={{ display: "flex" }}>
               <strong>Tên người mua:</strong>
-              <p style={{ marginLeft: "10px" }}>
-                {selectedCustomer && selectedCustomer.fullName}
-              </p>
+              <p style={{ marginLeft: "10px" }}>{selectedCustomer && selectedCustomer.fullName}</p>
             </div>
           </Form.Item>
-          <Form.Item
-            name="phone"
-            initialValue={selectedCustomer && selectedCustomer.phone}
-          >
+          <Form.Item name="phone" initialValue={selectedCustomer && selectedCustomer.phone}>
             <div style={{ display: "flex" }}>
               <strong>SĐT người mua:</strong>
-              <p style={{ marginLeft: "10px" }}>
-                {selectedCustomer && selectedCustomer.phone}
-              </p>
+              <p style={{ marginLeft: "10px" }}>{selectedCustomer && selectedCustomer.phone}</p>
             </div>
           </Form.Item>
           <Form.Item name="dateOrder">
@@ -410,9 +346,7 @@ const OrderTable = () => {
           <Form.Item name="customerAddress">
             <div style={{ display: "flex" }}>
               <strong style={{ minWidth: "55px" }}>Địa chỉ:</strong>
-              <p style={{ marginLeft: "10px" }}>
-                {form.getFieldValue("customerAddress")}
-              </p>
+              <p style={{ marginLeft: "10px" }}>{form.getFieldValue("customerAddress")}</p>
             </div>
           </Form.Item>
         </Form>

@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-function useRealtime(callback) {
+function useRealtime(callback, id) {
   const WS_URL = "http://fashionrental.online:8080/websocket";
   // const WS_URL = "http://localhost:8080/websocket";
   const socket = new SockJS(WS_URL);
   const stomp = Stomp.over(socket);
-  const accountID = localStorage.getItem("accountId");
+  const accountID = id ? id : localStorage.getItem("accountId");
   useEffect(() => {
     const onConnected = () => {
       console.log("WebSocket connected");

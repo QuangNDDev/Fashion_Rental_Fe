@@ -1,17 +1,6 @@
 // src/ChatApp.js
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  Layout,
-  Menu,
-  Modal,
-  Row,
-  Select,
-  Spin,
-} from "antd";
+import { Button, Col, Form, Input, Layout, Menu, Modal, Row, Select, Spin } from "antd";
 import "./index.scss";
 import ChatDetail from "./chat-detail";
 import useRealtime from "../../hooks/useRealtime";
@@ -30,9 +19,9 @@ const ChatApp = ({ role }) => {
   const [loading, setLoading] = useState(false);
   const [accounts, setAccounts] = useState([]);
   const [rooms, setRooms] = useState([]);
-  const accountID = localStorage.getItem("accountId");
   const navigate = useNavigate();
   const params = useParams();
+  const accountID = params?.accountID ? params?.accountID : localStorage.getItem("accountId");
 
   useRealtime((message) => {
     const name = message.body;
@@ -40,21 +29,17 @@ const ChatApp = ({ role }) => {
     if (name === "New message") {
       fetchRoom();
     }
-  });
+  }, accountID);
 
   const fetchAccount = async () => {
     setLoading(true);
-    const response = await axios.get(
-      "http://fashionrental.online:8080/account/getall"
-    );
+    const response = await axios.get("http://fashionrental.online:8080/account/getall");
     setAccounts(response.data);
     setLoading(false);
   };
 
   const fetchRoom = async () => {
-    const response = await axios.get(
-      `http://fashionrental.online:8080/chat/${accountID}`
-    );
+    const response = await axios.get(`http://fashionrental.online:8080/chat/${accountID}`);
     console.log(response.data);
     setRooms(response.data);
   };
@@ -103,6 +88,7 @@ const ChatApp = ({ role }) => {
   return (
     <Layout className="chat-page">
       <Sider
+        className={`slider-room ${params.id ? "hide" : "show"}`}
         width={300}
         style={{
           background: "#fff",
@@ -118,50 +104,57 @@ const ChatApp = ({ role }) => {
             marginBottom: 10,
           }}
         >
-          <Row
-            align={"middle"}
-            justify={"space-around"}
-            gutter={12}
-            style={{
-              cursor: "pointer",
-            }}
-          >
-            <Col span={10}>
-              <Row
-                align={"middle"}
-                onClick={() => {
-                  if (role === "PO") {
-                    navigate("/productOwner");
-                  }
-                  if (role === "ST") {
-                    navigate("/staff");
-                  }
-                  if (role === "AD") {
-                    navigate("/admin");
-                  }
-                }}
-              >
-                <ArrowLeftOutlined />{" "}
-                <span
-                  style={{
-                    marginLeft: 10,
-                    fontWeight: 700,
-                  }}
-                >
-                  Trở về
-                </span>
-              </Row>
-            </Col>
-            <Col span={14}>
-              <Button
-                type="primary"
-                onClick={showModal}
-                style={{ fontWeight: "bold" }}
-              >
-                Tạo phòng
-              </Button>
-            </Col>
-          </Row>
+          {role && (
+            <Row
+              align={"middle"}
+              justify={"space-around"}
+              gutter={12}
+              style={{
+                cursor: "pointer",
+              }}
+            >
+              {role && (
+                <Col span={10}>
+                  <Row
+                    align={"middle"}
+                    onClick={() => {
+                      if (role === "PO") {
+                        navigate("/productOwner");
+                      }
+                      if (role === "ST") {
+                        navigate("/staff");
+                      }
+                      if (role === "AD") {
+                        navigate("/admin");
+                      }
+                    }}
+                  >
+                    <ArrowLeftOutlined />{" "}
+                    <span
+                      style={{
+                        marginLeft: 10,
+                        fontWeight: 700,
+                      }}
+                    >
+                      Trở về
+                    </span>
+                  </Row>
+                </Col>
+              )}
+              <Col span={14}>
+                <Button type="primary" onClick={showModal} style={{ fontWeight: "bold" }}>
+                  Tạo phòng
+                </Button>
+              </Col>
+            </Row>
+          )}
+
+          {!role && (
+            <Button type="primary" onClick={showModal} style={{ fontWeight: "bold" }}>
+              Tạo phòng
+            </Button>
+          )}
+
           <Modal
             title={<p style={{ textAlign: "center" }}>Tạo phòng</p>}
             open={isModalOpen}
@@ -207,9 +200,7 @@ const ChatApp = ({ role }) => {
                     //   onChange={handleChange}
                     allowClear
                     filterOption={(input, options) => {
-                      return options.label
-                        .toLocaleLowerCase()
-                        .includes(input.toLocaleLowerCase());
+                      return options.label.toLocaleLowerCase().includes(input.toLocaleLowerCase());
                     }}
                     options={accounts.map((item) => {
                       return {
@@ -223,11 +214,7 @@ const ChatApp = ({ role }) => {
             </Form>
           </Modal>
         </Row>
-        <Menu
-          mode="vertical"
-          selectedKeys={params.id}
-          defaultSelectedKeys={["1"]}
-        >
+        <Menu mode="vertical" selectedKeys={params.id} defaultSelectedKeys={["1"]}>
           {rooms.map((room) => {
             return (
               <Menu.Item
@@ -243,9 +230,7 @@ const ChatApp = ({ role }) => {
               >
                 <span className="chat-box">
                   <p className="chat-title">{room.name}</p>
-                  <p className="chat-message">
-                    {truncateAndCreateLink(room.lastMessage)}
-                  </p>
+                  <p className="chat-message">{truncateAndCreateLink(room.lastMessage)}</p>
                 </span>
                 <span className="time">
                   {formatDistanceToNow(new Date(room.lastUpdated), {
@@ -258,25 +243,27 @@ const ChatApp = ({ role }) => {
           })}
         </Menu>
       </Sider>
-      <Layout style={{ padding: "16px", height: "100%" }}>
-        <Content
-          style={{
-            background: "#fff",
-            padding: 24,
-            margin: 0,
-            minHeight: 280,
-            height: "100%",
-          }}
-        >
-          {/* {currentRoom ? <ChatDetail room={currentRoom} /> : <h2>Select a room</h2>} */}
-          <Outlet
-            context={() => {
-              //   console.log(123);
-              fetchRoom();
+      {params.id && (
+        <Layout style={{ padding: "16px", height: "100%" }}>
+          <Content
+            style={{
+              background: "#fff",
+              padding: 24,
+              margin: 0,
+              minHeight: 280,
+              height: "100%",
             }}
-          />
-        </Content>
-      </Layout>
+          >
+            {/* {currentRoom ? <ChatDetail room={currentRoom} /> : <h2>Select a room</h2>} */}
+            <Outlet
+              context={() => {
+                //   console.log(123);
+                fetchRoom();
+              }}
+            />
+          </Content>
+        </Layout>
+      )}
     </Layout>
   );
 };
