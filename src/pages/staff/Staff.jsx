@@ -168,7 +168,7 @@ const Staff = () => {
             >
               <Breadcrumb.Item>Xem đơn hàng</Breadcrumb.Item>
               <Breadcrumb.Item>Đơn hàng cho thuê</Breadcrumb.Item>
-              <Breadcrumb.Item>Sản phẩm cho thuê</Breadcrumb.Item>
+              <Breadcrumb.Item>Sản phẩm đang cho thuê</Breadcrumb.Item>
             </Breadcrumb>
             <OrdersRentStaff />
           </div>
