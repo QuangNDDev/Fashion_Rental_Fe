@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
 import {
+  Avatar,
   Button,
   Card,
   Drawer,
   Form,
-  Image,
   Input,
-  message,
-  notification,
   Upload,
+  notification,
 } from "antd";
 import {
   SettingOutlined,
   UploadOutlined,
-  EllipsisOutlined,
   EditOutlined,
 } from "@ant-design/icons";
 import { storage } from "../../firebase/firebase";
@@ -21,6 +19,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 import axios from "axios";
 import Meta from "antd/es/card/Meta";
+
 const InformationPO = () => {
   const [api, contextHolder] = notification.useNotification();
   const idAccount = localStorage.getItem("accountId");
@@ -42,15 +41,14 @@ const InformationPO = () => {
   useEffect(() => {
     fetchProductOwner();
   }, []);
+
   const editUser = async () => {
     form.validateFields().then((values) => {
       const editData = {
         address: values.address,
         avatarUrl: urlImage,
         fullName: values.fullName,
-        phone: values.phone,
       };
-      console.log(editData);
 
       try {
         axios
@@ -60,7 +58,6 @@ const InformationPO = () => {
             editData
           )
           .then((response) => {
-            console.log(response);
             api["success"]({
               message: "Chỉnh Sửa Thành Công",
               description: null,
@@ -81,6 +78,7 @@ const InformationPO = () => {
       onClose();
     });
   };
+
   const [form] = Form.useForm();
   const [open, setOpen] = useState(false);
   const showDrawer = (productonwer) => {
@@ -88,7 +86,6 @@ const InformationPO = () => {
     form.setFieldsValue(productonwer);
     setIsDrawerVisible(true);
     setUrlImage(productonwer.avatarUrl);
-    // console.log(urlImage);
   };
   const onClose = () => {
     setOpen(false);
@@ -97,9 +94,6 @@ const InformationPO = () => {
   };
 
   const handleFileChange = (event) => {
-    console.log("handleFileChange called");
-    console.log("File selected:", event.file);
-
     if (event.file.status !== "removed" && event.file) {
       const imageRef = ref(storage, `images/${event.file.name + v4()}`);
 
@@ -119,21 +113,27 @@ const InformationPO = () => {
   };
 
   return (
-    <div style={{ justifyContent: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+
+        height: "100vh",
+      }}
+    >
       {contextHolder}
       <div
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          width: "100%",
         }}
       >
         <h2>Thông tin cơ bản</h2>
         <>
-          <Button
-            style={{ float: "right" }}
-            onClick={() => showDrawer(productowner)}
-          >
+          <Button onClick={() => showDrawer(productowner)}>
             Chỉnh sửa <SettingOutlined />
           </Button>
           <Drawer
@@ -167,7 +167,7 @@ const InformationPO = () => {
                   },
                 ]}
               >
-                <Input readOnly />
+                <Input readOnly disabled />
               </Form.Item>
               <p>Địa Chỉ:</p>
               <Form.Item
@@ -188,7 +188,6 @@ const InformationPO = () => {
                   <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
                 </Upload>
               </Form.Item>
-
               <Form.Item>
                 <Button
                   style={{
@@ -210,40 +209,69 @@ const InformationPO = () => {
         </>
       </div>
       <div
-        style={{ display: "flex", justifyContent: "center", marginLeft: 20 }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "20px",
+        }}
       >
-        <Card
-          style={{ width: 300 }}
-          cover={
-            <img
-              alt="avatar"
-              src={
-                productowner?.avatarUrl
-                  ? productowner.avatarUrl
-                  : "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg"
-              }
-            />
-          }
-          actions={[
-            <EditOutlined
-              key="edit"
-              onClick={() => showDrawer(productowner)}
-            />,
-          ]}
-        >
-          <Meta
-            title={productowner?.fullName ? productowner.fullName : null}
-            description={
-              <div>
-                {productowner?.phone ? productowner.phone : null}
-                <br />
-                {productowner?.address ? productowner.address : null}
-              </div>
-            }
-          />
+        <Card>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "16px",
+              backgroundColor: "#f0f0f0",
+            }}
+          >
+            <div>
+              <Avatar
+                shape="square"
+                alt="avatar"
+                src={
+                  productowner?.avatarUrl
+                    ? productowner.avatarUrl
+                    : "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg"
+                }
+                style={{
+                  width: "200px", // Increase the width of the avatar
+                  height: "200px", // Increase the height of the avatar
+
+                  marginRight: "16px",
+                }}
+              />
+              {/* <EditOutlined onClick={() => showDrawer(productowner)} /> */}
+            </div>
+            <div style={{ padding: "16px" }}>
+              <Meta
+                title={
+                  <p style={{ fontSize: "20px", fontWeight: "bold" }}>
+                    {productowner?.fullName ? productowner.fullName : null}
+                  </p>
+                }
+                description={
+                  <div>
+                    {productowner?.phone ? (
+                      <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+                        Số Điện Thoại: {productowner.phone}
+                      </p>
+                    ) : null}
+                    <br />
+                    {productowner?.address ? (
+                      <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+                        Địa chỉ: {productowner.address}
+                      </p>
+                    ) : null}
+                  </div>
+                }
+              />
+            </div>
+          </div>
         </Card>
       </div>
     </div>
   );
 };
+
 export default InformationPO;

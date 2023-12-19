@@ -14,7 +14,9 @@ const ChatDetail = () => {
   const [room, setRoom] = useState();
   const [messages, setMessages] = useState([]);
   const id = useRef(params.id);
-  const accountID = params?.accountID ? params?.accountID : localStorage.getItem("accountId");
+  const accountID = params?.accountID
+    ? params?.accountID
+    : localStorage.getItem("accountId");
   const nameAccount = useRef();
   const [typing, setTyping] = useState([]);
   const fetchRoom = useOutletContext();
@@ -40,7 +42,9 @@ const ChatDetail = () => {
 
   const fetchAccount = async () => {
     try {
-      const response = await axios.get("http://fashionrental.online:8080/account/" + accountID);
+      const response = await axios.get(
+        "http://fashionrental.online:8080/account/" + accountID
+      );
       console.log(response.data.data.email);
       nameAccount.current = response.data.data.email;
     } catch (error) {
@@ -65,23 +69,31 @@ const ChatDetail = () => {
     if (message.trim() !== "") {
       //   setMessages([...messages, { sender: "You", text: message, self: true }]);
       //   setMessage("");
-      await axios.post(`http://fashionrental.online:8080/chat/send/${id.current}`, {
-        accountID: Number(accountID),
-        roomID: Number(id.current),
-        message: message,
-      });
+      await axios.post(
+        `http://fashionrental.online:8080/chat/send/${id.current}`,
+        {
+          accountID: Number(accountID),
+          roomID: Number(id.current),
+          message: message,
+        }
+      );
       setMessage("");
       fetchChatDetail();
       fetchRoom();
     }
   };
   const fetchChatDetail = async () => {
-    const response = await axios.get(`http://fashionrental.online:8080/chat/detail/${id.current}`);
+    const response = await axios.get(
+      `http://fashionrental.online:8080/chat/detail/${id.current}`
+    );
     setRoom(response.data);
     setMessages(
       response.data.messages.map((message) => {
         return {
-          sender: message.account?.accountID == accountID ? "" : message.account.email + ":",
+          sender:
+            message.account?.accountID == accountID
+              ? ""
+              : message.account.email + ":",
           text: message.message,
           self: message.account?.accountID == accountID,
           created: message.createAt,
@@ -130,7 +142,10 @@ const ChatDetail = () => {
         </Col>
         {/* Add room members or any other room information */}
         <Col span={2}>
-          <Avatar.Group maxCount={2} maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}>
+          <Avatar.Group
+            maxCount={2}
+            maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+          >
             {room?.accounts.map((item) => {
               return (
                 <Tooltip title={item.email}>
@@ -174,7 +189,9 @@ const ChatDetail = () => {
 
       {/* Footer */}
       <div style={{ padding: "10px" }}>
-        {typing.length > 0 && <p className="typing">{`${typing?.join(",")} is typing...`}</p>}
+        {typing.length > 0 && (
+          <p className="typing">{`${typing?.join(",")} is typing...`}</p>
+        )}
         <Row>
           <Col xs={18} span={22}>
             <Input
@@ -189,7 +206,16 @@ const ChatDetail = () => {
             />
           </Col>
           <Col xs={6} span={2}>
-            <Button type="primary" onClick={handleSendMessage} style={{ marginLeft: "10px", width: "100%" }}>
+            <Button
+              type="primary"
+              onClick={handleSendMessage}
+              style={{
+                marginLeft: "10px",
+                width: "100%",
+                backgroundColor: "rgb(32, 30, 42)",
+                fontWeight: "bold",
+              }}
+            >
               Gửi
             </Button>
           </Col>

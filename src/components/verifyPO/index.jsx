@@ -1,5 +1,14 @@
 import React, { useRef, useState } from "react";
-import { Button, Card, Form, Input, Modal, Space, Upload, notification } from "antd";
+import {
+  Button,
+  Card,
+  Form,
+  Input,
+  Modal,
+  Space,
+  Upload,
+  notification,
+} from "antd";
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 import { auth, setUpRecaptha, storage } from "../../firebase/firebase";
 import { v4 } from "uuid";
@@ -65,7 +74,9 @@ function VerifyProductOwner() {
         console.log(appVerifier);
         if (!appVerifier) {
           console.log("run");
-          const recaptchaContainer = document.getElementById("recaptcha-container");
+          const recaptchaContainer = document.getElementById(
+            "recaptcha-container"
+          );
 
           if (recaptchaContainer) {
             verifier = new RecaptchaVerifier(auth, recaptchaContainer, {
@@ -102,12 +113,15 @@ function VerifyProductOwner() {
           .catch((err) => {
             console.log(err.message);
             api["error"]({
-              message: "Firebase: Error (auth/too-many-requests).",
+              message: "Bạn đã nhập sai OTP.",
             });
           });
       } catch (err) {
         // Handle the specific error
-        if (err instanceof TypeError && err.message.includes("Cannot read properties of null")) {
+        if (
+          err instanceof TypeError &&
+          err.message.includes("Cannot read properties of null")
+        ) {
           // Handle the error here, for example, log it or show a user-friendly message
           console.error("RecaptchaVerifier error:", err);
           setError("Error with RecaptchaVerifier. Please try again later.");
@@ -122,64 +136,57 @@ function VerifyProductOwner() {
 
   const handleOk = async () => {
     if (otp === "" || otp === null) return;
-    console.log("aaa");
+
     try {
-      console.log(confirmationResult);
-      const response = await confirmationResult
-        .confirm(otp)
-        .then((response) => {
-          if (response.operationType == "signIn") {
-            console.log("dung ne");
-            const createPO = {
-              accountID: localStorage.getItem("accountId"),
-              fullName: fullName,
-              address: address,
-              phone: phone,
-              avatarUrl: urlImage,
-            };
-            updateAccountStatus(createPO.accountID, "VERIFIED");
-            axios
-              .post("http://fashionrental.online:8080/po/sign-up", createPO)
-              .then((response) => {
-                if (response.data.message === "Created Fail By Email Already Existed") {
-                  api["error"]({
-                    message: "Tài Khoản Này Đã Được Xác Thực",
-                    description: "Thông báo tài khoản đã tồn tại",
-                    duration: 1500,
-                  });
-                } else {
-                  console.log("Staff member created:", response.data);
-                  api["success"]({
-                    message: "Xác Thực Thành Công!",
-                    description: "Chúc mừng bạn đã đăng ký thành công",
-                    duration: 1500,
-                  });
-                  window.location.reload();
-                }
-              })
-              .catch((error) => {
-                console.log(error);
-                console.error("Created Fail By Email Already Existed:", error);
-                api["error"]({
-                  message: "Xác Thực Thất Bại!",
-                  description: "Bạn đã xác thực thất bại",
-                  duration: 1500,
-                });
+      const response = await confirmationResult.confirm(otp);
+
+      if (response.operationType === "signIn") {
+        const createPO = {
+          accountID: localStorage.getItem("accountId"),
+          fullName: fullName,
+          address: address,
+          phone: phone,
+          avatarUrl: urlImage,
+        };
+
+        updateAccountStatus(createPO.accountID, "VERIFIED");
+
+        axios
+          .post("http://fashionrental.online:8080/po/sign-up", createPO)
+          .then((response) => {
+            if (
+              response.data.message === "Created Fail By Email Already Existed"
+            ) {
+              api["error"]({
+                message: "Tài Khoản Này Đã Được Xác Thực",
+                description: "Thông báo tài khoản đã tồn tại",
               });
-            // setIsModalOpen(false);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          api["error"]({
-            message: "Xác Thực Thất Bại!",
-            description: error.message,
-            duration: 1500,
+            } else {
+              console.log("Staff member created:", response.data);
+              api["success"]({
+                message: "Xác Thực Thành Công!",
+                description: "Chúc mừng bạn đã đăng ký thành công",
+              });
+              window.location.reload();
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            console.error("Created Fail By Email Already Existed:", error);
+            api["error"]({
+              message: "Xác Thực Thất Bại!",
+              description: "Bạn đã xác thực thất bại",
+            });
           });
-        });
-      console.log(response);
-    } catch (err) {
-      setError(err.message);
+
+        setIsModalOpen(false);
+      }
+    } catch (error) {
+      console.log(error);
+      api["error"]({
+        message: "Xác Thực Thất Bại!",
+        description: error.message,
+      });
     }
   };
   const handleCancel = () => {
@@ -217,21 +224,32 @@ function VerifyProductOwner() {
           <Form form={form} onFinish={onFinish}>
             {" "}
             <p>Họ và tên:</p>
-            <Form.Item name={"fullName"} rules={[{ required: true, message: "Không được để trống!" }]}>
+            <Form.Item
+              name={"fullName"}
+              rules={[{ required: true, message: "Không được để trống!" }]}
+            >
               <Input placeholder="Vui lòng nhập..." />
             </Form.Item>
             <p>Số điện thoại:</p>
-            <Form.Item name={"phone"} rules={[{ required: true, message: "Không được để trống!" }]}>
+            <Form.Item
+              name={"phone"}
+              rules={[{ required: true, message: "Không được để trống!" }]}
+            >
               <Input placeholder="Vui lòng nhập..." />
             </Form.Item>
             <p>Địa chỉ:</p>
-            <Form.Item name={"address"} rules={[{ required: true, message: "Không được để trống!" }]}>
+            <Form.Item
+              name={"address"}
+              rules={[{ required: true, message: "Không được để trống!" }]}
+            >
               <Input placeholder="Vui lòng nhập..." />
             </Form.Item>
             <p>Chọn ảnh đại diện:</p>
             <Form.Item
               name="avatarUrl"
-              rules={[{ required: true, message: "Vui lòng chọn ảnh đại diện!" }]}
+              rules={[
+                { required: true, message: "Vui lòng chọn ảnh đại diện!" },
+              ]}
               style={{ textAlign: "center" }}
             >
               <div className="select-image">
