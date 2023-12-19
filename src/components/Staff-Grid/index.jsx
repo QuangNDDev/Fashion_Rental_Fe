@@ -834,7 +834,7 @@ const TablePending = () => {
       {contextHolder}
       <Drawer
         title="Thông tin đơn hàng " // Customize the title as needed
-        width={450} // Customize the width as needed
+        width={550} // Customize the width as needed
         onClose={() => setIsDrawerVisible(false)} // Close the Drawer when the close button is clicked
         open={isDrawerVisible} // Show the Drawer when isDrawerVisible is true
       >

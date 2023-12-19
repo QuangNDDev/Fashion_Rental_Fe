@@ -1,4 +1,9 @@
-import { SearchOutlined, EyeTwoTone, MinusOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  EyeTwoTone,
+  MinusOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import {
@@ -44,6 +49,32 @@ const VoucherTable = () => {
   useEffect(() => {
     fetchVouchers();
   }, []);
+
+  const deleteVoucher = async (voucherID) => {
+    try {
+      const response = await axios.delete(
+        `http://fashionrental.online:8080/voucher?voucherID=${voucherID}`
+      );
+
+      // Thông báo xóa thành công
+      api["success"]({
+        message: "Xóa thành công!",
+        description: `Xóa mã giảm giá ${voucherID} thành công!!!`,
+      });
+
+      // Gọi lại API để cập nhật danh sách voucher
+      fetchVouchers();
+    } catch (error) {
+      // Xử lý lỗi khi xóa voucher
+      console.error("Error deleting voucher:", error);
+
+      // Hiển thị thông báo lỗi
+      api["error"]({
+        message: "Xóa thất bại!",
+        description: `Không thể xóa mã giảm giá ${voucherID}.`,
+      });
+    }
+  };
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -211,14 +242,6 @@ const VoucherTable = () => {
       ...getColumnSearchProps("voucherName"),
       render: (text) => <p>{text}</p>,
     },
-    // {
-    //   title: "Mã khuyến mãi",
-    //   dataIndex: "voucherCode",
-    //   key: "voucherCode",
-
-    //   ...getColumnSearchProps("voucherCode"),
-    //   render: (text) => <p>{text}</p>,
-    // },
 
     {
       title: "Ngày tạo",
@@ -228,30 +251,7 @@ const VoucherTable = () => {
       ...getColumnSearchProps("createdDate"),
       render: (text) => <p>{formatDate(text)}</p>,
     },
-    // {
-    //   title: "Ngày bắt đầu",
-    //   dataIndex: "startDate",
-    //   key: "startDate",
 
-    //   ...getColumnSearchProps("startDate"),
-    //   render: (text) => <p>{formatDate(text)}</p>,
-    // },
-    // {
-    //   title: "Ngày kết thúc",
-    //   dataIndex: "endDate",
-    //   key: "endDate",
-
-    //   ...getColumnSearchProps("endDate"),
-    //   render: (text) => <p>{formatDate(text)}</p>,
-    // },
-    // {
-    //   title: "Mô tả",
-    //   dataIndex: "description",
-    //   key: "description",
-
-    //   ...getColumnSearchProps("description"),
-    //   render: (text) => <p>{text}</p>,
-    // },
     {
       title: "Trạng thái",
       dataIndex: "status",
@@ -291,6 +291,15 @@ const VoucherTable = () => {
               }}
               disabled={record.status === "OUTDATE"}
             />
+            {(record.status === "OUTDATE" || record.status === "INACTIVE") && (
+              <Button
+                danger
+                onClick={() => deleteVoucher(record.voucherID)}
+                size="middle"
+              >
+                <DeleteOutlined />
+              </Button>
+            )}
           </Space>
         </div>
       ),
@@ -368,7 +377,7 @@ const VoucherTable = () => {
             initialValue={selectedRecord && selectedRecord.description}
           >
             <div style={{ display: "flex" }}>
-              <strong style={{minWidth:"55px"}}>Mô tả:</strong>
+              <strong style={{ minWidth: "55px" }}>Mô tả:</strong>
               <p style={{ marginLeft: "10px" }}>
                 {selectedRecord && selectedRecord.description}
               </p>
@@ -404,7 +413,7 @@ const VoucherTable = () => {
           >
             <div style={{ display: "flex" }}>
               <strong>Số lượng còn lại:</strong>
-              <p style={{ marginLeft: "10px",color:"red" }}>
+              <p style={{ marginLeft: "10px", color: "red" }}>
                 {selectedRecord && selectedRecord.quantity}
               </p>
             </div>

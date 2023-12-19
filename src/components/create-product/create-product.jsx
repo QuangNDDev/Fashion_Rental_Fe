@@ -683,7 +683,6 @@ const CreateProduct = () => {
         api["error"]({
           message: "Thêm Sản Phẩm Thất Bại",
           description: `Bạn đã thêm ${values.productName} thất bại`,
-          duration: 1000,
         });
       }
 
@@ -827,7 +826,6 @@ const CreateProduct = () => {
         api["error"]({
           message: "Thêm Sản Phẩm Thất Bại",
           description: `Bạn đã thêm ${values.productName} thất bại`,
-          duration: 1000,
         });
       }
 
@@ -989,7 +987,6 @@ const CreateProduct = () => {
           api["error"]({
             message: "Thêm Sản Phẩm Thất Bại",
             description: `Bạn đã thêm ${values.productName} thất bại`,
-            duration: 1000,
           });
         }
       } else {
@@ -1138,7 +1135,6 @@ const CreateProduct = () => {
         api["error"]({
           message: "Thêm Sản Phẩm Thất Bại",
           description: `Bạn đã thêm ${values.productName} thất bại`,
-          duration: 1000,
         });
       }
 
@@ -1282,7 +1278,6 @@ const CreateProduct = () => {
         api["error"]({
           message: "Thêm Sản Phẩm Thất Bại",
           description: `Bạn đã thêm ${values.productName} thất bại`,
-          duration: 1000,
         });
       }
 
@@ -1956,7 +1951,11 @@ const CreateProduct = () => {
   };
   // ===================================================
   return (
-    <div style={{ backgroundColor: "#fff" }}>
+    <div
+      style={{
+        backgroundColor: "#fff",
+      }}
+    >
       {contextHolder}
       <ConfigProvider
         theme={{
@@ -1988,7 +1987,7 @@ const CreateProduct = () => {
       >
         <Form form={form} onFinish={onFinish} style={{ position: "relative" }}>
           <div className="basic-information--step1">
-            <div className="section-title">Thông tin sản phẩm</div>
+            <div className="section-title">Thông Tin Sản Phẩm</div>
             <div className="name">
               <span>Tên sản phẩm:</span>
               <Form.Item
@@ -2119,7 +2118,7 @@ const CreateProduct = () => {
 
           {category === 1 && (
             <div className="basic-information--watch">
-              <div className="section-title">Thông tin chi tiết</div>
+              <div className="section-title">Thông Tin Chi Tiết</div>
               <div className="container-watch">
                 <div className="field__watch--1">
                   <span className="text">Thương hiệu:</span>
@@ -2488,7 +2487,7 @@ const CreateProduct = () => {
 
           {category === 4 && (
             <div className="basic-information--bag">
-              <div className="section-title">Thông tin chi tiết</div>
+              <div className="section-title">Thông Tin Chi Tiết</div>
               <div className="container-bag">
                 <div className="field__bag--1">
                   <span className="text">Thương hiệu:</span>
@@ -2869,7 +2868,7 @@ const CreateProduct = () => {
           )}
           {category === 5 && (
             <div className="basic-information--glasses">
-              <div className="section-title">Thông tin chi tiết</div>
+              <div className="section-title">Thông Tin Chi Tiết</div>
               <div className="container-glass">
                 <div className="field__glass--1">
                   <span className="text">Thương hiệu:</span>
@@ -3252,7 +3251,7 @@ const CreateProduct = () => {
 
           {category === 3 && (
             <div className="basic-information--earring">
-              <div className="section-title">Thông tin chi tiết</div>
+              <div className="section-title">Thông Tin Chi Tiết</div>
 
               <div className="container-erring">
                 <div className="field__earring--1">
@@ -3633,7 +3632,7 @@ const CreateProduct = () => {
 
           {category === 6 && (
             <div className="basic-information--shoe">
-              <div className="section-title">Thông tin chi tiết</div>
+              <div className="section-title">Thông Tin Chi Tiết</div>
               <div className="container-shoe">
                 <div className="field__shoe--1">
                   <span className="text">Thương hiệu:</span>
@@ -4016,7 +4015,7 @@ const CreateProduct = () => {
 
           {category === 2 && (
             <div className="basic-information--hat">
-              <div className="section-title">Thông tin chi tiết</div>
+              <div className="section-title">Thông Tin Chi Tiết</div>
               <div className="container-hat">
                 <div className="field__hat--1">
                   <span className="text">Thương hiệu:</span>
@@ -4397,7 +4396,10 @@ const CreateProduct = () => {
           )}
 
           {showSecondPart && (
-            <div className="basic-information--step3">
+            <div
+              className="basic-information--step3"
+              style={{ paddingBottom: "45px" }}
+            >
               <h1 className="section-title">Thông Tin Bán Hàng</h1>
               <div className="rent-sale">
                 <span>Cấu hình sản phẩm:</span>
@@ -4563,7 +4565,7 @@ const CreateProduct = () => {
                         style={{
                           width: "50px",
                         }}
-                        className="custom-button--delete" // Để tùy chỉnh kiểu hover bằng CSS
+                        className="custom-button--delete"
                       >
                         <DeleteOutlined />
                       </Button>
@@ -4576,19 +4578,18 @@ const CreateProduct = () => {
           <div
             style={{
               position: "fixed",
-              bottom: 0,
+              bottom: 1,
               left: "50%",
               width: "81.5%",
               backgroundColor: "white",
               height: "50px",
-              zIndex: 999,
               boxShadow:
-                " rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px",
+                "rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px",
               transform: "translateX(-50%)",
               marginLeft: "127px",
             }}
           >
-            <Form.Item>
+            <Form.Item style={{ textAlign: "center" }}>
               <Button
                 type="primary"
                 htmlType="submit"
@@ -4596,7 +4597,7 @@ const CreateProduct = () => {
                   width: "15%",
                   fontWeight: "bold",
                   position: "fixed",
-                  bottom: "45%",
+                  bottom: "50%",
                   left: "50%",
                   transform: "translate(-50%, 50%)",
                   zIndex: 999,

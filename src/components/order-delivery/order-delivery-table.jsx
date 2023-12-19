@@ -185,15 +185,17 @@ const OrderDeliveryTable = () => {
     const [month, day, year] = formattedDate.split("/");
     return `${day}/${month}/${year}`;
   }
-  
+
   function formatDateTime(dateOrder) {
     if (!Array.isArray(dateOrder) || dateOrder.length < 5) {
       return "Invalid date format";
     }
-  
+
     const [year, month, day, hour, minute] = dateOrder;
     const formattedDate = formatDate(`${year}-${month}-${day}`);
-    const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    const formattedTime = `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
     return `${formattedTime} ${formattedDate}`;
   }
   const [requiredNote, setRequiredNote] = useState([
@@ -255,7 +257,6 @@ const OrderDeliveryTable = () => {
         }. Thời gian giao hàng dự kiến: ${formatDate(
           responseData.data.expected_delivery_time
         )}`,
-        duration: 1000,
       });
 
       console.log("Create Delivery Success:", responseData);
@@ -302,7 +303,6 @@ const OrderDeliveryTable = () => {
       api["error"]({
         message: "Tạo đơn hàng thất bại!",
         description: `Bạn đã thêm ${selectedCustomer.fullName} thất bại`,
-        duration: 1000,
       });
     }
   };

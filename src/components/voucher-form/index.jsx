@@ -204,7 +204,7 @@ function VoucherForm() {
                     padding: 10,
                   }}
                 >
-                  <span style={{ fontWeight: "bold" }}>Mã khuyến mãi:</span>
+                  <span style={{ fontWeight: "500" }}>Mã khuyến mãi:</span>
 
                   <Form.Item
                     name={"voucherCode"}
@@ -222,7 +222,7 @@ function VoucherForm() {
                   }}
                 >
                   <Col span={12}>
-                    <span style={{ fontWeight: "bold" }}>
+                    <span style={{ fontWeight: "500" }}>
                       Tên mã khuyến mãi:
                     </span>
                     <Form.Item
@@ -235,7 +235,7 @@ function VoucherForm() {
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                    <span style={{ fontWeight: "bold" }}>Số lượng:</span>
+                    <span style={{ fontWeight: "500" }}>Số lượng:</span>
                     <Form.Item
                       name={"quantity"}
                       rules={[
@@ -261,7 +261,7 @@ function VoucherForm() {
                   }}
                 >
                   <Col span={12}>
-                    <p style={{ fontWeight: "bold" }}>Hình thức giảm giá:</p>
+                    <p style={{ fontWeight: "500" }}>Hình thức giảm giá:</p>
                     <Form.Item name="voucherType">
                       <Select
                         placeholder="Vui lòng chọn"
@@ -283,7 +283,7 @@ function VoucherForm() {
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                    <span style={{ fontWeight: "bold" }}>Nhập thời hạn:</span>
+                    <span style={{ fontWeight: "500" }}>Nhập thời hạn:</span>
                     <Form.Item
                       name={"startDate"}
                       rules={[
@@ -307,7 +307,7 @@ function VoucherForm() {
                     padding: 10,
                   }}
                 >
-                  <span style={{ fontWeight: "bold" }}>Mô tả:</span>
+                  <span style={{ fontWeight: "500" }}>Mô tả:</span>
                   <Form.Item
                     name={"description"}
                     rules={[
@@ -328,7 +328,7 @@ function VoucherForm() {
                   }}
                 >
                   <Col span={12}>
-                    <p style={{ fontWeight: "bold" }}>Phần trăm giảm giá:</p>
+                    <p style={{ fontWeight: "500" }}>Phần trăm giảm giá:</p>
                     <Form.Item
                       name={"discountAmount"}
                       rules={[
@@ -337,13 +337,13 @@ function VoucherForm() {
                     >
                       <Input
                         type="number"
-                        suffix={<span style={{ fontWeight: "bold" }}>%</span>}
+                        suffix={<span style={{ fontWeight: "500" }}>%</span>}
                         placeholder="Vui lòng nhập..."
                       />
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                    <span style={{ fontWeight: "bold" }}>
+                    <span style={{ fontWeight: "500" }}>
                       Số tiền giảm giá tối đa:
                     </span>
                     <Form.Item
@@ -368,7 +368,7 @@ function VoucherForm() {
                   <Button
                     type="primary"
                     htmlType="submit"
-                    style={{ backgroundColor: "red", fontWeight: "bold" }}
+                    style={{ backgroundColor: "red", fontWeight: "500" }}
                     onClick={handleCancel}
                   >
                     Hủy
@@ -376,7 +376,7 @@ function VoucherForm() {
                   <Button
                     type="primary"
                     htmlType="submit"
-                    style={{ marginLeft: "20px", fontWeight: "bold" }}
+                    style={{ marginLeft: "20px", fontWeight: "500" }}
                   >
                     Thêm
                   </Button>
