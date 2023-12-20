@@ -56,7 +56,8 @@ const OrderRent = () => {
   };
 
   // Hàm xử lý từ chối đơn hàng
-  const rejectOrder = () => {
+  const rejectOrder = (record) => {
+    setSelectedOrderID(record.orderRentID);
     Modal.confirm({
       title: "Xác nhận từ chối đơn hàng",
       content: "Bạn có chắc chắn muốn từ chối đơn hàng này không?",
@@ -340,7 +341,7 @@ const OrderRent = () => {
             <Button onClick={() => approveOrder(record)}>
               <CheckCircleTwoTone twoToneColor="#52c41a" />
             </Button>
-            <Button onClick={rejectOrder}>
+            <Button onClick={() => rejectOrder(record)}>
               <CloseCircleTwoTone twoToneColor="#ff4d4f" />
             </Button>
             <Modal
