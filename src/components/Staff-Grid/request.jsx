@@ -20,6 +20,7 @@ import {
 } from "antd";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
+import ProductOrderRent from "../product-owner-table/Product-Order-Rent";
 const RequestTable = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -91,6 +92,7 @@ const RequestTable = () => {
   const [selectedPo, setSelectedPo] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState([]);
+  const [selectedOrderID, setSelectedOrderID] = useState([]);
   const [selectedImgRequestCusSend, setselectedImgRequestCusSend] = useState(
     []
   );
@@ -113,6 +115,7 @@ const RequestTable = () => {
       setSelectedCustomer(response.data.orderRentDTO.customerDTO);
       setSelectedPo(response.data.orderRentDTO.productownerDTO);
       setSelectedOrder(response.data.orderRentDTO);
+      setSelectedOrderID(response.data.orderRentDTO.orderRentID);
       try {
         const responseImg = await axios.get(
           "http://fashionrental.online:8080/pic/img/" +
@@ -422,7 +425,7 @@ const RequestTable = () => {
       />
       {contextHolder}
       <Drawer
-        title={"Đơn hàng"}
+        title={"Thông tin yêu cầu"}
         open={isDrawerVisible}
         onClose={onCloseDrawer}
         width={1250}
@@ -628,9 +631,17 @@ const RequestTable = () => {
                   </p>
                 </div>
               </Form.Item>
+              <hr />
+              <h3>Thông tin sản phẩm:</h3>
+              <hr />
+              <ProductOrderRent
+                key={selectedOrderID}
+                orderID={selectedOrderID}
+              />
             </div>
             <hr />
             <div style={{ width: "50%" }}>
+              
               <hr />
               <h3>Hình ảnh sản phẩm:</h3>
               <hr />
@@ -646,7 +657,7 @@ const RequestTable = () => {
                     {selectedImgRequestPoSend &&
                       selectedImgRequestPoSend.map((imgUrl, index) => (
                         <div key={index} style={{ marginBottom: "10px" }}>
-                          <Image width={150} src={imgUrl} />
+                          <Image width={150} height={150} src={imgUrl} />
                         </div>
                       ))}
                   </div>
@@ -664,7 +675,7 @@ const RequestTable = () => {
                     {selectedImgRequestPoReceived &&
                       selectedImgRequestPoReceived.map((imgUrl, index) => (
                         <div key={index} style={{ marginBottom: "10px" }}>
-                          <Image width={150} src={imgUrl} />
+                          <Image width={150} height={150} src={imgUrl} />
                         </div>
                       ))}
                   </div>
@@ -682,7 +693,7 @@ const RequestTable = () => {
                     {selectedImgRequestCusReceived &&
                       selectedImgRequestCusReceived.map((imgUrl, index) => (
                         <div key={index} style={{ marginBottom: "10px" }}>
-                          <Image width={150} src={imgUrl} />
+                          <Image width={150} height={150} src={imgUrl} />
                         </div>
                       ))}
                   </div>
@@ -700,7 +711,7 @@ const RequestTable = () => {
                     {selectedImgRequestCusSend &&
                       selectedImgRequestCusSend.map((imgUrl, index) => (
                         <div key={index} style={{ marginBottom: "10px" }}>
-                          <Image width={150} src={imgUrl} />
+                          <Image width={150} height={150} src={imgUrl} />
                         </div>
                       ))}
                   </div>
