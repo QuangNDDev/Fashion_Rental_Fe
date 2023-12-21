@@ -4,7 +4,7 @@ import Highlighter from "react-highlight-words";
 import { Button, Input, Space, Table } from "antd";
 import RenderTag from "../render/RenderTag";
 import axios from "axios";
-const TransactionTable = ({ reloadTable }) => {
+const TransactionAdminTable = ({ reloadTable }) => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
@@ -200,4 +200,4 @@ const TransactionTable = ({ reloadTable }) => {
     </div>
   );
 };
-export default TransactionTable;
+export default TransactionAdminTable;

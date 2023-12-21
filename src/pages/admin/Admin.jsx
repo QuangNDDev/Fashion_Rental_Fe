@@ -1,11 +1,28 @@
 import React, { useState } from "react";
-import { UserOutlined, LogoutOutlined, BellOutlined, MessageOutlined } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, theme, Button, Avatar, Modal, Badge, ConfigProvider } from "antd";
+import {
+  UserOutlined,
+  LogoutOutlined,
+  BellOutlined,
+  MessageOutlined,
+  MoneyCollectOutlined,
+} from "@ant-design/icons";
+import {
+  Breadcrumb,
+  Layout,
+  Menu,
+  theme,
+  Button,
+  Avatar,
+  Modal,
+  Badge,
+  ConfigProvider,
+} from "antd";
 import { useNavigate } from "react-router-dom";
 import Notification from "../../components/notification/Notification";
 import CustomerTable from "../../components/admin-table/CustomerTable";
 import ProductOwnerTable from "../../components/admin-table/ProductOwnerTable";
 import StaffTable from "../../components/admin-table/StaffTable";
+import AdminBalance from "../../components/admin-table/AdminBalance";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -16,7 +33,8 @@ const Admin = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const [isNotificationModalVisible, setNotificationModalVisible] = useState(false);
+  const [isNotificationModalVisible, setNotificationModalVisible] =
+    useState(false);
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(3);
 
   const handleLogout = () => {
@@ -81,6 +99,20 @@ const Admin = () => {
             <StaffTable />
           </div>
         );
+        case "4":
+        return (
+          <div>
+            <Breadcrumb
+              style={{
+                padding: "0 16px",
+              }}
+            >
+              <Breadcrumb.Item>Tài chính</Breadcrumb.Item>
+              <Breadcrumb.Item>Số dư tài khoản</Breadcrumb.Item>
+            </Breadcrumb>
+            <AdminBalance/>
+          </div>
+        );
       default:
         return null;
     }
@@ -124,17 +156,29 @@ const Admin = () => {
               <SubMenu
                 key="sub1"
                 icon={<UserOutlined />}
-                title={<p style={{ fontSize: "16px", fontWeight: "500" }}>Quản lý người dùng</p>}
+                title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Quản lý người dùng
+                  </p>
+                }
               >
-                <Menu.Item key="1">{<p style={{ fontSize: "14.5px" }}>Khách hàng</p>}</Menu.Item>
-                <Menu.Item key="2">{<p style={{ fontSize: "14.5px" }}>Chủ sở hữu sản phẩm</p>}</Menu.Item>
-                <Menu.Item key="3">{<p style={{ fontSize: "14.5px" }}>Nhân viên</p>}</Menu.Item>
+                <Menu.Item key="1">
+                  {<p style={{ fontSize: "14.5px" }}>Khách hàng</p>}
+                </Menu.Item>
+                <Menu.Item key="2">
+                  {<p style={{ fontSize: "14.5px" }}>Chủ sở hữu sản phẩm</p>}
+                </Menu.Item>
+                <Menu.Item key="3">
+                  {<p style={{ fontSize: "14.5px" }}>Nhân viên</p>}
+                </Menu.Item>
               </SubMenu>
-              {/* <SubMenu key="sub2" icon={<UserOutlined />} title="Quản lí 1">
-              <Menu.Item key="1">Khách hàng</Menu.Item>
-              <Menu.Item key="2">Chủ sở hữu sản phẩm</Menu.Item>
-              <Menu.Item key="3">Nhân viên</Menu.Item>
-            </SubMenu> */}
+              <SubMenu key="sub2" icon={<MoneyCollectOutlined />} title={
+                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                    Tài chính
+                  </p>
+                }>
+                <Menu.Item key="4">Số dư TK</Menu.Item>
+              </SubMenu>
             </Menu>
           </ConfigProvider>
         </Sider>
