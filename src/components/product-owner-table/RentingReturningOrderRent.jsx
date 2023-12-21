@@ -495,18 +495,31 @@ const RentingOrderTable = () => {
         if (isProgressingFailed) {
           return (
             <>
-              <Button style={{margin:"2px"}} onClick={() => showDrawer(record)}>
+              <Button
+                style={{ margin: "2px" }}
+                onClick={() => showDrawer(record)}
+              >
                 <EyeTwoTone />
                 Xem Đơn
               </Button>
-              <Button style={{margin:"2px"}} onClick={() => showModalResponse(record)}>Lí do</Button>
-              <Button style={{margin:"2px"}} onClick={() => approveOrder(record)}>
+              <Button
+                style={{ margin: "2px" }}
+                onClick={() => showModalResponse(record)}
+              >
+                Lí do
+              </Button>
+              <Button
+                style={{ margin: "2px" }}
+                onClick={() => approveOrder(record)}
+              >
                 <CheckCircleTwoTone twoToneColor="#52c41a" />
               </Button>
-              <Button style={{margin:"2px"}} onClick={() => rejectOrder(record)}>
+              <Button
+                style={{ margin: "2px" }}
+                onClick={() => rejectOrder(record)}
+              >
                 <CloseCircleTwoTone twoToneColor="#ff4d4f" />
               </Button>
-            
             </>
           );
         }
@@ -540,7 +553,9 @@ const RentingOrderTable = () => {
                 onCancel={handleRejectConfirmModalCancel}
                 okText="Đồng ý"
                 cancelText="Hủy"
-                okButtonProps={{ disabled: !urlImages || urlImages.length === 0 }}
+                okButtonProps={{
+                  disabled: !urlImages || urlImages.length === 0,
+                }}
               >
                 <Form>
                   <span style={{ marginRight: "8px" }}>Chi phí:</span>
@@ -705,6 +720,7 @@ const RentingOrderTable = () => {
         <Button
           style={{
             marginTop: 20,
+            backgroundColor: "rgb(32, 30, 42)",
           }}
           onClick={async () => {
             const res = await axios.post(
@@ -719,7 +735,7 @@ const RentingOrderTable = () => {
           }}
           type="primary"
         >
-          Chat với người bán
+          Chat với người mua
         </Button>
       </Drawer>
     </div>
