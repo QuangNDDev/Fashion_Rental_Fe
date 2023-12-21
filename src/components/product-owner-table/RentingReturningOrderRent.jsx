@@ -24,6 +24,7 @@ import ProductOrderRent from "./Product-Order-Rent";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 import { storage } from "../../firebase/firebase";
+import { useNavigate } from "react-router-dom";
 const RentingOrderTable = () => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewTitle, setPreviewTitle] = useState("");
@@ -43,6 +44,9 @@ const RentingOrderTable = () => {
   const [expectedCost, setExpectedCost] = useState("");
   const handleCancel = () => setPreviewOpen(false);
   const [urlImages, setUrlImages] = useState([]);
+  const accountId = localStorage.getItem("accountId");
+  const [customerAccountID, setCustomerAccountID] = useState(null);
+  const navigate = useNavigate();
   const fetchOrders = async () => {
     try {
       const response = await axios.get(
@@ -248,6 +252,7 @@ const RentingOrderTable = () => {
       );
 
       setSelectedCustomer(response.data);
+      setCustomerAccountID(response.data.accountDTO.accountID)
       console.log(response.data);
     } catch (error) {
       console.error(error);
@@ -620,6 +625,17 @@ const RentingOrderTable = () => {
         </Form>
         <h3>Danh sách sản phẩm:</h3>
         <ProductOrderRent key={selectedOrderID} orderID={selectedOrderID} />
+
+        <Button style={{
+          marginTop: 20
+        }} onClick={async ()=>{
+          const res = await axios.post(`http://fashionrental.online:8080/chat/room`,{
+            accountID1: accountId,
+            accountID2: customerAccountID
+          })
+          navigate(`/productOwner/chat/${res.data.roomID}`)
+          console.log(res);
+        }} type="primary">Chat với người bán</Button>
       </Drawer>
     </div>
   );

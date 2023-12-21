@@ -56,7 +56,7 @@ const Balance = () => {
     console.log(values);
     try {
       const response = await axios.post(
-        "http://localhost:8080/VNPaycontroller/submitOrder?accountID=" +
+        "http://fashionrental.online:8080/VNPaycontroller/submitOrder?accountID=" +
           accountId +
           "&amount=" +
           values.amount +

@@ -15,6 +15,7 @@ import RenderTag from "../render/RenderTag";
 import axios from "axios";
 import { EyeTwoTone, CheckCircleTwoTone } from "@ant-design/icons";
 import ProductOrderRent from "./Product-Order-Rent";
+import { useNavigate } from "react-router-dom";
 const ReturnOrderRent = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -24,6 +25,10 @@ const ReturnOrderRent = () => {
   const [selectedOrderID, setSelectedOrderID] = useState(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [api, contextHolder] = notification.useNotification();
+
+  const accountId = localStorage.getItem("accountId");
+  const [customerAccountID, setCustomerAccountID] = useState(null);
+  const navigate = useNavigate();
   const fetchRejectingCompletedOrders = async () => {
     try {
       const response = await axios.get(
@@ -63,6 +68,8 @@ const ReturnOrderRent = () => {
       );
 
       setSelectedCustomer(response.data);
+      
+      setCustomerAccountID(response.data.accountDTO.accountID)
       console.log(response.data);
     } catch (error) {
       console.error(error);
@@ -354,6 +361,16 @@ const ReturnOrderRent = () => {
         </Form>
         <h3>Danh sách sản phẩm:</h3>
         <ProductOrderRent key={selectedOrderID} orderID={selectedOrderID} />
+        <Button style={{
+          marginTop: 20
+        }} onClick={async ()=>{
+          const res = await axios.post(`http://fashionrental.online:8080/chat/room`,{
+            accountID1: accountId,
+            accountID2: customerAccountID
+          })
+          navigate(`/productOwner/chat/${res.data.roomID}`)
+          console.log(res);
+        }} type="primary">Chat với người bán</Button>
       </Drawer>
     </div>
   );
