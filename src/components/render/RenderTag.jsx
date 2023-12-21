@@ -157,7 +157,10 @@ const RenderTag = ({ tagRender }) => {
       color = "yellow";
       text = "Chờ xử lí";
       break;
-
+    case "PROGRESSING_FAILED":
+      color = "red";
+      text = "Bị từ chối";
+      break;
     // default:
     //   color = "default";
     //   text = "Không Xác Định";

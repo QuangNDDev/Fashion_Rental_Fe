@@ -98,6 +98,17 @@ const OrderRentDeliveryTable = () => {
     fetchOrders();
     fetchDataProvine();
   }, []);
+  const [hasImages, setHasImages] = useState(false);
+
+
+useEffect(() => {
+
+  if (urlImages && urlImages.length > 0) {
+    setHasImages(true); 
+  } else {
+    setHasImages(false);
+  }
+}, [urlImages]);
   // -----------------------------lấy data địa chỉ của GHN----------------------------------------
   const [provinceData, setProvineData] = useState([]);
   const [selectedProvince, setSelectedProvine] = useState(null);
@@ -617,6 +628,7 @@ const OrderRentDeliveryTable = () => {
                   type="primary"
                   style={{ fontWeight: "bold" }}
                   onClick={() => createDelivery()}
+                  disabled={!hasImages}
                 >
                   Tạo đơn hàng
                 </Button>

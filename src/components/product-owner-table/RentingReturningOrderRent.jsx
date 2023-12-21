@@ -37,6 +37,7 @@ const RentingOrderTable = () => {
   const productownerId = localStorage.getItem("productownerId");
   const [selectedOrderID, setSelectedOrderID] = useState(null);
   const [selectedCustomer, setSelectedCustomer] = useState([]);
+  const [selectedStaffResponse, setselectedStaffResponse] = useState([]);
   const [api, contextHolder] = notification.useNotification();
   const [isRejectConfirmModalVisible, setIsRejectConfirmModalVisible] =
     useState(false);
@@ -82,7 +83,7 @@ const RentingOrderTable = () => {
     fetchOrders();
   }, []);
 
-  const showRejectConfirmModal = () => {
+  const showRejectConfirmModal = (record) => {
     setIsRejectConfirmModalVisible(true);
   };
 
@@ -99,13 +100,13 @@ const RentingOrderTable = () => {
     clearFilters();
     setSearchText("");
   };
-  const handleRejectConfirmModalOk = async (record) => {
+  const handleRejectConfirmModalOk = async () => {
     setIsRejectConfirmModalVisible(false);
     const rejectData = {
       description: rejectReason,
       expectedCost: parseInt(expectedCost),
       productownerID: parseInt(productownerId),
-      orderRentID: record.orderRentID,
+      orderRentID: selectedOrderID,
     };
     console.log(rejectData);
     try {
@@ -142,7 +143,7 @@ const RentingOrderTable = () => {
       try {
         const responseStatus = await axios.put(
           `http://fashionrental.online:8080/orderrent?orderRentID=` +
-            record.orderRentID +
+            selectedOrderID +
             `&status=PROGRESSING`
         );
         console.log("Check order success!!!", responseStatus.data);
@@ -159,15 +160,6 @@ const RentingOrderTable = () => {
     }
   };
   // ==============formatDate====================================
-  // function formatDate(dateString) {
-  //   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-  //   const formattedDate = new Date(dateString).toLocaleDateString(
-  //     "en-US",
-  //     options
-  //   );
-  //   const [month, day, year] = formattedDate.split("/");
-  //   return `${day}/ ${month}/ ${year}`;
-  // }
   function formatDate(dateString) {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     const formattedDate = new Date(dateString).toLocaleDateString(
@@ -252,10 +244,22 @@ const RentingOrderTable = () => {
       );
 
       setSelectedCustomer(response.data);
-      setCustomerAccountID(response.data.accountDTO.accountID)
+      setCustomerAccountID(response.data.accountDTO.accountID);
       console.log(response.data);
     } catch (error) {
       console.error(error);
+    }
+    if (record.status === "PROGRESSING_FAILED") {
+      try {
+        const response = await axios.get(
+          `http://fashionrental.online:8080/complaining/${record.orderRentID}/notapproved`
+        );
+
+        setselectedStaffResponse(response.data);
+        console.log("Staff respone: ", response.data);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -391,8 +395,9 @@ const RentingOrderTable = () => {
     }
   };
   // Hàm xử lý từ chối đơn hàng
-  const rejectOrder = () => {
+  const rejectOrder = (record) => {
     setIsRejectConfirmModalVisible(true);
+    setSelectedOrderID(record.orderRentID);
   };
 
   //chuyen doi thanh dang tien te vnd ------------------------------------------------------
@@ -405,6 +410,20 @@ const RentingOrderTable = () => {
 
   const onCloseDrawer = () => {
     setIsDrawerVisible(false);
+  };
+  // modal response--------------------------------------------------------------------------
+  const [isModalOpenResponse, setIsModalOpenResponse] = useState(false);
+
+  const showModalResponse = () => {
+    setIsModalOpenResponse(true);
+  };
+
+  const handleOkResponse = () => {
+    setIsModalOpenResponse(false);
+  };
+
+  const handleCancelResponse = () => {
+    setIsModalOpenResponse(false);
   };
   const columns = [
     {
@@ -472,7 +491,25 @@ const RentingOrderTable = () => {
 
       render: (text, record) => {
         const isReturning = record.status === "RETURNING";
-
+        const isProgressingFailed = record.status === "PROGRESSING_FAILED";
+        if (isProgressingFailed) {
+          return (
+            <>
+              <Button style={{margin:"2px"}} onClick={() => showDrawer(record)}>
+                <EyeTwoTone />
+                Xem Đơn
+              </Button>
+              <Button style={{margin:"2px"}} onClick={() => showModalResponse(record)}>Lí do</Button>
+              <Button style={{margin:"2px"}} onClick={() => approveOrder(record)}>
+                <CheckCircleTwoTone twoToneColor="#52c41a" />
+              </Button>
+              <Button style={{margin:"2px"}} onClick={() => rejectOrder(record)}>
+                <CloseCircleTwoTone twoToneColor="#ff4d4f" />
+              </Button>
+            
+            </>
+          );
+        }
         return (
           <div style={{ display: "flex", justifyContent: "center" }}>
             <Space size="middle">
@@ -491,7 +528,7 @@ const RentingOrderTable = () => {
                   <Button onClick={() => approveOrder(record)}>
                     <CheckCircleTwoTone twoToneColor="#52c41a" />
                   </Button>
-                  <Button onClick={rejectOrder}>
+                  <Button onClick={() => rejectOrder(record)}>
                     <CloseCircleTwoTone twoToneColor="#ff4d4f" />
                   </Button>
                 </>
@@ -499,10 +536,11 @@ const RentingOrderTable = () => {
               <Modal
                 title="Gửi yêu cầu cho nhân viên"
                 visible={isRejectConfirmModalVisible}
-                onOk={() => handleRejectConfirmModalOk(record)}
+                onOk={handleRejectConfirmModalOk}
                 onCancel={handleRejectConfirmModalCancel}
                 okText="Đồng ý"
                 cancelText="Hủy"
+                okButtonProps={{ disabled: !urlImages || urlImages.length === 0 }}
               >
                 <Form>
                   <span style={{ marginRight: "8px" }}>Chi phí:</span>
@@ -548,6 +586,44 @@ const RentingOrderTable = () => {
                   </Form.Item>
                 </Form>
               </Modal>
+              <Modal
+                title="Lí do từ chối"
+                open={isModalOpenResponse}
+                onOk={handleOkResponse}
+                onCancel={handleCancelResponse}
+                footer={false}
+              >
+                {selectedStaffResponse &&
+                  selectedStaffResponse.map((item, index) => (
+                    <Form key={index}>
+                      <hr />
+                      <Form.Item
+                        name={`createdDate-${index}`}
+                        initialValue={item.createdDate}
+                      >
+                        <div style={{ display: "flex" }}>
+                          <strong>Ngày tạo yêu cầu:</strong>
+                          <p style={{ marginLeft: "10px" }}>
+                            {formatDate(item.createdDate)}
+                          </p>
+                        </div>
+                      </Form.Item>
+                      <Form.Item
+                        name={`staffResponse-${index}`}
+                        initialValue={item.staffResponse}
+                      >
+                        <div style={{ display: "flex" }}>
+                          <strong>Lí do từ chối:</strong>
+                          <p style={{ marginLeft: "10px" }}>
+                            {item.staffResponse}
+                          </p>
+                        </div>
+                      </Form.Item>
+                      <hr />
+                    </Form>
+                  ))}
+              </Modal>
+
               <Modal
                 open={previewOpen}
                 title={previewTitle}
@@ -626,16 +702,25 @@ const RentingOrderTable = () => {
         <h3>Danh sách sản phẩm:</h3>
         <ProductOrderRent key={selectedOrderID} orderID={selectedOrderID} />
 
-        <Button style={{
-          marginTop: 20
-        }} onClick={async ()=>{
-          const res = await axios.post(`http://fashionrental.online:8080/chat/room`,{
-            accountID1: accountId,
-            accountID2: customerAccountID
-          })
-          navigate(`/productOwner/chat/${res.data.roomID}`)
-          console.log(res);
-        }} type="primary">Chat với người bán</Button>
+        <Button
+          style={{
+            marginTop: 20,
+          }}
+          onClick={async () => {
+            const res = await axios.post(
+              `http://fashionrental.online:8080/chat/room`,
+              {
+                accountID1: accountId,
+                accountID2: customerAccountID,
+              }
+            );
+            navigate(`/productOwner/chat/${res.data.roomID}`);
+            console.log(res);
+          }}
+          type="primary"
+        >
+          Chat với người bán
+        </Button>
       </Drawer>
     </div>
   );
