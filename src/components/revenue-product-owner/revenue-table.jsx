@@ -123,93 +123,42 @@ const RevenueTable = () => {
           }
         }
       }
-
-      //     const aggregatedProductSaleDetails = Array.from(productSaleDetailsMap.values());
-      //     const aggregatedProductRentDetails = Array.from(productRentDetailsMap.values());
-
-      //     const combinedProductDetails = [];
-      //     for (const saleDetails of aggregatedProductSaleDetails) {
-      //       for (const saleDetail of saleDetails) {
-      //         const matchingRentDetailIndex = aggregatedProductRentDetails.findIndex(
-      //           (rentDetail) => rentDetail.productID === saleDetail.productID
-      //         );
-
-      //         if (matchingRentDetailIndex !== -1) {
-      //           const matchingRentDetail = aggregatedProductRentDetails[matchingRentDetailIndex];
-      //           const totalPrice = saleDetail.totalPrice + matchingRentDetail.totalPrice;
-
-      //           const combinedDetail = {
-      //             productID: saleDetail.productID,
-      //             productName: saleDetail.productName,
-      //             totalPrice: totalPrice,
-      //           };
-
-      //           combinedProductDetails.push(combinedDetail);
-
-      //           aggregatedProductRentDetails.splice(matchingRentDetailIndex, 1);
-      //         } else {
-      //           combinedProductDetails.push(saleDetail);
-      //         }
-      //       }
-      //     }
-
-      //     for (const rentDetails of aggregatedProductRentDetails) {
-      //       combinedProductDetails.push(rentDetails);
-      //     }
-
-      //     setRevenueProductData(combinedProductDetails);
-      //   } catch (error) {
-      //     console.error(error);
-      //   }
-      // };
-      const aggregatedProductSaleDetails = Array.from(
-        productSaleDetailsMap.values()
-      );
-      const aggregatedProductRentDetails = Array.from(
-        productRentDetailsMap.values()
-      );
-
+      const aggregatedProductSaleDetails = Array.from(productSaleDetailsMap.values());
+      const aggregatedProductRentDetails = Array.from(productRentDetailsMap.values());
+      
       const combinedProductDetails = [];
-
-      for (const saleDetails of aggregatedProductSaleDetails) {
-        if (Array.isArray(saleDetails)) {
-          for (const saleDetail of saleDetails) {
-            const matchingRentDetailIndex =
-              aggregatedProductRentDetails.findIndex(
-                (rentDetail) => rentDetail.productID === saleDetail.productID
-              );
-
-            if (matchingRentDetailIndex !== -1) {
-              const matchingRentDetail =
-                aggregatedProductRentDetails[matchingRentDetailIndex];
-              const totalPrice =
-                saleDetail.totalPrice + matchingRentDetail.totalPrice;
-
-              const combinedDetail = {
-                productID: saleDetail.productID,
-                productName: saleDetail.productName,
-                totalPrice: totalPrice,
-              };
-
-              combinedProductDetails.push(combinedDetail);
-
-              aggregatedProductRentDetails.splice(matchingRentDetailIndex, 1);
-            } else {
-              combinedProductDetails.push(saleDetail);
-            }
+      
+      for (const saleDetail of aggregatedProductSaleDetails) {
+        if (saleDetail && typeof saleDetail === 'object') {
+          const matchingRentDetailIndex = aggregatedProductRentDetails.findIndex(
+            (rentDetail) => rentDetail.productID === saleDetail.productID
+          );
+      
+          if (matchingRentDetailIndex !== -1) {
+            const matchingRentDetail = aggregatedProductRentDetails[matchingRentDetailIndex];
+            const totalPrice = saleDetail.totalPrice + matchingRentDetail.totalPrice;
+      
+            const combinedDetail = {
+              productID: saleDetail.productID,
+              productName: saleDetail.productName,
+              totalPrice: totalPrice,
+            };
+      
+            combinedProductDetails.push(combinedDetail);
+      
+            aggregatedProductRentDetails.splice(matchingRentDetailIndex, 1);
+          } else {
+            combinedProductDetails.push(saleDetail);
           }
         } else {
-          console.error(
-            "Invalid data in aggregatedProductSaleDetails:",
-            saleDetails
-          );
+          console.error("Invalid data in aggregatedProductSaleDetails:", saleDetail);
         }
       }
-
-      for (const rentDetails of aggregatedProductRentDetails) {
-        combinedProductDetails.push(rentDetails);
+      
+      for (const rentDetail of aggregatedProductRentDetails) {
+        combinedProductDetails.push(rentDetail);
       }
-
+      
       setRevenueProductData(combinedProductDetails);
     } catch (error) {
       console.error(error);
